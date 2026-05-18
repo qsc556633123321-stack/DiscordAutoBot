@@ -1,0 +1,12 @@
+{
+  "1124014400202866810": {
+    "enabled": true,
+    "dmEnabled": true,
+    "autoGuestRole": true,
+    "reminderEnabled": true,
+    "removeGuestOnRoleSelect": false,
+    "reminderMinutes": 10,
+    "reminded": {},
+    "updatedAt": "2026-05-17T16:21:17.691Z"
+  }
+}
