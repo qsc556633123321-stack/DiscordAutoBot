@@ -18,7 +18,10 @@ const mixedCommunity = {
         { name: '💬｜一般聊天', type: 'text' },
         { name: '🎮｜找隊友大廳', type: 'text' },
         { name: '📅｜活動公告', type: 'text' },
-        { name: '🖼｜好圖分享', type: 'text' }
+        { name: '🖼｜好圖分享', type: 'text' },
+        { name: '🍜｜美食分享', type: 'text' },
+        { name: '🎵｜音樂分享', type: 'text' },
+        { name: '🧠｜閒聊討論', type: 'text' }
       ]
     },
     {
@@ -39,6 +42,16 @@ const mixedCommunity = {
         { name: '🏆｜apex-戰績分享', type: 'text' },
         { name: '📌｜apex-資訊', type: 'text' },
         { name: '➕｜建立APEX語音', type: 'voice', userLimit: 1 }
+      ]
+    },
+    {
+      name: '🎮｜特戰英豪',
+      channels: [
+        { name: '💬｜特戰-聊天', type: 'text' },
+        { name: '🧑‍🤝‍🧑｜特戰-找隊友', type: 'text' },
+        { name: '🏆｜特戰-戰績分享', type: 'text' },
+        { name: '📌｜特戰-資訊', type: 'text' },
+        { name: '➕｜建立特戰語音', type: 'voice', userLimit: 1 }
       ]
     },
     {

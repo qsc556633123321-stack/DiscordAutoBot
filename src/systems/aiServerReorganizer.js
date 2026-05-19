@@ -4,6 +4,10 @@ const accessConfig = require('../config/roleChannelAccess');
 const { cleanupEmptyCategories } = require('./categoryCleaner');
 const { isCreateVoiceChannel } = require('./gameChannels');
 const { isTempVoice } = require('./tempVoice');
+const {
+  inferActiveChannelTarget,
+  isActiveProtectedChannel
+} = require('./activeChannelProtector');
 
 const pendingAiReorganizePlans = new Map();
 const MAX_DELETE_CHANNELS = 30;
@@ -29,7 +33,10 @@ const TARGET_STRUCTURE = [
       text('💬｜一般聊天', ['一般聊天', '聊天', '閒聊', 'general']),
       text('🎮｜找隊友大廳', ['找隊友大廳']),
       text('📅｜活動公告', ['活動公告']),
-      text('🖼｜好圖分享', ['好圖分享'])
+      text('🖼｜好圖分享', ['好圖分享']),
+      text('🍜｜美食分享', ['美食分享']),
+      text('🎵｜音樂分享', ['音樂分享']),
+      text('🧠｜閒聊討論', ['閒聊討論'])
     ]
   },
   gameCategory('🎮｜聯盟戰棋', [
@@ -45,6 +52,13 @@ const TARGET_STRUCTURE = [
     text('🏆｜apex-戰績分享', ['apex-戰績分享']),
     text('📌｜apex-資訊', ['apex-資訊']),
     voice('➕｜建立APEX語音', ['建立APEX語音'])
+  ]),
+  gameCategory('🎮｜特戰英豪', [
+    text('💬｜特戰-聊天', ['特戰-聊天']),
+    text('🧑‍🤝‍🧑｜特戰-找隊友', ['特戰-找隊友']),
+    text('🏆｜特戰-戰績分享', ['特戰-戰績分享']),
+    text('📌｜特戰-資訊', ['特戰-資訊']),
+    voice('➕｜建立特戰語音', ['建立特戰語音', '建立特戰英豪語音'])
   ]),
   gameCategory('🎮｜LOL', [
     text('💬｜lol-聊天', ['lol-聊天']),
@@ -168,6 +182,7 @@ function isProtectedChannel(channel, options) {
   if (channel.name.startsWith('ticket-')) return 'ticket 私人頻道';
   if (isCreateVoiceChannel(channel)) return '建立語音觸發頻道';
   if (channel.type === ChannelType.GuildVoice && isTempVoice(channel.guild.id, channel.id)) return '臨時語音頻道';
+  if (isActiveProtectedChannel(channel)) return '有效生活/遊戲頻道，不封存不刪除';
   return null;
 }
 
@@ -234,7 +249,11 @@ async function getAiSuggestions(guild, plan, useAi) {
         suggestedCategory: String(item.suggestedCategory || '').slice(0, 100),
         confidence: ['high', 'medium', 'low'].includes(item.confidence) ? item.confidence : 'low',
         reason: String(item.reason || '').slice(0, 250)
-      })).filter((item) => item.channelName && !item.channelName.startsWith('ticket-'))
+      })).filter((item) => (
+        item.channelName &&
+        !item.channelName.startsWith('ticket-') &&
+        !(item.confidence === 'low' && isActiveProtectedChannel(item.channelName))
+      ))
     };
   } catch (error) {
     return {
@@ -295,6 +314,18 @@ async function createAiReorganizePlan(guild, options) {
   for (const channel of guild.channels.cache.values()) {
     if (channel.type === ChannelType.GuildCategory) continue;
     if (targetNames.has(normalizeName(channel.name))) continue;
+
+    const activeTarget = inferActiveChannelTarget(channel);
+    if (activeTarget) {
+      channelsToMove.push({
+        channelId: channel.id,
+        channelName: channel.name,
+        fromCategoryName: channel.parent?.name || '未分類',
+        toCategoryName: activeTarget.categoryName,
+        reason: activeTarget.reason
+      });
+      continue;
+    }
 
     const protectedReason = isProtectedChannel(channel, options);
     if (protectedReason) {

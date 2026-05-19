@@ -1,6 +1,11 @@
 const { ChannelType } = require('discord.js');
 const { DEFAULT_GAMES, inferGameCategoryName, isCreateVoiceChannel } = require('./gameChannels');
 const { isTempVoice } = require('./tempVoice');
+const {
+  inferActiveChannelTarget,
+  isActiveProtectedChannel,
+  PUBLIC_LOBBY_CATEGORY
+} = require('./activeChannelProtector');
 
 const MAX_MOVE_COUNT = 30;
 const MAX_DELETE_COUNT = 5;
@@ -9,9 +14,11 @@ const pendingDeepCleanupPlans = new Map();
 
 const TARGET_CATEGORIES = [
   '📌｜社群入口',
+  PUBLIC_LOBBY_CATEGORY,
   '💬｜日常大廳',
   '🎮｜遊戲大廳',
   '🔊｜遊戲語音',
+  '🎮｜特戰英豪',
   ...DEFAULT_GAMES.map((game) => game.categoryName),
   '🎫｜客服支援',
   '🔒｜管理員後台',
@@ -53,6 +60,9 @@ function hasPrivatePermissions(channel) {
 }
 
 function inferTargetCategory(channel) {
+  const activeTarget = inferActiveChannelTarget(channel);
+  if (activeTarget) return [activeTarget.categoryName, activeTarget.reason];
+
   const normalized = normalizeName(channel.name);
 
   if (/ticketlogs|serverlogs|管理員頻道|管理|後台|log|logs|紀錄|審核/.test(normalized)) return ['🔒｜管理員後台', '管理或紀錄頻道'];
@@ -116,6 +126,7 @@ function chooseDuplicateKeeper(group) {
 }
 
 function shouldSuggestDelete(channel, deleteLevel, duplicateReason) {
+  if (isActiveProtectedChannel(channel)) return false;
   if (deleteLevel === 'safe') return false;
   if (deleteLevel === 'normal') return Boolean(duplicateReason) || isBlankChannel(channel);
   if (deleteLevel === 'aggressive') return Boolean(duplicateReason) || isBlankChannel(channel) || isOldOrLowActivity(channel);
@@ -186,6 +197,7 @@ function createDeepCleanupPlan(guild, { mode, deleteLevel, useAi, sourceChannelI
       if (channel.id === keeper.id) continue;
       const protectedReason = isProtectedChannel(channel, sourceChannelId);
       if (protectedReason) continue;
+      if (isActiveProtectedChannel(channel)) continue;
 
       const archiveItem = {
         channelId: channel.id,

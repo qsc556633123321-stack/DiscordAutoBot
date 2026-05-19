@@ -50,6 +50,11 @@ const {
   executeAiReorganize,
   getAiReorganizePlan
 } = require('../systems/aiServerReorganizer');
+const {
+  deleteRestoreActiveChannelsPlan,
+  executeRestoreActiveChannels,
+  getRestoreActiveChannelsPlan
+} = require('../systems/activeChannelProtector');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -71,6 +76,8 @@ const FACTORY_RESET_CONFIRM_PREFIX = 'factory_reset_confirm_';
 const FACTORY_RESET_CANCEL_PREFIX = 'factory_reset_cancel_';
 const AI_REORGANIZE_CONFIRM_PREFIX = 'ai_reorganize_confirm_';
 const AI_REORGANIZE_CANCEL_PREFIX = 'ai_reorganize_cancel_';
+const RESTORE_ACTIVE_CONFIRM_PREFIX = 'restore_active_confirm_';
+const RESTORE_ACTIVE_CANCEL_PREFIX = 'restore_active_cancel_';
 
 function safeTicketName(username, userId) {
   const safeName = username
@@ -1181,6 +1188,75 @@ async function handleConfirmAiReorganize(interaction, planId) {
   }
 }
 
+async function handleCancelRestoreActiveChannels(interaction, planId) {
+  const plan = getRestoreActiveChannelsPlan(planId);
+  if (!plan) {
+    await interaction.reply({ content: '找不到還原計畫，請重新執行 `/restore-active-channels`。', ephemeral: true });
+    return;
+  }
+
+  if (interaction.user.id !== plan.requestedById) {
+    await interaction.reply({ content: '只有原本執行 `/restore-active-channels` 的人可以取消。', ephemeral: true });
+    return;
+  }
+
+  deleteRestoreActiveChannelsPlan(planId);
+  await interaction.update({ content: '已取消有效頻道還原，沒有做任何變更。', embeds: [], components: [] });
+}
+
+async function handleConfirmRestoreActiveChannels(interaction, planId) {
+  const plan = getRestoreActiveChannelsPlan(planId);
+  if (!plan) {
+    await interaction.reply({ content: '找不到還原計畫，請重新執行 `/restore-active-channels`。', ephemeral: true });
+    return;
+  }
+
+  if (interaction.user.id !== plan.requestedById) {
+    await interaction.reply({ content: '只有原本執行 `/restore-active-channels` 的人可以確認。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.guild || interaction.guild.id !== plan.guildId) {
+    await interaction.reply({ content: '這份還原計畫不屬於目前伺服器。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
+    await interaction.reply({ content: '你需要 ManageChannels 權限才能還原頻道。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageChannels)) {
+    await interaction.reply({ content: 'Bot 缺少 ManageChannels 權限，無法移動頻道。', ephemeral: true });
+    return;
+  }
+
+  if (plan.mode !== 'execute') {
+    await interaction.reply({ content: 'preview 計畫不能執行，請使用 mode: execute 重新產生計畫。', ephemeral: true });
+    return;
+  }
+
+  await interaction.update({ content: '正在還原誤封存的有效頻道...', embeds: [], components: [] });
+
+  try {
+    const summary = await executeRestoreActiveChannels(interaction.guild, plan);
+    deleteRestoreActiveChannelsPlan(planId);
+    await interaction.editReply({
+      content:
+        `有效頻道還原完成。\n\n` +
+        `建立分類：${summary.createdCategories.length ? summary.createdCategories.join('、') : '無'}\n` +
+        `已移動：${summary.movedChannels.length ? `\n${summary.movedChannels.join('\n')}` : '無'}\n` +
+        `略過：${summary.skipped.length ? summary.skipped.join('、') : '無'}\n` +
+        `失敗：${summary.failed.length ? summary.failed.join('\n') : '無'}`,
+      embeds: [],
+      components: []
+    });
+  } catch (error) {
+    console.error('還原有效頻道失敗：', error);
+    await interaction.editReply({ content: `還原有效頻道失敗：${error.message}`, embeds: [], components: [] });
+  }
+}
+
 module.exports = {
   name: Events.InteractionCreate,
 
@@ -1279,6 +1355,18 @@ module.exports = {
     const aiReorganizeCancelPlanId = getPrefixedId(interaction.customId, AI_REORGANIZE_CANCEL_PREFIX);
     if (aiReorganizeCancelPlanId) {
       await handleCancelAiReorganize(interaction, aiReorganizeCancelPlanId);
+      return;
+    }
+
+    const restoreActiveConfirmPlanId = getPrefixedId(interaction.customId, RESTORE_ACTIVE_CONFIRM_PREFIX);
+    if (restoreActiveConfirmPlanId) {
+      await handleConfirmRestoreActiveChannels(interaction, restoreActiveConfirmPlanId);
+      return;
+    }
+
+    const restoreActiveCancelPlanId = getPrefixedId(interaction.customId, RESTORE_ACTIVE_CANCEL_PREFIX);
+    if (restoreActiveCancelPlanId) {
+      await handleCancelRestoreActiveChannels(interaction, restoreActiveCancelPlanId);
       return;
     }
 

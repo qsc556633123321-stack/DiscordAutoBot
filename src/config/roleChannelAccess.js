@@ -19,7 +19,7 @@ module.exports = {
   roleAccess: [
     {
       roleName: '🎮 遊戲玩家',
-      categories: ['🎮｜聯盟戰棋', '🎮｜APEX', '🎮｜LOL', '🎮｜Minecraft']
+      categories: ['🎮｜聯盟戰棋', '🎮｜APEX', '🎮｜特戰英豪', '🎮｜LOL', '🎮｜Minecraft']
     },
     {
       roleName: '📈 股票投資',

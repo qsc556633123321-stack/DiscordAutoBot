@@ -5,6 +5,7 @@ const { getTemplate, getOrCreateLogChannel, createTemplateStructure } = require(
 const { setupChannelPanels } = require('./channelPanels');
 const { SELF_ASSIGNABLE_ROLES, setupSelfAssignableRoles } = require('./roleManager');
 const { buildPermissionPlan, applyPermissionPlan } = require('./rolePermissions');
+const { isActiveProtectedChannel } = require('./activeChannelProtector');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const PANELS_FILE = path.join(DATA_DIR, 'channel-panels.json');
@@ -121,6 +122,7 @@ function classifyChannel(channel, plan, templateNames, panelChannelIds, tempVoic
   const protectedReason = isDiscordProtectedChannel(channel.guild, channel, plan.sourceChannelId);
   if (protectedReason) return { protectedReason };
   if (isAdminProtectedChannel(channel, plan)) return { protectedReason: '保留管理員或 logs 頻道' };
+  if (isActiveProtectedChannel(channel)) return { protectedReason: '有效生活/遊戲頻道，不刪除' };
   if (channel.type === ChannelType.GuildCategory) return { protectedReason: '分類會在子頻道處理後另外判斷' };
 
   if (tempVoiceIds.has(channel.id)) return { deleteReason: 'temp-voice.json 記錄的臨時語音' };

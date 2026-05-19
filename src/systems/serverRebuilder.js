@@ -4,6 +4,7 @@ const { isTempVoice } = require('./tempVoice');
 const { isCreateVoiceChannel } = require('./gameChannels');
 const { setupChannelPanels } = require('./channelPanels');
 const { cleanupEmptyCategories } = require('./categoryCleaner');
+const { isActiveProtectedChannel } = require('./activeChannelProtector');
 
 const pendingRebuildPlans = new Map();
 const MAX_DELETE_OLD_CHANNELS = 10;
@@ -35,6 +36,7 @@ function isProtectedOldChannel(channel, plan) {
   if (channel.name.startsWith('ticket-')) return 'ticket 私人客服單';
   if (isCreateVoiceChannel(channel)) return '建立語音入口';
   if (channel.guild && isTempVoice(channel.guild.id, channel.id)) return '臨時語音由 tempVoice 管理';
+  if (isActiveProtectedChannel(channel)) return '有效生活/遊戲頻道，不封存不刪除';
   if (plan.keepAdmin && isAdminChannel(channel)) return '保留管理員頻道';
   return null;
 }
