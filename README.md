@@ -359,3 +359,24 @@ npm run dashboard:start
 ```
 
 `preview` 只顯示掃描結果；`execute` 會顯示確認按鈕，按下後才處理。預設只處理舊分類名稱，例如 `文字頻道`、`語音頻道`、`Uncategorized`、`舊分類`、`old-category`、`empty-category`、舊的 `📌｜資訊中心`、`💬｜玩家大廳`、`🎮｜遊戲專區`。safe 模式會改名成 `📦｜待刪除分類-原名稱`，不會直接刪除。
+## AI 伺服器重整
+
+```text
+/ai-reorganize-server mode: preview use_ai: false old_channels: archive public_chat: true
+```
+
+`preview` 只會產生整理計畫，不會修改伺服器。確認內容沒問題後再執行：
+
+```text
+/ai-reorganize-server mode: execute use_ai: false old_channels: archive public_chat: true
+```
+
+execute 會先顯示確認按鈕，只有原本執行指令的人能按下「確認 AI 重整」。新的社群邏輯會讓 `📌｜社群入口`、`💬｜公開大廳`、`🎫｜客服支援` 對所有人可見，其中 `💬｜一般聊天` 會允許 @everyone 發言；遊戲分類、投資討論、創作與開發會用身分組解鎖；`🔒｜管理員後台` 和 `📦｜舊頻道封存` 會對 @everyone 隱藏。
+
+如果要啟用 AI 建議，請在 `.env` 設定：
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+```
+
+AI 建議只會出現在 preview 裡，不會直接刪除或搬移頻道。`old_channels: delete` 最多刪除 30 個舊頻道，且會避開正在執行指令的頻道、ticket- 頻道、臨時語音、Discord 系統頻道與建立語音觸發頻道。

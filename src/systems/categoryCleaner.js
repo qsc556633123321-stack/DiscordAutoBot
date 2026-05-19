@@ -4,21 +4,20 @@ const pendingCategoryCleanupPlans = new Map();
 
 const PROTECTED_CATEGORIES = new Set([
   '📌｜社群入口',
-  '💬｜日常交流',
-  '💬｜日常大廳',
+  '💬｜公開大廳',
+  '🎮｜聯盟戰棋',
   '🎮｜APEX',
-  '🎮｜特戰英豪',
-  '🎮｜Minecraft',
   '🎮｜LOL',
-  '🎮｜遊戲大廳',
-  '🔊｜遊戲語音',
+  '🎮｜Minecraft',
+  '🛠｜創作與開發',
+  '📈｜投資討論',
   '🎉｜活動專區',
   '🎫｜客服支援',
   '🔒｜管理員後台',
   '📦｜舊頻道封存'
 ]);
 
-const OLD_CATEGORY_PATTERN = /^(文字頻道|語音頻道|uncategorized|舊分類|old-category|empty-category|📌｜資訊中心|💬｜玩家大廳|🎮｜遊戲專區)$/i;
+const OLD_CATEGORY_PATTERN = /^(文字頻道|語音頻道|資訊中心|玩家大廳|遊戲專區|uncategorized|舊分類|old-category|empty-category|重複管理員後台|📦｜待刪除分類-.+)$/i;
 
 function getCategoryChildren(guild, categoryId) {
   return [...guild.channels.cache.values()].filter((channel) => channel.parentId === categoryId);
@@ -26,14 +25,14 @@ function getCategoryChildren(guild, categoryId) {
 
 function isProtectedCategory(guild, category) {
   if (PROTECTED_CATEGORIES.has(category.name)) return true;
-  if (/ticket|客服/i.test(category.name)) return true;
+  if (/ticket|客服支援/i.test(category.name)) return true;
 
   const children = getCategoryChildren(guild, category.id);
   return children.some((channel) => channel.name.startsWith('ticket-'));
 }
 
 function isArchivedChild(channel) {
-  return /^delete-pending-|舊|old|archive|封存/i.test(channel.name);
+  return /^delete-pending-|old-|archive-|📦|封存|待刪除/i.test(channel.name);
 }
 
 function isTempVoiceChild(channel) {
@@ -148,10 +147,10 @@ function buildCategoryCleanupEmbed(plan) {
   return new EmbedBuilder()
     .setColor(0x2f80ed)
     .setTitle('空分類清理預覽')
-    .setDescription('只會清理符合舊分類名稱且非保護分類的項目。含子頻道的分類不會被直接刪除。')
+    .setDescription('preview 不會修改伺服器；execute 需二次確認。')
     .addFields({
-      name: '掃描結果',
-      value: (lines.join('\n') || '沒有分類。').slice(0, 1024)
+      name: '分類檢查結果',
+      value: (lines.join('\n') || '沒有分類').slice(0, 1024)
     })
     .setTimestamp();
 }

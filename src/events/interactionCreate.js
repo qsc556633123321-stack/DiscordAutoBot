@@ -45,6 +45,11 @@ const {
   executeFactoryReset,
   getFactoryResetPlan
 } = require('../systems/factoryReset');
+const {
+  deleteAiReorganizePlan,
+  executeAiReorganize,
+  getAiReorganizePlan
+} = require('../systems/aiServerReorganizer');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -64,6 +69,8 @@ const ROLEPERM_CONFIRM_PREFIX = 'roleperm_confirm_';
 const ROLEPERM_CANCEL_PREFIX = 'roleperm_cancel_';
 const FACTORY_RESET_CONFIRM_PREFIX = 'factory_reset_confirm_';
 const FACTORY_RESET_CANCEL_PREFIX = 'factory_reset_cancel_';
+const AI_REORGANIZE_CONFIRM_PREFIX = 'ai_reorganize_confirm_';
+const AI_REORGANIZE_CANCEL_PREFIX = 'ai_reorganize_cancel_';
 
 function safeTicketName(username, userId) {
   const safeName = username
@@ -1085,6 +1092,95 @@ async function handleConfirmFactoryReset(interaction, planId) {
   }
 }
 
+async function handleCancelAiReorganize(interaction, planId) {
+  const plan = getAiReorganizePlan(planId);
+  if (!plan) {
+    await interaction.reply({ content: '找不到 AI 重整計畫，請重新執行 `/ai-reorganize-server`。', ephemeral: true });
+    return;
+  }
+
+  if (interaction.user.id !== plan.requestedById) {
+    await interaction.reply({ content: '只有原本執行 `/ai-reorganize-server` 的人可以取消這份計畫。', ephemeral: true });
+    return;
+  }
+
+  deleteAiReorganizePlan(planId);
+  await interaction.update({ content: '已取消 AI 伺服器重整，沒有做任何變更。', embeds: [], components: [] });
+}
+
+async function handleConfirmAiReorganize(interaction, planId) {
+  const plan = getAiReorganizePlan(planId);
+  if (!plan) {
+    await interaction.reply({ content: '找不到 AI 重整計畫，請重新執行 `/ai-reorganize-server`。', ephemeral: true });
+    return;
+  }
+
+  if (interaction.user.id !== plan.requestedById) {
+    await interaction.reply({ content: '只有原本執行 `/ai-reorganize-server` 的人可以確認這份計畫。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.guild || interaction.guild.id !== plan.guildId) {
+    await interaction.reply({ content: '這份 AI 重整計畫不屬於目前伺服器。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
+    await interaction.reply({ content: '你需要 ManageChannels 權限才能執行 AI 重整。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageChannels)) {
+    await interaction.reply({ content: 'Bot 缺少 ManageChannels 權限，無法執行 AI 重整。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
+    await interaction.reply({ content: 'Bot 缺少 ManageRoles 權限，無法建立或套用身分組權限。', ephemeral: true });
+    return;
+  }
+
+  if (plan.mode !== 'execute') {
+    await interaction.reply({ content: 'preview 計畫不能執行，請用 mode: execute 重新產生確認計畫。', ephemeral: true });
+    return;
+  }
+
+  await interaction.update({
+    content: '正在執行 AI 伺服器重整：建立分類、搬移頻道、套用身分組權限與清理舊分類...',
+    embeds: [],
+    components: []
+  });
+
+  try {
+    const summary = await executeAiReorganize(interaction, plan);
+    deleteAiReorganizePlan(planId);
+    const lines = [
+      `建立分類：${summary.createdCategories.length ? summary.createdCategories.join('、') : '無'}`,
+      `建立頻道：${summary.createdChannels.length}`,
+      `移動頻道：${summary.movedChannels.length}`,
+      `封存舊頻道：${summary.archivedChannels.length}`,
+      `刪除舊頻道：${summary.deletedChannels.length ? summary.deletedChannels.join('、') : '無'}`,
+      `套用權限分類：${summary.updatedPermissions.length}`,
+      summary.categoryCleanup ? `空分類清理：封存 ${summary.categoryCleanup.renamed.length}，刪除 ${summary.categoryCleanup.deleted.length}` : null,
+      summary.failed.length ? `失敗：\n${summary.failed.slice(0, 10).join('\n')}` : null,
+      summary.skipped.length ? `略過：${summary.skipped.length} 項` : null
+    ].filter(Boolean);
+
+    await interaction.editReply({
+      content: `AI 伺服器重整完成。\n\n${lines.join('\n').slice(0, 1900)}`,
+      embeds: [],
+      components: []
+    });
+  } catch (error) {
+    console.error('AI 伺服器重整失敗：', error);
+    await interaction.editReply({
+      content: `AI 伺服器重整失敗：${error.message}`,
+      embeds: [],
+      components: []
+    });
+  }
+}
+
 module.exports = {
   name: Events.InteractionCreate,
 
@@ -1171,6 +1267,18 @@ module.exports = {
     const factoryResetCancelPlanId = getPrefixedId(interaction.customId, FACTORY_RESET_CANCEL_PREFIX);
     if (factoryResetCancelPlanId) {
       await handleCancelFactoryReset(interaction, factoryResetCancelPlanId);
+      return;
+    }
+
+    const aiReorganizeConfirmPlanId = getPrefixedId(interaction.customId, AI_REORGANIZE_CONFIRM_PREFIX);
+    if (aiReorganizeConfirmPlanId) {
+      await handleConfirmAiReorganize(interaction, aiReorganizeConfirmPlanId);
+      return;
+    }
+
+    const aiReorganizeCancelPlanId = getPrefixedId(interaction.customId, AI_REORGANIZE_CANCEL_PREFIX);
+    if (aiReorganizeCancelPlanId) {
+      await handleCancelAiReorganize(interaction, aiReorganizeCancelPlanId);
       return;
     }
 

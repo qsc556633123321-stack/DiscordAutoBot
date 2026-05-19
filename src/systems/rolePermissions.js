@@ -195,7 +195,7 @@ async function applyPermissionPlan(guild, plan) {
       continue;
     }
 
-    if (categoryName === '🔒｜管理員後台') {
+    if (categoryName === ADMIN_BACKEND_CATEGORY) {
       summary.skipped.push('略過管理員後台權限，只保留原設定');
       continue;
     }
@@ -210,6 +210,8 @@ async function applyPermissionPlan(guild, plan) {
         id: everyone.id,
         allow: publicCategory ? [
           PermissionFlagsBits.ViewChannel,
+          PermissionFlagsBits.SendMessages,
+          PermissionFlagsBits.Connect,
           PermissionFlagsBits.ReadMessageHistory
         ] : [],
         deny: publicCategory ? [] : [PermissionFlagsBits.ViewChannel]

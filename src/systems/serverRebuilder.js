@@ -190,7 +190,20 @@ async function createTemplateStructure(guild, template, summary) {
       const existing = guild.channels.cache.find(
         (channel) => channel.type === type && channel.name === channelConfig.name
       );
-      if (existing) continue;
+      if (existing) {
+        if (existing.parentId !== category.id) {
+          try {
+            await existing.setParent(category.id, {
+              lockPermissions: false,
+              reason: 'Server rebuild move existing template channel to correct category'
+            });
+          } catch (error) {
+            console.error(`移動既有頻道 ${existing.name} 失敗：`, error);
+            summary.failed.push(`移動既有頻道失敗：${existing.name}`);
+          }
+        }
+        continue;
+      }
 
       try {
         const created = await guild.channels.create({

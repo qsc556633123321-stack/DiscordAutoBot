@@ -20,6 +20,8 @@ function buildGameConfig(game, shortName, options = {}) {
   const cleanGame = String(game || '').trim();
   const cleanShortName = String(shortName || cleanGame).trim();
   const voiceLabel = options.voiceLabel || cleanGame;
+  const clipsLabel = options.clipsLabel || '戰績分享';
+  const infoLabel = options.infoLabel || '資訊';
 
   return {
     game: cleanGame,
@@ -41,15 +43,15 @@ function buildGameConfig(game, shortName, options = {}) {
       },
       {
         key: 'clips',
-        name: `🏆｜${cleanShortName}-戰績分享`,
+        name: `🏆｜${cleanShortName}-${clipsLabel}`,
         type: ChannelType.GuildText,
-        aliases: [`${cleanShortName}-戰績分享`]
+        aliases: [`${cleanShortName}-${clipsLabel}`, ...(options.clipAliases || [])]
       },
       {
         key: 'info',
-        name: `📌｜${cleanShortName}-資訊`,
+        name: `📌｜${cleanShortName}-${infoLabel}`,
         type: ChannelType.GuildText,
-        aliases: [`${cleanShortName}-資訊`, ...(options.infoAliases || [])]
+        aliases: [`${cleanShortName}-${infoLabel}`, ...(options.infoAliases || [])]
       },
       {
         key: 'createVoice',
@@ -72,7 +74,10 @@ const DEFAULT_GAMES = [
   buildGameConfig('特戰英豪', '特戰', { voiceLabel: '特戰' }),
   buildGameConfig('Minecraft', 'mc', {
     voiceLabel: 'MC',
-    infoAliases: ['mc-伺服器資訊', '📌｜mc-伺服器資訊']
+    clipsLabel: '建築分享',
+    infoLabel: '伺服器資訊',
+    clipAliases: ['mc-戰績分享', '🏆｜mc-戰績分享'],
+    infoAliases: ['mc-資訊', '📌｜mc-資訊']
   }),
   buildGameConfig('LOL', 'lol')
 ];
