@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { setupGameChannels } = require('../systems/gameChannels');
+const { fixGameCategory } = require('../systems/gameChannels');
 
 function formatList(items, emptyText = '無') {
   return items.length ? items.map((item) => `- ${item}`).join('\n') : emptyText;
@@ -7,28 +7,22 @@ function formatList(items, emptyText = '無') {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName('setup-game')
-    .setDescription('建立指定遊戲的分類、文字頻道與組隊語音觸發頻道')
+    .setName('fix-game-category')
+    .setDescription('將指定遊戲的既有頻道搬回正確遊戲分類')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
     .addStringOption((option) =>
       option
         .setName('game')
-        .setDescription('遊戲名稱，例如 APEX、聯盟戰棋、Minecraft、LOL')
+        .setDescription('遊戲名稱，例如 聯盟戰棋')
         .setRequired(true)
         .setMaxLength(50)
     )
     .addStringOption((option) =>
       option
         .setName('short_name')
-        .setDescription('頻道短名稱，例如 apex、tft、mc、lol')
+        .setDescription('頻道短名稱，例如 tft')
         .setRequired(true)
         .setMaxLength(20)
-    )
-    .addBooleanOption((option) =>
-      option
-        .setName('create_default_channels')
-        .setDescription('是否建立預設頻道，預設 true')
-        .setRequired(false)
     ),
 
   async execute(interaction) {
@@ -38,43 +32,37 @@ module.exports = {
     }
 
     if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
-      await interaction.reply({ content: '你需要 ManageChannels 權限才能建立遊戲分區。', ephemeral: true });
+      await interaction.reply({ content: '你需要 ManageChannels 權限才能修復遊戲分類。', ephemeral: true });
       return;
     }
 
     if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageChannels)) {
-      await interaction.reply({ content: 'Bot 缺少 ManageChannels 權限，無法建立或移動頻道。', ephemeral: true });
+      await interaction.reply({ content: 'Bot 缺少 ManageChannels 權限，無法移動頻道。', ephemeral: true });
       return;
     }
 
     const game = interaction.options.getString('game');
     const shortName = interaction.options.getString('short_name');
-    const createDefaultChannels = interaction.options.getBoolean('create_default_channels') ?? true;
 
     await interaction.deferReply({ ephemeral: true });
 
     try {
-      const result = await setupGameChannels(interaction.guild, {
-        game,
-        shortName,
-        createDefaultChannels
-      });
-
+      const result = await fixGameCategory(interaction.guild, { game, shortName });
       const warningText = result.orderingWarnings.length
         ? `\n\n排序提醒：\n${formatList(result.orderingWarnings)}`
         : '';
 
       await interaction.editReply(
-        `已完成遊戲分區：${result.category.name}\n\n` +
-        `新建立：\n${formatList(result.created)}\n\n` +
-        `已存在：\n${formatList(result.existing)}\n\n` +
-        `已移動：\n${formatList(result.moved)}` +
+        `已檢查遊戲分類：${result.category.name}\n\n` +
+        `已移動：\n${formatList(result.moved)}\n\n` +
+        `已在正確分類：\n${formatList(result.existing)}\n\n` +
+        `找不到的既有頻道：\n${formatList(result.missing)}` +
         warningText
       );
     } catch (error) {
-      console.error('setup-game failed:', error);
+      console.error('fix-game-category failed:', error);
       await interaction.editReply(
-        `建立遊戲分區失敗：${error.message || '請確認 Bot 是否具備 ManageChannels、View Channels、Connect 權限。'}`
+        `修復遊戲分類失敗：${error.message || '請確認 Bot 是否具備 ManageChannels 權限。'}`
       );
     }
   }
