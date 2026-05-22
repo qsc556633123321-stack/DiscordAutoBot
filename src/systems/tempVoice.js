@@ -79,8 +79,10 @@ function addTempVoice(guildId, channelId, metadata) {
   if (!data[guildId]) data[guildId] = {};
   data[guildId][channelId] = {
     ownerId: metadata.ownerId,
+    controlOwnerId: metadata.controlOwnerId || metadata.ownerId,
     game: metadata.game,
     createdAt: new Date().toISOString(),
+    transferredAt: null,
     voiceChannelId: channelId,
     voiceChannelName: metadata.voiceChannelName || null,
     roomName: metadata.roomName || metadata.voiceChannelName || null,
@@ -210,6 +212,19 @@ function buildControlEmbed(channel, record) {
     .setTimestamp();
 }
 
+function buildNewOwnerControlEmbed(channel, record) {
+  return new EmbedBuilder()
+    .setColor(0xf2c94c)
+    .setTitle('👑 你已成為新的房主')
+    .setDescription(
+      `房間名稱：${channel.name}\n` +
+      `遊戲分類：${record.game || '未指定'}\n` +
+      `目前人數：${channel.members.size}/${record.userLimit || '無限制'}\n\n` +
+      '你現在可以使用下方按鈕管理語音房：鎖房、公開、調整人數、改名、移交房主或解散房間。'
+    )
+    .setTimestamp();
+}
+
 function buildEndedControlEmbed(snapshot) {
   return new EmbedBuilder()
     .setColor(0x2f3136)
@@ -225,11 +240,33 @@ function buildEndedControlEmbed(snapshot) {
     .setTimestamp();
 }
 
+function buildNoLongerOwnerEmbed(channel, oldOwnerId, newOwnerId) {
+  return new EmbedBuilder()
+    .setColor(0x2f3136)
+    .setTitle('⚫ 你已不再是房主')
+    .setDescription(
+      `房間：${channel?.name || '未知'}\n` +
+      `原房主：${oldOwnerId ? `<@${oldOwnerId}>` : '未知'}\n` +
+      `新房主：${newOwnerId ? `<@${newOwnerId}>` : '未知'}\n\n` +
+      '此控制台已失效。'
+    )
+    .setTimestamp();
+}
+
 function buildTempVoiceControlPayload(channel) {
   const record = getTempVoiceRecord(channel.guild.id, channel.id);
   if (!record) return null;
   return {
     embeds: [buildControlEmbed(channel, record)],
+    components: buildControlRows(channel.id)
+  };
+}
+
+function buildNewOwnerControlPayload(channel) {
+  const record = getTempVoiceRecord(channel.guild.id, channel.id);
+  if (!record) return null;
+  return {
+    embeds: [buildNewOwnerControlEmbed(channel, record)],
     components: buildControlRows(channel.id)
   };
 }
@@ -243,6 +280,21 @@ async function fetchControlPanelMessage(guild, record) {
     return channel.messages.fetch(record.controlPanelMessageId).catch(() => null);
   } catch (error) {
     return null;
+  }
+}
+
+async function invalidatePreviousOwnerPanel(guild, channel, record, oldOwnerId, newOwnerId) {
+  const message = await fetchControlPanelMessage(guild, record);
+  if (!message) return false;
+
+  try {
+    await message.edit({
+      embeds: [buildNoLongerOwnerEmbed(channel, oldOwnerId, newOwnerId)],
+      components: buildControlRows(channel.id, true)
+    });
+    return true;
+  } catch (error) {
+    return false;
   }
 }
 
@@ -367,11 +419,11 @@ async function sendActivityMessage({ guild, channel, member, record }) {
   }
 }
 
-async function sendOwnerControlPanel({ guild, channel, member, interaction = null }) {
+async function sendControlPanelToMember({ guild, channel, member, interaction = null, transfer = false }) {
   const settings = getTempVoiceSettings(guild.id);
   if (!settings.createControlPanel) return null;
 
-  const payload = buildTempVoiceControlPayload(channel);
+  const payload = transfer ? buildNewOwnerControlPayload(channel) : buildTempVoiceControlPayload(channel);
   if (!payload) return null;
 
   if (interaction) return payload;
@@ -379,6 +431,7 @@ async function sendOwnerControlPanel({ guild, channel, member, interaction = nul
   try {
     const dm = await member.send(payload);
     updateTempVoiceRecord(guild.id, channel.id, {
+      controlOwnerId: member.id,
       controlPanelChannelId: dm.channelId || null,
       controlPanelMessageId: dm.id
     });
@@ -388,6 +441,7 @@ async function sendOwnerControlPanel({ guild, channel, member, interaction = nul
       const controlChannel = await getOrCreateControlChannel(guild, member);
       const message = await controlChannel.send({ content: `${member}`, ...payload });
       updateTempVoiceRecord(guild.id, channel.id, {
+        controlOwnerId: member.id,
         controlPanelChannelId: controlChannel.id,
         controlPanelMessageId: message.id,
         textControlChannelId: controlChannel.id
@@ -398,6 +452,10 @@ async function sendOwnerControlPanel({ guild, channel, member, interaction = nul
       return null;
     }
   }
+}
+
+async function sendOwnerControlPanel({ guild, channel, member, interaction = null }) {
+  return sendControlPanelToMember({ guild, channel, member, interaction, transfer: false });
 }
 
 async function createTemporaryVoice({ guild, member, game, name, limit = 5, createCategoryIfMissing = false }) {
@@ -421,6 +479,7 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
   addTempVoice(guild.id, channel.id, {
     game,
     ownerId: member.id,
+    controlOwnerId: member.id,
     userLimit,
     voiceChannelName: channel.name,
     roomName: channel.name
@@ -471,20 +530,76 @@ function cancelPendingDeletion(channelId) {
   pendingDeletes.delete(channelId);
 }
 
+function findNextOwner(channel, oldOwnerId) {
+  const candidates = [...channel.members.values()]
+    .filter((member) => !member.user.bot)
+    .filter((member) => member.id !== oldOwnerId)
+    .filter((member) => member.voice.channelId === channel.id)
+    .filter((member) => channel.guild.afkChannelId !== channel.id);
+
+  return candidates[0] || null;
+}
+
+async function transferTempVoiceOwner({ guild, channel, oldOwnerId, newOwner, interaction = null, reason = 'Temp voice owner transfer' }) {
+  const record = getTempVoiceRecord(guild.id, channel.id);
+  if (!record || !newOwner || record.ownerId === newOwner.id) return null;
+
+  await invalidatePreviousOwnerPanel(guild, channel, record, oldOwnerId || record.ownerId, newOwner.id);
+
+  const transferredAt = new Date().toISOString();
+  const updatedRecord = updateTempVoiceRecord(guild.id, channel.id, {
+    ownerId: newOwner.id,
+    controlOwnerId: newOwner.id,
+    transferredAt,
+    roomName: channel.name,
+    voiceChannelName: channel.name,
+    // Clear old control message first; sendControlPanelToMember writes the new one.
+    controlPanelChannelId: null,
+    controlPanelMessageId: null
+  });
+
+  const panel = await sendControlPanelToMember({
+    guild,
+    channel,
+    member: newOwner,
+    interaction,
+    transfer: true
+  });
+
+  await writeServerLog(guild, {
+    title: '👑 Temp Voice 房主已轉移',
+    description: `${channel} 的房主已轉移。`,
+    color: 0xf2c94c,
+    fields: [
+      { name: '舊房主', value: oldOwnerId ? `<@${oldOwnerId}>` : '未知', inline: true },
+      { name: '新房主', value: `${newOwner}`, inline: true },
+      { name: '房間', value: channel.name, inline: false }
+    ]
+  });
+
+  return { record: updatedRecord, panel, transferredAt, reason };
+}
+
 async function transferOwnerIfNeeded(oldState) {
   const record = getTempVoiceRecord(oldState.guild.id, oldState.channelId);
-  if (!record || record.ownerId !== oldState.id) return;
+  if (!record || record.ownerId !== oldState.id) return null;
 
   const settings = getTempVoiceSettings(oldState.guild.id);
-  if (!settings.autoTransfer) return;
+  if (!settings.autoTransfer) return null;
 
   const channel = oldState.guild.channels.cache.get(oldState.channelId);
-  if (!channel || channel.members.size === 0) return;
+  if (!channel || channel.members.size === 0) return null;
 
-  const nextOwner = channel.members.find((member) => !member.user.bot);
-  if (!nextOwner) return;
+  const nextOwner = findNextOwner(channel, oldState.id);
+  if (!nextOwner) return null;
 
-  updateTempVoiceRecord(oldState.guild.id, channel.id, { ownerId: nextOwner.id });
+  const result = await transferTempVoiceOwner({
+    guild: oldState.guild,
+    channel,
+    oldOwnerId: oldState.id,
+    newOwner: nextOwner,
+    reason: 'Auto transfer after owner left voice'
+  });
 
   const textChannel = record.linkedTextChannelId
     ? oldState.guild.channels.cache.get(record.linkedTextChannelId)
@@ -493,11 +608,7 @@ async function transferOwnerIfNeeded(oldState) {
     await textChannel.send(`👑 房主已自動轉移給 ${nextOwner}`).catch(() => null);
   }
 
-  await writeServerLog(oldState.guild, {
-    title: '👑 Temp Voice 房主轉移',
-    description: `${channel} 的房主已自動轉移給 ${nextOwner}。`,
-    color: 0xf2c94c
-  });
+  return result;
 }
 
 function getTempVoiceChannelFromInteraction(interaction, channelId) {
@@ -536,7 +647,7 @@ async function assertTempVoiceControl(interaction, channelId) {
   }
 
   if (interaction.user.id !== record.ownerId && !isAdmin) {
-    await interaction.reply(privateReplyPayload(interaction, { content: '只有房主或管理員可以操作這個語音房。' }));
+    await interaction.reply(privateReplyPayload(interaction, { content: '你已不是此房間房主。' }));
     return null;
   }
 
@@ -610,7 +721,9 @@ async function handleTempVoiceButton(interaction) {
     const channelId = getChannelIdFromCustomId(id, 'tempvoice_transfer_');
     const context = await assertTempVoiceControl(interaction, channelId);
     if (!context) return;
-    const members = [...context.channel.members.values()].filter((member) => !member.user.bot).slice(0, 25);
+    const members = [...context.channel.members.values()]
+      .filter((member) => !member.user.bot && member.id !== context.record.ownerId)
+      .slice(0, 25);
     if (!members.length) {
       await interaction.reply(privateReplyPayload(interaction, { content: '房內目前沒有可以移交的成員。' }));
       return;
@@ -681,8 +794,20 @@ async function handleTempVoiceSelect(interaction) {
     const context = await assertTempVoiceControl(interaction, channelId);
     if (!context) return true;
     const nextOwnerId = interaction.values[0];
-    updateTempVoiceRecord(context.guild.id, context.channel.id, { ownerId: nextOwnerId });
-    await interaction.reply(privateReplyPayload(interaction, { content: `👑 已轉移房主給 <@${nextOwnerId}>` }));
+    const nextOwner = await context.guild.members.fetch(nextOwnerId).catch(() => null);
+    if (!nextOwner || nextOwner.voice.channelId !== context.channel.id) {
+      await interaction.reply(privateReplyPayload(interaction, { content: '找不到新房主，或對方已不在此語音房。' }));
+      return true;
+    }
+
+    await transferTempVoiceOwner({
+      guild: context.guild,
+      channel: context.channel,
+      oldOwnerId: context.record.ownerId,
+      newOwner: nextOwner,
+      reason: 'Manual temp voice owner transfer'
+    });
+    await interaction.reply(privateReplyPayload(interaction, { content: `👑 已轉移房主給 ${nextOwner}，並已發送新的控制台。` }));
     return true;
   }
 

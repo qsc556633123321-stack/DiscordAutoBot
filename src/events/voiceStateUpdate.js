@@ -15,7 +15,11 @@ module.exports = {
   async execute(oldState, newState) {
     if (oldState.channelId && isTempVoice(oldState.guild.id, oldState.channelId)) {
       const oldChannel = oldState.guild.channels.cache.get(oldState.channelId);
-      await transferOwnerIfNeeded(oldState);
+      try {
+        await transferOwnerIfNeeded(oldState);
+      } catch (error) {
+        console.error('Temp Voice owner transfer failed:', error);
+      }
       if (oldChannel && oldChannel.members.size === 0) {
         await scheduleTempVoiceDeletion(oldChannel);
       }

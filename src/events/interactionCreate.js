@@ -1300,7 +1300,14 @@ module.exports = {
   async execute(interaction) {
     if (interaction.isModalSubmit()) {
       if (interaction.customId.startsWith('tempvoice_')) {
-        await handleTempVoiceModal(interaction);
+        try {
+          await handleTempVoiceModal(interaction);
+        } catch (error) {
+          console.error('Temp Voice modal interaction failed:', error);
+          if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ content: '處理語音房操作失敗，請稍後再試。', ephemeral: true });
+          }
+        }
       }
       return;
     }
@@ -1330,7 +1337,14 @@ module.exports = {
 
     if (interaction.isStringSelectMenu()) {
       if (interaction.customId.startsWith('tempvoice_')) {
-        await handleTempVoiceSelect(interaction);
+        try {
+          await handleTempVoiceSelect(interaction);
+        } catch (error) {
+          console.error('Temp Voice select interaction failed:', error);
+          if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ content: '處理語音房操作失敗，請稍後再試。', ephemeral: true });
+          }
+        }
         return;
       }
 
@@ -1343,7 +1357,14 @@ module.exports = {
     if (!interaction.isButton()) return;
 
     if (interaction.customId.startsWith('tempvoice_')) {
-      await handleTempVoiceButton(interaction);
+      try {
+        await handleTempVoiceButton(interaction);
+      } catch (error) {
+        console.error('Temp Voice button interaction failed:', error);
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.reply({ content: '處理語音房操作失敗，請稍後再試。', ephemeral: true });
+        }
+      }
       return;
     }
 
