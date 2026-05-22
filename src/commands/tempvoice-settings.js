@@ -31,6 +31,17 @@ module.exports = {
         .setName('create_activity_message')
         .setDescription('建立語音房後是否發送活動提示')
         .setRequired(false)
+    )
+    .addStringOption((option) =>
+      option
+        .setName('cleanup_mode')
+        .setDescription('語音房結束後如何處理控制面板')
+        .setRequired(false)
+        .addChoices(
+          { name: 'disable_panel', value: 'disable_panel' },
+          { name: 'delete_panel', value: 'delete_panel' },
+          { name: 'keep_panel', value: 'keep_panel' }
+        )
     ),
 
   async execute(interaction) {
@@ -49,11 +60,13 @@ module.exports = {
     const autoDeleteSeconds = interaction.options.getInteger('auto_delete_seconds');
     const createControlPanel = interaction.options.getBoolean('create_control_panel');
     const createActivityMessage = interaction.options.getBoolean('create_activity_message');
+    const cleanupMode = interaction.options.getString('cleanup_mode');
 
     if (autoTransfer !== null) patch.autoTransfer = autoTransfer;
     if (autoDeleteSeconds !== null) patch.autoDeleteSeconds = autoDeleteSeconds;
     if (createControlPanel !== null) patch.createControlPanel = createControlPanel;
     if (createActivityMessage !== null) patch.createActivityMessage = createActivityMessage;
+    if (cleanupMode !== null) patch.cleanupMode = cleanupMode;
 
     const settings = Object.keys(patch).length
       ? updateTempVoiceSettings(interaction.guild.id, patch)
@@ -66,7 +79,8 @@ module.exports = {
         { name: 'auto_transfer', value: String(settings.autoTransfer), inline: true },
         { name: 'auto_delete_seconds', value: String(settings.autoDeleteSeconds), inline: true },
         { name: 'create_control_panel', value: String(settings.createControlPanel), inline: true },
-        { name: 'create_activity_message', value: String(settings.createActivityMessage), inline: true }
+        { name: 'create_activity_message', value: String(settings.createActivityMessage), inline: true },
+        { name: 'cleanup_mode', value: String(settings.cleanupMode), inline: true }
       )
       .setTimestamp();
 

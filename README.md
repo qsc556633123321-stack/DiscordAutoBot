@@ -390,6 +390,14 @@ AI 建議只會出現在 preview 裡，不會直接刪除或搬移頻道。`old_
 /tempvoice-settings auto_transfer:true auto_delete_seconds:30 create_control_panel:true create_activity_message:true
 ```
 
+控制台生命週期：
+
+```text
+/tempvoice-settings cleanup_mode:disable_panel
+```
+
+`disable_panel` 會在語音房結束後把控制台改成「語音房已結束」並停用所有按鈕；`delete_panel` 會嘗試刪除控制台訊息；`keep_panel` 不處理舊控制台。
+
 控制台不會發到公開聊天。使用 `/create-party` 建立時會用 ephemeral 回覆控制台；加入 `➕｜建立XXX語音` 建立時會優先 DM 房主，DM 失敗才 fallback 到 `🔒｜語音控制台`。公開頻道只會出現短通知，並於 10 分鐘後自動刪除。
 
 重新取得控制台：
