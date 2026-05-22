@@ -4,11 +4,11 @@ const { buildTempVoiceControlPayload, createTemporaryVoice } = require('../syste
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('create-party')
-    .setDescription('建立臨時組隊語音頻道')
+    .setDescription('建立臨時組隊語音房')
     .addStringOption((option) =>
       option
         .setName('game')
-        .setDescription('遊戲名稱，例如 APEX、特戰英豪、Minecraft、LOL')
+        .setDescription('遊戲名稱，例如 APEX、聯盟戰棋、Minecraft、LOL')
         .setRequired(true)
         .setMaxLength(50)
     )
@@ -30,7 +30,7 @@ module.exports = {
 
   async execute(interaction) {
     if (!interaction.guild) {
-      await interaction.reply({ content: '這個指令只能在伺服器中使用。', ephemeral: true });
+      await interaction.reply({ content: '這個指令只能在伺服器內使用。', ephemeral: true });
       return;
     }
 
@@ -40,7 +40,7 @@ module.exports = {
       !botMember.permissions.has(PermissionFlagsBits.MoveMembers)
     ) {
       await interaction.reply({
-        content: 'Bot 需要 ManageChannels 與 MoveMembers 權限，才能建立並移動成員到臨時語音。',
+        content: 'Bot 需要 ManageChannels 與 MoveMembers 權限，才能建立並移動臨時語音房。',
         ephemeral: true
       });
       return;
@@ -60,34 +60,26 @@ module.exports = {
         limit
       });
 
+      let moved = false;
       if (interaction.member.voice.channel) {
         try {
           await interaction.member.voice.setChannel(channel, 'Move member to temporary party voice');
-          const panel = buildTempVoiceControlPayload(channel);
-          await interaction.editReply({
-            content: `已建立臨時語音 ${channel}，並將你移動進去。`,
-            ...(panel || {})
-          });
-          return;
+          moved = true;
         } catch (error) {
-          console.error('移動使用者到臨時語音失敗：', error);
-          const panel = buildTempVoiceControlPayload(channel);
-          await interaction.editReply({
-            content: `已建立臨時語音 ${channel}，但 Bot 無法移動你，請自行加入。`,
-            ...(panel || {})
-          });
-          return;
+          console.error('移動使用者到臨時語音失敗:', error);
         }
       }
 
       const panel = buildTempVoiceControlPayload(channel);
       await interaction.editReply({
-        content: `已建立臨時語音 ${channel}，你目前不在語音中，請自行加入。`,
+        content: moved
+          ? `已建立臨時語音房 ${channel}，並已將你移入。`
+          : `已建立臨時語音房 ${channel}。你目前不在語音中，請自行加入。`,
         ...(panel || {})
       });
     } catch (error) {
-      console.error('建立臨時語音失敗：', error);
-      await interaction.editReply('建立臨時語音失敗。請確認遊戲分類存在，且 Bot 具有 ManageChannels、MoveMembers 權限。');
+      console.error('建立臨時語音房失敗:', error);
+      await interaction.editReply(`建立臨時語音房失敗：${error.message}`);
     }
   }
 };

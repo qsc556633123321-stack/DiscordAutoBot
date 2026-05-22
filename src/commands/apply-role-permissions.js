@@ -14,12 +14,12 @@ const {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('apply-role-permissions')
-    .setDescription('預覽或套用身分組與頻道分類可見性')
+    .setDescription('預覽或套用身分組與頻道可見性權限')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
     .addStringOption((option) =>
       option
         .setName('mode')
-        .setDescription('preview 只預覽；execute 需要按鈕確認')
+        .setDescription('preview 只預覽，execute 需要按鈕確認才會套用')
         .setRequired(true)
         .addChoices(
           { name: 'preview', value: 'preview' },
@@ -29,7 +29,7 @@ module.exports = {
 
   async execute(interaction) {
     if (!interaction.guild) {
-      await interaction.reply({ content: '這個指令只能在伺服器中使用。', ephemeral: true });
+      await interaction.reply({ content: '這個指令只能在伺服器內使用。', ephemeral: true });
       return;
     }
 

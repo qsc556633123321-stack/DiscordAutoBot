@@ -9,11 +9,12 @@ const {
   GatewayIntentBits,
   Partials
 } = require('discord.js');
+const { cleanupMissingTempVoices } = require('./systems/tempVoice');
 
 const { DISCORD_TOKEN } = process.env;
 
 if (!DISCORD_TOKEN) {
-  console.error('請先在 .env 設定 DISCORD_TOKEN。');
+  console.error('請在 .env 設定 DISCORD_TOKEN。');
   process.exit(1);
 }
 
@@ -57,8 +58,13 @@ if (fs.existsSync(eventsPath)) {
   }
 }
 
-client.once(Events.ClientReady, () => {
-  console.log(`Discord Server Architect Bot 已登入：${client.user.tag}`);
+client.once(Events.ClientReady, async () => {
+  console.log(`Discord Server Architect Bot 已上線：${client.user.tag}`);
+  try {
+    await cleanupMissingTempVoices(client);
+  } catch (error) {
+    console.error('Temp Voice startup cleanup failed:', error);
+  }
 });
 
 client.login(DISCORD_TOKEN);

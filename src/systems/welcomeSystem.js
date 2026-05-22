@@ -8,10 +8,12 @@ const {
   EmbedBuilder,
   PermissionFlagsBits
 } = require('discord.js');
+const { writeServerLog } = require('./serverLogs');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SETTINGS_FILE = path.join(DATA_DIR, 'welcome-settings.json');
 const remindedMembers = new Map();
+const recentWelcomes = new Map();
 
 const DEFAULT_SETTINGS = {
   enabled: true,
@@ -93,43 +95,40 @@ function findRulesChannel(guild) {
   ));
 }
 
-function findLogChannel(guild) {
-  return guild.channels.cache.find((channel) => (
-    channel.type === ChannelType.GuildText &&
-    /server-logs|logs|紀錄/i.test(channel.name)
-  ));
-}
-
 async function logWelcomeIssue(guild, text) {
-  try {
-    const channel = findLogChannel(guild);
-    if (channel) await channel.send({ content: `WelcomeSystem：${text}` });
-  } catch (error) {
-    console.error('WelcomeSystem log failed:', error);
-  }
+  await writeServerLog(guild, {
+    title: '👋 Welcome System 提醒',
+    description: text,
+    color: 0xf2c94c
+  });
 }
 
 function buildWelcomeComponents(guild, welcomeChannel, rulesChannel) {
   const row = new ActionRowBuilder().addComponents(
     new ButtonBuilder()
       .setCustomId('panel_show_rules')
-      .setLabel('📜 查看規則')
+      .setLabel('查看規則')
+      .setEmoji('📜')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId('panel_open_roles')
-      .setLabel('🎭 領取身分組')
+      .setLabel('領取身分組')
+      .setEmoji('🎭')
       .setStyle(ButtonStyle.Primary),
     new ButtonBuilder()
       .setCustomId('panel_show_guide')
-      .setLabel('🧭 伺服器導覽')
+      .setLabel('伺服器導覽')
+      .setEmoji('🧭')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId('panel_create_ticket')
-      .setLabel('🎫 需要協助')
+      .setLabel('需要協助')
+      .setEmoji('🎫')
       .setStyle(ButtonStyle.Secondary),
     new ButtonBuilder()
       .setCustomId('panel_intro_format')
-      .setLabel('📝 自我介紹格式')
+      .setLabel('自介格式')
+      .setEmoji('📝')
       .setStyle(ButtonStyle.Secondary)
   );
 
@@ -250,9 +249,18 @@ function scheduleRoleReminder(member, welcomeChannel, settings) {
   }, settings.reminderMinutes * 60 * 1000);
 }
 
+function shouldSkipDuplicateWelcome(member) {
+  const key = `${member.guild.id}:${member.id}`;
+  if (recentWelcomes.has(key)) return true;
+  recentWelcomes.set(key, Date.now());
+  setTimeout(() => recentWelcomes.delete(key), 10 * 60 * 1000);
+  return false;
+}
+
 async function handleGuildMemberAdd(member) {
   const settings = getWelcomeSettings(member.guild.id);
   if (!settings.enabled || member.user.bot) return;
+  if (shouldSkipDuplicateWelcome(member)) return;
 
   const welcomeChannel = findWelcomeChannel(member.guild);
   const rulesChannel = findRulesChannel(member.guild);

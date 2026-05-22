@@ -5,12 +5,12 @@ const { findRoleChannel, setupSelfAssignableRoles } = require('../systems/roleMa
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('setup-roles')
-    .setDescription('建立自助身分組並發送身分組領取面板')
+    .setDescription('建立自助領取身分組並發送身分組面板')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles),
 
   async execute(interaction) {
     if (!interaction.guild) {
-      await interaction.reply({ content: '這個指令只能在伺服器中使用。', ephemeral: true });
+      await interaction.reply({ content: '這個指令只能在伺服器內使用。', ephemeral: true });
       return;
     }
 
@@ -38,12 +38,13 @@ module.exports = {
       );
 
       await interaction.editReply(
-        `身分組設定完成。\n新建立：${result.created.length ? result.created.join('、') : '無'}\n` +
+        `身分組設定完成。\n` +
+        `新建立：${result.created.length ? result.created.join('、') : '無'}\n` +
         `已存在：${result.existing.length ? result.existing.join('、') : '無'}\n` +
-        `面板狀態：${panelResult.status}（${roleChannel}）。`
+        `面板狀態：${panelResult.status}，頻道：${roleChannel}`
       );
     } catch (error) {
-      console.error('設定身分組失敗：', error);
+      console.error('設定身分組失敗:', error);
       await interaction.editReply(`設定身分組失敗：${error.message}`);
     }
   }

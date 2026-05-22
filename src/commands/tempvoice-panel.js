@@ -16,11 +16,11 @@ function findOwnedTempVoice(guild, userId) {
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('tempvoice-panel')
-    .setDescription('重新取得自己的臨時語音房控制面板')
+    .setDescription('重新取得自己的臨時語音房控制台')
     .addChannelOption((option) =>
       option
         .setName('voice_channel')
-        .setDescription('管理員可指定要控制的臨時語音房')
+        .setDescription('管理員可指定臨時語音頻道')
         .addChannelTypes(ChannelType.GuildVoice)
         .setRequired(false)
     ),
@@ -35,7 +35,7 @@ module.exports = {
     let channel = selectedChannel || findOwnedTempVoice(interaction.guild, interaction.user.id);
 
     if (selectedChannel && !interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
-      await interaction.reply({ content: '只有管理員可以指定其他語音房取得控制面板。', ephemeral: true });
+      await interaction.reply({ content: '只有管理員可以指定其他語音房取得控制台。', ephemeral: true });
       return;
     }
 
@@ -44,7 +44,7 @@ module.exports = {
     }
 
     if (!channel || !isTempVoice(interaction.guild.id, channel.id)) {
-      await interaction.reply({ content: '找不到你的臨時語音房。', ephemeral: true });
+      await interaction.reply({ content: '找不到你擁有的臨時語音房。', ephemeral: true });
       return;
     }
 
@@ -53,18 +53,18 @@ module.exports = {
       record.ownerId !== interaction.user.id &&
       !interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)
     ) {
-      await interaction.reply({ content: '只有房主或管理員可以取得這個控制面板。', ephemeral: true });
+      await interaction.reply({ content: '只有房主或管理員可以取得這個控制台。', ephemeral: true });
       return;
     }
 
     const payload = buildTempVoiceControlPayload(channel);
     if (!payload) {
-      await interaction.reply({ content: '此語音房已不存在或不是 Bot 建立的臨時語音房。', ephemeral: true });
+      await interaction.reply({ content: '此語音房控制台已不存在或房間已結束。', ephemeral: true });
       return;
     }
 
     await interaction.reply({
-      content: `這是 ${channel} 的私有控制面板。`,
+      content: `這是 ${channel} 的私有控制台。`,
       ...payload,
       ephemeral: true
     });

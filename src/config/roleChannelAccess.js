@@ -2,6 +2,7 @@ module.exports = {
   publicCategories: [
     '📌｜社群入口',
     '💬｜公開大廳',
+    '💬｜日常交流',
     '🎫｜客服支援'
   ],
   publicChannels: [

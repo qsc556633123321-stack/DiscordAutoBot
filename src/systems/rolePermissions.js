@@ -1,6 +1,7 @@
 const { ChannelType, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const accessConfig = require('../config/roleChannelAccess');
 const { isTempVoice } = require('./tempVoice');
+const { writeServerLog } = require('./serverLogs');
 
 const pendingRolePermissionPlans = new Map();
 const ADMIN_BACKEND_CATEGORY = '🔒｜管理員後台';
@@ -41,7 +42,7 @@ function buildPermissionPlan(guild, requestedById) {
       warnings.push(`找不到身分組：${rule.roleName}`);
       continue;
     }
-    if (!canManageRole(botMember, role)) warnings.push(`Bot 角色順位低於：${rule.roleName}`);
+    if (!canManageRole(botMember, role)) warnings.push(`Bot 角色順位可能不足：${rule.roleName}`);
 
     for (const categoryName of rule.categories) {
       const category = findCategoryByName(guild, categoryName);
@@ -90,22 +91,6 @@ function buildPermissionPlan(guild, requestedById) {
   };
 }
 
-async function getOrCreateLogChannel(guild) {
-  let channel = guild.channels.cache.find(
-    (item) => item.type === ChannelType.GuildText && ['server-logs', '📑｜server-logs'].includes(item.name)
-  );
-  if (channel) return channel;
-
-  const adminCategory = findCategoryByName(guild, '🔒｜管理員後台');
-  channel = await guild.channels.create({
-    name: 'server-logs',
-    type: ChannelType.GuildText,
-    parent: adminCategory ? adminCategory.id : undefined,
-    reason: 'Role permission setup log channel'
-  });
-  return channel;
-}
-
 function buildAdminOverwrites(plan) {
   return plan.adminRoles.map((role) => ({
     id: role.id,
@@ -125,11 +110,11 @@ async function syncChildrenPermissions(guild, category) {
 
   for (const child of children) {
     if (child.name.startsWith('ticket-')) {
-      skipped.push(child.name);
+      skipped.push(`${child.name}：ticket 頻道不處理`);
       continue;
     }
     if (child.type === ChannelType.GuildVoice && isTempVoice(guild.id, child.id)) {
-      skipped.push(child.name);
+      skipped.push(`${child.name}：臨時語音不處理`);
       continue;
     }
     try {
@@ -153,15 +138,11 @@ async function applyPermissionPlan(guild, plan) {
   const everyone = guild.roles.everyone;
   const adminOverwrites = buildAdminOverwrites(plan);
 
-  const logChannel = await getOrCreateLogChannel(guild);
-  await logChannel.send({
-    embeds: [
-      new EmbedBuilder()
-        .setColor(0xf2c94c)
-        .setTitle('即將套用身分組頻道權限')
-        .setDescription(`分類數：${plan.managedCategories.length}\n警告：${plan.warnings.length}`)
-        .setTimestamp()
-    ]
+  await writeServerLog(guild, {
+    title: '🔐 開始套用身分組頻道權限',
+    description: `將處理 ${plan.managedCategories.length} 個分類。`,
+    color: 0xf2c94c,
+    fields: [{ name: '警告', value: plan.warnings.join('\n').slice(0, 1024) || '無' }]
   });
 
   const adminCategory = findCategoryByName(guild, plan.adminCategoryName || ADMIN_BACKEND_CATEGORY);
@@ -172,7 +153,11 @@ async function applyPermissionPlan(guild, plan) {
         SendMessages: true,
         ReadMessageHistory: true,
         ManageChannels: true
-      }, { reason: 'Ensure bot can keep managing admin backend' });
+      }, { reason: 'Ensure bot can manage admin backend' });
+
+      await adminCategory.permissionOverwrites.edit(everyone.id, {
+        ViewChannel: false
+      }, { reason: 'Hide admin backend from everyone' });
 
       for (const role of plan.adminRoles) {
         await adminCategory.permissionOverwrites.edit(role.id, {
@@ -182,10 +167,15 @@ async function applyPermissionPlan(guild, plan) {
           Connect: true
         }, { reason: 'Ensure admin roles can view admin backend' });
       }
-      summary.updatedCategories.push(`${adminCategory.name} (admin access ensured)`);
+      summary.updatedCategories.push(`${adminCategory.name} (管理區已隱藏)`);
+      const syncResult = await syncChildrenPermissions(guild, adminCategory);
+      summary.syncedChannels.push(...syncResult.synced);
+      summary.skipped.push(...syncResult.skipped);
     } catch (error) {
       summary.failed.push(`${adminCategory.name}：${error.message}`);
     }
+  } else {
+    summary.skipped.push('找不到管理員後台分類');
   }
 
   for (const categoryName of plan.managedCategories) {
@@ -195,10 +185,7 @@ async function applyPermissionPlan(guild, plan) {
       continue;
     }
 
-    if (categoryName === ADMIN_BACKEND_CATEGORY) {
-      summary.skipped.push('略過管理員後台權限，只保留原設定');
-      continue;
-    }
+    if (categoryName === ADMIN_BACKEND_CATEGORY) continue;
 
     const allowedRoleIds = plan.actions
       .filter((action) => action.type === 'role_category_access' && action.categoryName === categoryName)
@@ -245,26 +232,44 @@ async function applyPermissionPlan(guild, plan) {
       summary.syncedChannels.push(...syncResult.synced);
       summary.skipped.push(...syncResult.skipped);
     } catch (error) {
-      console.error(`套用分類權限 ${categoryName} 失敗：`, error);
+      console.error(`套用分類權限失敗 ${categoryName}:`, error);
       summary.failed.push(`${categoryName}：${error.message}`);
     }
   }
+
+  await writeServerLog(guild, {
+    title: '✅ 身分組頻道權限套用完成',
+    description: `已更新 ${summary.updatedCategories.length} 個分類，同步 ${summary.syncedChannels.length} 個子頻道。`,
+    color: summary.failed.length ? 0xf2c94c : 0x57f287,
+    fields: [
+      { name: '更新分類', value: summary.updatedCategories.join('\n').slice(0, 1024) || '無' },
+      { name: '略過', value: summary.skipped.join('\n').slice(0, 1024) || '無' },
+      { name: '失敗', value: summary.failed.join('\n').slice(0, 1024) || '無' }
+    ]
+  });
 
   return summary;
 }
 
 function buildRolePermissionEmbed(plan) {
   const ruleLines = accessConfig.roleAccess.map((rule) => (
-    `• ${rule.roleName} -> ${rule.categories.join('、')}`
+    `${rule.roleName} → ${rule.categories.join('、')}`
   ));
+
+  const actionLines = plan.actions.map((action) => {
+    if (action.type === 'public_category') return `公開：${action.categoryName}`;
+    return `${action.roleName} 可看：${action.categoryName}`;
+  });
 
   return new EmbedBuilder()
     .setColor(0x5865f2)
     .setTitle('身分組與頻道權限套用預覽')
-    .setDescription('preview 不會修改任何權限。execute 需要二次確認。')
+    .setDescription('preview 不會修改權限；execute 會顯示確認按鈕，確認後才套用。')
     .addFields(
-      { name: '公開分類', value: accessConfig.publicCategories.join('\n') || '無' },
-      { name: '身分組可見分類', value: ruleLines.join('\n').slice(0, 1024) || '無' },
+      { name: '@everyone 可看分類', value: accessConfig.publicCategories.join('\n') || '無' },
+      { name: '身分組解鎖分類', value: ruleLines.join('\n').slice(0, 1024) || '無' },
+      { name: '將更新的分類', value: actionLines.join('\n').slice(0, 1024) || '無' },
+      { name: '安全保護', value: '不處理 ticket- 頻道、不處理臨時語音、不刪除頻道、不改名頻道。' },
       { name: '警告', value: plan.warnings.join('\n').slice(0, 1024) || '無' }
     )
     .setTimestamp();

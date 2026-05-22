@@ -4,18 +4,18 @@ const { getTempVoiceSettings, updateTempVoiceSettings } = require('../systems/te
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('tempvoice-settings')
-    .setDescription('設定 Temp Voice 2.0 自動語音房功能')
+    .setDescription('設定 Temp Voice 2.0 臨時語音系統')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels)
     .addBooleanOption((option) =>
       option
         .setName('auto_transfer')
-        .setDescription('房主離開後是否自動轉移房主')
+        .setDescription('房主離開後自動轉移給房內成員')
         .setRequired(false)
     )
     .addIntegerOption((option) =>
       option
         .setName('auto_delete_seconds')
-        .setDescription('空房後幾秒自動刪除，預設 30')
+        .setDescription('空房幾秒後自動刪除，預設 30')
         .setMinValue(5)
         .setMaxValue(600)
         .setRequired(false)
@@ -23,24 +23,24 @@ module.exports = {
     .addBooleanOption((option) =>
       option
         .setName('create_control_panel')
-        .setDescription('建立語音房後是否發送控制台')
+        .setDescription('建立語音房後提供私有控制台')
         .setRequired(false)
     )
     .addBooleanOption((option) =>
       option
         .setName('create_activity_message')
-        .setDescription('建立語音房後是否發送活動提示')
+        .setDescription('建立語音房後發送公開活動通知')
         .setRequired(false)
     )
     .addStringOption((option) =>
       option
         .setName('cleanup_mode')
-        .setDescription('語音房結束後如何處理控制面板')
+        .setDescription('語音房結束後如何處理控制台')
         .setRequired(false)
         .addChoices(
-          { name: 'disable_panel', value: 'disable_panel' },
-          { name: 'delete_panel', value: 'delete_panel' },
-          { name: 'keep_panel', value: 'keep_panel' }
+          { name: 'disable_panel（推薦，按鈕失效）', value: 'disable_panel' },
+          { name: 'delete_panel（刪除控制台）', value: 'delete_panel' },
+          { name: 'keep_panel（保留不處理）', value: 'keep_panel' }
         )
     ),
 
@@ -51,7 +51,7 @@ module.exports = {
     }
 
     if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
-      await interaction.reply({ content: '你需要 ManageChannels 權限才能調整 Temp Voice 設定。', ephemeral: true });
+      await interaction.reply({ content: '你需要 ManageChannels 權限才能設定 Temp Voice。', ephemeral: true });
       return;
     }
 

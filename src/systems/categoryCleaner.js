@@ -5,8 +5,10 @@ const pendingCategoryCleanupPlans = new Map();
 const PROTECTED_CATEGORIES = new Set([
   '📌｜社群入口',
   '💬｜公開大廳',
+  '💬｜日常交流',
   '🎮｜聯盟戰棋',
   '🎮｜APEX',
+  '🎮｜特戰英豪',
   '🎮｜LOL',
   '🎮｜Minecraft',
   '🛠｜創作與開發',
@@ -122,7 +124,7 @@ async function executeCategoryCleanup(guild, plan) {
       await category.delete('Empty old category cleanup');
       deleted.push(item.categoryName);
     } catch (error) {
-      console.error(`清理空分類 ${item.categoryName} 失敗：`, error);
+      console.error(`清理空分類 ${item.categoryName} 失敗:`, error);
       failed.push(`${item.categoryName}：${error.message}`);
     }
   }
@@ -147,7 +149,7 @@ function buildCategoryCleanupEmbed(plan) {
   return new EmbedBuilder()
     .setColor(0x2f80ed)
     .setTitle('空分類清理預覽')
-    .setDescription('preview 不會修改伺服器；execute 需二次確認。')
+    .setDescription('preview 不會修改伺服器；execute 需要確認後才會處理。')
     .addFields({
       name: '分類檢查結果',
       value: (lines.join('\n') || '沒有分類').slice(0, 1024)

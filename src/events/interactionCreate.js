@@ -27,6 +27,7 @@ const { inferGameName } = require('../systems/channelPanels');
 const {
   findRoleChannel,
   getRoleOptions,
+  getUnlockedCategoriesForRoles,
   setupSelfAssignableRoles,
   updateMemberRoles
 } = require('../systems/roleManager');
@@ -60,6 +61,7 @@ const {
   executeRestoreActiveChannels,
   getRestoreActiveChannelsPlan
 } = require('../systems/activeChannelProtector');
+const { writeServerLog } = require('../systems/serverLogs');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -225,6 +227,12 @@ async function handleCreateTicket(interaction) {
     );
 
     await ticketChannel.send({ content: `${interaction.user}`, embeds: [welcomeEmbed], components: [row] });
+    await writeServerLog(interaction.guild, {
+      title: '🎫 Ticket 已建立',
+      description: `${interaction.user} 建立了 ${ticketChannel}。`,
+      color: 0x57f287,
+      fields: [{ name: 'Ticket', value: ticketChannel.name, inline: true }]
+    });
     await interaction.editReply(`Ticket 已建立：${ticketChannel}`);
   } catch (error) {
     console.error('建立 Ticket 失敗：', error);
@@ -302,6 +310,15 @@ async function handleConfirmClose(interaction) {
 
       await logChannel.send({ embeds: [logEmbed] });
     }
+    await writeServerLog(interaction.guild, {
+      title: '🎫 Ticket 已關閉',
+      description: `${interaction.user} 關閉了 ${interaction.channel.name}。`,
+      color: 0xeb5757,
+      fields: [
+        { name: '開單者', value: ownerId ? `<@${ownerId}>` : '未知', inline: true },
+        { name: '頻道', value: interaction.channel.name, inline: true }
+      ]
+    });
   } catch (error) {
     console.error('發送 Ticket 紀錄失敗：', error);
   }
@@ -477,6 +494,17 @@ async function handleConfirmAutoOrganize(interaction, planId) {
     skippedChannels.length ? `略過：\n${skippedChannels.map((item) => `• ${item}`).join('\n')}` : null,
     failedOperations.length ? `失敗：\n${failedOperations.map((item) => `• ${item}`).join('\n')}` : null
   ].filter(Boolean).join('\n\n');
+
+  await writeServerLog(interaction.guild, {
+    title: '🧭 Auto Organize 已執行',
+    description: `${interaction.user} 確認執行自動搬家。`,
+    color: failedOperations.length ? 0xf2c94c : 0x57f287,
+    fields: [
+      { name: '建立分類', value: createdCategories.join('\n').slice(0, 1024) || '無' },
+      { name: '搬移頻道', value: movedChannels.join('\n').slice(0, 1024) || '無' },
+      { name: '失敗', value: failedOperations.join('\n').slice(0, 1024) || '無' }
+    ]
+  });
 
   await interaction.editReply({
     content: `自動搬家完成摘要：\n\n${summary.slice(0, 1900)}`,
@@ -786,20 +814,24 @@ function getPrefixedId(customId, prefix) {
 async function handleRoleSelectMenuV2(interaction) {
   try {
     const result = await updateMemberRoles(interaction);
+    const unlockedCategories = result.unlockedCategories?.length
+      ? result.unlockedCategories
+      : getUnlockedCategoriesForRoles(interaction.values || []);
     const lines = [
       result.added.length ? `✅ 已加入：${result.added.join('、')}` : null,
       result.removed.length ? `❌ 已移除：${result.removed.join('、')}` : null,
+      unlockedCategories.length ? `🔓 已解鎖分類：${unlockedCategories.join('、')}` : '🔓 目前沒有選擇會解鎖新分類的身分組。',
       result.failed.length ? `⚠️ 未能更新：${result.failed.join('、')}` : null
     ].filter(Boolean);
 
     await interaction.reply({
-      content: `已更新你的身分組：\n${lines.join('\n') || '沒有變更。'}\n你的可見頻道會依身分組更新。`,
+      content: `已更新你的身分組。\n${lines.join('\n')}\n你的可見頻道會依身分組更新。`,
       ephemeral: true
     });
   } catch (error) {
     console.error('更新自助身分組失敗:', error);
     await interaction.reply({
-      content: `更新身分組失敗：${error.message}`,
+      content: `更新身分組失敗：${error.message}\n請確認 Bot 有 ManageRoles 權限，且 Bot 角色順位高於要管理的身分組。`,
       ephemeral: true
     });
   }
