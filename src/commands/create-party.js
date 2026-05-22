@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { createTemporaryVoice } = require('../systems/tempVoice');
+const { buildTempVoiceControlPayload, createTemporaryVoice } = require('../systems/tempVoice');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -63,16 +63,28 @@ module.exports = {
       if (interaction.member.voice.channel) {
         try {
           await interaction.member.voice.setChannel(channel, 'Move member to temporary party voice');
-          await interaction.editReply(`已建立臨時語音 ${channel}，並將你移動進去。`);
+          const panel = buildTempVoiceControlPayload(channel);
+          await interaction.editReply({
+            content: `已建立臨時語音 ${channel}，並將你移動進去。`,
+            ...(panel || {})
+          });
           return;
         } catch (error) {
           console.error('移動使用者到臨時語音失敗：', error);
-          await interaction.editReply(`已建立臨時語音 ${channel}，但 Bot 無法移動你，請自行加入。`);
+          const panel = buildTempVoiceControlPayload(channel);
+          await interaction.editReply({
+            content: `已建立臨時語音 ${channel}，但 Bot 無法移動你，請自行加入。`,
+            ...(panel || {})
+          });
           return;
         }
       }
 
-      await interaction.editReply(`已建立臨時語音 ${channel}，你目前不在語音中，請自行加入。`);
+      const panel = buildTempVoiceControlPayload(channel);
+      await interaction.editReply({
+        content: `已建立臨時語音 ${channel}，你目前不在語音中，請自行加入。`,
+        ...(panel || {})
+      });
     } catch (error) {
       console.error('建立臨時語音失敗：', error);
       await interaction.editReply('建立臨時語音失敗。請確認遊戲分類存在，且 Bot 具有 ManageChannels、MoveMembers 權限。');

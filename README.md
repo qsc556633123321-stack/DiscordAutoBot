@@ -390,6 +390,20 @@ AI 建議只會出現在 preview 裡，不會直接刪除或搬移頻道。`old_
 /tempvoice-settings auto_transfer:true auto_delete_seconds:30 create_control_panel:true create_activity_message:true
 ```
 
+控制台不會發到公開聊天。使用 `/create-party` 建立時會用 ephemeral 回覆控制台；加入 `➕｜建立XXX語音` 建立時會優先 DM 房主，DM 失敗才 fallback 到 `🔒｜語音控制台`。公開頻道只會出現短通知，並於 10 分鐘後自動刪除。
+
+重新取得控制台：
+
+```text
+/tempvoice-panel
+```
+
+管理員可指定語音房：
+
+```text
+/tempvoice-panel voice_channel: 🔊｜APEX-username
+```
+
 控制台按鈕：
 - `🔒 鎖房`：禁止 @everyone 連入，但保留目前房內成員
 - `🌐 公開`：恢復 @everyone Connect

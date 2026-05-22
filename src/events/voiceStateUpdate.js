@@ -5,6 +5,7 @@ const {
   getCreateVoiceGame,
   isTempVoice,
   scheduleTempVoiceDeletion,
+  sendOwnerControlPanel,
   transferOwnerIfNeeded
 } = require('../systems/tempVoice');
 
@@ -45,6 +46,11 @@ module.exports = {
         createCategoryIfMissing: true
       });
       await newState.member.voice.setChannel(tempChannel, 'Auto create party voice from join-to-create channel');
+      await sendOwnerControlPanel({
+        guild: newState.guild,
+        channel: tempChannel,
+        member: newState.member
+      });
     } catch (error) {
       console.error('加入建立語音入口時建立臨時語音失敗：', error);
     }
