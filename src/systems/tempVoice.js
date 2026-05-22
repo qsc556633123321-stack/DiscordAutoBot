@@ -19,6 +19,7 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
 const TEMP_VOICE_SETTINGS_FILE = path.join(DATA_DIR, 'tempvoice-settings.json');
 const CONTROL_CHANNEL_NAME = '🔒｜語音控制台';
+const CLOSING_STALE_MS = 2 * 60 * 1000;
 const pendingDeletes = new Map();
 
 const DEFAULT_SETTINGS = {
@@ -63,13 +64,15 @@ function writeTempVoice(data) {
 }
 
 function getTempVoiceRecord(guildId, channelId) {
-  return readTempVoice()[guildId]?.[channelId] || null;
+  const record = readTempVoice()[guildId]?.[channelId] || null;
+  if (!record) return null;
+  return { status: 'active', ...record };
 }
 
 function updateTempVoiceRecord(guildId, channelId, patch) {
   const data = readTempVoice();
   if (!data[guildId]?.[channelId]) return null;
-  data[guildId][channelId] = { ...data[guildId][channelId], ...patch };
+  data[guildId][channelId] = { status: 'active', ...data[guildId][channelId], ...patch };
   writeTempVoice(data);
   return data[guildId][channelId];
 }
@@ -78,6 +81,9 @@ function addTempVoice(guildId, channelId, metadata) {
   const data = readTempVoice();
   if (!data[guildId]) data[guildId] = {};
   data[guildId][channelId] = {
+    status: 'active',
+    closingStartedAt: null,
+    closingBy: null,
     ownerId: metadata.ownerId,
     controlOwnerId: metadata.controlOwnerId || metadata.ownerId,
     game: metadata.game,
@@ -109,6 +115,15 @@ function removeTempVoice(guildId, channelId) {
 
 function isTempVoice(guildId, channelId) {
   return Boolean(getTempVoiceRecord(guildId, channelId));
+}
+
+function isRoomActive(record) {
+  return record?.status === 'active';
+}
+
+function isClosingStale(record) {
+  if (record?.status !== 'closing' || !record.closingStartedAt) return false;
+  return Date.now() - new Date(record.closingStartedAt).getTime() > CLOSING_STALE_MS;
 }
 
 function readTempVoiceSettings() {
@@ -153,44 +168,14 @@ function findActivityChannel(guild) {
 function buildControlRows(channelId, disabled = false) {
   return [
     new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_lock_${channelId}`)
-        .setLabel('鎖房')
-        .setEmoji('🔒')
-        .setStyle(ButtonStyle.Secondary)
-        .setDisabled(disabled),
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_open_${channelId}`)
-        .setLabel('公開')
-        .setEmoji('🌐')
-        .setStyle(ButtonStyle.Secondary)
-        .setDisabled(disabled),
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_limit_${channelId}`)
-        .setLabel('人數限制')
-        .setEmoji('👥')
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(disabled)
+      new ButtonBuilder().setCustomId(`tempvoice_lock_${channelId}`).setLabel('鎖房').setEmoji('🔒').setStyle(ButtonStyle.Secondary).setDisabled(disabled),
+      new ButtonBuilder().setCustomId(`tempvoice_open_${channelId}`).setLabel('公開').setEmoji('🌐').setStyle(ButtonStyle.Secondary).setDisabled(disabled),
+      new ButtonBuilder().setCustomId(`tempvoice_limit_${channelId}`).setLabel('人數限制').setEmoji('👥').setStyle(ButtonStyle.Primary).setDisabled(disabled)
     ),
     new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_rename_${channelId}`)
-        .setLabel('改名')
-        .setEmoji('✏️')
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(disabled),
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_transfer_${channelId}`)
-        .setLabel('移交房主')
-        .setEmoji('👑')
-        .setStyle(ButtonStyle.Primary)
-        .setDisabled(disabled),
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_disband_${channelId}`)
-        .setLabel('解散房間')
-        .setEmoji('❌')
-        .setStyle(ButtonStyle.Danger)
-        .setDisabled(disabled)
+      new ButtonBuilder().setCustomId(`tempvoice_rename_${channelId}`).setLabel('改名').setEmoji('✏️').setStyle(ButtonStyle.Primary).setDisabled(disabled),
+      new ButtonBuilder().setCustomId(`tempvoice_transfer_${channelId}`).setLabel('移交房主').setEmoji('👑').setStyle(ButtonStyle.Primary).setDisabled(disabled),
+      new ButtonBuilder().setCustomId(`tempvoice_disband_${channelId}`).setLabel('解散房間').setEmoji('❌').setStyle(ButtonStyle.Danger).setDisabled(disabled)
     )
   ];
 }
@@ -255,25 +240,18 @@ function buildNoLongerOwnerEmbed(channel, oldOwnerId, newOwnerId) {
 
 function buildTempVoiceControlPayload(channel) {
   const record = getTempVoiceRecord(channel.guild.id, channel.id);
-  if (!record) return null;
-  return {
-    embeds: [buildControlEmbed(channel, record)],
-    components: buildControlRows(channel.id)
-  };
+  if (!record || record.status !== 'active') return null;
+  return { embeds: [buildControlEmbed(channel, record)], components: buildControlRows(channel.id) };
 }
 
 function buildNewOwnerControlPayload(channel) {
   const record = getTempVoiceRecord(channel.guild.id, channel.id);
-  if (!record) return null;
-  return {
-    embeds: [buildNewOwnerControlEmbed(channel, record)],
-    components: buildControlRows(channel.id)
-  };
+  if (!record || record.status !== 'active') return null;
+  return { embeds: [buildNewOwnerControlEmbed(channel, record)], components: buildControlRows(channel.id) };
 }
 
 async function fetchControlPanelMessage(guild, record) {
   if (!record.controlPanelChannelId || !record.controlPanelMessageId) return null;
-
   try {
     const channel = await guild.client.channels.fetch(record.controlPanelChannelId).catch(() => null);
     if (!channel?.messages) return null;
@@ -286,7 +264,6 @@ async function fetchControlPanelMessage(guild, record) {
 async function invalidatePreviousOwnerPanel(guild, channel, record, oldOwnerId, newOwnerId) {
   const message = await fetchControlPanelMessage(guild, record);
   if (!message) return false;
-
   try {
     await message.edit({
       embeds: [buildNoLongerOwnerEmbed(channel, oldOwnerId, newOwnerId)],
@@ -301,10 +278,8 @@ async function invalidatePreviousOwnerPanel(guild, channel, record, oldOwnerId, 
 async function cleanupControlPanel(guild, channelId, snapshot) {
   const record = getTempVoiceRecord(guild.id, channelId);
   if (!record) return;
-
   const settings = getTempVoiceSettings(guild.id);
   if (settings.cleanupMode === 'keep_panel') return;
-
   const message = await fetchControlPanelMessage(guild, record);
   if (!message) return;
 
@@ -313,29 +288,32 @@ async function cleanupControlPanel(guild, channelId, snapshot) {
       await message.delete().catch(() => null);
       return;
     }
-
     await message.edit({
       embeds: [buildEndedControlEmbed(snapshot)],
       components: buildControlRows(channelId, true)
     }).catch(() => null);
   } catch (error) {
-    // Control panels may live in DM channels; cleanup failure must not affect the main flow.
+    // DM/control-channel cleanup should not affect the main flow.
   }
+}
+
+function snapshotFromRecord(record, channelSnapshot = {}) {
+  return {
+    createdAt: record.createdAt,
+    endedAt: new Date().toISOString(),
+    ownerId: record.ownerId,
+    game: record.game,
+    roomName: channelSnapshot.name || record.roomName || record.voiceChannelName || `voice-${record.voiceChannelId}`
+  };
 }
 
 async function finalizeTempVoice(guild, channelId, channelSnapshot = {}) {
   const record = getTempVoiceRecord(guild.id, channelId);
   if (!record) return false;
-
-  const snapshot = {
-    createdAt: record.createdAt,
-    endedAt: new Date().toISOString(),
-    ownerId: record.ownerId,
-    game: record.game,
-    roomName: channelSnapshot.name || record.roomName || record.voiceChannelName || `voice-${channelId}`
-  };
+  const snapshot = snapshotFromRecord(record, channelSnapshot);
 
   updateTempVoiceRecord(guild.id, channelId, {
+    status: 'ended',
     endedAt: snapshot.endedAt,
     roomName: snapshot.roomName
   });
@@ -357,7 +335,6 @@ async function getOrCreateControlChannel(guild, member) {
   let channel = guild.channels.cache.find(
     (item) => item.type === ChannelType.GuildText && item.name === CONTROL_CHANNEL_NAME
   );
-
   if (!channel) {
     channel = await guild.channels.create({
       name: CONTROL_CHANNEL_NAME,
@@ -366,18 +343,12 @@ async function getOrCreateControlChannel(guild, member) {
         { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
         {
           id: guild.members.me.id,
-          allow: [
-            PermissionFlagsBits.ViewChannel,
-            PermissionFlagsBits.SendMessages,
-            PermissionFlagsBits.ReadMessageHistory,
-            PermissionFlagsBits.ManageChannels
-          ]
+          allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ReadMessageHistory, PermissionFlagsBits.ManageChannels]
         }
       ],
       reason: 'Temp voice private control panel fallback'
     });
   }
-
   if (member) {
     await channel.permissionOverwrites.edit(member.id, {
       ViewChannel: true,
@@ -385,17 +356,14 @@ async function getOrCreateControlChannel(guild, member) {
       ReadMessageHistory: true
     }, { reason: 'Allow temp voice owner to view control panel' }).catch(() => null);
   }
-
   return channel;
 }
 
 async function sendActivityMessage({ guild, channel, member, record }) {
   const settings = getTempVoiceSettings(guild.id);
   if (!settings.createActivityMessage) return;
-
   const targetChannel = findActivityChannel(guild);
   if (!targetChannel) return;
-
   try {
     const limitText = record.userLimit ? `${Math.max(channel.members.size, 1)}/${record.userLimit}` : `${Math.max(channel.members.size, 1)}/無限制`;
     const activityEmbed = new EmbedBuilder()
@@ -403,31 +371,25 @@ async function sendActivityMessage({ guild, channel, member, record }) {
       .setTitle('🎮 語音房已建立')
       .setDescription(`${member} 建立了 ${record.game} 語音房：${channel}\n目前人數：${limitText}\n想加入可以直接點語音房。`)
       .setTimestamp();
-
     const activityMessage = await targetChannel.send({ embeds: [activityEmbed] });
     updateTempVoiceRecord(guild.id, channel.id, {
       linkedTextChannelId: targetChannel.id,
       activityChannelId: targetChannel.id,
       activityMessageId: activityMessage.id
     });
-
-    setTimeout(() => {
-      activityMessage.delete().catch(() => null);
-    }, 10 * 60 * 1000);
+    setTimeout(() => activityMessage.delete().catch(() => null), 10 * 60 * 1000);
   } catch (error) {
     console.error('發送 temp voice 公開通知失敗:', error);
   }
 }
 
 async function sendControlPanelToMember({ guild, channel, member, interaction = null, transfer = false }) {
+  const record = getTempVoiceRecord(guild.id, channel.id);
   const settings = getTempVoiceSettings(guild.id);
-  if (!settings.createControlPanel) return null;
-
+  if (!settings.createControlPanel || !isRoomActive(record)) return null;
   const payload = transfer ? buildNewOwnerControlPayload(channel) : buildTempVoiceControlPayload(channel);
   if (!payload) return null;
-
   if (interaction) return payload;
-
   try {
     const dm = await member.send(payload);
     updateTempVoiceRecord(guild.id, channel.id, {
@@ -459,13 +421,8 @@ async function sendOwnerControlPanel({ guild, channel, member, interaction = nul
 }
 
 async function createTemporaryVoice({ guild, member, game, name, limit = 5, createCategoryIfMissing = false }) {
-  const category = createCategoryIfMissing
-    ? await findOrCreateGameCategory(guild, game)
-    : findGameCategory(guild, game);
-  if (!category) {
-    throw new Error(`找不到 🎮｜${game} 分類，請先使用 /setup-game 建立遊戲分區。`);
-  }
-
+  const category = createCategoryIfMissing ? await findOrCreateGameCategory(guild, game) : findGameCategory(guild, game);
+  if (!category) throw new Error(`找不到 🎮｜${game} 分類，請先使用 /setup-game 建立遊戲分區。`);
   const label = safeVoiceName(name || member.user.username) || member.user.id.slice(-6);
   const userLimit = Math.max(0, Math.min(Number(limit) || 5, 99));
   const channel = await guild.channels.create({
@@ -475,7 +432,6 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
     userLimit,
     reason: `Temporary party voice created by ${member.user.tag}`
   });
-
   addTempVoice(guild.id, channel.id, {
     game,
     ownerId: member.id,
@@ -484,7 +440,6 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
     voiceChannelName: channel.name,
     roomName: channel.name
   });
-
   const record = getTempVoiceRecord(guild.id, channel.id);
   await sendActivityMessage({ guild, channel, member, record });
   await writeServerLog(guild, {
@@ -496,22 +451,21 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
       { name: '人數限制', value: String(userLimit || '無限制'), inline: true }
     ]
   });
-
   return channel;
 }
 
 async function scheduleTempVoiceDeletion(channel) {
   if (!channel || channel.type !== ChannelType.GuildVoice) return;
-  if (!isTempVoice(channel.guild.id, channel.id)) return;
+  const record = getTempVoiceRecord(channel.guild.id, channel.id);
+  if (!isRoomActive(record)) return;
   if (pendingDeletes.has(channel.id)) return;
-
   const settings = getTempVoiceSettings(channel.guild.id);
   const timeout = setTimeout(async () => {
     pendingDeletes.delete(channel.id);
     try {
+      const freshRecord = getTempVoiceRecord(channel.guild.id, channel.id);
       const freshChannel = channel.guild.channels.cache.get(channel.id);
-      if (!freshChannel || freshChannel.members.size > 0) return;
-      if (!isTempVoice(channel.guild.id, channel.id)) return;
+      if (!freshChannel || freshChannel.members.size > 0 || !isRoomActive(freshRecord)) return;
       const snapshot = { name: freshChannel.name };
       await freshChannel.delete(`Temporary voice empty for ${settings.autoDeleteSeconds} seconds`);
       await finalizeTempVoice(channel.guild, channel.id, snapshot);
@@ -519,7 +473,6 @@ async function scheduleTempVoiceDeletion(channel) {
       console.error('刪除臨時語音房失敗:', error);
     }
   }, Math.max(5, settings.autoDeleteSeconds) * 1000);
-
   pendingDeletes.set(channel.id, timeout);
 }
 
@@ -531,21 +484,17 @@ function cancelPendingDeletion(channelId) {
 }
 
 function findNextOwner(channel, oldOwnerId) {
-  const candidates = [...channel.members.values()]
+  if (channel.guild.afkChannelId === channel.id) return null;
+  return [...channel.members.values()]
     .filter((member) => !member.user.bot)
     .filter((member) => member.id !== oldOwnerId)
-    .filter((member) => member.voice.channelId === channel.id)
-    .filter((member) => channel.guild.afkChannelId !== channel.id);
-
-  return candidates[0] || null;
+    .filter((member) => member.voice.channelId === channel.id)[0] || null;
 }
 
 async function transferTempVoiceOwner({ guild, channel, oldOwnerId, newOwner, interaction = null, reason = 'Temp voice owner transfer' }) {
   const record = getTempVoiceRecord(guild.id, channel.id);
-  if (!record || !newOwner || record.ownerId === newOwner.id) return null;
-
+  if (!isRoomActive(record) || !newOwner || record.ownerId === newOwner.id) return null;
   await invalidatePreviousOwnerPanel(guild, channel, record, oldOwnerId || record.ownerId, newOwner.id);
-
   const transferredAt = new Date().toISOString();
   const updatedRecord = updateTempVoiceRecord(guild.id, channel.id, {
     ownerId: newOwner.id,
@@ -553,19 +502,10 @@ async function transferTempVoiceOwner({ guild, channel, oldOwnerId, newOwner, in
     transferredAt,
     roomName: channel.name,
     voiceChannelName: channel.name,
-    // Clear old control message first; sendControlPanelToMember writes the new one.
     controlPanelChannelId: null,
     controlPanelMessageId: null
   });
-
-  const panel = await sendControlPanelToMember({
-    guild,
-    channel,
-    member: newOwner,
-    interaction,
-    transfer: true
-  });
-
+  const panel = await sendControlPanelToMember({ guild, channel, member: newOwner, interaction, transfer: true });
   await writeServerLog(guild, {
     title: '👑 Temp Voice 房主已轉移',
     description: `${channel} 的房主已轉移。`,
@@ -576,38 +516,21 @@ async function transferTempVoiceOwner({ guild, channel, oldOwnerId, newOwner, in
       { name: '房間', value: channel.name, inline: false }
     ]
   });
-
   return { record: updatedRecord, panel, transferredAt, reason };
 }
 
 async function transferOwnerIfNeeded(oldState) {
   const record = getTempVoiceRecord(oldState.guild.id, oldState.channelId);
-  if (!record || record.ownerId !== oldState.id) return null;
-
+  if (!isRoomActive(record) || record.ownerId !== oldState.id) return null;
   const settings = getTempVoiceSettings(oldState.guild.id);
   if (!settings.autoTransfer) return null;
-
   const channel = oldState.guild.channels.cache.get(oldState.channelId);
   if (!channel || channel.members.size === 0) return null;
-
   const nextOwner = findNextOwner(channel, oldState.id);
   if (!nextOwner) return null;
-
-  const result = await transferTempVoiceOwner({
-    guild: oldState.guild,
-    channel,
-    oldOwnerId: oldState.id,
-    newOwner: nextOwner,
-    reason: 'Auto transfer after owner left voice'
-  });
-
-  const textChannel = record.linkedTextChannelId
-    ? oldState.guild.channels.cache.get(record.linkedTextChannelId)
-    : findActivityChannel(oldState.guild);
-  if (textChannel?.isTextBased()) {
-    await textChannel.send(`👑 房主已自動轉移給 ${nextOwner}`).catch(() => null);
-  }
-
+  const result = await transferTempVoiceOwner({ guild: oldState.guild, channel, oldOwnerId: oldState.id, newOwner: nextOwner, reason: 'Auto transfer after owner left voice' });
+  const textChannel = record.linkedTextChannelId ? oldState.guild.channels.cache.get(record.linkedTextChannelId) : findActivityChannel(oldState.guild);
+  if (textChannel?.isTextBased()) await textChannel.send(`👑 房主已自動轉移給 ${nextOwner}`).catch(() => null);
   return result;
 }
 
@@ -628,29 +551,36 @@ function privateReplyPayload(interaction, payload) {
   return interaction.guild ? { ...payload, ephemeral: true } : payload;
 }
 
+async function replyRoomStatus(interaction, record) {
+  if (record?.status === 'closing') {
+    await interaction.reply(privateReplyPayload(interaction, { content: '此語音房正在解散中，請稍候。' }));
+    return true;
+  }
+  if (record?.status === 'ended') {
+    await interaction.reply(privateReplyPayload(interaction, { content: '此語音房已結束。' }));
+    return true;
+  }
+  return false;
+}
+
 async function assertTempVoiceControl(interaction, channelId) {
   const channel = getTempVoiceChannelFromInteraction(interaction, channelId);
   if (!channel) {
     await interaction.reply(privateReplyPayload(interaction, { content: '此語音房已結束。' }));
     return null;
   }
-
   const record = getTempVoiceRecord(channel.guild.id, channel.id);
-  const guildMember = interaction.guild
-    ? interaction.member
-    : await channel.guild.members.fetch(interaction.user.id).catch(() => null);
+  if (await replyRoomStatus(interaction, record)) return null;
+  const guildMember = interaction.guild ? interaction.member : await channel.guild.members.fetch(interaction.user.id).catch(() => null);
   const isAdmin = Boolean(guildMember?.permissions?.has(PermissionFlagsBits.ManageChannels));
-
   if (!record) {
     await interaction.reply(privateReplyPayload(interaction, { content: '此語音房已結束。' }));
     return null;
   }
-
   if (interaction.user.id !== record.ownerId && !isAdmin) {
     await interaction.reply(privateReplyPayload(interaction, { content: '你已不是此房間房主。' }));
     return null;
   }
-
   return { guild: channel.guild, channel, record };
 }
 
@@ -658,9 +588,51 @@ function getChannelIdFromCustomId(customId, prefix) {
   return customId.startsWith(prefix) ? customId.slice(prefix.length) : null;
 }
 
+async function beginDisbandRoom(interaction, context) {
+  const startedAt = new Date().toISOString();
+  updateTempVoiceRecord(context.guild.id, context.channel.id, {
+    status: 'closing',
+    closingBy: interaction.user.id,
+    closingStartedAt: startedAt
+  });
+  cancelPendingDeletion(context.channel.id);
+  await writeServerLog(context.guild, {
+    title: '🧹 Temp Voice 解散開始',
+    description: `${interaction.user} 開始解散 ${context.channel}。`,
+    color: 0xf2c94c,
+    fields: [
+      { name: '房間', value: context.channel.name, inline: true },
+      { name: '房主', value: `<@${context.record.ownerId}>`, inline: true }
+    ]
+  });
+}
+
+async function finishDisbandRoom(interaction, context, snapshot) {
+  updateTempVoiceRecord(context.guild.id, context.channel.id, {
+    status: 'ended',
+    endedAt: new Date().toISOString()
+  });
+  await cleanupControlPanel(context.guild, context.channel.id, {
+    createdAt: context.record.createdAt,
+    endedAt: new Date().toISOString(),
+    ownerId: context.record.ownerId,
+    game: context.record.game,
+    roomName: snapshot.name
+  });
+  removeTempVoice(context.guild.id, context.channel.id);
+  await writeServerLog(context.guild, {
+    title: '✅ Temp Voice 已解散',
+    description: `${snapshot.name} 已完成解散流程。`,
+    color: 0x57f287,
+    fields: [
+      { name: '解散者', value: `${interaction.user}`, inline: true },
+      { name: '房間', value: snapshot.name, inline: true }
+    ]
+  });
+}
+
 async function handleTempVoiceButton(interaction) {
   const id = interaction.customId;
-
   if (id.startsWith('tempvoice_lock_')) {
     const context = await assertTempVoiceControl(interaction, getChannelIdFromCustomId(id, 'tempvoice_lock_'));
     if (!context) return;
@@ -669,7 +641,6 @@ async function handleTempVoiceButton(interaction) {
     await interaction.reply(privateReplyPayload(interaction, { content: '🔒 房間已鎖定。' }));
     return;
   }
-
   if (id.startsWith('tempvoice_open_')) {
     const context = await assertTempVoiceControl(interaction, getChannelIdFromCustomId(id, 'tempvoice_open_'));
     if (!context) return;
@@ -678,100 +649,82 @@ async function handleTempVoiceButton(interaction) {
     await interaction.reply(privateReplyPayload(interaction, { content: '🌐 房間已公開。' }));
     return;
   }
-
   if (id.startsWith('tempvoice_limit_')) {
     const channelId = getChannelIdFromCustomId(id, 'tempvoice_limit_');
     const context = await assertTempVoiceControl(interaction, channelId);
     if (!context) return;
     const row = new ActionRowBuilder().addComponents(
-      new StringSelectMenuBuilder()
-        .setCustomId(`tempvoice_limit_select_${channelId}`)
-        .setPlaceholder('選擇人數限制')
-        .addOptions(
-          { label: '2 人', value: '2' },
-          { label: '3 人', value: '3' },
-          { label: '5 人', value: '5' },
-          { label: '8 人', value: '8' },
-          { label: '無限制', value: '0' }
-        )
+      new StringSelectMenuBuilder().setCustomId(`tempvoice_limit_select_${channelId}`).setPlaceholder('選擇人數限制').addOptions(
+        { label: '2 人', value: '2' },
+        { label: '3 人', value: '3' },
+        { label: '5 人', value: '5' },
+        { label: '8 人', value: '8' },
+        { label: '無限制', value: '0' }
+      )
     );
     await interaction.reply(privateReplyPayload(interaction, { content: '請選擇新的房間人數限制。', components: [row] }));
     return;
   }
-
   if (id.startsWith('tempvoice_rename_')) {
     const channelId = getChannelIdFromCustomId(id, 'tempvoice_rename_');
     const context = await assertTempVoiceControl(interaction, channelId);
     if (!context) return;
-    const modal = new ModalBuilder()
-      .setCustomId(`tempvoice_rename_modal_${channelId}`)
-      .setTitle('改名語音房');
-    const input = new TextInputBuilder()
-      .setCustomId('name')
-      .setLabel('新的房間名稱')
-      .setStyle(TextInputStyle.Short)
-      .setMaxLength(30)
-      .setRequired(true);
+    const modal = new ModalBuilder().setCustomId(`tempvoice_rename_modal_${channelId}`).setTitle('改名語音房');
+    const input = new TextInputBuilder().setCustomId('name').setLabel('新的房間名稱').setStyle(TextInputStyle.Short).setMaxLength(30).setRequired(true);
     modal.addComponents(new ActionRowBuilder().addComponents(input));
     await interaction.showModal(modal);
     return;
   }
-
   if (id.startsWith('tempvoice_transfer_')) {
     const channelId = getChannelIdFromCustomId(id, 'tempvoice_transfer_');
     const context = await assertTempVoiceControl(interaction, channelId);
     if (!context) return;
-    const members = [...context.channel.members.values()]
-      .filter((member) => !member.user.bot && member.id !== context.record.ownerId)
-      .slice(0, 25);
+    const members = [...context.channel.members.values()].filter((member) => !member.user.bot && member.id !== context.record.ownerId).slice(0, 25);
     if (!members.length) {
       await interaction.reply(privateReplyPayload(interaction, { content: '房內目前沒有可以移交的成員。' }));
       return;
     }
     const row = new ActionRowBuilder().addComponents(
-      new StringSelectMenuBuilder()
-        .setCustomId(`tempvoice_transfer_select_${channelId}`)
-        .setPlaceholder('選擇新房主')
-        .addOptions(members.map((member) => ({
-          label: member.displayName.slice(0, 100),
-          value: member.id
-        })))
+      new StringSelectMenuBuilder().setCustomId(`tempvoice_transfer_select_${channelId}`).setPlaceholder('選擇新房主').addOptions(
+        members.map((member) => ({ label: member.displayName.slice(0, 100), value: member.id }))
+      )
     );
     await interaction.reply(privateReplyPayload(interaction, { content: '請選擇要移交給誰。', components: [row] }));
     return;
   }
-
   if (id.startsWith('tempvoice_disband_cancel_')) {
     await interaction.reply(privateReplyPayload(interaction, { content: '已取消解散房間。' }));
     return;
   }
-
   if (id.startsWith('tempvoice_disband_confirm_')) {
-    const context = await assertTempVoiceControl(interaction, getChannelIdFromCustomId(id, 'tempvoice_disband_confirm_'));
+    const channelId = getChannelIdFromCustomId(id, 'tempvoice_disband_confirm_');
+    const context = await assertTempVoiceControl(interaction, channelId);
     if (!context) return;
+    await beginDisbandRoom(interaction, context);
     await interaction.reply(privateReplyPayload(interaction, { content: '正在解散房間...' }));
+    const snapshot = { name: context.channel.name };
     for (const member of context.channel.members.values()) {
       await member.voice.setChannel(null, 'Temp voice disbanded by owner').catch(() => null);
     }
-    const snapshot = { name: context.channel.name };
-    await context.channel.delete('Temp voice disbanded by owner');
-    await finalizeTempVoice(context.guild, context.channel.id, snapshot);
+    try {
+      await context.channel.delete('Temp voice disbanded by owner');
+    } catch (error) {
+      await writeServerLog(context.guild, {
+        title: '⚠️ Temp Voice 刪除頻道失敗',
+        description: `${snapshot.name} 已標記 ended，但刪除頻道失敗：${error.message}`,
+        color: 0xeb5757
+      });
+    }
+    await finishDisbandRoom(interaction, context, snapshot);
     return;
   }
-
   if (id.startsWith('tempvoice_disband_')) {
     const channelId = getChannelIdFromCustomId(id, 'tempvoice_disband_');
     const context = await assertTempVoiceControl(interaction, channelId);
     if (!context) return;
     const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_disband_confirm_${channelId}`)
-        .setLabel('確認解散')
-        .setStyle(ButtonStyle.Danger),
-      new ButtonBuilder()
-        .setCustomId(`tempvoice_disband_cancel_${channelId}`)
-        .setLabel('取消')
-        .setStyle(ButtonStyle.Secondary)
+      new ButtonBuilder().setCustomId(`tempvoice_disband_confirm_${channelId}`).setLabel('確認解散').setStyle(ButtonStyle.Danger),
+      new ButtonBuilder().setCustomId(`tempvoice_disband_cancel_${channelId}`).setLabel('取消').setStyle(ButtonStyle.Secondary)
     );
     await interaction.reply(privateReplyPayload(interaction, { content: `確定要解散 ${context.channel} 嗎？`, components: [row] }));
   }
@@ -788,7 +741,6 @@ async function handleTempVoiceSelect(interaction) {
     await interaction.reply(privateReplyPayload(interaction, { content: `👥 人數限制已更新為：${limit || '無限制'}` }));
     return true;
   }
-
   if (interaction.customId.startsWith('tempvoice_transfer_select_')) {
     const channelId = getChannelIdFromCustomId(interaction.customId, 'tempvoice_transfer_select_');
     const context = await assertTempVoiceControl(interaction, channelId);
@@ -799,18 +751,10 @@ async function handleTempVoiceSelect(interaction) {
       await interaction.reply(privateReplyPayload(interaction, { content: '找不到新房主，或對方已不在此語音房。' }));
       return true;
     }
-
-    await transferTempVoiceOwner({
-      guild: context.guild,
-      channel: context.channel,
-      oldOwnerId: context.record.ownerId,
-      newOwner: nextOwner,
-      reason: 'Manual temp voice owner transfer'
-    });
+    await transferTempVoiceOwner({ guild: context.guild, channel: context.channel, oldOwnerId: context.record.ownerId, newOwner: nextOwner, reason: 'Manual temp voice owner transfer' });
     await interaction.reply(privateReplyPayload(interaction, { content: `👑 已轉移房主給 ${nextOwner}，並已發送新的控制台。` }));
     return true;
   }
-
   return false;
 }
 
@@ -819,27 +763,36 @@ async function handleTempVoiceModal(interaction) {
   const channelId = getChannelIdFromCustomId(interaction.customId, 'tempvoice_rename_modal_');
   const context = await assertTempVoiceControl(interaction, channelId);
   if (!context) return true;
-
   const name = safeVoiceName(interaction.fields.getTextInputValue('name'));
   if (!name) {
     await interaction.reply(privateReplyPayload(interaction, { content: '房名不可為空，也不能包含 @everyone、@here 或 discord.gg。' }));
     return true;
   }
-
   const newName = `🔊｜${name}`;
   await context.channel.setName(newName, 'Temp voice renamed by owner');
-  updateTempVoiceRecord(context.guild.id, context.channel.id, {
-    roomName: newName,
-    voiceChannelName: newName
-  });
+  updateTempVoiceRecord(context.guild.id, context.channel.id, { roomName: newName, voiceChannelName: newName });
   await interaction.reply(privateReplyPayload(interaction, { content: `✏️ 房間已改名為：${newName}` }));
+  return true;
+}
+
+async function cleanupStaleClosingRoom(guild, channelId, record, channel = null) {
+  if (!isClosingStale(record)) return false;
+  const snapshot = snapshotFromRecord(record, { name: channel?.name });
+  updateTempVoiceRecord(guild.id, channelId, { status: 'ended', endedAt: snapshot.endedAt });
+  if (channel) await channel.delete('Stale closing temp voice cleanup').catch(() => null);
+  await cleanupControlPanel(guild, channelId, snapshot);
+  removeTempVoice(guild.id, channelId);
+  await writeServerLog(guild, {
+    title: '⚠️ Temp Voice 解散逾時清理',
+    description: `${snapshot.roomName} closing 超過 2 分鐘，已視為 ended 並清理。`,
+    color: 0xf2c94c
+  });
   return true;
 }
 
 async function cleanupMissingTempVoices(client) {
   const data = readTempVoice();
   let removed = 0;
-
   for (const [guildId, records] of Object.entries(data)) {
     const guild = client.guilds.cache.get(guildId) || await client.guilds.fetch(guildId).catch(() => null);
     if (!guild) {
@@ -847,9 +800,13 @@ async function cleanupMissingTempVoices(client) {
       removed += Object.keys(records || {}).length;
       continue;
     }
-
-    for (const [channelId, record] of Object.entries(records || {})) {
+    for (const [channelId, rawRecord] of Object.entries(records || {})) {
+      const record = { status: 'active', ...rawRecord };
       const channel = guild.channels.cache.get(channelId) || await guild.channels.fetch(channelId).catch(() => null);
+      if (await cleanupStaleClosingRoom(guild, channelId, record, channel)) {
+        removed += 1;
+        continue;
+      }
       if (!channel || channel.type !== ChannelType.GuildVoice) {
         await cleanupControlPanel(guild, channelId, {
           createdAt: record.createdAt,
@@ -862,19 +819,12 @@ async function cleanupMissingTempVoices(client) {
         removed += 1;
         continue;
       }
-
-      if (channel.members.size === 0) {
-        await scheduleTempVoiceDeletion(channel);
-      }
+      if (channel.members.size === 0 && record.status === 'active') await scheduleTempVoiceDeletion(channel);
     }
-
     if (Object.keys(records || {}).length === 0) delete data[guildId];
   }
-
   writeTempVoice(data);
-  if (removed > 0) {
-    console.log(`Temp Voice cleanup removed ${removed} stale record(s).`);
-  }
+  if (removed > 0) console.log(`Temp Voice cleanup removed ${removed} stale record(s).`);
   return removed;
 }
 

@@ -3,6 +3,7 @@ const {
   cancelPendingDeletion,
   createTemporaryVoice,
   getCreateVoiceGame,
+  getTempVoiceRecord,
   isTempVoice,
   scheduleTempVoiceDeletion,
   sendOwnerControlPanel,
@@ -15,18 +16,25 @@ module.exports = {
   async execute(oldState, newState) {
     if (oldState.channelId && isTempVoice(oldState.guild.id, oldState.channelId)) {
       const oldChannel = oldState.guild.channels.cache.get(oldState.channelId);
-      try {
-        await transferOwnerIfNeeded(oldState);
-      } catch (error) {
-        console.error('Temp Voice owner transfer failed:', error);
-      }
-      if (oldChannel && oldChannel.members.size === 0) {
-        await scheduleTempVoiceDeletion(oldChannel);
+      const oldRecord = getTempVoiceRecord(oldState.guild.id, oldState.channelId);
+
+      if (oldRecord?.status === 'active') {
+        try {
+          await transferOwnerIfNeeded(oldState);
+        } catch (error) {
+          console.error('Temp Voice owner transfer failed:', error);
+        }
+        if (oldChannel && oldChannel.members.size === 0) {
+          await scheduleTempVoiceDeletion(oldChannel);
+        }
       }
     }
 
     if (newState.channelId && isTempVoice(newState.guild.id, newState.channelId)) {
-      cancelPendingDeletion(newState.channelId);
+      const newRecord = getTempVoiceRecord(newState.guild.id, newState.channelId);
+      if (newRecord?.status === 'active') {
+        cancelPendingDeletion(newState.channelId);
+      }
     }
 
     const joinedChannel = newState.channel;
