@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
+const { handleLinkGuardMessage } = require('./linkGuard');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SETTINGS_FILE = path.join(DATA_DIR, 'automod-settings.json');
@@ -207,6 +208,9 @@ async function handleAutoModMessage(message) {
   if (!message.guild || !message.content) return false;
   const settings = getAutoModSettings(message.guild.id);
   if (isWhitelisted(message, settings)) return false;
+
+  const handledByLinkGuard = await handleLinkGuardMessage(message);
+  if (handledByLinkGuard) return true;
 
   const inviteCode = detectInvite(message.content);
   if (settings.newAccountEnabled && inviteCode && isNewAccount(message.member)) {

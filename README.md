@@ -101,6 +101,22 @@ OAuth Redirect: http://localhost:4000/auth/discord/callback
 
 AutoMod 會略過 Bot、管理員、白名單角色與 Ticket 頻道。
 
+### Link Guard
+
+- `/linkguard-settings`：設定惡意連結防護、Discord 邀請封鎖、短網址封鎖、新帳號 timeout 與連結洗版門檻。
+- `/linkguard-whitelist action:add type:domain value:example.com`：新增允許網域。
+- `/linkguard-whitelist action:remove type:domain value:example.com`：移除允許網域。
+- `/linkguard-whitelist action:list type:domain`：查看目前白名單。
+- `/linkguard-whitelist action:add type:invite value:invitecode`：允許指定 Discord 邀請碼。
+
+建議設定：
+
+```text
+/linkguard-settings enabled:true block_invites:true block_shorteners:true new_account_days:7 new_account_timeout_minutes:10 link_spam_limit:3
+```
+
+Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Login/Verify 仿冒網域；新帳號 7 天內發外部連結會刪除並 timeout。所有阻擋紀錄會寫入 `📑｜server-logs`。
+
 ## 建議初始化流程
 
 1. `npm run deploy` 重新部署 slash commands。
