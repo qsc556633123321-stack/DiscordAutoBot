@@ -4,7 +4,8 @@ const {
   createTemporaryVoice,
   getCreateVoiceGame,
   isTempVoice,
-  scheduleTempVoiceDeletion
+  scheduleTempVoiceDeletion,
+  transferOwnerIfNeeded
 } = require('../systems/tempVoice');
 
 module.exports = {
@@ -13,6 +14,7 @@ module.exports = {
   async execute(oldState, newState) {
     if (oldState.channelId && isTempVoice(oldState.guild.id, oldState.channelId)) {
       const oldChannel = oldState.guild.channels.cache.get(oldState.channelId);
+      await transferOwnerIfNeeded(oldState);
       if (oldChannel && oldChannel.members.size === 0) {
         await scheduleTempVoiceDeletion(oldChannel);
       }

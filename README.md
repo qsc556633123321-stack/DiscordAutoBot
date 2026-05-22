@@ -380,3 +380,22 @@ OPENAI_API_KEY=your_openai_api_key
 ```
 
 AI 建議只會出現在 preview 裡，不會直接刪除或搬移頻道。`old_channels: delete` 最多刪除 30 個舊頻道，且會避開正在執行指令的頻道、ticket- 頻道、臨時語音、Discord 系統頻道與建立語音觸發頻道。
+## Temp Voice 2.0
+
+加入 `➕｜建立XXX語音` 後，Bot 會建立 `🔊｜XXX-使用者名稱` 臨時語音房，並在 `src/data/temp-voice.json` 記錄房主、遊戲、建立時間、鎖房狀態、人數限制與控制台訊息。
+
+設定：
+
+```text
+/tempvoice-settings auto_transfer:true auto_delete_seconds:30 create_control_panel:true create_activity_message:true
+```
+
+控制台按鈕：
+- `🔒 鎖房`：禁止 @everyone 連入，但保留目前房內成員
+- `🌐 公開`：恢復 @everyone Connect
+- `👥 人數限制`：2 / 3 / 5 / 8 / 無限制
+- `✏️ 改名`：使用 Modal，會過濾 `@everyone`、`@here`、`discord.gg`
+- `👑 移交房主`：從目前房內成員選擇新房主
+- `❌ 解散房間`：確認後踢出成員、刪除語音房、清除紀錄
+
+只有房主與具備 `ManageChannels` 的管理員可以操作控制台。Bot 需要 `ManageChannels`、`MoveMembers`、`Connect`、`SendMessages`、`EmbedLinks` 權限。

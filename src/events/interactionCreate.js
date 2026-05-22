@@ -17,7 +17,12 @@ const {
   getDeepCleanupPlan
 } = require('../systems/deepCleanupPlanner');
 const { executeDeepCleanup } = require('../systems/deepCleanupExecutor');
-const { createTemporaryVoice } = require('../systems/tempVoice');
+const {
+  createTemporaryVoice,
+  handleTempVoiceButton,
+  handleTempVoiceModal,
+  handleTempVoiceSelect
+} = require('../systems/tempVoice');
 const { inferGameName } = require('../systems/channelPanels');
 const {
   findRoleChannel,
@@ -1261,6 +1266,13 @@ module.exports = {
   name: Events.InteractionCreate,
 
   async execute(interaction) {
+    if (interaction.isModalSubmit()) {
+      if (interaction.customId.startsWith('tempvoice_')) {
+        await handleTempVoiceModal(interaction);
+      }
+      return;
+    }
+
     if (interaction.isChatInputCommand()) {
       const command = interaction.client.commands.get(interaction.commandName);
       if (!command) return;
@@ -1285,6 +1297,11 @@ module.exports = {
     }
 
     if (interaction.isStringSelectMenu()) {
+      if (interaction.customId.startsWith('tempvoice_')) {
+        await handleTempVoiceSelect(interaction);
+        return;
+      }
+
       if (interaction.customId === 'role_select_menu') {
         await handleRoleSelectMenuV2(interaction);
       }
@@ -1292,6 +1309,11 @@ module.exports = {
     }
 
     if (!interaction.isButton()) return;
+
+    if (interaction.customId.startsWith('tempvoice_')) {
+      await handleTempVoiceButton(interaction);
+      return;
+    }
 
     if (interaction.customId.startsWith('panel_')) {
       await handlePanelButton(interaction);
