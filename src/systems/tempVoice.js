@@ -15,7 +15,7 @@ const {
 const { findGameCategory, findOrCreateGameCategory, getGameNameFromCreateVoice, isCreateVoiceChannel } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
-const { createOrUpdateLfgCard, endLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
+const { createOrUpdateLfgCard, deleteLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -23,6 +23,7 @@ const TEMP_VOICE_SETTINGS_FILE = path.join(DATA_DIR, 'tempvoice-settings.json');
 const CONTROL_CHANNEL_NAME = '🔒｜語音控制台';
 const CLOSING_STALE_MS = 2 * 60 * 1000;
 const pendingDeletes = new Map();
+const finalizingRooms = new Set();
 
 const DEFAULT_SETTINGS = {
   autoTransfer: true,
@@ -310,29 +311,37 @@ function snapshotFromRecord(record, channelSnapshot = {}) {
 }
 
 async function finalizeTempVoice(guild, channelId, channelSnapshot = {}) {
+  const finalizeKey = `${guild.id}:${channelId}`;
+  if (finalizingRooms.has(finalizeKey)) return false;
   const record = getTempVoiceRecord(guild.id, channelId);
   if (!record) return false;
+  if (record.status === 'ended') return false;
+  finalizingRooms.add(finalizeKey);
   const snapshot = snapshotFromRecord(record, channelSnapshot);
 
-  updateTempVoiceRecord(guild.id, channelId, {
-    status: 'ended',
-    endedAt: snapshot.endedAt,
-    roomName: snapshot.roomName
-  });
-  await cleanupControlPanel(guild, channelId, snapshot);
-  await endLfgCard(guild, channelId);
-  removeTempVoice(guild.id, channelId);
-  await writeServerLog(guild, {
-    title: '🔊 Temp Voice 已結束',
-    description: `房間 ${snapshot.roomName} 已清理。`,
-    color: 0x2f3136,
-    fields: [
-      { name: '房主', value: snapshot.ownerId ? `<@${snapshot.ownerId}>` : '未知', inline: true },
-      { name: '遊戲', value: snapshot.game || '未知', inline: true }
-    ]
-  });
-  scheduleVoiceHubUpdate(guild);
-  return true;
+  try {
+    updateTempVoiceRecord(guild.id, channelId, {
+      status: 'ended',
+      endedAt: snapshot.endedAt,
+      roomName: snapshot.roomName
+    });
+    await cleanupControlPanel(guild, channelId, snapshot);
+    removeTempVoice(guild.id, channelId);
+    scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
+    await deleteLfgCard(guild, channelId, snapshot);
+    await writeServerLog(guild, {
+      title: '🔊 Temp Voice 已結束',
+      description: `房間 ${snapshot.roomName} 已清理。`,
+      color: 0x2f3136,
+      fields: [
+        { name: '房主', value: snapshot.ownerId ? `<@${snapshot.ownerId}>` : '未知', inline: true },
+        { name: '遊戲', value: snapshot.game || '未知', inline: true }
+      ]
+    });
+    return true;
+  } finally {
+    finalizingRooms.delete(finalizeKey);
+  }
 }
 
 async function getOrCreateControlChannel(guild, member) {
@@ -628,7 +637,8 @@ async function finishDisbandRoom(interaction, context, snapshot) {
     roomName: snapshot.name
   });
   removeTempVoice(context.guild.id, context.channel.id);
-  await endLfgCard(context.guild, context.channel.id);
+  scheduleVoiceHubUpdate(context.guild, { delayMs: 1000 });
+  await deleteLfgCard(context.guild, context.channel.id, snapshot);
   await writeServerLog(context.guild, {
     title: '✅ Temp Voice 已解散',
     description: `${snapshot.name} 已完成解散流程。`,
@@ -638,7 +648,6 @@ async function finishDisbandRoom(interaction, context, snapshot) {
       { name: '房間', value: snapshot.name, inline: true }
     ]
   });
-  scheduleVoiceHubUpdate(context.guild);
 }
 
 async function handleTempVoiceButton(interaction) {
@@ -798,12 +807,13 @@ async function cleanupStaleClosingRoom(guild, channelId, record, channel = null)
   if (channel) await channel.delete('Stale closing temp voice cleanup').catch(() => null);
   await cleanupControlPanel(guild, channelId, snapshot);
   removeTempVoice(guild.id, channelId);
+  scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
+  await deleteLfgCard(guild, channelId, snapshot);
   await writeServerLog(guild, {
     title: '⚠️ Temp Voice 解散逾時清理',
     description: `${snapshot.roomName} closing 超過 2 分鐘，已視為 ended 並清理。`,
     color: 0xf2c94c
   });
-  scheduleVoiceHubUpdate(guild);
   return true;
 }
 
@@ -832,6 +842,8 @@ async function cleanupMissingTempVoices(client) {
           game: record.game,
           roomName: record.roomName || record.voiceChannelName || `voice-${channelId}`
         });
+        scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
+        await deleteLfgCard(guild, channelId);
         delete records[channelId];
         removed += 1;
         continue;
@@ -845,6 +857,16 @@ async function cleanupMissingTempVoices(client) {
   return removed;
 }
 
+async function handleTempVoiceChannelDelete(channel) {
+  if (!channel?.guild || channel.type !== ChannelType.GuildVoice) return false;
+  const record = getTempVoiceRecord(channel.guild.id, channel.id);
+  if (!record) return false;
+  if (record.status === 'closing' || record.status === 'ended') return false;
+  await finalizeTempVoice(channel.guild, channel.id, { name: channel.name });
+  scheduleVoiceHubUpdate(channel.guild, { delayMs: 1000 });
+  return true;
+}
+
 module.exports = {
   addTempVoice,
   buildTempVoiceControlPayload,
@@ -855,6 +877,7 @@ module.exports = {
   getTempVoiceRecord,
   getTempVoiceSettings,
   handleTempVoiceButton,
+  handleTempVoiceChannelDelete,
   handleTempVoiceModal,
   handleTempVoiceSelect,
   isTempVoice,

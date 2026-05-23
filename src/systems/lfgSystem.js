@@ -9,12 +9,18 @@ const {
   PermissionFlagsBits
 } = require('discord.js');
 const { getGameEmoji } = require('../utils/gameEmojis');
+const { writeServerLog } = require('./serverLogs');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
 const LFG_FILE = path.join(DATA_DIR, 'lfg-cards.json');
 const LFG_CHANNEL_NAME = '📢｜組隊招募';
 const updateTimers = new Map();
+const deletingCards = new Set();
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 function ensureFile(filePath, fallback = '{}') {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -117,25 +123,23 @@ function roomLimit(channel, record) {
   return channel.userLimit || record.userLimit || 0;
 }
 
-function buildLfgEmbed(channel, record, ended = false) {
+function buildLfgEmbed(channel, record) {
   const limit = roomLimit(channel, record);
   const count = channel?.members?.size ?? 0;
   const titleName = String(channel?.name || record.roomName || record.voiceChannelName || '語音房').replace(/^🔊｜/, '');
   const embed = new EmbedBuilder()
-    .setColor(ended ? 0xeb5757 : 0x57f287)
-    .setTitle(ended ? '🔴 此房間已結束' : `${getGameEmoji(record.game)} ${titleName}`)
+    .setColor(0x57f287)
+    .setTitle(`${getGameEmoji(record.game)} ${titleName}`)
     .setDescription(
-      ended
-        ? '這個組隊招募已結束。'
-        : [
-          `👑 房主：${record.ownerId ? `<@${record.ownerId}>` : '未知'}`,
-          `👥 ${count}/${limit || '無限制'}`,
-          record.locked ? '🔒 私人房' : '🔓 公開房'
-        ].join('\n')
+      [
+        `👑 房主：${record.ownerId ? `<@${record.ownerId}>` : '未知'}`,
+        `👥 ${count}/${limit || '無限制'}`,
+        record.locked ? '🔒 私人房' : '🔓 公開房'
+      ].join('\n')
     )
     .setTimestamp();
 
-  if (!ended && record.createdAt) {
+  if (record.createdAt) {
     embed.addFields({ name: '建立時間', value: `<t:${Math.floor(new Date(record.createdAt).getTime() / 1000)}:R>`, inline: true });
   }
 
@@ -157,7 +161,7 @@ async function createOrUpdateLfgCard(guild, voiceChannelId) {
   const record = readTempVoiceRecord(guild.id, voiceChannelId);
   const voiceChannel = guild.channels.cache.get(voiceChannelId) || await guild.channels.fetch(voiceChannelId).catch(() => null);
   if (!record || record.status !== 'active' || !voiceChannel || voiceChannel.type !== ChannelType.GuildVoice) {
-    await endLfgCard(guild, voiceChannelId);
+    await deleteLfgCard(guild, voiceChannelId);
     return null;
   }
 
@@ -184,31 +188,54 @@ async function createOrUpdateLfgCard(guild, voiceChannelId) {
   });
 }
 
-async function endLfgCard(guild, voiceChannelId) {
+async function deleteLfgCard(guild, voiceChannelId, snapshot = {}) {
+  const key = `${guild.id}:${voiceChannelId}`;
+  if (deletingCards.has(key)) return false;
+
   const card = getLfgCard(guild.id, voiceChannelId);
   if (!card) return false;
 
-  const record = readTempVoiceRecord(guild.id, voiceChannelId) || card;
-  const voiceChannel = guild.channels.cache.get(voiceChannelId);
-  const message = await fetchLfgMessage(guild, card);
-  if (message) {
-    await message.edit({
-      embeds: [buildLfgEmbed(voiceChannel, record, true)],
-      components: buildLfgRows(voiceChannelId, true)
-    }).catch(() => null);
-    setTimeout(() => message.delete().catch(() => null), 30 * 60 * 1000);
+  deletingCards.add(key);
+  if (updateTimers.has(key)) {
+    clearTimeout(updateTimers.get(key));
+    updateTimers.delete(key);
   }
 
-  removeLfgCard(guild.id, voiceChannelId);
-  return true;
+  const record = readTempVoiceRecord(guild.id, voiceChannelId) || card;
+  const voiceChannel = guild.channels.cache.get(voiceChannelId);
+  const roomName = snapshot.roomName || snapshot.name || voiceChannel?.name || record.roomName || record.voiceChannelName || voiceChannelId;
+
+  try {
+    const message = await fetchLfgMessage(guild, card);
+    if (message) {
+      await message.edit({ components: buildLfgRows(voiceChannelId, true) }).catch(() => null);
+      await wait(10000);
+      await message.delete().catch(() => null);
+    }
+
+    removeLfgCard(guild.id, voiceChannelId);
+    await writeServerLog(guild, {
+      title: '🗑️ 已刪除招募卡',
+      description: `🎮 房間已結束：${roomName}`,
+      fields: [
+        { name: '語音房 ID', value: voiceChannelId, inline: true },
+        { name: '遊戲', value: record.game || '未知', inline: true }
+      ]
+    }).catch(() => null);
+    return true;
+  } finally {
+    deletingCards.delete(key);
+  }
 }
 
 function scheduleLfgUpdate(guild, voiceChannelId, options = {}) {
   if (!guild || !voiceChannelId) return;
   const key = `${guild.id}:${voiceChannelId}`;
+  if (deletingCards.has(key)) return;
   if (updateTimers.has(key)) clearTimeout(updateTimers.get(key));
   updateTimers.set(key, setTimeout(async () => {
     updateTimers.delete(key);
+    if (deletingCards.has(key)) return;
     await createOrUpdateLfgCard(guild, voiceChannelId).catch((error) => console.error('LFG scheduled update failed:', error));
   }, options.delayMs ?? 1500));
 }
@@ -224,7 +251,7 @@ async function handleLfgButton(interaction) {
   const voiceChannel = interaction.guild.channels.cache.get(voiceChannelId) || await interaction.guild.channels.fetch(voiceChannelId).catch(() => null);
 
   if (!record || record.status !== 'active' || !voiceChannel || voiceChannel.type !== ChannelType.GuildVoice) {
-    await endLfgCard(interaction.guild, voiceChannelId);
+    deleteLfgCard(interaction.guild, voiceChannelId).catch((error) => console.error('LFG stale card cleanup failed:', error));
     await interaction.reply({ content: '⚠️ 此房間已不存在。', ephemeral: true });
     return true;
   }
@@ -291,7 +318,7 @@ async function restoreLfgCards(client) {
       const record = readTempVoiceRecord(guildId, voiceChannelId);
       const channel = guild.channels.cache.get(voiceChannelId) || await guild.channels.fetch(voiceChannelId).catch(() => null);
       if (!record || record.status !== 'active' || !channel) {
-        await endLfgCard(guild, voiceChannelId);
+        await deleteLfgCard(guild, voiceChannelId);
       } else {
         await createOrUpdateLfgCard(guild, voiceChannelId);
       }
@@ -301,7 +328,7 @@ async function restoreLfgCards(client) {
 
 module.exports = {
   createOrUpdateLfgCard,
-  endLfgCard,
+  deleteLfgCard,
   handleLfgButton,
   restoreLfgCards,
   scheduleLfgUpdate
