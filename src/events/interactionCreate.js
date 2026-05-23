@@ -25,6 +25,7 @@ const {
 } = require('../systems/tempVoice');
 const { inferGameName } = require('../systems/channelPanels');
 const {
+  executeGuestCleanup,
   findRoleChannel,
   getRoleOptions,
   getUnlockedCategoriesForRoles,
@@ -821,6 +822,8 @@ async function handleRoleSelectMenuV2(interaction) {
     const lines = [
       result.added.length ? `✅ 已加入：${result.added.join('、')}` : null,
       result.removed.length ? `❌ 已移除：${result.removed.join('、')}` : null,
+      result.guestRemoved ? '🧹 已移除訪客身分組' : null,
+      result.guestRestored ? '👤 已恢復訪客身分組' : null,
       unlockedCategories.length ? `🔓 已解鎖分類：${unlockedCategories.join('、')}` : '🔓 目前沒有選擇會解鎖新分類的身分組。',
       result.failed.length ? `⚠️ 未能更新：${result.failed.join('、')}` : null
     ].filter(Boolean);
@@ -836,6 +839,43 @@ async function handleRoleSelectMenuV2(interaction) {
       ephemeral: true
     });
   }
+}
+
+async function handleConfirmGuestCleanup(interaction, userId) {
+  if (interaction.user.id !== userId) {
+    await interaction.reply({ content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以確認這次清理。', ephemeral: true });
+    return;
+  }
+
+  if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageRoles)) {
+    await interaction.reply({ content: '你需要 ManageRoles 權限才能清理訪客身分組。', ephemeral: true });
+    return;
+  }
+
+  await interaction.deferUpdate();
+
+  try {
+    const result = await executeGuestCleanup(interaction.guild);
+    await interaction.editReply({
+      content:
+        `訪客身分組清理完成。\n\n` +
+        `已清理：${result.cleaned.length}\n` +
+        `未處理：${result.failed.length ? result.failed.join('、') : '無'}`,
+      components: []
+    });
+  } catch (error) {
+    console.error('confirm guest cleanup failed:', error);
+    await interaction.editReply({ content: `清理訪客身分組失敗：${error.message}`, components: [] });
+  }
+}
+
+async function handleCancelGuestCleanup(interaction, userId) {
+  if (interaction.user.id !== userId) {
+    await interaction.reply({ content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以取消這次清理。', ephemeral: true });
+    return;
+  }
+
+  await interaction.update({ content: '已取消清理訪客身分組，沒有修改任何成員。', components: [] });
 }
 
 async function handleCancelRebuild(interaction, planId) {
@@ -1383,6 +1423,18 @@ module.exports = {
 
     if (interaction.customId.startsWith('panel_')) {
       await handlePanelButton(interaction);
+      return;
+    }
+
+    const guestCleanupConfirmUserId = getPrefixedId(interaction.customId, 'guest_cleanup_confirm_');
+    if (guestCleanupConfirmUserId) {
+      await handleConfirmGuestCleanup(interaction, guestCleanupConfirmUserId);
+      return;
+    }
+
+    const guestCleanupCancelUserId = getPrefixedId(interaction.customId, 'guest_cleanup_cancel_');
+    if (guestCleanupCancelUserId) {
+      await handleCancelGuestCleanup(interaction, guestCleanupCancelUserId);
       return;
     }
 

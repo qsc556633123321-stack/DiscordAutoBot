@@ -42,9 +42,11 @@ Bot 建議權限：Manage Roles、Manage Channels、View Channels、Send Message
 ### 身分組權限
 
 - `/setup-roles`：建立自助領取身分組，重複執行不會重複建立。
+- `/role-settings`：設定領取正式身分組後是否移除「訪客」，以及取消所有正式身分組後是否恢復「訪客」。
+- `/cleanup-guest-roles mode:preview|execute`：批次清理已領正式身分組但仍保留「訪客」的既有成員。
 - `/apply-role-permissions mode:preview`：預覽身分組與分類可見性規則。
 - `/apply-role-permissions mode:execute`：二次確認後套用分類權限。
-- Panel 的「領取身分組」按鈕會直接開啟 Select Menu；選完後會提示已解鎖哪些分類。
+- Panel 的「領取身分組」按鈕會直接開啟 Select Menu；選完後會提示已解鎖哪些分類，並依設定自動移除「訪客」身分組。
 
 公開可見：社群入口、公開大廳、一般聊天、新人報到、規則、公告、客服支援。遊戲、投資、開發分類依身分組解鎖；管理員後台只給管理員、站長與 Bot。
 
