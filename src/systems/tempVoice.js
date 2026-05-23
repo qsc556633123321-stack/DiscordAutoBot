@@ -14,6 +14,7 @@ const {
 } = require('discord.js');
 const { findGameCategory, findOrCreateGameCategory, getGameNameFromCreateVoice, isCreateVoiceChannel } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
+const { scheduleVoiceHubUpdate } = require('./voiceHub');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -328,6 +329,7 @@ async function finalizeTempVoice(guild, channelId, channelSnapshot = {}) {
       { name: '遊戲', value: snapshot.game || '未知', inline: true }
     ]
   });
+  scheduleVoiceHubUpdate(guild);
   return true;
 }
 
@@ -451,6 +453,7 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
       { name: '人數限制', value: String(userLimit || '無限制'), inline: true }
     ]
   });
+  scheduleVoiceHubUpdate(guild);
   return channel;
 }
 
@@ -516,6 +519,7 @@ async function transferTempVoiceOwner({ guild, channel, oldOwnerId, newOwner, in
       { name: '房間', value: channel.name, inline: false }
     ]
   });
+  scheduleVoiceHubUpdate(guild);
   return { record: updatedRecord, panel, transferredAt, reason };
 }
 
@@ -629,6 +633,7 @@ async function finishDisbandRoom(interaction, context, snapshot) {
       { name: '房間', value: snapshot.name, inline: true }
     ]
   });
+  scheduleVoiceHubUpdate(context.guild);
 }
 
 async function handleTempVoiceButton(interaction) {
@@ -738,6 +743,7 @@ async function handleTempVoiceSelect(interaction) {
     const limit = Number(interaction.values[0]);
     await context.channel.setUserLimit(limit, 'Temp voice user limit changed');
     updateTempVoiceRecord(context.guild.id, context.channel.id, { userLimit: limit || 0 });
+    scheduleVoiceHubUpdate(context.guild);
     await interaction.reply(privateReplyPayload(interaction, { content: `👥 人數限制已更新為：${limit || '無限制'}` }));
     return true;
   }
@@ -771,6 +777,7 @@ async function handleTempVoiceModal(interaction) {
   const newName = `🔊｜${name}`;
   await context.channel.setName(newName, 'Temp voice renamed by owner');
   updateTempVoiceRecord(context.guild.id, context.channel.id, { roomName: newName, voiceChannelName: newName });
+  scheduleVoiceHubUpdate(context.guild);
   await interaction.reply(privateReplyPayload(interaction, { content: `✏️ 房間已改名為：${newName}` }));
   return true;
 }
@@ -787,6 +794,7 @@ async function cleanupStaleClosingRoom(guild, channelId, record, channel = null)
     description: `${snapshot.roomName} closing 超過 2 分鐘，已視為 ended 並清理。`,
     color: 0xf2c94c
   });
+  scheduleVoiceHubUpdate(guild);
   return true;
 }
 

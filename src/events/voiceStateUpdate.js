@@ -9,6 +9,7 @@ const {
   sendOwnerControlPanel,
   transferOwnerIfNeeded
 } = require('../systems/tempVoice');
+const { scheduleVoiceHubUpdate } = require('../systems/voiceHub');
 
 module.exports = {
   name: Events.VoiceStateUpdate,
@@ -24,6 +25,7 @@ module.exports = {
         } catch (error) {
           console.error('Temp Voice owner transfer failed:', error);
         }
+        scheduleVoiceHubUpdate(oldState.guild);
         if (oldChannel && oldChannel.members.size === 0) {
           await scheduleTempVoiceDeletion(oldChannel);
         }
@@ -34,6 +36,7 @@ module.exports = {
       const newRecord = getTempVoiceRecord(newState.guild.id, newState.channelId);
       if (newRecord?.status === 'active') {
         cancelPendingDeletion(newState.channelId);
+        scheduleVoiceHubUpdate(newState.guild);
       }
     }
 

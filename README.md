@@ -55,8 +55,11 @@ Bot 建議權限：Manage Roles、Manage Channels、View Channels、Send Message
 - `/create-party`：建立臨時組隊語音。
 - `/tempvoice-panel`：重新取得自己的臨時語音控制台。
 - `/tempvoice-settings`：設定房主轉移、空房刪除時間、控制台與結束清理模式。
+- `/setup-voicehub`：建立或指定 `🎮｜目前語音房`，固定顯示目前活躍臨時語音房。
 
 Temp Voice 2.0 會優先用 ephemeral 或 DM 提供房主控制台；DM 失敗才 fallback 到 `🔒｜語音控制台`。房間結束後控制台會依 `cleanup_mode` 失效、刪除或保留。
+
+Voice Hub 會固定編輯同一則訊息，不洗版；建立房間、刪除房間、房主轉移、人數變化、改名與人數限制變更時會自動 debounce 更新。
 
 ### 整理工具
 

@@ -10,6 +10,7 @@ const {
   Partials
 } = require('discord.js');
 const { cleanupMissingTempVoices } = require('./systems/tempVoice');
+const { restoreVoiceHubs } = require('./systems/voiceHub');
 
 const { DISCORD_TOKEN } = process.env;
 
@@ -62,6 +63,7 @@ client.once(Events.ClientReady, async () => {
   console.log(`Discord Server Architect Bot 已上線：${client.user.tag}`);
   try {
     await cleanupMissingTempVoices(client);
+    await restoreVoiceHubs(client);
   } catch (error) {
     console.error('Temp Voice startup cleanup failed:', error);
   }
