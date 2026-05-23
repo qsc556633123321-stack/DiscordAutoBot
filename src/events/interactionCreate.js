@@ -25,8 +25,10 @@ const {
 } = require('../systems/tempVoice');
 const { inferGameName } = require('../systems/channelPanels');
 const {
+  deleteGuestCleanupPlan,
   executeGuestCleanup,
   findRoleChannel,
+  getGuestCleanupPlan,
   getRoleOptions,
   getUnlockedCategoriesForRoles,
   setupSelfAssignableRoles,
@@ -841,8 +843,14 @@ async function handleRoleSelectMenuV2(interaction) {
   }
 }
 
-async function handleConfirmGuestCleanup(interaction, userId) {
-  if (interaction.user.id !== userId) {
+async function handleConfirmGuestCleanup(interaction, planId) {
+  const plan = getGuestCleanupPlan(planId);
+  if (!plan) {
+    await interaction.reply({ content: '這份訪客清理計畫已過期，請重新執行 `/cleanup-guest-roles mode:execute`。', ephemeral: true });
+    return;
+  }
+
+  if (interaction.user.id !== plan.requestedById) {
     await interaction.reply({ content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以確認這次清理。', ephemeral: true });
     return;
   }
@@ -855,26 +863,50 @@ async function handleConfirmGuestCleanup(interaction, userId) {
   await interaction.deferUpdate();
 
   try {
-    const result = await executeGuestCleanup(interaction.guild);
     await interaction.editReply({
-      content:
-        `訪客身分組清理完成。\n\n` +
-        `已清理：${result.cleaned.length}\n` +
-        `未處理：${result.failed.length ? result.failed.join('、') : '無'}`,
+      content: '🧹 正在清理訪客身分組...\n已完成：0/?',
       components: []
     });
+
+    const result = await executeGuestCleanup(interaction.guild, {
+      plan,
+      onProgress: async ({ completed, total }) => {
+        await interaction.editReply({
+          content: `🧹 正在清理訪客身分組...\n已完成：${completed}/${total}`,
+          components: []
+        }).catch(() => null);
+      }
+    });
+
+    await interaction.editReply({
+      content:
+        `✅ 清理完成\n` +
+        `成功：${result.cleaned.length}\n` +
+        `失敗：${result.failed.length}\n` +
+        `略過：${result.skipped.length}\n\n` +
+        `失敗原因：${result.failed.length ? result.failed.join('、') : '無'}`,
+      components: []
+    });
+    deleteGuestCleanupPlan(planId);
   } catch (error) {
     console.error('confirm guest cleanup failed:', error);
     await interaction.editReply({ content: `清理訪客身分組失敗：${error.message}`, components: [] });
   }
 }
 
-async function handleCancelGuestCleanup(interaction, userId) {
-  if (interaction.user.id !== userId) {
+async function handleCancelGuestCleanup(interaction, planId) {
+  const plan = getGuestCleanupPlan(planId);
+  if (!plan) {
+    await interaction.reply({ content: '這份訪客清理計畫已過期，不需要取消。', ephemeral: true });
+    return;
+  }
+
+  if (interaction.user.id !== plan.requestedById) {
     await interaction.reply({ content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以取消這次清理。', ephemeral: true });
     return;
   }
 
+  deleteGuestCleanupPlan(planId);
   await interaction.update({ content: '已取消清理訪客身分組，沒有修改任何成員。', components: [] });
 }
 

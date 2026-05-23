@@ -47,6 +47,8 @@ Bot 建議權限：Manage Roles、Manage Channels、View Channels、Send Message
 - `/apply-role-permissions mode:preview`：預覽身分組與分類可見性規則。
 - `/apply-role-permissions mode:execute`：二次確認後套用分類權限。
 - Panel 的「領取身分組」按鈕會直接開啟 Select Menu；選完後會提示已解鎖哪些分類，並依設定自動移除「訪客」身分組。
+- `/cleanup-guest-roles` 內建 Discord API rate limit protection：只 fetch 成員一次，角色移除會排隊逐筆執行，每次間隔約 1.2-1.8 秒，遇到 rate limit 會依 retry_after 重試一次。
+- 批次清理每次最多處理 200 位成員；若超過上限，剩餘成員會略過並可再次執行清理。
 
 公開可見：社群入口、公開大廳、一般聊天、新人報到、規則、公告、客服支援。遊戲、投資、開發分類依身分組解鎖；管理員後台只給管理員、站長與 Bot。
 

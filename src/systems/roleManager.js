@@ -7,6 +7,11 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const ROLE_SETTINGS_FILE = path.join(DATA_DIR, 'role-settings.json');
 
 const GUEST_ROLE_NAME = '訪客';
+const GUEST_CLEANUP_DELAY_MIN_MS = 1200;
+const GUEST_CLEANUP_DELAY_MAX_MS = 1800;
+const GUEST_CLEANUP_PROGRESS_INTERVAL = 5;
+const GUEST_CLEANUP_MAX_SAFE_MEMBERS = 200;
+const guestCleanupPlans = new Map();
 const DEFAULT_ROLE_SETTINGS = {
   removeGuestOnVerified: true,
   restoreGuestIfNoRoles: false
@@ -132,6 +137,65 @@ function isProtectedRole(role) {
     role.permissions.has(PermissionFlagsBits.ManageRoles);
 }
 
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function randomCleanupDelay() {
+  return GUEST_CLEANUP_DELAY_MIN_MS + Math.floor(Math.random() * (GUEST_CLEANUP_DELAY_MAX_MS - GUEST_CLEANUP_DELAY_MIN_MS + 1));
+}
+
+function getRetryAfterMs(error) {
+  const retryAfter = error?.retryAfter ?? error?.rawError?.retry_after ?? error?.data?.retry_after;
+  if (typeof retryAfter === 'number') return retryAfter > 100 ? retryAfter : retryAfter * 1000;
+  const message = String(error?.message || '');
+  const match = message.match(/retry(?:_| )after[:= ]+(\d+(?:\.\d+)?)/i);
+  return match ? Number(match[1]) * 1000 : 0;
+}
+
+function isRateLimitError(error) {
+  return error?.status === 429 ||
+    error?.code === 429 ||
+    /rate.?limit|too many requests/i.test(String(error?.message || ''));
+}
+
+async function removeRoleWithRetry(member, role, reason) {
+  try {
+    await member.roles.remove(role, reason);
+    return { ok: true, retried: false };
+  } catch (error) {
+    if (!isRateLimitError(error)) throw error;
+    const retryAfterMs = Math.max(getRetryAfterMs(error), GUEST_CLEANUP_DELAY_MAX_MS);
+    await wait(retryAfterMs);
+    await member.roles.remove(role, `${reason} retry after rate limit`);
+    return { ok: true, retried: true, retryAfterMs };
+  }
+}
+
+function memberHasAdminPower(member) {
+  return member.permissions.has(PermissionFlagsBits.Administrator) ||
+    member.permissions.has(PermissionFlagsBits.ManageGuild) ||
+    member.permissions.has(PermissionFlagsBits.ManageRoles);
+}
+
+function saveGuestCleanupPlan(plan) {
+  const id = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+  guestCleanupPlans.set(id, {
+    ...plan,
+    createdAt: new Date().toISOString()
+  });
+  setTimeout(() => guestCleanupPlans.delete(id), 15 * 60 * 1000);
+  return id;
+}
+
+function getGuestCleanupPlan(id) {
+  return guestCleanupPlans.get(id) || null;
+}
+
+function deleteGuestCleanupPlan(id) {
+  guestCleanupPlans.delete(id);
+}
+
 function getUnlockedCategoriesForRoles(roleNames) {
   const categories = new Set();
   for (const roleName of roleNames) {
@@ -242,51 +306,116 @@ async function buildGuestCleanupPlan(guild) {
       guestRole,
       formalRoles,
       candidates: [],
+      skipped: [],
       warnings: guestRole ? ['找不到正式身分組'] : ['找不到「訪客」身分組']
     };
   }
 
   const members = await guild.members.fetch();
   const formalRoleIds = new Set(formalRoles.map((role) => role.id));
-  const candidates = members
-    .filter((member) => member.roles.cache.has(guestRole.id) && member.roles.cache.some((role) => formalRoleIds.has(role.id)))
-    .map((member) => ({
+  const candidates = [];
+  const skipped = [];
+
+  for (const member of members.values()) {
+    if (!member.roles.cache.has(guestRole.id)) continue;
+    const matchedFormalRoles = member.roles.cache
+      .filter((role) => formalRoleIds.has(role.id))
+      .map((role) => role.name);
+    if (!matchedFormalRoles.length) continue;
+
+    if (member.user.bot) {
+      skipped.push({ id: member.id, displayName: member.displayName, reason: 'Bot 成員' });
+      continue;
+    }
+    if (member.id === guild.ownerId) {
+      skipped.push({ id: member.id, displayName: member.displayName, reason: '伺服器擁有者' });
+      continue;
+    }
+    if (memberHasAdminPower(member)) {
+      skipped.push({ id: member.id, displayName: member.displayName, reason: '管理員或高權限成員' });
+      continue;
+    }
+
+    candidates.push({
       id: member.id,
       tag: member.user.tag,
       displayName: member.displayName,
-      formalRoles: member.roles.cache
-        .filter((role) => formalRoleIds.has(role.id))
-        .map((role) => role.name)
-    }));
+      formalRoles: matchedFormalRoles,
+      member
+    });
+  }
 
-  return { guestRole, formalRoles, candidates, warnings: [] };
+  return { guestRole, formalRoles, candidates, skipped, warnings: [] };
 }
 
-async function executeGuestCleanup(guild) {
+async function executeGuestCleanup(guild, options = {}) {
   const botMember = guild.members.me;
-  const plan = await buildGuestCleanupPlan(guild);
+  const plan = options.plan || await buildGuestCleanupPlan(guild);
   const cleaned = [];
   const failed = [...plan.warnings];
+  const skipped = [...(plan.skipped || [])];
 
-  if (!plan.guestRole) return { ...plan, cleaned, failed };
+  if (!plan.guestRole) return { ...plan, cleaned, failed, skipped };
   if (isProtectedRole(plan.guestRole)) {
     failed.push('「訪客」身分組含有高權限，已略過。');
-    return { ...plan, cleaned, failed };
+    return { ...plan, cleaned, failed, skipped };
   }
   if (!canManageRole(botMember, plan.guestRole)) {
     failed.push('Bot 角色順位不足，無法移除「訪客」身分組。');
-    return { ...plan, cleaned, failed };
+    return { ...plan, cleaned, failed, skipped };
   }
 
-  for (const candidate of plan.candidates) {
+  const candidates = plan.candidates.slice(0, GUEST_CLEANUP_MAX_SAFE_MEMBERS);
+  if (plan.candidates.length > GUEST_CLEANUP_MAX_SAFE_MEMBERS) {
+    skipped.push({
+      id: 'overflow',
+      displayName: '安全上限',
+      reason: `本次最多清理 ${GUEST_CLEANUP_MAX_SAFE_MEMBERS} 人，剩餘 ${plan.candidates.length - GUEST_CLEANUP_MAX_SAFE_MEMBERS} 人請再執行一次`
+    });
+  }
+
+  for (let index = 0; index < candidates.length; index += 1) {
+    const candidate = candidates[index];
     try {
-      const member = await guild.members.fetch(candidate.id);
+      const member = candidate.member;
+      if (!member || !member.roles.cache.has(plan.guestRole.id)) {
+        skipped.push({ id: candidate.id, displayName: candidate.displayName, reason: '已清理或成員不存在' });
+        continue;
+      }
+      if (member.user.bot || member.id === guild.ownerId || memberHasAdminPower(member)) {
+        skipped.push({ id: candidate.id, displayName: candidate.displayName, reason: '保護成員' });
+        continue;
+      }
+
       if (member.roles.cache.has(plan.guestRole.id)) {
-        await member.roles.remove(plan.guestRole, 'Cleanup guest role after formal role assignment');
+        if (index > 0) await wait(randomCleanupDelay());
+        await removeRoleWithRetry(member, plan.guestRole, 'Cleanup guest role after formal role assignment');
       }
       cleaned.push(candidate);
+
+      await writeServerLog(guild, {
+        title: '🧹 已清理訪客身分組',
+        description: `${member} 已移除「${plan.guestRole.name}」。`,
+        color: 0x57f287,
+        fields: [
+          { name: 'member', value: `${member.user.tag} (${member.id})`, inline: true },
+          { name: 'role removed', value: plan.guestRole.name, inline: true },
+          { name: 'timestamp', value: new Date().toISOString(), inline: false }
+        ]
+      });
     } catch (error) {
       failed.push(`${candidate.displayName}：${error.message}`);
+    }
+
+    const processed = index + 1;
+    if (typeof options.onProgress === 'function' && (processed % GUEST_CLEANUP_PROGRESS_INTERVAL === 0 || processed === candidates.length)) {
+      await options.onProgress({
+        completed: processed,
+        total: candidates.length,
+        cleaned: cleaned.length,
+        failed: failed.length,
+        skipped: skipped.length
+      });
     }
   }
 
@@ -297,26 +426,33 @@ async function executeGuestCleanup(guild) {
       color: failed.length ? 0xf2c94c : 0x57f287,
       fields: [
         { name: '已清理', value: cleaned.slice(0, 10).map((item) => item.displayName).join('\n') || '無', inline: true },
-        { name: '未處理', value: failed.join('\n').slice(0, 1024) || '無', inline: true }
+        { name: '失敗', value: failed.join('\n').slice(0, 1024) || '無', inline: true },
+        { name: '略過', value: skipped.slice(0, 10).map((item) => `${item.displayName}：${item.reason}`).join('\n').slice(0, 1024) || '無' }
       ]
     });
   }
 
-  return { ...plan, cleaned, failed };
+  return { ...plan, candidates, cleaned, failed, skipped };
 }
 
 module.exports = {
   DEFAULT_ROLE_SETTINGS,
   GUEST_ROLE_NAME,
+  GUEST_CLEANUP_DELAY_MAX_MS,
+  GUEST_CLEANUP_DELAY_MIN_MS,
+  GUEST_CLEANUP_MAX_SAFE_MEMBERS,
   SELF_ASSIGNABLE_ROLES,
   buildGuestCleanupPlan,
+  deleteGuestCleanupPlan,
   executeGuestCleanup,
   findGuestRole,
   findRoleChannel,
   getRoleOptions,
   getRoleSettings,
+  getGuestCleanupPlan,
   getUnlockedCategoriesForRoles,
   setupSelfAssignableRoles,
+  saveGuestCleanupPlan,
   updateMemberRoles,
   updateRoleSettings
 };
