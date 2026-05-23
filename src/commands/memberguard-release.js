@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const { releaseMember } = require('../systems/memberGuard');
+const { safeDeferReply, safeEditReply } = require('../utils/interactionReplies');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -14,25 +15,25 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    if (!interaction.guild) {
-      await interaction.reply({ content: '這個指令只能在伺服器內使用。', ephemeral: true });
-      return;
-    }
-    if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) {
-      await interaction.reply({ content: '你需要 ManageGuild 權限才能解除 Member Guard 限制。', ephemeral: true });
-      return;
-    }
-
-    await interaction.deferReply({ ephemeral: true });
+    await safeDeferReply(interaction, { ephemeral: true });
 
     try {
+      if (!interaction.guild) {
+        await safeEditReply(interaction, '這個指令只能在伺服器內使用。');
+        return;
+      }
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) {
+        await safeEditReply(interaction, '你需要 ManageGuild 權限才能解除 Member Guard 限制。');
+        return;
+      }
+
       const user = interaction.options.getUser('user', true);
       const member = await interaction.guild.members.fetch(user.id);
       await releaseMember(member);
-      await interaction.editReply(`已解除 ${member} 的訪客限制。`);
+      await safeEditReply(interaction, `已解除 ${member} 的訪客限制。`);
     } catch (error) {
       console.error('memberguard-release failed:', error);
-      await interaction.editReply(`解除限制失敗：${error.message}`);
+      await safeEditReply(interaction, '⚠️ 執行失敗，請查看 console logs。');
     }
   }
 };

@@ -67,6 +67,7 @@ const {
 } = require('../systems/activeChannelProtector');
 const { writeServerLog } = require('../systems/serverLogs');
 const { handleLfgButton } = require('../systems/lfgSystem');
+const { safeDeferUpdate, safeEditReply } = require('../utils/interactionReplies');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -851,26 +852,26 @@ async function handleRoleSelectMenuV2(interaction) {
 }
 
 async function handleConfirmGuestCleanup(interaction, planId) {
+  await safeDeferUpdate(interaction);
+
   const plan = getGuestCleanupPlan(planId);
   if (!plan) {
-    await interaction.reply({ content: '這份訪客清理計畫已過期，請重新執行 `/cleanup-guest-roles mode:execute`。', ephemeral: true });
+    await safeEditReply(interaction, { content: '這份訪客清理計畫已過期，請重新執行 `/cleanup-guest-roles mode:execute`。', components: [] });
     return;
   }
 
   if (interaction.user.id !== plan.requestedById) {
-    await interaction.reply({ content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以確認這次清理。', ephemeral: true });
+    await safeEditReply(interaction, { content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以確認這次清理。', components: [] });
     return;
   }
 
   if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageRoles)) {
-    await interaction.reply({ content: '你需要 ManageRoles 權限才能清理訪客身分組。', ephemeral: true });
+    await safeEditReply(interaction, { content: '你需要 ManageRoles 權限才能清理訪客身分組。', components: [] });
     return;
   }
 
-  await interaction.deferUpdate();
-
   try {
-    await interaction.editReply({
+    await safeEditReply(interaction, {
       content: '🧹 正在清理訪客身分組...\n已完成：0/?',
       components: []
     });
@@ -878,14 +879,14 @@ async function handleConfirmGuestCleanup(interaction, planId) {
     const result = await executeGuestCleanup(interaction.guild, {
       plan,
       onProgress: async ({ completed, total }) => {
-        await interaction.editReply({
+        await safeEditReply(interaction, {
           content: `🧹 正在清理訪客身分組...\n已完成：${completed}/${total}`,
           components: []
         }).catch(() => null);
       }
     });
 
-    await interaction.editReply({
+    await safeEditReply(interaction, {
       content:
         `✅ 清理完成\n` +
         `成功：${result.cleaned.length}\n` +
@@ -897,24 +898,26 @@ async function handleConfirmGuestCleanup(interaction, planId) {
     deleteGuestCleanupPlan(planId);
   } catch (error) {
     console.error('confirm guest cleanup failed:', error);
-    await interaction.editReply({ content: `清理訪客身分組失敗：${error.message}`, components: [] });
+    await safeEditReply(interaction, { content: '⚠️ 執行失敗，請查看 console logs。', components: [] });
   }
 }
 
 async function handleCancelGuestCleanup(interaction, planId) {
+  await safeDeferUpdate(interaction);
+
   const plan = getGuestCleanupPlan(planId);
   if (!plan) {
-    await interaction.reply({ content: '這份訪客清理計畫已過期，不需要取消。', ephemeral: true });
+    await safeEditReply(interaction, { content: '這份訪客清理計畫已過期，不需要取消。', components: [] });
     return;
   }
 
   if (interaction.user.id !== plan.requestedById) {
-    await interaction.reply({ content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以取消這次清理。', ephemeral: true });
+    await safeEditReply(interaction, { content: '只有原本執行 `/cleanup-guest-roles` 的管理員可以取消這次清理。', components: [] });
     return;
   }
 
   deleteGuestCleanupPlan(planId);
-  await interaction.update({ content: '已取消清理訪客身分組，沒有修改任何成員。', components: [] });
+  await safeEditReply(interaction, { content: '已取消清理訪客身分組，沒有修改任何成員。', components: [] });
 }
 
 async function handleCancelRebuild(interaction, planId) {

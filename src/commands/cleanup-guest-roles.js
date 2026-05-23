@@ -6,6 +6,7 @@ const {
   SlashCommandBuilder
 } = require('discord.js');
 const { buildGuestCleanupPlan, saveGuestCleanupPlan } = require('../systems/roleManager');
+const { safeDeferReply, safeEditReply } = require('../utils/interactionReplies');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -24,24 +25,24 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    if (!interaction.guild) {
-      await interaction.reply({ content: '這個指令只能在伺服器內使用。', ephemeral: true });
-      return;
-    }
-
-    if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageRoles)) {
-      await interaction.reply({ content: '你需要 ManageRoles 權限才能清理訪客身分組。', ephemeral: true });
-      return;
-    }
-
-    if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
-      await interaction.reply({ content: 'Bot 缺少 ManageRoles 權限，無法清理訪客身分組。', ephemeral: true });
-      return;
-    }
-
-    await interaction.deferReply({ ephemeral: true });
+    await safeDeferReply(interaction, { ephemeral: true });
 
     try {
+      if (!interaction.guild) {
+        await safeEditReply(interaction, '這個指令只能在伺服器內使用。');
+        return;
+      }
+
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageRoles)) {
+        await safeEditReply(interaction, '你需要 ManageRoles 權限才能清理訪客身分組。');
+        return;
+      }
+
+      if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
+        await safeEditReply(interaction, 'Bot 缺少 ManageRoles 權限，無法清理訪客身分組。');
+        return;
+      }
+
       const mode = interaction.options.getString('mode');
       const plan = await buildGuestCleanupPlan(interaction.guild);
       const preview = plan.candidates.slice(0, 15)
@@ -60,7 +61,7 @@ module.exports = {
         `略過預覽：\n${skippedPreview}`;
 
       if (mode === 'preview') {
-        await interaction.editReply(content);
+        await safeEditReply(interaction, content);
         return;
       }
 
@@ -80,13 +81,13 @@ module.exports = {
           .setStyle(ButtonStyle.Secondary)
       );
 
-      await interaction.editReply({
+      await safeEditReply(interaction, {
         content: `${content}\n\n按下「確認開始清理」後才會移除這些成員的「訪客」身分組。清理會自動排隊並避開 Discord API rate limit。`,
         components: [row]
       });
     } catch (error) {
       console.error('cleanup-guest-roles failed:', error);
-      await interaction.editReply(`產生訪客清理計畫失敗：${error.message}`);
+      await safeEditReply(interaction, '⚠️ 執行失敗，請查看 console logs。');
     }
   }
 };

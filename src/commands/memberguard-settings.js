@@ -1,5 +1,6 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const { applyGuestLockdownPermissions, getMemberGuardSettings, updateMemberGuardSettings } = require('../systems/memberGuard');
+const { safeDeferReply, safeEditReply } = require('../utils/interactionReplies');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,43 +18,49 @@ module.exports = {
     .addBooleanOption((option) => option.setName('safe_mode').setDescription('手動開關 safe mode')),
 
   async execute(interaction) {
-    if (!interaction.guild) {
-      await interaction.reply({ content: '這個指令只能在伺服器內使用。', ephemeral: true });
-      return;
-    }
-    if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) {
-      await interaction.reply({ content: '你需要 ManageGuild 權限才能設定 Member Guard。', ephemeral: true });
-      return;
-    }
+    await safeDeferReply(interaction, { ephemeral: true });
 
-    const map = {
-      enabled: 'enabled',
-      guest_lockdown: 'guestLockdown',
-      new_account_days: 'newAccountDays',
-      new_account_timeout_minutes: 'newAccountTimeoutMinutes',
-      block_everyone_mentions: 'blockEveryoneMentions',
-      block_role_mentions: 'blockRoleMentions',
-      join_burst_limit: 'joinBurstLimit',
-      join_burst_window_seconds: 'joinBurstWindowSeconds',
-      safe_mode: 'safeMode'
-    };
-    const patch = {};
-    for (const [optionName, key] of Object.entries(map)) {
-      const value = optionName.includes('days') || optionName.includes('minutes') || optionName.includes('limit') || optionName.includes('seconds')
-        ? interaction.options.getInteger(optionName)
-        : interaction.options.getBoolean(optionName);
-      if (value !== null) patch[key] = value;
-    }
+    try {
+      if (!interaction.guild) {
+        await safeEditReply(interaction, '這個指令只能在伺服器內使用。');
+        return;
+      }
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild)) {
+        await safeEditReply(interaction, '你需要 ManageGuild 權限才能設定 Member Guard。');
+        return;
+      }
 
-    const settings = Object.keys(patch).length
-      ? updateMemberGuardSettings(interaction.guild.id, patch)
-      : getMemberGuardSettings(interaction.guild.id);
-    const lockdownResult = settings.guestLockdown
-      ? await applyGuestLockdownPermissions(interaction.guild)
-      : null;
+      const map = {
+        enabled: 'enabled',
+        guest_lockdown: 'guestLockdown',
+        new_account_days: 'newAccountDays',
+        new_account_timeout_minutes: 'newAccountTimeoutMinutes',
+        block_everyone_mentions: 'blockEveryoneMentions',
+        block_role_mentions: 'blockRoleMentions',
+        join_burst_limit: 'joinBurstLimit',
+        join_burst_window_seconds: 'joinBurstWindowSeconds',
+        safe_mode: 'safeMode'
+      };
+      const patch = {};
+      for (const [optionName, key] of Object.entries(map)) {
+        const isInteger = optionName.includes('days') ||
+          optionName.includes('minutes') ||
+          optionName.includes('limit') ||
+          optionName.includes('seconds');
+        const value = isInteger
+          ? interaction.options.getInteger(optionName)
+          : interaction.options.getBoolean(optionName);
+        if (value !== null) patch[key] = value;
+      }
 
-    await interaction.reply({
-      content:
+      const settings = Object.keys(patch).length
+        ? updateMemberGuardSettings(interaction.guild.id, patch)
+        : getMemberGuardSettings(interaction.guild.id);
+      const lockdownResult = settings.guestLockdown
+        ? await applyGuestLockdownPermissions(interaction.guild)
+        : null;
+
+      await safeEditReply(interaction,
         `Member Guard 設定：\n` +
         `enabled：${settings.enabled}\n` +
         `guest_lockdown：${settings.guestLockdown}\n` +
@@ -64,8 +71,11 @@ module.exports = {
         `join_burst_limit：${settings.joinBurstLimit}\n` +
         `join_burst_window_seconds：${settings.joinBurstWindowSeconds}\n` +
         `safe_mode：${settings.safeMode}\n` +
-        `guest_lockdown_permissions：${lockdownResult ? `updated ${lockdownResult.updated}, skipped ${lockdownResult.skipped}${lockdownResult.warning ? `, ${lockdownResult.warning}` : ''}` : '未套用'}`,
-      ephemeral: true
-    });
+        `guest_lockdown_permissions：${lockdownResult ? `updated ${lockdownResult.updated}, skipped ${lockdownResult.skipped}${lockdownResult.warning ? `, ${lockdownResult.warning}` : ''}` : '未套用'}`
+      );
+    } catch (error) {
+      console.error('memberguard-settings failed:', error);
+      await safeEditReply(interaction, '⚠️ 執行失敗，請查看 console logs。');
+    }
   }
 };

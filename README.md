@@ -131,6 +131,7 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - `/memberguard-settings`：設定新人安全防護、訪客隔離、新帳號限制、mention guard、join burst 與 safe mode。
 - `/memberguard-status`：查看 Member Guard 啟用狀態、safe mode、最近加入人數與最近阻擋次數。
 - `/memberguard-release`：管理員手動解除某位成員的訪客限制。
+- Member Guard 相關指令與訪客批次清理都有 Discord interaction timeout protection：進入指令會先 `deferReply`，長操作與確認按鈕會用 `editReply` / `deferUpdate` 更新進度，避免「該申請未受回應」。
 
 建議公開招生前設定：
 
