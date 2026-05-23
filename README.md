@@ -76,10 +76,13 @@ LFG 招募卡會在 `📢｜組隊招募` 自動發送，其他成員可按「�
 - `/rebuild-server`：預覽並二次確認後重建模板。
 - `/factory-reset-server`：高風險工廠重置，必須 preview 與二次確認。
 - `/ai-reorganize-server`：AI 輔助重整計畫，AI 只建議，不直接刪除。
+- `/polish-server-design`：預覽或二次確認後統一社群分類、頻道名稱、身分組配色、hoist、排序與 Discord 原生功能提示。
 - `/cleanup-empty-categories`：預覽或確認清理空分類。
 - `/restore-active-channels`：把誤封存的有效頻道移回正確分類。
 
 保護規則：不刪 ticket- 頻道、不刪臨時語音、不刪執行指令頻道；美食分享、音樂分享、閒聊討論、一般聊天與 `apex-`、`tft-`、`lol-`、`mc-`、`特戰-` 開頭頻道視為有效頻道。
+
+`/polish-server-design` 的 `preview` 不會修改伺服器；`execute` 會先顯示確認按鈕。Discord 原生功能中 Membership Screening、Verification Level、Server Guide、Forum / Media Channel 多數需要在 Discord Server Settings 手動設定，Bot 會在 preview / 完成摘要列出建議清單。
 
 ### Dashboard
 

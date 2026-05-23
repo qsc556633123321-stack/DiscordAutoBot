@@ -68,6 +68,11 @@ const {
 const { writeServerLog } = require('../systems/serverLogs');
 const { handleLfgButton } = require('../systems/lfgSystem');
 const { safeDeferUpdate, safeEditReply } = require('../utils/interactionReplies');
+const {
+  deletePolishPlan,
+  executePolish,
+  getPolishPlan
+} = require('../systems/serverPolisher');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -91,6 +96,8 @@ const AI_REORGANIZE_CONFIRM_PREFIX = 'ai_reorganize_confirm_';
 const AI_REORGANIZE_CANCEL_PREFIX = 'ai_reorganize_cancel_';
 const RESTORE_ACTIVE_CONFIRM_PREFIX = 'restore_active_confirm_';
 const RESTORE_ACTIVE_CANCEL_PREFIX = 'restore_active_cancel_';
+const POLISH_CONFIRM_PREFIX = 'polish_confirm_';
+const POLISH_CANCEL_PREFIX = 'polish_cancel_';
 
 function safeTicketName(username, userId) {
   const safeName = username
@@ -920,6 +927,58 @@ async function handleCancelGuestCleanup(interaction, planId) {
   await safeEditReply(interaction, { content: '已取消清理訪客身分組，沒有修改任何成員。', components: [] });
 }
 
+async function handleConfirmPolish(interaction, planId) {
+  await safeDeferUpdate(interaction);
+  const plan = getPolishPlan(planId);
+  if (!plan) {
+    await safeEditReply(interaction, { content: '這份完善計畫已過期，請重新執行 `/polish-server-design`。', embeds: [], components: [] });
+    return;
+  }
+  if (interaction.user.id !== plan.requestedById) {
+    await safeEditReply(interaction, { content: '只有原本執行 `/polish-server-design` 的管理員可以確認。', embeds: [], components: [] });
+    return;
+  }
+  if (!interaction.memberPermissions?.has(PermissionFlagsBits.ManageGuild)) {
+    await safeEditReply(interaction, { content: '你需要 ManageGuild 權限才能執行完善。', embeds: [], components: [] });
+    return;
+  }
+
+  try {
+    await safeEditReply(interaction, { content: '✨ 正在完善社群結構，請稍候...', embeds: [], components: [] });
+    const summary = await executePolish(interaction.guild, plan);
+    deletePolishPlan(planId);
+    await safeEditReply(interaction, {
+      content:
+        `✨ 社群完善完成\n` +
+        `建立分類：${summary.createdCategories.length}\n` +
+        `建立頻道：${summary.createdChannels.length}\n` +
+        `移動頻道：${summary.movedChannels.length}\n` +
+        `重新命名：${summary.renamedChannels.length}\n` +
+        `建立身分組：${summary.createdRoles.length}\n` +
+        `更新身分組：${summary.updatedRoles.length}\n` +
+        `原生功能：${summary.nativeUpdates.join('、') || '無'}\n` +
+        `失敗：${summary.failed.length ? summary.failed.join('、').slice(0, 1500) : '無'}\n\n` +
+        `需要手動設定：\n${summary.manualNativeFeatureNotes.join('\n')}`,
+      embeds: [],
+      components: []
+    });
+  } catch (error) {
+    console.error('confirm polish failed:', error);
+    await safeEditReply(interaction, { content: '⚠️ 執行失敗，請查看 console logs。', embeds: [], components: [] });
+  }
+}
+
+async function handleCancelPolish(interaction, planId) {
+  await safeDeferUpdate(interaction);
+  const plan = getPolishPlan(planId);
+  if (plan && interaction.user.id !== plan.requestedById) {
+    await safeEditReply(interaction, { content: '只有原本執行 `/polish-server-design` 的管理員可以取消。', embeds: [], components: [] });
+    return;
+  }
+  deletePolishPlan(planId);
+  await safeEditReply(interaction, { content: '已取消社群完善，沒有修改任何設定。', embeds: [], components: [] });
+}
+
 async function handleCancelRebuild(interaction, planId) {
   const plan = getRebuildPlan(planId);
   if (!plan) {
@@ -1477,6 +1536,18 @@ module.exports = {
     const guestCleanupCancelUserId = getPrefixedId(interaction.customId, 'guest_cleanup_cancel_');
     if (guestCleanupCancelUserId) {
       await handleCancelGuestCleanup(interaction, guestCleanupCancelUserId);
+      return;
+    }
+
+    const polishConfirmPlanId = getPrefixedId(interaction.customId, POLISH_CONFIRM_PREFIX);
+    if (polishConfirmPlanId) {
+      await handleConfirmPolish(interaction, polishConfirmPlanId);
+      return;
+    }
+
+    const polishCancelPlanId = getPrefixedId(interaction.customId, POLISH_CANCEL_PREFIX);
+    if (polishCancelPlanId) {
+      await handleCancelPolish(interaction, polishCancelPlanId);
       return;
     }
 
