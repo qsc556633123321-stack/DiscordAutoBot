@@ -345,6 +345,24 @@ async function handleLinkGuardMessage(message) {
 
   const urls = extractUrls(message.content);
   if (!urls.length) return false;
+  let strictMode = false;
+  try {
+    const { shouldUseStrictLinkGuard } = require('./memberGuard');
+    strictMode = shouldUseStrictLinkGuard(message.member);
+  } catch (error) {
+    strictMode = false;
+  }
+
+  if (strictMode) {
+    const blockedUrl = urls.find((url) => getInviteCode(url) || !isAllowedDomain(url.hostname, settings));
+    if (blockedUrl) {
+      return applyLinkGuardAction(message, settings, {
+        reason: 'Member Guard 嚴格模式：訪客、新帳號或 safe_mode 期間只允許白名單網域',
+        domain: blockedUrl.hostname || blockedUrl.raw,
+        timeoutMinutes: settings.newAccountTimeoutMinutes
+      });
+    }
+  }
 
   if (settings.newAccountDays > 0 && isNewAccount(message.member, settings.newAccountDays) && urls.some(isExternalLink)) {
     return applyLinkGuardAction(message, settings, {

@@ -24,6 +24,7 @@ const {
   handleTempVoiceSelect
 } = require('../systems/tempVoice');
 const { inferGameName } = require('../systems/channelPanels');
+const { getRestrictionMessage, isMemberRestricted } = require('../systems/memberGuard');
 const {
   deleteGuestCleanupPlan,
   executeGuestCleanup,
@@ -619,6 +620,11 @@ async function handlePanelCreateVoice(interaction) {
     return;
   }
 
+  if (isMemberRestricted(interaction.member)) {
+    await interaction.reply({ content: getRestrictionMessage(), ephemeral: true });
+    return;
+  }
+
   if (
     !interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageChannels) ||
     !interaction.guild.members.me.permissions.has(PermissionFlagsBits.MoveMembers)
@@ -825,6 +831,7 @@ async function handleRoleSelectMenuV2(interaction) {
       result.added.length ? `✅ 已加入：${result.added.join('、')}` : null,
       result.removed.length ? `❌ 已移除：${result.removed.join('、')}` : null,
       result.guestRemoved ? '🧹 已移除訪客身分組' : null,
+      result.guestRemoved ? '✅ 已完成驗證' : null,
       result.guestRestored ? '👤 已恢復訪客身分組' : null,
       unlockedCategories.length ? `🔓 已解鎖分類：${unlockedCategories.join('、')}` : '🔓 目前沒有選擇會解鎖新分類的身分組。',
       result.failed.length ? `⚠️ 未能更新：${result.failed.join('、')}` : null

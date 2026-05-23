@@ -11,6 +11,7 @@ const {
 } = require('../systems/tempVoice');
 const { scheduleVoiceHubUpdate } = require('../systems/voiceHub');
 const { scheduleLfgUpdate } = require('../systems/lfgSystem');
+const { isMemberRestricted } = require('../systems/memberGuard');
 
 module.exports = {
   name: Events.VoiceStateUpdate,
@@ -46,6 +47,14 @@ module.exports = {
     const joinedChannel = newState.channel;
     const game = getCreateVoiceGame(joinedChannel);
     if (!game || !newState.member || newState.member.user.bot) return;
+    if (isMemberRestricted(newState.member)) {
+      try {
+        await newState.member.voice.setChannel(null, 'Member Guard blocks guest temp voice creation');
+      } catch (error) {
+        console.error('Member Guard 無法移出訪客語音觸發頻道:', error);
+      }
+      return;
+    }
 
     const botMember = newState.guild.members.me;
     if (

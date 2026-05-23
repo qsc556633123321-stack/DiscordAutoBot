@@ -9,6 +9,7 @@ const {
   PermissionFlagsBits
 } = require('discord.js');
 const { getGameEmoji } = require('../utils/gameEmojis');
+const { getRestrictionMessage, isMemberRestricted } = require('./memberGuard');
 const { writeServerLog } = require('./serverLogs');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -275,6 +276,11 @@ async function handleLfgButton(interaction) {
 
   if (record.locked) {
     await interaction.reply({ content: '⚠️ 此房間為私人房間。', ephemeral: true });
+    return true;
+  }
+
+  if (isMemberRestricted(interaction.member)) {
+    await interaction.reply({ content: getRestrictionMessage(), ephemeral: true });
     return true;
   }
 

@@ -126,6 +126,20 @@ AutoMod 會略過 Bot、管理員、白名單角色與 Ticket 頻道。
 
 Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Login/Verify 仿冒網域；新帳號 7 天內發外部連結會刪除並 timeout。所有阻擋紀錄會寫入 `📑｜server-logs`。
 
+### Member Guard
+
+- `/memberguard-settings`：設定新人安全防護、訪客隔離、新帳號限制、mention guard、join burst 與 safe mode。
+- `/memberguard-status`：查看 Member Guard 啟用狀態、safe mode、最近加入人數與最近阻擋次數。
+- `/memberguard-release`：管理員手動解除某位成員的訪客限制。
+
+建議公開招生前設定：
+
+```text
+/memberguard-settings enabled:true guest_lockdown:true new_account_days:7 new_account_timeout_minutes:10 block_everyone_mentions:true block_role_mentions:true join_burst_limit:10 join_burst_window_seconds:60 safe_mode:false
+```
+
+招生前安全檢查流程：先執行 `/setup-roles` 與 `/apply-role-permissions mode:execute`，再開啟 `/memberguard-settings`，確認訪客只能看到入口、規則、身分組領取、導覽與客服支援。safe mode 開啟時，訪客與新帳號不能發外部連結、不能開臨時語音、不能使用 LFG 加入按鈕，Link Guard 會進入嚴格模式。
+
 ## 建議初始化流程
 
 1. `npm run deploy` 重新部署 slash commands。
@@ -138,7 +152,8 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 8. `/setup-channel-panels mode:force target:all` 發送完整公告面板。
 9. `/tempvoice-settings` 檢查臨時語音設定。
 10. `/welcome-settings` 開啟新人歡迎與提醒。
-11. `/automod-settings` 開啟基礎防護。
+11. `/memberguard-settings enabled:true guest_lockdown:true new_account_days:7 new_account_timeout_minutes:10 block_everyone_mentions:true block_role_mentions:true join_burst_limit:10 join_burst_window_seconds:60 safe_mode:false` 開啟新人安全防護。
+12. `/automod-settings` 開啟基礎防護。
 
 ## 穩定性補強
 

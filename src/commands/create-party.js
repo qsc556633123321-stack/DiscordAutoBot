@@ -1,4 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
+const { getRestrictionMessage, isMemberRestricted } = require('../systems/memberGuard');
 const { buildTempVoiceControlPayload, createTemporaryVoice } = require('../systems/tempVoice');
 
 module.exports = {
@@ -35,6 +36,11 @@ module.exports = {
     }
 
     const botMember = interaction.guild.members.me;
+    if (isMemberRestricted(interaction.member)) {
+      await interaction.reply({ content: getRestrictionMessage(), ephemeral: true });
+      return;
+    }
+
     if (
       !botMember.permissions.has(PermissionFlagsBits.ManageChannels) ||
       !botMember.permissions.has(PermissionFlagsBits.MoveMembers)
