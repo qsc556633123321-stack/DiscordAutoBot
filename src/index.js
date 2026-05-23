@@ -11,6 +11,7 @@ const {
 } = require('discord.js');
 const { cleanupMissingTempVoices } = require('./systems/tempVoice');
 const { restoreVoiceHubs } = require('./systems/voiceHub');
+const { restoreLfgCards } = require('./systems/lfgSystem');
 
 const { DISCORD_TOKEN } = process.env;
 
@@ -64,6 +65,7 @@ client.once(Events.ClientReady, async () => {
   try {
     await cleanupMissingTempVoices(client);
     await restoreVoiceHubs(client);
+    await restoreLfgCards(client);
   } catch (error) {
     console.error('Temp Voice startup cleanup failed:', error);
   }

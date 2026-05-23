@@ -15,6 +15,7 @@ const {
 const { findGameCategory, findOrCreateGameCategory, getGameNameFromCreateVoice, isCreateVoiceChannel } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
+const { createOrUpdateLfgCard, endLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -319,6 +320,7 @@ async function finalizeTempVoice(guild, channelId, channelSnapshot = {}) {
     roomName: snapshot.roomName
   });
   await cleanupControlPanel(guild, channelId, snapshot);
+  await endLfgCard(guild, channelId);
   removeTempVoice(guild.id, channelId);
   await writeServerLog(guild, {
     title: '🔊 Temp Voice 已結束',
@@ -454,6 +456,7 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
     ]
   });
   scheduleVoiceHubUpdate(guild);
+  await createOrUpdateLfgCard(guild, channel.id).catch((error) => console.error('建立 LFG 招募卡失敗:', error));
   return channel;
 }
 
@@ -520,6 +523,7 @@ async function transferTempVoiceOwner({ guild, channel, oldOwnerId, newOwner, in
     ]
   });
   scheduleVoiceHubUpdate(guild);
+  scheduleLfgUpdate(guild, channel.id);
   return { record: updatedRecord, panel, transferredAt, reason };
 }
 
@@ -624,6 +628,7 @@ async function finishDisbandRoom(interaction, context, snapshot) {
     roomName: snapshot.name
   });
   removeTempVoice(context.guild.id, context.channel.id);
+  await endLfgCard(context.guild, context.channel.id);
   await writeServerLog(context.guild, {
     title: '✅ Temp Voice 已解散',
     description: `${snapshot.name} 已完成解散流程。`,
@@ -643,6 +648,7 @@ async function handleTempVoiceButton(interaction) {
     if (!context) return;
     await context.channel.permissionOverwrites.edit(context.guild.roles.everyone.id, { Connect: false }, { reason: 'Temp voice locked by owner' });
     updateTempVoiceRecord(context.guild.id, context.channel.id, { locked: true });
+    scheduleLfgUpdate(context.guild, context.channel.id);
     await interaction.reply(privateReplyPayload(interaction, { content: '🔒 房間已鎖定。' }));
     return;
   }
@@ -651,6 +657,7 @@ async function handleTempVoiceButton(interaction) {
     if (!context) return;
     await context.channel.permissionOverwrites.edit(context.guild.roles.everyone.id, { Connect: true }, { reason: 'Temp voice opened by owner' });
     updateTempVoiceRecord(context.guild.id, context.channel.id, { locked: false });
+    scheduleLfgUpdate(context.guild, context.channel.id);
     await interaction.reply(privateReplyPayload(interaction, { content: '🌐 房間已公開。' }));
     return;
   }
@@ -744,6 +751,7 @@ async function handleTempVoiceSelect(interaction) {
     await context.channel.setUserLimit(limit, 'Temp voice user limit changed');
     updateTempVoiceRecord(context.guild.id, context.channel.id, { userLimit: limit || 0 });
     scheduleVoiceHubUpdate(context.guild);
+    scheduleLfgUpdate(context.guild, context.channel.id);
     await interaction.reply(privateReplyPayload(interaction, { content: `👥 人數限制已更新為：${limit || '無限制'}` }));
     return true;
   }
@@ -778,6 +786,7 @@ async function handleTempVoiceModal(interaction) {
   await context.channel.setName(newName, 'Temp voice renamed by owner');
   updateTempVoiceRecord(context.guild.id, context.channel.id, { roomName: newName, voiceChannelName: newName });
   scheduleVoiceHubUpdate(context.guild);
+  scheduleLfgUpdate(context.guild, context.channel.id);
   await interaction.reply(privateReplyPayload(interaction, { content: `✏️ 房間已改名為：${newName}` }));
   return true;
 }

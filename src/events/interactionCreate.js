@@ -62,6 +62,7 @@ const {
   getRestoreActiveChannelsPlan
 } = require('../systems/activeChannelProtector');
 const { writeServerLog } = require('../systems/serverLogs');
+const { handleLfgButton } = require('../systems/lfgSystem');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -1355,6 +1356,18 @@ module.exports = {
     }
 
     if (!interaction.isButton()) return;
+
+    if (interaction.customId.startsWith('lfg_')) {
+      try {
+        await handleLfgButton(interaction);
+      } catch (error) {
+        console.error('LFG button interaction failed:', error);
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.reply({ content: '處理招募卡操作失敗，請稍後再試。', ephemeral: true });
+        }
+      }
+      return;
+    }
 
     if (interaction.customId.startsWith('tempvoice_')) {
       try {
