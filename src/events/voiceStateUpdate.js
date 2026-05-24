@@ -5,13 +5,107 @@ const {
   getCreateVoiceGame,
   getTempVoiceRecord,
   isTempVoice,
+  readTempVoice,
   scheduleTempVoiceDeletion,
   sendOwnerControlPanel,
   transferOwnerIfNeeded
 } = require('../systems/tempVoice');
 const { scheduleVoiceHubUpdate } = require('../systems/voiceHub');
 const { scheduleLfgUpdate } = require('../systems/lfgSystem');
-const { isMemberRestricted } = require('../systems/memberGuard');
+const { getRestrictionMessage, isMemberRestricted } = require('../systems/memberGuard');
+
+function logCreateEntryDebug({ channel, member, isCreateEntry, createTempVoiceCalled }) {
+  console.log(
+    '[TempVoice Debug]\n' +
+    `joined channel: ${channel?.name || 'none'}\n` +
+    `channelId: ${channel?.id || 'none'}\n` +
+    `channelName: ${channel?.name || 'none'}\n` +
+    `isCreateEntry: ${Boolean(isCreateEntry)}\n` +
+    `category: ${channel?.parent?.name || 'none'}\n` +
+    `member: ${member?.user?.tag || member?.id || 'unknown'}\n` +
+    `createTempVoice called: ${Boolean(createTempVoiceCalled)}`
+  );
+}
+
+function findActiveOwnedRoom(guild, ownerId) {
+  const guildRecords = readTempVoice()[guild.id] || {};
+  for (const [channelId, record] of Object.entries(guildRecords)) {
+    if (record.ownerId !== ownerId || record.status === 'closing' || record.status === 'ended') continue;
+    const channel = guild.channels.cache.get(channelId);
+    if (channel) return channel;
+  }
+  return null;
+}
+
+async function handleCreateEntryJoin(oldState, newState) {
+  const joinedChannel = newState.channel;
+  const game = getCreateVoiceGame(joinedChannel);
+  const isCreateEntry = Boolean(game);
+
+  if (joinedChannel) {
+    logCreateEntryDebug({
+      channel: joinedChannel,
+      member: newState.member,
+      isCreateEntry,
+      createTempVoiceCalled: false
+    });
+  }
+
+  if (!game || !newState.member || newState.member.user.bot) return;
+
+  if (isMemberRestricted(newState.member)) {
+    try {
+      await newState.member.voice.setChannel(null, 'Member Guard blocks guest temp voice creation');
+      const reason = getRestrictionMessage
+        ? getRestrictionMessage(newState.member)
+        : '請先完成身分組領取後再使用語音功能。';
+      await newState.member.send(`你目前無法建立臨時語音：${reason}`).catch(() => null);
+    } catch (error) {
+      console.error('Member Guard blocked temp voice creation but disconnect failed:', error);
+    }
+    return;
+  }
+
+  const botMember = newState.guild.members.me;
+  if (
+    !botMember.permissions.has(PermissionFlagsBits.ManageChannels) ||
+    !botMember.permissions.has(PermissionFlagsBits.MoveMembers)
+  ) {
+    console.warn('[TempVoice Debug] Bot missing ManageChannels or MoveMembers permission.');
+    return;
+  }
+
+  try {
+    const existingRoom = findActiveOwnedRoom(newState.guild, newState.member.id);
+    if (existingRoom) {
+      await newState.member.voice.setChannel(existingRoom, 'Move member to existing temp voice room');
+      return;
+    }
+
+    logCreateEntryDebug({
+      channel: joinedChannel,
+      member: newState.member,
+      isCreateEntry,
+      createTempVoiceCalled: true
+    });
+
+    const tempChannel = await createTemporaryVoice({
+      guild: newState.guild,
+      member: newState.member,
+      game,
+      limit: 5,
+      createCategoryIfMissing: true
+    });
+    await newState.member.voice.setChannel(tempChannel, 'Auto create party voice from join-to-create channel');
+    await sendOwnerControlPanel({
+      guild: newState.guild,
+      channel: tempChannel,
+      member: newState.member
+    });
+  } catch (error) {
+    console.error('Temp Voice create entry failed:', error);
+  }
+}
 
 module.exports = {
   name: Events.VoiceStateUpdate,
@@ -44,42 +138,6 @@ module.exports = {
       }
     }
 
-    const joinedChannel = newState.channel;
-    const game = getCreateVoiceGame(joinedChannel);
-    if (!game || !newState.member || newState.member.user.bot) return;
-    if (isMemberRestricted(newState.member)) {
-      try {
-        await newState.member.voice.setChannel(null, 'Member Guard blocks guest temp voice creation');
-      } catch (error) {
-        console.error('Member Guard 無法移出訪客語音觸發頻道:', error);
-      }
-      return;
-    }
-
-    const botMember = newState.guild.members.me;
-    if (
-      !botMember.permissions.has(PermissionFlagsBits.ManageChannels) ||
-      !botMember.permissions.has(PermissionFlagsBits.MoveMembers)
-    ) {
-      return;
-    }
-
-    try {
-      const tempChannel = await createTemporaryVoice({
-        guild: newState.guild,
-        member: newState.member,
-        game,
-        limit: 5,
-        createCategoryIfMissing: true
-      });
-      await newState.member.voice.setChannel(tempChannel, 'Auto create party voice from join-to-create channel');
-      await sendOwnerControlPanel({
-        guild: newState.guild,
-        channel: tempChannel,
-        member: newState.member
-      });
-    } catch (error) {
-      console.error('加入建立語音入口時建立臨時語音失敗：', error);
-    }
+    await handleCreateEntryJoin(oldState, newState);
   }
 };

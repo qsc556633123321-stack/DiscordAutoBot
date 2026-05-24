@@ -164,3 +164,12 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - 重要操作會嘗試寫入 `📑｜server-logs`，找不到會自動建立；log 失敗不影響主流程。
 - Bot 啟動後會清理不存在的 temp voice 死資料，並為空房排程刪除。
 - 長操作使用 defer 或二次確認，避免直接執行高風險變更。
+
+## Temp Voice Auto Repair
+
+- Temp Voice 建立入口不再只靠頻道名稱判斷，Bot 會用 `src/data/temp-voice-create-entries.json` 記錄 create entry metadata。
+- `/setup-game` 與 `/fix-game-category` 會自動註冊 `➕｜建立XXX語音` 的 channelId、game、分類資訊。
+- Bot 啟動時會掃描所有名稱包含「建立」與「語音」的語音入口，缺 metadata 會自動修復。
+- 加入入口語音時 console 會輸出 `[TempVoice Debug]`，包含 channelId、channelName、category、isCreateEntry、createTempVoice called。
+- `/tempvoice-doctor` 可掃描 create entry、metadata、room registry、Voice Hub sync，並自動補齊缺少的 create entry metadata。
+- 若 Member Guard 阻擋訪客或安全模式使用者建立語音，Bot 會把使用者移出入口語音並嘗試私訊原因；voiceStateUpdate 事件本身無法發 ephemeral 訊息。

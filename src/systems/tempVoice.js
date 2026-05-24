@@ -12,7 +12,15 @@ const {
   TextInputBuilder,
   TextInputStyle
 } = require('discord.js');
-const { findGameCategory, findOrCreateGameCategory, getGameNameFromCreateVoice, isCreateVoiceChannel } = require('./gameChannels');
+const {
+  findGameCategory,
+  findOrCreateGameCategory,
+  getCreateEntryRecord,
+  getGameNameFromCreateVoice,
+  inferCreateEntryGame,
+  isCreateVoiceChannel,
+  registerCreateEntryChannel
+} = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { createOrUpdateLfgCard, deleteLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
@@ -157,8 +165,17 @@ function safeVoiceName(value) {
 }
 
 function getCreateVoiceGame(channel) {
+  if (!channel) return null;
+  const metadata = getCreateEntryRecord(channel.guild.id, channel.id);
+  if (metadata?.type === 'create_entry' && metadata.game) {
+    const syncedGame = inferCreateEntryGame(channel) || metadata.game;
+    registerCreateEntryChannel(channel.guild, channel, syncedGame);
+    return syncedGame;
+  }
   if (!isCreateVoiceChannel(channel)) return null;
-  return getGameNameFromCreateVoice(channel.name);
+  const game = getGameNameFromCreateVoice(channel);
+  if (game) registerCreateEntryChannel(channel.guild, channel, game);
+  return game;
 }
 
 function findActivityChannel(guild) {

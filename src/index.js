@@ -10,6 +10,7 @@ const {
   Partials
 } = require('discord.js');
 const { cleanupMissingTempVoices } = require('./systems/tempVoice');
+const { repairCreateEntryRegistryForClient } = require('./systems/gameChannels');
 const { restoreVoiceHubs } = require('./systems/voiceHub');
 const { restoreLfgCards } = require('./systems/lfgSystem');
 
@@ -63,6 +64,9 @@ if (fs.existsSync(eventsPath)) {
 client.once(Events.ClientReady, async () => {
   console.log(`Discord Server Architect Bot 已上線：${client.user.tag}`);
   try {
+    const repairs = await repairCreateEntryRegistryForClient(client);
+    const repairedCount = repairs.reduce((total, item) => total + item.repaired.length + item.removed.length, 0);
+    if (repairedCount > 0) console.log(`[TempVoice Debug] create entry registry repaired ${repairedCount} item(s).`);
     await cleanupMissingTempVoices(client);
     await restoreVoiceHubs(client);
     await restoreLfgCards(client);
