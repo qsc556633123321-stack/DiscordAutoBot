@@ -73,6 +73,10 @@ const {
   executePolish,
   getPolishPlan
 } = require('../systems/serverPolisher');
+const {
+  handleGameSuggestionButton,
+  rejectSuggestion
+} = require('../systems/gameSuggestionSystem');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -1441,6 +1445,18 @@ module.exports = {
 
   async execute(interaction) {
     if (interaction.isModalSubmit()) {
+      if (interaction.customId.startsWith('game_suggest_reject_modal_')) {
+        try {
+          await rejectSuggestion(interaction, interaction.customId.replace('game_suggest_reject_modal_', ''));
+        } catch (error) {
+          console.error('Game suggestion reject modal failed:', error);
+          if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ content: '處理遊戲提議拒絕時發生錯誤。', ephemeral: true });
+          }
+        }
+        return;
+      }
+
       if (interaction.customId.startsWith('tempvoice_')) {
         try {
           await handleTempVoiceModal(interaction);
@@ -1497,6 +1513,18 @@ module.exports = {
     }
 
     if (!interaction.isButton()) return;
+
+    if (interaction.customId.startsWith('game_suggest_')) {
+      try {
+        await handleGameSuggestionButton(interaction);
+      } catch (error) {
+        console.error('Game suggestion button failed:', error);
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.reply({ content: '處理遊戲提議按鈕時發生錯誤。', ephemeral: true });
+        }
+      }
+      return;
+    }
 
     if (interaction.customId.startsWith('lfg_')) {
       try {

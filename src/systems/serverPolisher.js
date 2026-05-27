@@ -2,6 +2,7 @@ const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js')
 const { CHANNEL_DESIGN } = require('../config/channelDesign');
 const { ROLE_DESIGN } = require('../config/roleDesign');
 const { SERVER_DESIGN_THEMES } = require('../config/serverDesignThemes');
+const { COMMUNITY_STRUCTURE } = require('../config/communityStructure');
 const { writeServerLog } = require('./serverLogs');
 
 const pendingPolishPlans = new Map();
@@ -476,6 +477,7 @@ async function setupNativeFeatures(guild, summary) {
 }
 
 module.exports = {
+  COMMUNITY_STRUCTURE,
   STEP_DELAY_MS,
   buildPolishEmbed,
   buildPolishPlan,

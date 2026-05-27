@@ -5,6 +5,7 @@ const { isCreateVoiceChannel } = require('./gameChannels');
 const { setupChannelPanels } = require('./channelPanels');
 const { cleanupEmptyCategories } = require('./categoryCleaner');
 const { isActiveProtectedChannel } = require('./activeChannelProtector');
+const { COMMUNITY_STRUCTURE } = require('../config/communityStructure');
 
 const pendingRebuildPlans = new Map();
 const MAX_DELETE_OLD_CHANNELS = 10;
@@ -338,6 +339,7 @@ async function executeRebuild(interaction, plan) {
 
 module.exports = {
   MAX_DELETE_OLD_CHANNELS,
+  COMMUNITY_STRUCTURE,
   createRebuildPlan,
   createTemplateStructure,
   deleteRebuildPlan,

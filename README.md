@@ -187,3 +187,17 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - 效能設計：voiceStateUpdate 只更新記憶體 session，`src/data/voice-activity.json` 每 60 秒批次寫入一次，關閉程序前會嘗試保存。
 - 隱私設計：不記錄語音內容、麥克風、聊天內容，只記錄時間、房間、人數與共同語音關係。
 - 防掛機：AFK 頻道不計算、Bot 不計算、一人語音不計算，至少兩位非 Bot 成員同房才開始累積。
+
+## Dynamic Community Expansion System
+
+- 新增動態社群結構設定：入口、大廳、遊戲中心、Night Crew、創作開發、投資討論、管理後台。
+- 新增 `/suggest-game game_name reason`：玩家可提議新增遊戲分類，Bot 會在 `📋｜遊戲提議` 發送提議卡。
+- 提議卡支援 `👍 支持`、`👎 反對`、`✅ 管理員批准`、`❌ 管理員拒絕`。
+- 管理員批准後會建立 `🎮｜遊戲名`，並建立聊天、找隊友、資訊、建立語音入口。
+- 動態建立的語音入口會自動註冊 Temp Voice metadata，可接入 Temp Voice、LFG、Voice Hub。
+- 管理員拒絕會跳出 Modal 輸入理由，提議卡會更新為已拒絕。
+- 新增 `/archive-inactive-games`：掃描動態遊戲分類，14 天無明顯文字活動且沒有 active voice 時移到遊戲封存區；只封存不刪除。
+- 新增 Night Crew：深夜 00:00-05:00 語音累積超過 20 小時，自動解鎖 `🌙 Night Crew`，可見 Night Crew 分類。
+- Night Crew 只提供社群身份感與可見性，不給管理權限。
+- 若設定 `OPENAI_API_KEY`，遊戲提議卡會嘗試產生短版社群氛圍文案；API 失敗會使用 fallback。
+- 防頻道爆炸：遊戲分類必須先由玩家提議、再由管理員批准；建立頻道採逐步 queue delay，不使用大量 Promise.all；低活躍遊戲只封存不刪除。

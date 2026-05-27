@@ -14,6 +14,7 @@ const { scheduleVoiceHubUpdate } = require('../systems/voiceHub');
 const { scheduleLfgUpdate } = require('../systems/lfgSystem');
 const { getRestrictionMessage, isMemberRestricted } = require('../systems/memberGuard');
 const { trackVoiceStateUpdate } = require('../systems/voiceActivitySystem');
+const { evaluateNightCrewMember } = require('../systems/nightCrewSystem');
 
 function logCreateEntryDebug({ channel, member, isCreateEntry, createTempVoiceCalled }) {
   console.log(
@@ -114,6 +115,9 @@ module.exports = {
   async execute(oldState, newState) {
     try {
       trackVoiceStateUpdate(oldState, newState);
+      if (oldState.member && !oldState.member.user.bot) {
+        await evaluateNightCrewMember(oldState.guild, oldState.member.id).catch(() => null);
+      }
     } catch (error) {
       console.error('Voice activity tracking failed:', error);
     }
