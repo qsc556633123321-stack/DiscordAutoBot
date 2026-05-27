@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType, EmbedBuilder } = require('discord.js');
+const { formatDuration, getRoomInfo } = require('./voiceActivitySystem');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -66,7 +67,7 @@ function disableVoiceHub(guildId) {
 }
 
 function getGameEmoji(game = '') {
-  const text = game.toLowerCase();
+  const text = String(game || '').toLowerCase();
   if (/tft|聯盟戰棋/.test(text)) return '🎮';
   if (/lol|英雄聯盟/.test(text)) return '⚔️';
   if (/minecraft|mc/.test(text)) return '⛏️';
@@ -87,7 +88,8 @@ function readActiveRooms(guild) {
       return {
         channel,
         record: { status: 'active', ...record },
-        memberCount: channel.members.size,
+        roomInfo: getRoomInfo(guild, channel),
+        memberCount: channel.members.filter((member) => !member.user.bot).size,
         limit: channel.userLimit || record.userLimit || 0,
         createdAt: record.createdAt ? new Date(record.createdAt).getTime() : 0
       };
@@ -111,21 +113,21 @@ function buildVoiceHubEmbed(guild) {
       .setDescription('快來建立第一個房間吧。');
   }
 
-  const lines = rooms.slice(0, 15).map(({ channel, record, memberCount, limit }) => {
-    const owner = record.ownerId ? `<@${record.ownerId}>` : '未知';
-    const created = record.createdAt
-      ? `<t:${Math.floor(new Date(record.createdAt).getTime() / 1000)}:R>`
-      : '未知';
+  const lines = rooms.slice(0, 15).map(({ channel, record, roomInfo, memberCount, limit }) => {
+    const owner = record.ownerId ? `<@${record.ownerId}>` : '未記錄';
+    const activeTime = roomInfo?.ageMs ? formatDuration(roomInfo.ageMs) : '剛建立';
+    const label = roomInfo?.label || '🎧 開放加入中';
     return [
       `${getGameEmoji(record.game)} ${channel}`,
-      `👥 ${memberCount}/${limit || '無限制'}`,
+      `👥 ${memberCount}/${limit || '無上限'}`,
+      `🕒 ${activeTime}`,
       `👑 ${owner}`,
-      `🕒 ${created}`
+      label
     ].join('\n');
   });
 
   return embed
-    .setTitle(`🟢 目前活躍語音房（${rooms.length}）`)
+    .setTitle(`🟢 活躍語音房（${rooms.length}）`)
     .setDescription(lines.join('\n\n'));
 }
 

@@ -13,6 +13,7 @@ const {
 const { scheduleVoiceHubUpdate } = require('../systems/voiceHub');
 const { scheduleLfgUpdate } = require('../systems/lfgSystem');
 const { getRestrictionMessage, isMemberRestricted } = require('../systems/memberGuard');
+const { trackVoiceStateUpdate } = require('../systems/voiceActivitySystem');
 
 function logCreateEntryDebug({ channel, member, isCreateEntry, createTempVoiceCalled }) {
   console.log(
@@ -111,6 +112,12 @@ module.exports = {
   name: Events.VoiceStateUpdate,
 
   async execute(oldState, newState) {
+    try {
+      trackVoiceStateUpdate(oldState, newState);
+    } catch (error) {
+      console.error('Voice activity tracking failed:', error);
+    }
+
     if (oldState.channelId && isTempVoice(oldState.guild.id, oldState.channelId)) {
       const oldChannel = oldState.guild.channels.cache.get(oldState.channelId);
       const oldRecord = getTempVoiceRecord(oldState.guild.id, oldState.channelId);

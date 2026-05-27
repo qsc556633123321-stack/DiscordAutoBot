@@ -173,3 +173,17 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - 加入入口語音時 console 會輸出 `[TempVoice Debug]`，包含 channelId、channelName、category、isCreateEntry、createTempVoice called。
 - `/tempvoice-doctor` 可掃描 create entry、metadata、room registry、Voice Hub sync，並自動補齊缺少的 create entry metadata。
 - 若 Member Guard 阻擋訪客或安全模式使用者建立語音，Bot 會把使用者移出入口語音並嘗試私訊原因；voiceStateUpdate 事件本身無法發 ephemeral 訊息。
+
+## Voice Activity & Social Retention System
+
+- 新增語音活躍紀錄：累積語音、本週、本月、開房次數、Temp Voice 建立次數、深夜語音、最愛遊戲、最常一起語音成員。
+- 新增 `/voice-profile`：查看個人語音檔案、語音稱號與 AI/fallback 氣氛文字。
+- 新增 `/voice-leaderboard`：支援本週語音、本月語音、開房次數、深夜語音、熱門房主排行榜。
+- 新增 `/voice-status`：查看目前語音社群狀態與活躍摘要。
+- 新增 `/voice-room-info`：查看目前語音房房主、遊戲分類、人數、活躍時長與熱門程度。
+- Voice Hub 會顯示房間活躍時間與標籤，例如 `🔥 熱門房間`、`🌙 深夜常駐聚集地`。
+- 語音稱號只做顯示，不建立 Discord Role：`🌙 深夜常駐`、`🎮 開房達人`、`🎤 語音怪`、`👑 社群核心`、`🔥 熱門房主`。
+- 若設定 `OPENAI_API_KEY`，Bot 會嘗試產生短版社群氣氛文案；失敗或未設定時自動使用固定 fallback。
+- 效能設計：voiceStateUpdate 只更新記憶體 session，`src/data/voice-activity.json` 每 60 秒批次寫入一次，關閉程序前會嘗試保存。
+- 隱私設計：不記錄語音內容、麥克風、聊天內容，只記錄時間、房間、人數與共同語音關係。
+- 防掛機：AFK 頻道不計算、Bot 不計算、一人語音不計算，至少兩位非 Bot 成員同房才開始累積。

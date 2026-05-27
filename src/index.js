@@ -13,6 +13,7 @@ const { cleanupMissingTempVoices } = require('./systems/tempVoice');
 const { repairCreateEntryRegistryForClient } = require('./systems/gameChannels');
 const { restoreVoiceHubs } = require('./systems/voiceHub');
 const { restoreLfgCards } = require('./systems/lfgSystem');
+const { initVoiceActivitySystem } = require('./systems/voiceActivitySystem');
 
 const { DISCORD_TOKEN } = process.env;
 
@@ -70,6 +71,7 @@ client.once(Events.ClientReady, async () => {
     await cleanupMissingTempVoices(client);
     await restoreVoiceHubs(client);
     await restoreLfgCards(client);
+    initVoiceActivitySystem(client);
   } catch (error) {
     console.error('Temp Voice startup cleanup failed:', error);
   }

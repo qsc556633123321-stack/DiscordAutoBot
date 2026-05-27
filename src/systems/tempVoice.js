@@ -24,6 +24,7 @@ const {
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { createOrUpdateLfgCard, deleteLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
+const { recordTempVoiceCreated } = require('./voiceActivitySystem');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -470,6 +471,7 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
     voiceChannelName: channel.name,
     roomName: channel.name
   });
+  recordTempVoiceCreated(guild, member, channel, game);
   const record = getTempVoiceRecord(guild.id, channel.id);
   await sendActivityMessage({ guild, channel, member, record });
   await writeServerLog(guild, {
