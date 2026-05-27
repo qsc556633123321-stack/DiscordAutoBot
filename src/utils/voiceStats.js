@@ -72,6 +72,16 @@ function getRoomActivityLabel({ memberCount = 0, createdAt = null } = {}) {
   return '🎧 開放加入中';
 }
 
+function getRoomMoodTag({ roomName = '', game = '', memberCount = 0, createdAt = null } = {}) {
+  const text = `${roomName} ${game}`.toLowerCase();
+  const ageMs = createdAt ? Date.now() - new Date(createdAt).getTime() : 0;
+  if (/rk|rank|上分|積分|排位/.test(text)) return '🎯 認真上分';
+  if (/深夜|夜聊|閒聊|聊天/.test(text) && isLateNight(new Date())) return '🌙 深夜閒聊';
+  if (/掛機|休息|chill|放鬆/.test(text)) return '🛋 輕鬆聊天';
+  if (memberCount >= 4 && ageMs >= 30 * 60 * 1000) return '🔥 熱門房間';
+  return memberCount >= 3 ? '🛋 輕鬆聊天' : '🎧 新手可加入';
+}
+
 function getAiFallbackText(stats = {}) {
   if ((stats.lateNightMs || 0) >= 3 * HOUR_MS) return '最近似乎很常在深夜出沒。';
   if ((stats.roomCreates || 0) >= 5) return '最近很常主動開房，帶起了一點社群節奏。';
@@ -88,6 +98,7 @@ module.exports = {
   getAiFallbackText,
   getMonthKey,
   getRoomActivityLabel,
+  getRoomMoodTag,
   getTopKey,
   getWeekKey,
   isLateNight

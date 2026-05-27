@@ -8,6 +8,7 @@ const {
   getAiFallbackText,
   getMonthKey,
   getRoomActivityLabel,
+  getRoomMoodTag,
   getTopKey,
   getWeekKey
 } = require('../utils/voiceStats');
@@ -245,6 +246,12 @@ function getRoomInfo(guild, channel) {
   const createdAt = record?.createdAt || stored.createdAt || null;
   const memberCount = nonBotMembers(channel).length;
   const label = getRoomActivityLabel({ memberCount, createdAt });
+  const moodTag = getRoomMoodTag({
+    roomName: channel.name,
+    game: record?.game || stored.game || inferGame(channel),
+    memberCount,
+    createdAt
+  });
   return {
     channel,
     record,
@@ -256,6 +263,7 @@ function getRoomInfo(guild, channel) {
     limit: channel.userLimit || record?.userLimit || 0,
     ageMs: createdAt ? Date.now() - new Date(createdAt).getTime() : 0,
     label,
+    moodTag,
     isHot: label.includes('熱門')
   };
 }

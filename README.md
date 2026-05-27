@@ -201,3 +201,18 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - Night Crew 只提供社群身份感與可見性，不給管理權限。
 - 若設定 `OPENAI_API_KEY`，遊戲提議卡會嘗試產生短版社群氛圍文案；API 失敗會使用 fallback。
 - 防頻道爆炸：遊戲分類必須先由玩家提議、再由管理員批准；建立頻道採逐步 queue delay，不使用大量 Promise.all；低活躍遊戲只封存不刪除。
+
+## AI Community Concierge & Interactive Onboarding
+
+- 新增 `/setup-community-guide`：建立 `🧭｜伺服器導覽` 與 `🚧｜社群開發日誌` persistent panels。
+- 新增 `/refresh-community-guide`：重用既有 messageId 編輯導覽與 Roadmap，不洗版。
+- 新增 `/community-about`：用社群管家語氣說明這個群是做什麼的。
+- 新增 `/community-roadmap`：顯示已完成、開發中、未來計畫，語氣偏「一起打造社群」。
+- 新增 `/help-me-start`：用遊戲、偏好、上線時間推薦頻道、身分組與開始路線。
+- 導覽面板按鈕包含：我想玩遊戲、深夜聊天、BOT 功能、投資、AI/開發、社群未來規劃。
+- 導覽按鈕皆使用 ephemeral 回覆，不公開洗頻；遊戲/投資/開發入口會在權限允許時嘗試直接加入對應身分組。
+- 新人加入時會在原本 Welcome System 外，額外嘗試 DM 互動導覽與 `/help-me-start` 提示；DM 失敗不影響流程。
+- Voice Hub 顯示新增房間氛圍標籤：`🔥 熱門房間`、`🌙 深夜閒聊`、`🎯 認真上分`、`🛋 輕鬆聊天`、`🎧 新手可加入`。
+- 若設定 `OPENAI_API_KEY`，導覽主文案與 `/help-me-start` 會嘗試產生自然的社群管家文字；失敗或未設定時使用 fallback。
+- Discord 原生 Community Onboarding、Server Guide、Welcome Screen 目前需到 Discord Server Settings 手動設定；Bot 會提供可用頻道與導覽內容。
+- 避免資訊過載：新人先看導覽 Panel，再用按鈕分流到遊戲、投資、AI/開發、深夜聊天室，不需要一次看完整頻道樹。

@@ -27,7 +27,7 @@ module.exports = {
       game: info.game,
       memberCount: info.memberCount,
       label: info.label,
-      fallback: info.label
+      fallback: `${info.label} · ${info.moodTag}`
     });
     const embed = new EmbedBuilder()
       .setColor(info.isHot ? 0xf2c94c : 0x5865f2)
@@ -38,7 +38,8 @@ module.exports = {
         { name: '遊戲分類', value: info.game || '一般語音', inline: true },
         { name: '房內人數', value: `${info.memberCount}/${info.limit || '無上限'}`, inline: true },
         { name: '活躍時長', value: info.createdAt ? formatDuration(info.ageMs) : '未記錄', inline: true },
-        { name: '是否熱門', value: info.isHot ? '是' : '否', inline: true }
+        { name: '是否熱門', value: info.isHot ? '是' : '否', inline: true },
+        { name: '房間氛圍', value: info.moodTag || '🎧 新手可加入', inline: true }
       )
       .setTimestamp();
 

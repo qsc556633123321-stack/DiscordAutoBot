@@ -77,6 +77,7 @@ const {
   handleGameSuggestionButton,
   rejectSuggestion
 } = require('../systems/gameSuggestionSystem');
+const { handleConciergeButton } = require('../systems/communityConcierge');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -1513,6 +1514,18 @@ module.exports = {
     }
 
     if (!interaction.isButton()) return;
+
+    if (interaction.customId.startsWith('concierge_')) {
+      try {
+        await handleConciergeButton(interaction);
+      } catch (error) {
+        console.error('Concierge button failed:', error);
+        if (!interaction.replied && !interaction.deferred) {
+          await interaction.reply({ content: '處理互動導覽時發生錯誤，請稍後再試。', ephemeral: true });
+        }
+      }
+      return;
+    }
 
     if (interaction.customId.startsWith('game_suggest_')) {
       try {

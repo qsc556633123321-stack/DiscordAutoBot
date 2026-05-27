@@ -117,12 +117,13 @@ function buildVoiceHubEmbed(guild) {
     const owner = record.ownerId ? `<@${record.ownerId}>` : '未記錄';
     const activeTime = roomInfo?.ageMs ? formatDuration(roomInfo.ageMs) : '剛建立';
     const label = roomInfo?.label || '🎧 開放加入中';
+    const moodTag = roomInfo?.moodTag || '🎧 新手可加入';
     return [
       `${getGameEmoji(record.game)} ${channel}`,
       `👥 ${memberCount}/${limit || '無上限'}`,
       `🕒 ${activeTime}`,
       `👑 ${owner}`,
-      label
+      `${label} · ${moodTag}`
     ].join('\n');
   });
 
