@@ -6,6 +6,7 @@ const { setupChannelPanels } = require('./channelPanels');
 const { cleanupEmptyCategories } = require('./categoryCleaner');
 const { isActiveProtectedChannel } = require('./activeChannelProtector');
 const { COMMUNITY_STRUCTURE } = require('../config/communityStructure');
+const { normalizeChannelName, rebuildCommunityLayout } = require('./communityBootstrapSystem');
 
 const pendingRebuildPlans = new Map();
 const MAX_DELETE_OLD_CHANNELS = 10;
@@ -126,9 +127,12 @@ function deleteRebuildPlan(id) {
 
 async function getOrCreateCategory(guild, name, options = {}) {
   const existing = guild.channels.cache.find(
-    (channel) => channel.type === ChannelType.GuildCategory && channel.name === name
+    (channel) => channel.type === ChannelType.GuildCategory && normalizeChannelName(channel.name) === normalizeChannelName(name)
   );
-  if (existing) return { channel: existing, created: false };
+  if (existing) {
+    if (existing.name !== name) await existing.setName(name, 'Server rebuild canonical category name').catch(() => null);
+    return { channel: existing, created: false };
+  }
 
   const channel = await guild.channels.create({
     name,
@@ -140,8 +144,8 @@ async function getOrCreateCategory(guild, name, options = {}) {
 }
 
 function buildHiddenArchiveOverwrites(guild) {
-  const ownerRole = guild.roles.cache.find((role) => role.name === '站長');
-  const adminRole = guild.roles.cache.find((role) => role.name === '管理員');
+  const ownerRole = guild.roles.cache.find((role) => role.name === '站長' || role.name === '👑 站長');
+  const adminRole = guild.roles.cache.find((role) => role.name === '管理員' || role.name === '🛡 管理員');
   const overwrites = [{ id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] }];
   for (const role of [ownerRole, adminRole].filter(Boolean)) {
     overwrites.push({
@@ -191,9 +195,12 @@ async function createTemplateStructure(guild, template, summary) {
     for (const channelConfig of categoryConfig.channels) {
       const type = channelConfig.type === 'voice' ? ChannelType.GuildVoice : ChannelType.GuildText;
       const existing = guild.channels.cache.find(
-        (channel) => channel.type === type && channel.name === channelConfig.name
+        (channel) => channel.type === type && normalizeChannelName(channel.name) === normalizeChannelName(channelConfig.name)
       );
       if (existing) {
+        if (existing.name !== channelConfig.name) {
+          await existing.setName(channelConfig.name, 'Server rebuild canonical channel name').catch(() => null);
+        }
         if (existing.parentId !== category.id) {
           try {
             await existing.setParent(category.id, {
@@ -293,6 +300,12 @@ async function executeRebuild(interaction, plan) {
 
   const logChannel = await getOrCreateLogChannel(guild);
   await createTemplateStructure(guild, template, summary);
+  try {
+    summary.communityLayout = await rebuildCommunityLayout(guild, { mode: 'execute', order: true });
+  } catch (error) {
+    console.error('community layout repair after rebuild failed:', error);
+    summary.failed.push(`community layout repair: ${error.message}`);
+  }
   await handleOldChannels(guild, plan, summary);
   try {
     summary.categoryCleanup = await cleanupEmptyCategories(guild, {

@@ -228,3 +228,38 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - Private management：`🔒｜管理員後台` 只給站長/管理員/MOD 與 Bot。
 - 防呆：不刪除頻道、不刪 Ticket、不刪 Temp Voice、不刪 logs；Temp Voice 建立入口會重新註冊 metadata。
 - 建議初始化順序：`/bootstrap-community` -> `/setup-community-guide` -> `/check-onboarding-visibility` -> Discord Server Settings 手動設定 Onboarding / Server Guide / Welcome Screen。
+## Layout Idempotency & Doctor
+
+社群結構指令現在使用 stable key、normalized alias matching 與 `src/data/community-layout-registry.json` 記錄 Discord channel id。重複執行 `/bootstrap-community`、`/rebuild-community-layout`、`/polish-server-design` 時，Bot 會先用 metadata 找既有頻道，再用同義名稱比對，最後才建立缺少項目。
+
+- `/bootstrap-community mode:preview`：顯示將建立、移動、改名、修權限、註冊 metadata 的項目。
+- `/bootstrap-community mode:execute`：依預覽結果修復，不重複建立分類、頻道或角色。
+- `/rebuild-community-layout mode:preview|execute`：重排分類與子頻道，並修正錯位項目。
+- `/repair-channel-permissions mode:preview|execute`：只檢查或套用 public / role restricted / admin 權限。
+- `/layout-doctor`：掃描重複分類、重複頻道、缺少核心頻道、錯位頻道、缺 metadata、Temp Voice 建立入口註冊、Onboarding 可見性。
+- `/dedupe-layout mode:preview`：列出重複項目與建議保留的頻道。
+- `/dedupe-layout mode:execute`：二次確認後，把重複項目移到 `📦｜舊頻道封存`，不會直接刪除。
+
+固定排序：
+
+1. `📌｜社群入口`
+2. `💬｜社群大廳`
+3. `🎮｜遊戲中心`
+4. `🎮｜聯盟戰棋`
+5. `🎮｜英雄聯盟`
+6. `🎮｜APEX`
+7. `🎮｜VALORANT`
+8. `🌙｜Night Crew`
+9. `🛠｜創作與開發`
+10. `📈｜投資討論`
+11. `🎫｜客服支援`
+12. `🔒｜管理員後台`
+13. `📦｜舊頻道封存`
+
+`🎮｜遊戲中心` 會保證存在以下核心頻道：`📢｜組隊招募`、`🎮｜目前語音房`、`📋｜遊戲提議`、`📦｜遊戲封存區`。如果它們跑到錯分類，執行 `/bootstrap-community mode:execute` 或 `/rebuild-community-layout mode:execute` 會移回正確位置。
+
+重新部署 slash commands：
+
+```bash
+npm run deploy
+```

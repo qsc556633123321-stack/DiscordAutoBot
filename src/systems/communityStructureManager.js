@@ -12,17 +12,41 @@ function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function findCategory(guild, name) {
-  return guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && channel.name === name) || null;
+function normalizeName(name = '') {
+  return String(name)
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[\u{1f000}-\u{1faff}\u{2600}-\u{27bf}\ufe0f]/gu, '')
+    .replace(/[\s｜|\-_/\\:：・•·.,，。()[\]{}<>【】「」『』"'`~!！?？+＋#＃]+/gu, '')
+    .trim();
 }
 
-function findTextChannel(guild, name) {
-  return guild.channels.cache.find((channel) => channel.type === ChannelType.GuildText && channel.name === name) || null;
+function aliasesFor(name, aliases = []) {
+  return new Set([name, ...aliases].filter(Boolean).map(normalizeName));
+}
+
+function findCategory(guild, name, aliases = []) {
+  const names = aliasesFor(name, aliases);
+  return guild.channels.cache.find((channel) => (
+    channel.type === ChannelType.GuildCategory &&
+    names.has(normalizeName(channel.name))
+  )) || null;
+}
+
+function findTextChannel(guild, name, aliases = []) {
+  const names = aliasesFor(name, aliases);
+  return guild.channels.cache.find((channel) => (
+    channel.type === ChannelType.GuildText &&
+    names.has(normalizeName(channel.name))
+  )) || null;
 }
 
 async function getOrCreateCategory(guild, name, options = {}) {
-  const existing = findCategory(guild, name);
-  if (existing) return existing;
+  const existing = findCategory(guild, name, options.aliases);
+  if (existing) {
+    if (existing.name !== name) await existing.setName(name, 'Dynamic community category canonical name').catch(() => null);
+    return existing;
+  }
   return guild.channels.create({
     name,
     type: ChannelType.GuildCategory,
@@ -32,8 +56,12 @@ async function getOrCreateCategory(guild, name, options = {}) {
 }
 
 async function getOrCreateRole(guild, name, options = {}) {
-  const existing = guild.roles.cache.find((role) => role.name === name);
-  if (existing) return existing;
+  const aliases = aliasesFor(name, options.aliases);
+  const existing = guild.roles.cache.find((role) => aliases.has(normalizeName(role.name)));
+  if (existing) {
+    if (existing.name !== name && !existing.managed) await existing.setName(name, 'Dynamic community role canonical name').catch(() => null);
+    return existing;
+  }
   return guild.roles.create({
     name,
     color: options.color || 0x7289da,
@@ -71,7 +99,7 @@ function buildNightCrewOverwrites(guild, role) {
 
 function buildAdminOverwrites(guild) {
   const adminRoles = guild.roles.cache.filter((role) =>
-    ['站長', '管理員', '👑 站長', '🛡 管理員'].includes(role.name)
+    ['站長', '管理員', '👑 站長', '🛡 管理員', '🔧 MOD'].includes(role.name)
   );
   return [
     { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
@@ -112,15 +140,22 @@ async function ensureCommunityStructure(guild, options = {}) {
       let overwrites;
       if (categoryConfig.name === NIGHT_CREW_CATEGORY && nightCrewRole) overwrites = buildNightCrewOverwrites(guild, nightCrewRole);
       if (categoryConfig.permission === 'admin') overwrites = buildAdminOverwrites(guild);
-      const category = await getOrCreateCategory(guild, categoryConfig.name, { permissionOverwrites: overwrites });
+      const category = await getOrCreateCategory(guild, categoryConfig.name, {
+        aliases: categoryConfig.aliases,
+        permissionOverwrites: overwrites
+      });
       summary.categories.push(category.name);
       if (overwrites) await category.permissionOverwrites.set(overwrites, 'Dynamic community structure permissions').catch(() => null);
 
       for (const channelConfig of categoryConfig.channels) {
+        const aliases = aliasesFor(channelConfig.name, channelConfig.aliases);
         const existing = guild.channels.cache.find(
-          (channel) => channel.type === channelConfig.type && channel.name === channelConfig.name
+          (channel) => channel.type === channelConfig.type && aliases.has(normalizeName(channel.name))
         );
         if (existing) {
+          if (existing.name !== channelConfig.name) {
+            await existing.setName(channelConfig.name, 'Dynamic community channel canonical name').catch(() => null);
+          }
           if (existing.parentId !== category.id) {
             await existing.setParent(category.id, { lockPermissions: false, reason: 'Dynamic community structure placement' });
           }
@@ -145,8 +180,10 @@ async function ensureCommunityStructure(guild, options = {}) {
 }
 
 async function getOrCreateGameSuggestionChannel(guild) {
-  const category = await getOrCreateCategory(guild, GAME_CENTER_CATEGORY);
-  let channel = findTextChannel(guild, GAME_SUGGESTION_CHANNEL);
+  const category = await getOrCreateCategory(guild, GAME_CENTER_CATEGORY, {
+    aliases: ['遊戲中心', '遊戲大廳']
+  });
+  let channel = findTextChannel(guild, GAME_SUGGESTION_CHANNEL, ['遊戲提議', '提議遊戲', 'suggest-game']);
   if (!channel) {
     channel = await guild.channels.create({
       name: GAME_SUGGESTION_CHANNEL,
@@ -154,14 +191,19 @@ async function getOrCreateGameSuggestionChannel(guild) {
       parent: category.id,
       reason: 'Game suggestion channel setup'
     });
-  } else if (channel.parentId !== category.id) {
-    await channel.setParent(category.id, { lockPermissions: false, reason: 'Move game suggestion channel to game center' });
+  } else {
+    if (channel.name !== GAME_SUGGESTION_CHANNEL) await channel.setName(GAME_SUGGESTION_CHANNEL, 'Game suggestion canonical name').catch(() => null);
+    if (channel.parentId !== category.id) {
+      await channel.setParent(category.id, { lockPermissions: false, reason: 'Move game suggestion channel to game center' });
+    }
   }
   return channel;
 }
 
 async function getOrCreateGameArchiveCategory(guild) {
-  return getOrCreateCategory(guild, GAME_ARCHIVE_CATEGORY);
+  return getOrCreateCategory(guild, GAME_ARCHIVE_CATEGORY, {
+    aliases: ['遊戲封存區', '遊戲封存']
+  });
 }
 
 module.exports = {

@@ -4,7 +4,7 @@ const { buildOnboardingCheckEmbed, checkOnboardingVisibility } = require('../sys
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('check-onboarding-visibility')
-    .setDescription('檢查 Discord Onboarding 是否能看到公開入口頻道')
+    .setDescription('檢查 Discord Onboarding 入口頻道是否對 @everyone 可見')
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
   async execute(interaction) {

@@ -78,6 +78,12 @@ const {
   rejectSuggestion
 } = require('../systems/gameSuggestionSystem');
 const { handleConciergeButton } = require('../systems/communityConcierge');
+const {
+  buildSummaryEmbed,
+  deleteDedupePlan,
+  executeDedupePlan,
+  getDedupePlan
+} = require('../systems/communityBootstrapSystem');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -103,6 +109,8 @@ const RESTORE_ACTIVE_CONFIRM_PREFIX = 'restore_active_confirm_';
 const RESTORE_ACTIVE_CANCEL_PREFIX = 'restore_active_cancel_';
 const POLISH_CONFIRM_PREFIX = 'polish_confirm_';
 const POLISH_CANCEL_PREFIX = 'polish_cancel_';
+const DEDUPE_CONFIRM_PREFIX = 'dedupe_confirm_';
+const DEDUPE_CANCEL_PREFIX = 'dedupe_cancel_';
 
 function safeTicketName(username, userId) {
   const safeName = username
@@ -1514,6 +1522,50 @@ module.exports = {
     }
 
     if (!interaction.isButton()) return;
+
+    if (interaction.customId.startsWith(DEDUPE_CANCEL_PREFIX)) {
+      const planId = interaction.customId.slice(DEDUPE_CANCEL_PREFIX.length);
+      const plan = getDedupePlan(planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個 dedupe 計畫已失效，請重新執行 `/dedupe-layout`。', ephemeral: true });
+        return;
+      }
+      if (interaction.user.id !== plan.requestedById) {
+        await interaction.reply({ content: '只有原本執行 `/dedupe-layout` 的人可以取消。', ephemeral: true });
+        return;
+      }
+      deleteDedupePlan(planId);
+      await interaction.update({ content: '已取消，不會移動任何頻道。', embeds: [], components: [] });
+      return;
+    }
+
+    if (interaction.customId.startsWith(DEDUPE_CONFIRM_PREFIX)) {
+      const planId = interaction.customId.slice(DEDUPE_CONFIRM_PREFIX.length);
+      const plan = getDedupePlan(planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個 dedupe 計畫已失效，請重新執行 `/dedupe-layout`。', ephemeral: true });
+        return;
+      }
+      if (interaction.user.id !== plan.requestedById) {
+        await interaction.reply({ content: '只有原本執行 `/dedupe-layout` 的人可以確認。', ephemeral: true });
+        return;
+      }
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
+        await interaction.reply({ content: '你需要 ManageChannels 權限才能執行 dedupe。', ephemeral: true });
+        return;
+      }
+
+      await interaction.update({ content: '正在封存重複項目，不會刪除頻道...', embeds: [], components: [] });
+      try {
+        const summary = await executeDedupePlan(interaction.guild, plan);
+        deleteDedupePlan(planId);
+        await interaction.editReply({ content: '', embeds: [buildSummaryEmbed('🧹 Dedupe Layout Completed', summary)], components: [] });
+      } catch (error) {
+        console.error('Dedupe layout failed:', error);
+        await interaction.editReply({ content: `Dedupe 執行失敗：${error.message}`, embeds: [], components: [] });
+      }
+      return;
+    }
 
     if (interaction.customId.startsWith('concierge_')) {
       try {

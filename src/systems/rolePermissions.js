@@ -250,7 +250,7 @@ async function applyPermissionPlan(guild, plan) {
   });
 
   try {
-    const communitySummary = await repairChannelPermissions(guild);
+    const communitySummary = await repairChannelPermissions(guild, { mode: 'execute' });
     summary.updatedCategories.push(...(communitySummary.repairedCategories || []).map((name) => `${name} (community layout)`));
     summary.syncedChannels.push(...(communitySummary.repairedChannels || []));
     summary.skipped.push(...(communitySummary.warnings || []));

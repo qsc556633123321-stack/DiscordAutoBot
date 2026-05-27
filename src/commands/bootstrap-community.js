@@ -4,7 +4,16 @@ const { bootstrapCommunity, buildSummaryEmbed } = require('../systems/communityB
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('bootstrap-community')
-    .setDescription('第一次建立標準社群架構、角色與權限')
+    .setDescription('建立或修復標準社群結構，重複執行不會重複建立')
+    .addStringOption((option) =>
+      option
+        .setName('mode')
+        .setDescription('preview 只預覽，execute 才執行')
+        .setRequired(false)
+        .addChoices(
+          { name: 'preview', value: 'preview' },
+          { name: 'execute', value: 'execute' }
+        ))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
   async execute(interaction) {
@@ -14,10 +23,12 @@ module.exports = {
       return;
     }
     if (!interaction.guild.members.me.permissions.has(PermissionFlagsBits.ManageChannels)) {
-      await interaction.editReply('Bot 缺少 ManageChannels 權限，無法建立/修復頻道。');
+      await interaction.editReply('Bot 缺少 ManageChannels 權限，無法建立或修復頻道。');
       return;
     }
-    const summary = await bootstrapCommunity(interaction.guild, { order: true });
-    await interaction.editReply({ embeds: [buildSummaryEmbed('🏗 Community Bootstrap 完成', summary)] });
+
+    const mode = interaction.options.getString('mode') || 'preview';
+    const summary = await bootstrapCommunity(interaction.guild, { mode, order: true });
+    await interaction.editReply({ embeds: [buildSummaryEmbed('🧱 Community Bootstrap', summary)] });
   }
 };

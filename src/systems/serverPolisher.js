@@ -33,7 +33,12 @@ function findRoleForConfig(guild, config) {
 }
 
 function findCategory(guild, name) {
-  return guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && channel.name === name) || null;
+  const config = CHANNEL_DESIGN.find((category) => category.name === name);
+  const aliases = new Set([name, ...(config?.aliases || [])].map(normalizeName));
+  return guild.channels.cache.find((channel) => (
+    channel.type === ChannelType.GuildCategory &&
+    aliases.has(normalizeName(channel.name))
+  )) || null;
 }
 
 function findChannelForConfig(guild, config) {
@@ -432,7 +437,7 @@ async function executePolish(guild, plan) {
   }
 
   try {
-    const permissionSummary = await repairChannelPermissions(guild);
+    const permissionSummary = await repairChannelPermissions(guild, { mode: 'execute' });
     summary.syncedChannels.push(...(permissionSummary.repairedChannels || []));
     summary.skipped.push(...(permissionSummary.warnings || []));
     summary.failed.push(...(permissionSummary.failed || []));

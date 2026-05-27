@@ -2,128 +2,187 @@ const { ChannelType } = require('discord.js');
 const { ROLE_NAMES } = require('./permissionTemplates');
 
 const REQUIRED_ROLES = [
-  { name: ROLE_NAMES.game, color: 0x3498db },
-  { name: ROLE_NAMES.nightCrew, color: 0x5865f2 },
-  { name: ROLE_NAMES.dev, color: 0x9b59b6 },
-  { name: ROLE_NAMES.invest, color: 0x27ae60 },
-  { name: '👤 訪客', color: 0x95a5a6 },
-  { name: '✅ 已驗證成員', color: 0x2ecc71 },
-  { name: '🧑‍🤝‍🧑 找隊友通知', color: 0x1abc9c },
-  { name: '📢 公告通知', color: 0xf4d03f },
-  { name: '🎉 活動通知', color: 0xff7675 }
+  { key: 'role_game', name: ROLE_NAMES.game, aliases: ['遊戲玩家', 'game'], color: 0x3498db },
+  { key: 'role_night_crew', name: ROLE_NAMES.nightCrew, aliases: ['night crew', '深夜', '夜貓'], color: 0x5865f2 },
+  { key: 'role_dev', name: ROLE_NAMES.dev, aliases: ['AI 開發', '開發AI', 'dev'], color: 0x9b59b6 },
+  { key: 'role_invest', name: ROLE_NAMES.invest, aliases: ['投資', '股票'], color: 0x27ae60 },
+  { key: 'role_guest', name: '👤 訪客', aliases: ['訪客', 'guest'], color: 0x95a5a6 },
+  { key: 'role_verified', name: '✅ 已驗證成員', aliases: ['已驗證', 'verified'], color: 0x2ecc71 },
+  { key: 'role_party', name: '🧑‍🤝‍🧑 找隊友通知', aliases: ['找隊友通知'], color: 0x1abc9c },
+  { key: 'role_announcement', name: '📢 公告通知', aliases: ['公告通知'], color: 0xf4d03f },
+  { key: 'role_event', name: '🎉 活動通知', aliases: ['活動通知'], color: 0xff7675 }
 ];
 
 const PUBLIC_ONBOARDING_CHANNELS = [
-  '👋｜新人報到',
-  '📜｜社群規則',
-  '📢｜公告',
-  '🧭｜伺服器導覽',
-  '💬｜一般聊天',
-  '🌙｜深夜聊天',
-  '🎮｜找隊友大廳',
-  '🎮｜目前語音房'
+  'welcome',
+  'rules',
+  'announcement',
+  'server_guide',
+  'general_chat',
+  'late_night_chat',
+  'party_lobby',
+  'voice_hub'
 ];
 
 const COMMUNITY_LAYOUT = [
   {
+    key: 'entry',
     name: '📌｜社群入口',
+    aliases: ['社群入口', '入口', '資訊中心'],
     permission: 'publicEntry',
     onboardingVisible: true,
     channels: [
-      { name: '👋｜新人報到', type: ChannelType.GuildText, onboardingVisible: true },
-      { name: '📜｜社群規則', type: ChannelType.GuildText, onboardingVisible: true },
-      { name: '📢｜公告', type: ChannelType.GuildText, onboardingVisible: true },
-      { name: '🧭｜伺服器導覽', type: ChannelType.GuildText, onboardingVisible: true },
-      { name: '💬｜一般聊天', type: ChannelType.GuildText, onboardingVisible: true },
-      { name: '🌙｜深夜聊天', type: ChannelType.GuildText, onboardingVisible: true },
-      { name: '🎮｜找隊友大廳', type: ChannelType.GuildText, onboardingVisible: true },
-      { name: '🎮｜目前語音房', type: ChannelType.GuildText, onboardingVisible: true }
+      { key: 'welcome', name: '👋｜新人報到', type: ChannelType.GuildText, aliases: ['新人報到', 'welcome', '報到'], onboardingVisible: true },
+      { key: 'rules', name: '📜｜社群規則', type: ChannelType.GuildText, aliases: ['社群規則', '規則', 'rules'], onboardingVisible: true },
+      { key: 'announcement', name: '📢｜公告', type: ChannelType.GuildText, aliases: ['公告', 'announcement'], onboardingVisible: true },
+      { key: 'server_guide', name: '🧭｜伺服器導覽', type: ChannelType.GuildText, aliases: ['伺服器導覽', '導覽', 'guide'], onboardingVisible: true }
     ]
   },
   {
-    name: '🎮｜LOL',
+    key: 'public_lobby',
+    name: '💬｜社群大廳',
+    aliases: ['社群大廳', '公開大廳', '日常交流'],
+    permission: 'publicEntry',
+    onboardingVisible: true,
+    channels: [
+      { key: 'general_chat', name: '💬｜一般聊天', type: ChannelType.GuildText, aliases: ['一般聊天', '聊天', 'general'], onboardingVisible: true },
+      { key: 'late_night_chat', name: '🌙｜深夜聊天', type: ChannelType.GuildText, aliases: ['深夜聊天', '深夜'], onboardingVisible: true },
+      { key: 'party_lobby', name: '🎮｜找隊友大廳', type: ChannelType.GuildText, aliases: ['找隊友大廳', '找隊友', '組隊大廳'], onboardingVisible: true },
+      { key: 'music_share', name: '🎵｜音樂分享', type: ChannelType.GuildText, aliases: ['音樂分享'] },
+      { key: 'food_share', name: '🍜｜美食分享', type: ChannelType.GuildText, aliases: ['美食分享'] },
+      { key: 'image_share', name: '🖼｜迷因與好圖', type: ChannelType.GuildText, aliases: ['好圖分享', '迷因與好圖'] }
+    ]
+  },
+  {
+    key: 'game_center',
+    name: '🎮｜遊戲中心',
+    aliases: ['遊戲中心', '遊戲大廳'],
+    permission: 'publicEntry',
+    channels: [
+      { key: 'lfg_recruit', name: '📢｜組隊招募', type: ChannelType.GuildText, aliases: ['組隊招募', 'lfg', '招募'] },
+      { key: 'voice_hub', name: '🎮｜目前語音房', type: ChannelType.GuildText, aliases: ['目前語音房', '語音房', 'voice hub'], onboardingVisible: true },
+      { key: 'game_suggestions', name: '📋｜遊戲提議', type: ChannelType.GuildText, aliases: ['遊戲提議', '提議遊戲', 'suggest-game'] },
+      { key: 'game_archive_info', name: '📦｜遊戲封存區', type: ChannelType.GuildText, aliases: ['遊戲封存區', '遊戲封存'] }
+    ]
+  },
+  {
+    key: 'game_tft',
+    name: '🎮｜聯盟戰棋',
+    aliases: ['TFT', '聯盟戰棋', 'Teamfight Tactics'],
     permission: 'semiPublic',
     roleName: ROLE_NAMES.game,
     channels: [
-      { name: '💬｜lol-聊天', type: ChannelType.GuildText },
-      { name: '🧑‍🤝‍🧑｜lol-找隊友', type: ChannelType.GuildText },
-      { name: '📌｜lol-資訊', type: ChannelType.GuildText },
-      { name: '🔊｜➕｜建立LOL語音', type: ChannelType.GuildVoice, createEntryGame: 'LOL', userLimit: 1 }
+      { key: 'tft_chat', name: '💬｜tft-聊天', type: ChannelType.GuildText, aliases: ['tft聊天', 'tft-聊天'] },
+      { key: 'tft_party', name: '🧑‍🤝‍🧑｜tft-找隊友', type: ChannelType.GuildText, aliases: ['tft找隊友', 'tft-找隊友'] },
+      { key: 'tft_info', name: '📌｜tft-資訊', type: ChannelType.GuildText, aliases: ['tft資訊', 'tft-資訊'] },
+      { key: 'tft_create_voice', name: '🔊｜➕｜建立TFT語音', type: ChannelType.GuildVoice, aliases: ['建立TFT語音', '➕｜建立TFT語音', '建立聯盟戰棋語音'], createEntryGame: 'TFT', userLimit: 1 }
     ]
   },
   {
-    name: '🎮｜TFT',
+    key: 'game_lol',
+    name: '🎮｜英雄聯盟',
+    aliases: ['LOL', '英雄聯盟', 'League of Legends', 'league-of-legends'],
     permission: 'semiPublic',
     roleName: ROLE_NAMES.game,
     channels: [
-      { name: '💬｜tft-聊天', type: ChannelType.GuildText },
-      { name: '🧑‍🤝‍🧑｜tft-找隊友', type: ChannelType.GuildText },
-      { name: '📌｜tft-資訊', type: ChannelType.GuildText },
-      { name: '🔊｜➕｜建立TFT語音', type: ChannelType.GuildVoice, createEntryGame: 'TFT', userLimit: 1 }
+      { key: 'lol_chat', name: '💬｜lol-聊天', type: ChannelType.GuildText, aliases: ['lol聊天', 'lol-聊天'] },
+      { key: 'lol_party', name: '🧑‍🤝‍🧑｜lol-找隊友', type: ChannelType.GuildText, aliases: ['lol找隊友', 'lol-找隊友'] },
+      { key: 'lol_info', name: '📌｜lol-資訊', type: ChannelType.GuildText, aliases: ['lol資訊', 'lol-資訊'] },
+      { key: 'lol_create_voice', name: '🔊｜➕｜建立LOL語音', type: ChannelType.GuildVoice, aliases: ['建立LOL語音', '➕｜建立LOL語音'], createEntryGame: 'LOL', userLimit: 1 }
     ]
   },
   {
+    key: 'game_apex',
     name: '🎮｜APEX',
+    aliases: ['APEX', 'Apex Legends'],
     permission: 'semiPublic',
     roleName: ROLE_NAMES.game,
     channels: [
-      { name: '💬｜apex-聊天', type: ChannelType.GuildText },
-      { name: '🧑‍🤝‍🧑｜apex-找隊友', type: ChannelType.GuildText },
-      { name: '📌｜apex-資訊', type: ChannelType.GuildText },
-      { name: '🔊｜➕｜建立APEX語音', type: ChannelType.GuildVoice, createEntryGame: 'APEX', userLimit: 1 }
+      { key: 'apex_chat', name: '💬｜apex-聊天', type: ChannelType.GuildText, aliases: ['apex聊天', 'apex-聊天'] },
+      { key: 'apex_party', name: '🧑‍🤝‍🧑｜apex-找隊友', type: ChannelType.GuildText, aliases: ['apex找隊友', 'apex-找隊友'] },
+      { key: 'apex_info', name: '📌｜apex-資訊', type: ChannelType.GuildText, aliases: ['apex資訊', 'apex-資訊'] },
+      { key: 'apex_create_voice', name: '🔊｜➕｜建立APEX語音', type: ChannelType.GuildVoice, aliases: ['建立APEX語音', '➕｜建立APEX語音'], createEntryGame: 'APEX', userLimit: 1 }
     ]
   },
   {
+    key: 'game_valorant',
     name: '🎮｜VALORANT',
+    aliases: ['VALORANT', '特戰英豪', '特戰'],
     permission: 'semiPublic',
     roleName: ROLE_NAMES.game,
     channels: [
-      { name: '💬｜valorant-聊天', type: ChannelType.GuildText },
-      { name: '🧑‍🤝‍🧑｜valorant-找隊友', type: ChannelType.GuildText },
-      { name: '📌｜valorant-資訊', type: ChannelType.GuildText },
-      { name: '🔊｜➕｜建立VALORANT語音', type: ChannelType.GuildVoice, createEntryGame: 'VALORANT', userLimit: 1 }
+      { key: 'valorant_chat', name: '💬｜特戰-聊天', type: ChannelType.GuildText, aliases: ['特戰聊天', '特戰-聊天', 'valorant聊天'] },
+      { key: 'valorant_party', name: '🧑‍🤝‍🧑｜特戰-找隊友', type: ChannelType.GuildText, aliases: ['特戰找隊友', '特戰-找隊友', 'valorant找隊友'] },
+      { key: 'valorant_info', name: '📌｜特戰-資訊', type: ChannelType.GuildText, aliases: ['特戰資訊', '特戰-資訊', 'valorant資訊'] },
+      { key: 'valorant_create_voice', name: '🔊｜➕｜建立VALORANT語音', type: ChannelType.GuildVoice, aliases: ['建立VALORANT語音', '建立特戰語音', '➕｜建立特戰語音'], createEntryGame: 'VALORANT', userLimit: 1 }
     ]
   },
   {
+    key: 'night_crew',
     name: '🌙｜Night Crew',
+    aliases: ['Night Crew', '深夜群', '深夜'],
     permission: 'nightCrew',
     roleName: ROLE_NAMES.nightCrew,
     channels: [
-      { name: '🌙｜夜聊', type: ChannelType.GuildText },
-      { name: '🎧｜深夜電台', type: ChannelType.GuildVoice },
-      { name: '🛋｜掛機休息室', type: ChannelType.GuildVoice }
+      { key: 'night_chat', name: '🌙｜夜聊', type: ChannelType.GuildText, aliases: ['夜聊'] },
+      { key: 'night_radio', name: '🎧｜深夜電台', type: ChannelType.GuildVoice, aliases: ['深夜電台'] },
+      { key: 'night_lounge', name: '🛋｜掛機休息室', type: ChannelType.GuildVoice, aliases: ['掛機休息室'] }
     ]
   },
   {
+    key: 'creative_dev',
     name: '🛠｜創作與開發',
+    aliases: ['創作與開發', '開發專區', 'AI開發'],
     permission: 'roleRestricted',
     roleName: ROLE_NAMES.dev,
     channels: [
-      { name: '🧑‍💻｜程式開發', type: ChannelType.GuildText },
-      { name: '🤖｜AI工具', type: ChannelType.GuildText },
-      { name: '🎨｜設計作品', type: ChannelType.GuildText },
-      { name: '📁｜作品展示', type: ChannelType.GuildText }
+      { key: 'programming', name: '🧑‍💻｜程式開發', type: ChannelType.GuildText, aliases: ['程式開發'] },
+      { key: 'ai_tools', name: '🤖｜AI工具', type: ChannelType.GuildText, aliases: ['AI工具', 'ai-tools'] },
+      { key: 'design_works', name: '🎨｜設計作品', type: ChannelType.GuildText, aliases: ['設計作品'] },
+      { key: 'portfolio', name: '📁｜作品展示', type: ChannelType.GuildText, aliases: ['作品展示'] }
     ]
   },
   {
+    key: 'invest',
     name: '📈｜投資討論',
+    aliases: ['投資討論', '股票社群'],
     permission: 'roleRestricted',
     roleName: ROLE_NAMES.invest,
     channels: [
-      { name: '📊｜台股討論', type: ChannelType.GuildText },
-      { name: '📈｜盤勢觀察', type: ChannelType.GuildText },
-      { name: '🤖｜股票AI工具', type: ChannelType.GuildText }
+      { key: 'tw_stock', name: '📊｜台股討論', type: ChannelType.GuildText, aliases: ['台股討論'] },
+      { key: 'market_watch', name: '📈｜盤勢觀察', type: ChannelType.GuildText, aliases: ['盤勢觀察'] },
+      { key: 'stock_ai', name: '🤖｜股票AI工具', type: ChannelType.GuildText, aliases: ['股票AI工具'] }
     ]
   },
   {
+    key: 'support',
+    name: '🎫｜客服支援',
+    aliases: ['客服支援', '客服'],
+    permission: 'publicEntry',
+    channels: [
+      { key: 'open_ticket', name: '🎟｜開啟客服單', type: ChannelType.GuildText, aliases: ['開啟客服單', 'ticket'] },
+      { key: 'bug_report', name: '🐞｜問題回報', type: ChannelType.GuildText, aliases: ['問題回報'] },
+      { key: 'suggestions', name: '💡｜建議區', type: ChannelType.GuildText, aliases: ['建議區'] }
+    ]
+  },
+  {
+    key: 'admin',
     name: '🔒｜管理員後台',
+    aliases: ['管理員後台', '管理後台', 'admin'],
     permission: 'adminOnly',
     channels: [
-      { name: '🔒｜管理員頻道', type: ChannelType.GuildText },
-      { name: '📑｜server-logs', type: ChannelType.GuildText },
-      { name: '📑｜ticket-logs', type: ChannelType.GuildText },
-      { name: '⚙️｜bot-control', type: ChannelType.GuildText }
+      { key: 'admin_channel', name: '🔒｜管理員頻道', type: ChannelType.GuildText, aliases: ['管理員頻道'] },
+      { key: 'server_logs', name: '📑｜server-logs', type: ChannelType.GuildText, aliases: ['server-logs'] },
+      { key: 'ticket_logs', name: '📑｜ticket-logs', type: ChannelType.GuildText, aliases: ['ticket-logs'] },
+      { key: 'bot_control', name: '⚙️｜bot-control', type: ChannelType.GuildText, aliases: ['bot-control'] }
     ]
+  },
+  {
+    key: 'old_archive',
+    name: '📦｜舊頻道封存',
+    aliases: ['舊頻道封存', '封存區', 'archive'],
+    permission: 'adminOnly',
+    channels: []
   }
 ];
 
