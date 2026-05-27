@@ -8,6 +8,7 @@ const {
   EmbedBuilder,
   PermissionFlagsBits
 } = require('discord.js');
+const permissionTemplates = require('../config/permissionTemplates');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
@@ -110,11 +111,13 @@ async function getOrCreateGuideChannel(guild) {
       name: GUIDE_CHANNEL_NAME,
       type: ChannelType.GuildText,
       parent: category.id,
+      permissionOverwrites: permissionTemplates.onboardingVisible(guild),
       reason: 'Community guide setup'
     });
   } else if (channel.parentId !== category.id) {
     await channel.setParent(category.id, { lockPermissions: false, reason: 'Move guide channel to entry category' });
   }
+  await channel.permissionOverwrites.set(permissionTemplates.onboardingVisible(guild), 'Keep guide channel onboarding visible').catch(() => null);
   return channel;
 }
 

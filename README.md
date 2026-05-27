@@ -216,3 +216,15 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - 若設定 `OPENAI_API_KEY`，導覽主文案與 `/help-me-start` 會嘗試產生自然的社群管家文字；失敗或未設定時使用 fallback。
 - Discord 原生 Community Onboarding、Server Guide、Welcome Screen 目前需到 Discord Server Settings 手動設定；Bot 會提供可用頻道與導覽內容。
 - 避免資訊過載：新人先看導覽 Panel，再用按鈕分流到遊戲、投資、AI/開發、深夜聊天室，不需要一次看完整頻道樹。
+
+## Community Bootstrap & Permission Architecture
+
+- 新增 `/bootstrap-community`：第一次建立標準社群分類、入口頻道、遊戲分類、角色與權限。
+- 新增 `/repair-channel-permissions`：依 `src/config/communityLayout.js` 與 `src/config/permissionTemplates.js` 重新套用分類/頻道權限。
+- 新增 `/rebuild-community-layout`：重整分類順序、頻道順序、權限與導覽入口，不刪除訊息。
+- 新增 `/check-onboarding-visibility`：檢查哪些頻道 Discord 原生 Onboarding 可見，哪些因 @everyone 無 View Channel 無法偵測。
+- Onboarding compatible 公開入口：`👋｜新人報到`、`📜｜社群規則`、`📢｜公告`、`🧭｜伺服器導覽`、`💬｜一般聊天`、`🌙｜深夜聊天`、`🎮｜找隊友大廳`、`🎮｜目前語音房`。
+- Role restricted：遊戲分類給 `🎮 遊戲玩家`，Night Crew 給 `🌙 Night Crew`，創作開發給 `🛠 開發/AI`，投資討論給 `📈 股票投資`。
+- Private management：`🔒｜管理員後台` 只給站長/管理員/MOD 與 Bot。
+- 防呆：不刪除頻道、不刪 Ticket、不刪 Temp Voice、不刪 logs；Temp Voice 建立入口會重新註冊 metadata。
+- 建議初始化順序：`/bootstrap-community` -> `/setup-community-guide` -> `/check-onboarding-visibility` -> Discord Server Settings 手動設定 Onboarding / Server Guide / Welcome Screen。

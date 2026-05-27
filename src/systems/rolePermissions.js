@@ -2,6 +2,7 @@ const { ChannelType, PermissionFlagsBits, EmbedBuilder } = require('discord.js')
 const accessConfig = require('../config/roleChannelAccess');
 const { isTempVoice } = require('./tempVoice');
 const { writeServerLog } = require('./serverLogs');
+const { repairChannelPermissions } = require('./communityBootstrapSystem');
 
 const pendingRolePermissionPlans = new Map();
 const ADMIN_BACKEND_CATEGORY = '🔒｜管理員後台';
@@ -247,6 +248,16 @@ async function applyPermissionPlan(guild, plan) {
       { name: '失敗', value: summary.failed.join('\n').slice(0, 1024) || '無' }
     ]
   });
+
+  try {
+    const communitySummary = await repairChannelPermissions(guild);
+    summary.updatedCategories.push(...(communitySummary.repairedCategories || []).map((name) => `${name} (community layout)`));
+    summary.syncedChannels.push(...(communitySummary.repairedChannels || []));
+    summary.skipped.push(...(communitySummary.warnings || []));
+    summary.failed.push(...(communitySummary.failed || []));
+  } catch (error) {
+    summary.failed.push(`community layout repair: ${error.message}`);
+  }
 
   return summary;
 }

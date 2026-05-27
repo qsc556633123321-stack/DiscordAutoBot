@@ -3,6 +3,7 @@ const { CHANNEL_DESIGN } = require('../config/channelDesign');
 const { ROLE_DESIGN } = require('../config/roleDesign');
 const { SERVER_DESIGN_THEMES } = require('../config/serverDesignThemes');
 const { COMMUNITY_STRUCTURE } = require('../config/communityStructure');
+const { repairChannelPermissions } = require('./communityBootstrapSystem');
 const { writeServerLog } = require('./serverLogs');
 
 const pendingPolishPlans = new Map();
@@ -428,6 +429,15 @@ async function executePolish(guild, plan) {
 
   if (plan.setupNativeFeatures) {
     await setupNativeFeatures(guild, summary);
+  }
+
+  try {
+    const permissionSummary = await repairChannelPermissions(guild);
+    summary.syncedChannels.push(...(permissionSummary.repairedChannels || []));
+    summary.skipped.push(...(permissionSummary.warnings || []));
+    summary.failed.push(...(permissionSummary.failed || []));
+  } catch (error) {
+    summary.failed.push(`community permission repair: ${error.message}`);
   }
 
   await writeServerLog(guild, {
