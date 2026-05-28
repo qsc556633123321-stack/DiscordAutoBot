@@ -19,7 +19,8 @@ const protectedChannelKeywords = [
 const lifeChannelRules = [
   { keyword: '美食分享', categoryName: PUBLIC_LOBBY_CATEGORY, aliases: ['🍜｜美食分享'] },
   { keyword: '音樂分享', categoryName: PUBLIC_LOBBY_CATEGORY, aliases: ['🎵｜音樂分享'] },
-  { keyword: '閒聊討論', categoryName: PUBLIC_LOBBY_CATEGORY, aliases: ['🧠｜閒聊討論'] },
+  { keyword: '閒聊討論', categoryName: PUBLIC_LOBBY_CATEGORY, aliases: ['🧠｜閒聊討論', '🧠｜認真討論'] },
+  { keyword: '認真討論', categoryName: PUBLIC_LOBBY_CATEGORY, aliases: ['🧠｜認真討論', '🧠｜閒聊討論'] },
   { keyword: '一般聊天', categoryName: PUBLIC_LOBBY_CATEGORY, aliases: ['💬｜一般聊天'] },
   { keyword: '好圖分享', categoryName: PUBLIC_LOBBY_CATEGORY, aliases: ['🖼｜好圖分享'] }
 ];

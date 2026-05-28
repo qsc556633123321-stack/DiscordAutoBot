@@ -39,11 +39,7 @@ function readJson(filePath) {
 
 function writeJson(filePath, data) {
   ensureFile(filePath);
-  try {
-    fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  } catch (error) {
-    console.error(`Write ${path.basename(filePath)} failed:`, error);
-  }
+  fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
 function readSuggestions() {
@@ -100,9 +96,9 @@ function buildSuggestionEmbed(suggestion) {
   const support = suggestion.supporters?.length || 0;
   const oppose = suggestion.opposers?.length || 0;
   const statusText = {
-    pending: '審核中',
-    approved: '✅ 已批准',
-    rejected: '❌ 已拒絕'
+    pending: '等待投票',
+    approved: '已批准',
+    rejected: '已拒絕'
   }[suggestion.status || 'pending'];
 
   const embed = new EmbedBuilder()
@@ -132,7 +128,7 @@ async function generateCommunityText(kind, context, fallback) {
       messages: [
         {
           role: 'system',
-          content: '你是 Discord 遊戲社群助手。使用繁體中文，語氣溫暖、有社群感，最多 40 字，不要提 RPG、抽卡、金幣。'
+          content: '你是 Discord 遊戲社群管家。請用自然繁體中文，語氣輕鬆，40 字內，不要像客服。'
         },
         { role: 'user', content: JSON.stringify({ kind, context }) }
       ],
@@ -140,7 +136,7 @@ async function generateCommunityText(kind, context, fallback) {
       max_tokens: 80
     });
     return response.choices?.[0]?.message?.content?.trim() || fallback;
-  } catch (error) {
+  } catch {
     return fallback;
   }
 }
@@ -174,7 +170,7 @@ async function createGameSuggestion(interaction, gameName, reason) {
   };
 
   const message = await channel.send({
-    content: await generateCommunityText('game_suggestion', { gameName, reason }, '新的遊戲提議出現了，大家可以投票看看社群需求。'),
+    content: await generateCommunityText('game_suggestion', { gameName, reason }, '新的遊戲分類提議出現了，大家可以投票看看社群需求。'),
     embeds: [buildSuggestionEmbed(suggestion)],
     components: buildSuggestionRows(suggestionId)
   });
@@ -207,7 +203,7 @@ async function handleVote(interaction, suggestionId, vote) {
   if (vote === 'oppose') suggestion.opposers.push(interaction.user.id);
   saveSuggestion(interaction.guild.id, suggestionId, suggestion);
   await updateSuggestionMessage(interaction.guild, suggestion);
-  await interaction.reply({ content: vote === 'support' ? '已加入支持。' : '已加入反對。', ephemeral: true });
+  await interaction.reply({ content: vote === 'support' ? '已投支持票。' : '已投反對票。', ephemeral: true });
 }
 
 function buildGameChannelSpecs(gameName, shortName) {
@@ -222,7 +218,7 @@ function buildGameChannelSpecs(gameName, shortName) {
 
 function buildGameCategoryOverwrites(guild) {
   const gameRole = guild.roles.cache.find((role) => role.name === '🎮 遊戲玩家');
-  const adminRoles = guild.roles.cache.filter((role) => ['站長', '管理員', '👑 站長', '🛡 管理員'].includes(role.name));
+  const adminRoles = guild.roles.cache.filter((role) => ['站長', '管理員', '👑 站長', '🛡 管理員', '🔧 MOD'].includes(role.name));
   const overwrites = [
     { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
     {
@@ -263,7 +259,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
   const shortName = makeShortName(gameName);
   const categoryName = `🎮｜${gameName}`;
   const summary = { categoryName, shortName, created: [], existing: [], failed: [] };
-  let category = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && channel.name === categoryName);
+  let category = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && normalizeName(channel.name) === normalizeName(categoryName));
   if (!category) {
     category = await guild.channels.create({
       name: categoryName,
@@ -275,19 +271,23 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     await sleep(STEP_DELAY_MS);
   } else {
     summary.existing.push(category.name);
+    if (category.name !== categoryName) await category.setName(categoryName, 'Dynamic game category canonical name').catch(() => null);
     await category.permissionOverwrites.set(buildGameCategoryOverwrites(guild), 'Dynamic game category permissions').catch((error) => {
       summary.failed.push(`${category.name} permissions: ${error.message}`);
     });
   }
 
   const specs = buildGameChannelSpecs(gameName, shortName);
-  for (const spec of specs) {
+  for (let index = 0; index < specs.length; index += 1) {
+    const spec = specs[index];
     const existing = guild.channels.cache.find((channel) => channel.type === spec.type && normalizeName(channel.name) === normalizeName(spec.name));
     if (existing) {
+      if (existing.name !== spec.name) await existing.setName(spec.name, 'Dynamic game channel canonical name').catch(() => null);
       if (existing.parentId !== category.id) {
         await existing.setParent(category.id, { lockPermissions: false, reason: 'Dynamic game category placement' }).catch((error) => summary.failed.push(`${existing.name}: ${error.message}`));
       }
       await existing.lockPermissions().catch(() => null);
+      await existing.setPosition(index).catch(() => null);
       if (spec.createEntry) registerCreateEntryChannel(guild, existing, gameName);
       summary.existing.push(existing.name);
       continue;
@@ -301,6 +301,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
         reason: 'Dynamic game category channel setup'
       });
       await channel.lockPermissions().catch(() => null);
+      await channel.setPosition(index).catch(() => null);
       if (spec.createEntry) registerCreateEntryChannel(guild, channel, gameName);
       summary.created.push(channel.name);
       await sleep(STEP_DELAY_MS);
@@ -331,7 +332,7 @@ async function getLatestTextActivity(channel) {
   try {
     const messages = await channel.messages.fetch({ limit: 1 });
     return messages.first()?.createdTimestamp || 0;
-  } catch (error) {
+  } catch {
     return Date.now();
   }
 }
@@ -343,7 +344,7 @@ async function approveSuggestion(interaction, suggestionId) {
     return;
   }
   if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
-    await interaction.reply({ content: '只有具備 ManageChannels 的管理員可以批准。', ephemeral: true });
+    await interaction.reply({ content: '你需要 ManageChannels 權限才能批准遊戲分類。', ephemeral: true });
     return;
   }
   await interaction.deferReply({ ephemeral: true });
@@ -355,15 +356,15 @@ async function approveSuggestion(interaction, suggestionId) {
   await updateSuggestionMessage(interaction.guild, suggestion);
   await writeServerLog(interaction.guild, {
     title: '🎮 動態遊戲分類已批准',
-    description: `${interaction.user} 批准了 ${suggestion.gameName}`,
+    description: `${interaction.user} 批准：${suggestion.gameName}`,
     color: 0x57f287
-  });
-  await interaction.editReply(`已建立/同步遊戲分類：${summary.categoryName}\n建立：${summary.created.join('、') || '無'}\n已存在：${summary.existing.join('、') || '無'}\n失敗：${summary.failed.join('、') || '無'}`);
+  }).catch(() => null);
+  await interaction.editReply(`已建立或修復遊戲分類：${summary.categoryName}\n新建立：${summary.created.join('、') || '無'}\n已存在：${summary.existing.join('、') || '無'}\n失敗：${summary.failed.join('、') || '無'}`);
 }
 
 async function showRejectModal(interaction, suggestionId) {
   if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
-    await interaction.reply({ content: '只有具備 ManageChannels 的管理員可以拒絕。', ephemeral: true });
+    await interaction.reply({ content: '你需要 ManageChannels 權限才能拒絕遊戲提議。', ephemeral: true });
     return;
   }
   const modal = new ModalBuilder()
@@ -394,9 +395,9 @@ async function rejectSuggestion(interaction, suggestionId) {
   await updateSuggestionMessage(interaction.guild, suggestion);
   await writeServerLog(interaction.guild, {
     title: '🎮 動態遊戲分類已拒絕',
-    description: `${interaction.user} 拒絕了 ${suggestion.gameName}\n理由：${reason}`,
+    description: `${interaction.user} 拒絕：${suggestion.gameName}\n理由：${reason}`,
     color: 0xeb5757
-  });
+  }).catch(() => null);
   await interaction.reply({ content: `已拒絕 ${suggestion.gameName}：${reason}`, ephemeral: true });
 }
 
@@ -438,13 +439,11 @@ async function archiveInactiveGames(guild) {
     for (const channel of children.values()) {
       activityTimes.push(await getLatestTextActivity(channel));
     }
-    const latestActivity = Math.max(...activityTimes);
-    if (latestActivity > cutoff) {
-      skipped.push(`${meta.gameName}: 近期仍可能活躍`);
+    if (Math.max(...activityTimes) > cutoff) {
+      skipped.push(`${meta.gameName}: 近期仍有活動`);
       continue;
     }
     try {
-      await category.setParent?.(archive.id).catch(() => null);
       for (const channel of children.values()) {
         await channel.setParent(archive.id, { lockPermissions: false, reason: 'Archive inactive dynamic game' });
         await sleep(STEP_DELAY_MS);

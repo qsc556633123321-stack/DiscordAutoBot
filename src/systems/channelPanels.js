@@ -15,7 +15,7 @@ const PANELS_FILE = path.join(DATA_DIR, 'channel-panels.json');
 
 function ensurePanelsFile() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(PANELS_FILE)) fs.writeFileSync(PANELS_FILE, '{}', 'utf8');
+  if (!fs.existsSync(PANELS_FILE)) fs.writeFileSync(PANELS_FILE, '{}\n', 'utf8');
 }
 
 function readPanels() {
@@ -24,17 +24,13 @@ function readPanels() {
     const parsed = JSON.parse(fs.readFileSync(PANELS_FILE, 'utf8') || '{}');
     return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
   } catch (error) {
-    throw new Error(`讀取 channel-panels.json 失敗，請確認 JSON 格式正確：${error.message}`);
+    throw new Error(`讀取 channel-panels.json 失敗，請確認 JSON 格式：${error.message}`);
   }
 }
 
 function writePanels(data) {
   ensurePanelsFile();
-  try {
-    fs.writeFileSync(PANELS_FILE, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  } catch (error) {
-    throw new Error(`寫入 channel-panels.json 失敗：${error.message}`);
-  }
+  fs.writeFileSync(PANELS_FILE, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
 }
 
 function savePanelRecord(guildId, channelId, record) {
@@ -50,18 +46,22 @@ function savePanelRecord(guildId, channelId, record) {
 
 function deletePanelRecord(guildId, channelId) {
   const data = readPanels();
-  if (!data[guildId] || !data[guildId][channelId]) return;
+  if (!data[guildId]?.[channelId]) return;
   delete data[guildId][channelId];
   writePanels(data);
 }
 
 function getPanelRecord(guildId, channelId) {
   const data = readPanels();
-  return data[guildId] ? data[guildId][channelId] : null;
+  return data[guildId]?.[channelId] || null;
 }
 
-function normalizeName(name) {
-  return name.toLowerCase().replace(/[\s_\-｜|#🎮🎫🎟📑📌💬🔒🎉📦🔊➕]+/g, '');
+function normalizeName(name = '') {
+  return String(name)
+    .normalize('NFKC')
+    .toLowerCase()
+    .replace(/[\u{1f000}-\u{1faff}\u{2600}-\u{27bf}\ufe0f]/gu, '')
+    .replace(/[\s｜|\-_/\\:：・•·.,，。()[\]{}<>【】「」『』"'`~!！?？+＋#＃]+/gu, '');
 }
 
 function inferGameName(channel) {
@@ -71,9 +71,10 @@ function inferGameName(channel) {
 
   const normalized = normalizeName(channel.name);
   if (normalized.startsWith('apex')) return 'APEX';
-  if (normalized.startsWith('特戰')) return '特戰英豪';
+  if (normalized.startsWith('特戰') || normalized.startsWith('valorant')) return 'VALORANT';
   if (normalized.startsWith('mc') || normalized.startsWith('minecraft')) return 'Minecraft';
   if (normalized.startsWith('lol')) return 'LOL';
+  if (normalized.startsWith('tft')) return 'TFT';
   return null;
 }
 
@@ -82,18 +83,20 @@ function inferPanelType(channel) {
 
   const normalized = normalizeName(channel.name);
   const parentName = channel.parent ? channel.parent.name : '';
-  const isGameCategory = /^🎮｜/.test(parentName);
+  const isGameCategory = /^🎮｜/.test(parentName) && !/遊戲中心|遊戲大廳/.test(parentName);
 
-  if (/規則|社群規則/.test(normalized)) return 'rules';
-  if (/公告/.test(normalized) && !/活動公告/.test(normalized)) return 'announcement';
-  if (/身分組領取|身分組|roles?/.test(normalized)) return 'role_select';
+  if (/社群規則|規則|rules/.test(normalized)) return 'rules';
+  if (/公告|announcement/.test(normalized) && !/活動公告/.test(normalized)) return 'announcement';
+  if (/身分組|領取身分組|roles/.test(normalized)) return 'role_select';
   if (/新人報到|報到|welcome/.test(normalized)) return 'welcome';
-  if (/導覽|指南|guide/.test(normalized)) return 'guide';
-  if (/一般聊天|聊天|閒聊/.test(normalized) && !isGameCategory) return 'general_chat';
-  if (/美食分享|美食|料理/.test(normalized)) return 'food';
-  if (/好圖分享|好圖|圖片|梗圖/.test(normalized)) return 'images';
-  if (/開啟客服單|客服/.test(normalized)) return 'support';
-  if (/管理員頻道|管理|後台/.test(normalized)) return 'admin';
+  if (/伺服器導覽|導覽|guide/.test(normalized)) return 'guide';
+  if (/遊戲提議|提議遊戲|suggestgame/.test(normalized)) return 'game_suggestions';
+  if (/一般聊天|general/.test(normalized) && !isGameCategory) return 'general_chat';
+  if (/認真討論|閒聊討論/.test(normalized) && !isGameCategory) return 'serious_discussion';
+  if (/美食分享|美食/.test(normalized)) return 'food';
+  if (/好圖分享|迷因與好圖|圖片/.test(normalized)) return 'images';
+  if (/開啟客服單|客服支援|ticket/.test(normalized)) return 'support';
+  if (/管理員頻道|管理員後台|admin|serverlogs|ticketlogs|botcontrol/.test(normalized)) return 'admin';
   if (isGameCategory && /找隊友/.test(normalized)) return 'game_party';
   if (isGameCategory && /戰績|精華/.test(normalized)) return 'clips';
   if (isGameCategory && /聊天|討論/.test(normalized)) return 'game_chat';
@@ -121,12 +124,7 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0x2f80ed)
         .setTitle('📜 社群規則與基本守則')
-        .setDescription(
-          '• 尊重所有成員，禁止人身攻擊、騷擾、歧視、洗版\n' +
-          '• 禁止詐騙連結、惡意檔案、盜號網站、外掛交易\n' +
-          '• 不同主題請到對應頻道，避免所有內容都塞在一般聊天\n' +
-          '• 管理員有權依情況警告、禁言、踢出或封鎖'
-        ),
+        .setDescription('尊重所有成員，禁止人身攻擊、騷擾、歧視、洗版。\n禁止詐騙連結、惡意檔案、盜號網站、外掛交易。\n不同主題請到對應頻道，避免所有內容都塞在一般聊天。'),
       buttons: [
         button('panel_read_rules', '✅ 我已閱讀規則', ButtonStyle.Success),
         button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary),
@@ -137,7 +135,7 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0xf2c94c)
         .setTitle('📢 社群公告中心')
-        .setDescription('• 這裡只發布重要通知、活動資訊、伺服器更新\n• 最新公告會由 Bot 自動置頂\n• 一般討論請到日常交流區'),
+        .setDescription('這裡發布重要通知、活動資訊與伺服器更新。\n一般討論請到一般聊天或認真討論。'),
       buttons: [
         button('panel_subscribe_announcement', '🔔 訂閱公告', ButtonStyle.Primary),
         button('panel_show_rules', '📜 查看規則'),
@@ -148,17 +146,13 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0x9b51e0)
         .setTitle('🎭 身分組領取中心')
-        .setDescription(
-          '請依照你的興趣領取身分組，之後系統會依身分組開放對應通知與分類。\n\n' +
-          '身分組分類：\n' +
-          '• 🎮 遊戲玩家\n• 🧑‍🤝‍🧑 找隊友通知\n• 📈 股票投資\n• 🛠 開發/AI\n• 🎨 設計創作\n• 🍜 生活閒聊'
-        ),
+        .setDescription('請依照你的興趣領取身分組。系統會依身分組解鎖對應分類與通知。'),
       buttons: [],
       extraRows: [
         new ActionRowBuilder().addComponents(
           new StringSelectMenuBuilder()
             .setCustomId('role_select_menu')
-            .setPlaceholder('選擇或取消你的身分組')
+            .setPlaceholder('選擇你感興趣的身分組')
             .setMinValues(0)
             .setMaxValues(getRoleOptions().length)
             .addOptions(getRoleOptions())
@@ -169,7 +163,7 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0x27ae60)
         .setTitle('👋 新人報到區')
-        .setDescription('歡迎加入，可以簡單介紹：\n• 暱稱：\n• 常玩遊戲：\n• 興趣：\n• 想交流的內容：'),
+        .setDescription('歡迎加入，可以簡單介紹自己。\n\n推薦格式：\n暱稱：\n常玩遊戲：\n興趣：\n想交流的內容：'),
       buttons: [
         button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary),
         button('panel_show_rules', '📜 查看規則'),
@@ -180,36 +174,51 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0x56ccf2)
         .setTitle('🧭 伺服器導覽')
-        .setDescription(
-          '• 📌 社群入口：規則、公告、身分組與新人資訊\n' +
-          '• 💬 日常交流：生活閒聊、美食、圖片與音樂\n' +
-          '• 🎮 各遊戲分類：聊天、找隊友、戰績與臨時語音\n' +
-          '• 🛠 創作與開發：程式、AI、設計與作品展示\n' +
-          '• 📈 投資討論：台股、盤勢、投資筆記\n' +
-          '• 🎉 活動專區：活動、投票、抽獎與排行\n' +
-          '• 🎫 客服支援：問題回報、建議與 Ticket'
-        ),
+        .setDescription('先從社群入口看規則與領身分組。\n想輕鬆聊天去一般聊天；想長篇交換觀點去認真討論。\n想新增遊戲分類可以到遊戲提議。'),
       buttons: [
         button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary),
+        button('panel_show_game_suggestions', '🎮 遊戲提議入口'),
         button('panel_create_ticket', '🎫 需要協助')
       ]
     }),
     general_chat: () => ({
       embed: new EmbedBuilder()
         .setColor(0x2f80ed)
-        .setTitle('💬 日常交流規範')
-        .setDescription('• 可以聊生活、遊戲、工作、AI、股票之外的一般話題\n• 美食、圖片、音樂建議到對應頻道\n• 避免洗版、吵架、引戰'),
+        .setTitle('💬 一般聊天')
+        .setDescription('用途：日常聊天、打招呼、生活閒聊、輕鬆話題。\n\n適合：今天吃什麼、最近在玩什麼、簡短分享、輕鬆互動。\n較深入的觀點交流、科技、AI、社群想法，建議到 🧠｜認真討論。'),
       buttons: [
+        button('panel_show_serious_discussion', '🧠 前往認真討論'),
         button('panel_show_games', '🎮 前往遊戲區'),
-        button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary),
-        button('panel_create_ticket', '🎫 需要協助')
+        button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary)
+      ]
+    }),
+    serious_discussion: () => ({
+      embed: new EmbedBuilder()
+        .setColor(0x9b51e0)
+        .setTitle('🧠 認真討論')
+        .setDescription('用途：較深入的話題、觀點交流、科技、AI、社群想法、比較長篇的討論。\n\n適合：整理想法、發問、辯論、分析、長文分享。\n輕鬆閒聊、打招呼、生活小事請回 💬｜一般聊天。'),
+      buttons: [
+        button('panel_show_chat', '💬 回一般聊天'),
+        button('panel_show_discussion_format', '📝 討論格式'),
+        button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary)
+      ]
+    }),
+    game_suggestions: () => ({
+      embed: new EmbedBuilder()
+        .setColor(0x57f287)
+        .setTitle('🎮 遊戲分類提議中心')
+        .setDescription('想新增遊戲分類可以在這裡提議。\n如果有足夠需求，管理員會批准建立專屬分類與語音入口。\n\n1. 使用 `/suggest-game` 提出遊戲\n2. 說明為什麼需要這個分類\n3. 其他人可以按 👍 支持\n4. 管理員會選擇批准或拒絕\n5. 批准後會自動建立遊戲分類、聊天、找隊友、資訊與語音入口'),
+      buttons: [
+        button('panel_suggest_game', '🎮 提議新遊戲', ButtonStyle.Primary),
+        button('panel_show_game_suggestion_flow', '📋 查看提議流程'),
+        button('panel_show_game_categories', '🧭 查看目前遊戲分類')
       ]
     }),
     party: () => ({
       embed: new EmbedBuilder()
         .setColor(0x9b51e0)
         .setTitle('🎮 找隊友區')
-        .setDescription('• 請說明遊戲、模式、人數、語音需求\n• 也可以使用 /create-party 建立臨時語音'),
+        .setDescription('請說明遊戲、模式、人數、語音需求。也可以使用 `/create-party` 建立臨時語音。'),
       buttons: [
         button('panel_create_voice', '🔊 建立臨時語音', ButtonStyle.Primary),
         button('panel_show_party_format', '📌 查看組隊格式')
@@ -219,7 +228,7 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0xf2994a)
         .setTitle('🏆 戰績與精華分享')
-        .setDescription('• 分享戰績、截圖、影片、精彩操作\n• 請避免惡意嘲諷或引戰'),
+        .setDescription('分享戰績、截圖、影片與精彩操作。請避免惡意嘲諷或引戰。'),
       buttons: [
         button('panel_show_clip_format', '📤 分享格式'),
         button('panel_show_party', '🎮 前往找隊友')
@@ -229,7 +238,7 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0xf2c94c)
         .setTitle('🍜 美食分享')
-        .setDescription('• 分享餐廳、宵夜、料理、飲料、外送推薦\n• 歡迎附照片與地區'),
+        .setDescription('分享餐廳、宵夜、料理、飲料、外送推薦。歡迎附照片與地區。'),
       buttons: [
         button('panel_show_photo_hint', '📸 分享照片'),
         button('panel_show_food_format', '📝 推薦格式')
@@ -238,15 +247,15 @@ function buildPanel(panelType, channel) {
     images: () => ({
       embed: new EmbedBuilder()
         .setColor(0x56ccf2)
-        .setTitle('🖼 好圖分享')
-        .setDescription('• 分享梗圖、桌布、遊戲截圖、AI 圖\n• 禁止色情、血腥、惡意攻擊圖片'),
+        .setTitle('🖼 迷因與好圖')
+        .setDescription('分享梗圖、桌布、遊戲截圖、AI 圖。禁止色情、血腥、惡意攻擊圖片。'),
       buttons: [button('panel_show_image_rules', '📌 發圖規範')]
     }),
     support: () => ({
       embed: new EmbedBuilder()
         .setColor(0x2f80ed)
         .setTitle('🎫 客服支援中心')
-        .setDescription('遇到問題請開 Ticket：\n• 權限問題\n• 頻道建議\n• 成員檢舉\n• Bot 問題'),
+        .setDescription('遇到權限問題、頻道建議、成員檢舉或 Bot 問題，可以建立 Ticket。'),
       buttons: [
         button('panel_create_ticket', '🎟 建立 Ticket', ButtonStyle.Primary),
         button('panel_show_suggestion_format', '💡 提交建議格式')
@@ -257,7 +266,7 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0xeb5757)
         .setTitle('🔒 管理員控制台')
-        .setDescription('常用指令：\n• /analyze-server\n• /deep-cleanup\n• /rebuild-server\n• /setup-channel-panels\n• /setup-game\n• /cleanup-empty-categories'),
+        .setDescription('常用指令：`/analyze-server`、`/deep-cleanup`、`/setup-channel-panels`、`/setup-game`、`/layout-doctor`。'),
       buttons: [
         button('panel_hint_analyze', '📊 分析伺服器'),
         button('panel_hint_deep_cleanup', '🧹 深度整理'),
@@ -269,7 +278,7 @@ function buildPanel(panelType, channel) {
       embed: new EmbedBuilder()
         .setColor(0x27ae60)
         .setTitle('🎮 遊戲聊天區')
-        .setDescription('• 討論該遊戲心得、更新、角色、裝備、技巧\n• 找隊友請到找隊友頻道\n• 語音可使用臨時語音系統'),
+        .setDescription('討論該遊戲心得、更新、角色、裝備與技巧。找隊友請到找隊友頻道。'),
       buttons: [
         button(`panel_create_voice:${game || ''}`, '🔊 建立遊戲語音', ButtonStyle.Primary),
         button('panel_show_party_format', '🧑‍🤝‍🧑 找隊友格式'),
@@ -279,8 +288,8 @@ function buildPanel(panelType, channel) {
     game_party: () => ({
       embed: new EmbedBuilder()
         .setColor(0x9b51e0)
-        .setTitle('🧑‍🤝‍🧑 找隊友格式')
-        .setDescription('請使用以下格式：\n```text\n遊戲：\n模式：\n人數：\n牌位：\n是否開語音：\n備註：\n```'),
+        .setTitle('🧑‍🤝‍🧑 遊戲找隊友')
+        .setDescription('請說明牌位、模式、人數、語音需求。可使用 `/create-party` 建立臨時語音。'),
       buttons: [
         button('panel_show_party_format', '📋 顯示組隊格式'),
         button(`panel_create_voice:${game || ''}`, '🔊 建立臨時語音', ButtonStyle.Primary)
@@ -296,9 +305,9 @@ function buildPanel(panelType, channel) {
 
 function channelMatchesTarget(channel, panelType, target) {
   if (target === 'all') return true;
-  if (target === 'game') return ['party', 'clips', 'game_chat', 'game_party'].includes(panelType) || /^🎮｜/.test(channel.parent?.name || '');
+  if (target === 'game') return ['party', 'clips', 'game_chat', 'game_party', 'game_suggestions'].includes(panelType) || /^🎮｜/.test(channel.parent?.name || '');
   if (target === 'support') return ['support', 'ticket'].includes(panelType);
-  if (target === 'info') return ['rules', 'announcement', 'welcome'].includes(panelType);
+  if (target === 'info') return ['rules', 'announcement', 'welcome', 'guide', 'game_suggestions'].includes(panelType);
   return false;
 }
 
@@ -317,10 +326,10 @@ function getTargetChannels(guild, target, currentChannel) {
 async function applyPanelToChannel(client, guild, channel, panelType, mode) {
   const record = getPanelRecord(guild.id, channel.id);
   const payload = buildPanel(panelType, channel);
-  if (!payload) return { status: 'skipped', channel: channel.name, reason: '無面板內容' };
+  if (!payload) return { status: 'skipped', channel: channel.name, reason: '沒有對應 panel' };
 
   if (record && mode === 'create') {
-    return { status: 'skipped', channel: channel.name, reason: '面板已存在' };
+    return { status: 'skipped', channel: channel.name, reason: '已存在 panel' };
   }
 
   if (record && ['refresh', 'force'].includes(mode)) {
@@ -340,7 +349,7 @@ async function applyPanelToChannel(client, guild, channel, panelType, mode) {
       deletePanelRecord(guild.id, channel.id);
     } catch (error) {
       if (mode === 'refresh') {
-        return { status: 'failed', channel: channel.name, reason: '更新既有面板失敗' };
+        return { status: 'failed', channel: channel.name, reason: '更新既有 panel 失敗' };
       }
     }
   }

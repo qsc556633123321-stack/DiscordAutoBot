@@ -27,7 +27,7 @@ const CHANNEL_DESIGN = [
       { key: 'image_share', name: '🖼｜好圖分享', type: ChannelType.GuildText, aliases: ['好圖分享', '迷因與好圖'] },
       { key: 'food_share', name: '🍜｜美食分享', type: ChannelType.GuildText, aliases: ['美食分享'] },
       { key: 'music_share', name: '🎵｜音樂分享', type: ChannelType.GuildText, aliases: ['音樂分享'] },
-      { key: 'casual_discussion', name: '🧠｜閒聊討論', type: ChannelType.GuildText, aliases: ['閒聊討論'] }
+      { key: 'serious_discussion', name: '🧠｜認真討論', type: ChannelType.GuildText, aliases: ['認真討論', '閒聊討論', '討論區'] }
     ]
   },
   {

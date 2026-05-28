@@ -145,9 +145,12 @@ function buildGuideEmbed(guildName = 'KU Community', intro = null) {
       '🎮 找人打遊戲\n' +
       '🎧 建立臨時語音房\n' +
       '🌙 深夜掛語音聊天\n' +
+      '💬 在一般聊天輕鬆打招呼\n' +
+      '🧠 在認真討論交換較深入的想法\n' +
       '🤖 體驗 AI 社群功能\n' +
       '📈 討論股票與科技\n' +
-      '🧑‍💻 分享開發與創作'
+      '🧑‍💻 分享開發與創作\n' +
+      '📋 提議你想玩的新遊戲分類'
     )
     .setFooter({ text: '不用急著看完，慢慢探索就好。' })
     .setTimestamp();
@@ -157,10 +160,11 @@ function buildGuideRows() {
   return [
     new ActionRowBuilder().addComponents(
       new ButtonBuilder().setCustomId('concierge_games').setLabel('我想玩遊戲').setEmoji('🎮').setStyle(ButtonStyle.Primary),
-      new ButtonBuilder().setCustomId('concierge_night').setLabel('我喜歡深夜聊天').setEmoji('🌙').setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder().setCustomId('panel_show_game_suggestions').setLabel('提議新遊戲').setEmoji('📋').setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId('concierge_bot').setLabel('BOT 有什麼功能？').setEmoji('🤖').setStyle(ButtonStyle.Secondary)
     ),
     new ActionRowBuilder().addComponents(
+      new ButtonBuilder().setCustomId('concierge_night').setLabel('我喜歡深夜聊天').setEmoji('🌙').setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId('concierge_invest').setLabel('我對投資有興趣').setEmoji('📈').setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId('concierge_dev').setLabel('我想看 AI / 開發').setEmoji('🧑‍💻').setStyle(ButtonStyle.Secondary),
       new ButtonBuilder().setCustomId('concierge_roadmap').setLabel('社群未來規劃').setEmoji('🚧').setStyle(ButtonStyle.Secondary)

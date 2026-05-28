@@ -766,6 +766,14 @@ async function handlePanelOpenRoles(interaction) {
   }
 }
 
+function listGameCategories(guild) {
+  const categories = guild.channels.cache
+    .filter((channel) => channel.type === ChannelType.GuildCategory && /^🎮｜/.test(channel.name) && !/遊戲中心|遊戲大廳/.test(channel.name))
+    .map((channel) => `- ${channel.name}`)
+    .slice(0, 20);
+  return categories.length ? categories.join('\n') : '目前還沒有專屬遊戲分類，可以使用 `/suggest-game game_name reason` 提議。';
+}
+
 async function handlePanelButton(interaction) {
   if (interaction.customId === 'panel_create_ticket') {
     await handleCreateTicket(interaction);
@@ -790,6 +798,36 @@ async function handlePanelButton(interaction) {
     return;
   }
 
+  if (interaction.customId === 'panel_suggest_game') {
+    await interaction.reply({
+      content: '請使用 `/suggest-game game_name reason` 送出提議。\n範例：`/suggest-game game_name:R.E.P.O reason:最近很多人想一起玩，需要找隊友和語音入口`',
+      ephemeral: true
+    });
+    return;
+  }
+
+  if (interaction.customId === 'panel_show_game_suggestion_flow') {
+    await interaction.reply({
+      content:
+        '遊戲分類提議流程：\n' +
+        '1. 使用 `/suggest-game game_name reason` 提出遊戲。\n' +
+        '2. 說明為什麼需要這個分類。\n' +
+        '3. 其他人可以按 👍 支持或 👎 反對。\n' +
+        '4. 管理員會批准或拒絕。\n' +
+        '5. 批准後 Bot 會自動建立遊戲分類、聊天、找隊友、資訊與語音入口。',
+      ephemeral: true
+    });
+    return;
+  }
+
+  if (interaction.customId === 'panel_show_game_categories') {
+    await interaction.reply({
+      content: `目前已存在的遊戲分類：\n${listGameCategories(interaction.guild)}`,
+      ephemeral: true
+    });
+    return;
+  }
+
   const responses = {
     panel_read_rules: '感謝閱讀規則。',
     panel_open_roles: '請前往身分組領取頻道，或請管理員使用 `/setup-roles` 建立身分組面板。',
@@ -802,9 +840,12 @@ async function handlePanelButton(interaction) {
     panel_interest_chat: '已收到：你想聊天交友。歡迎到日常大廳交流。',
     panel_interest_dev: '已收到：你對開發有興趣。之後可接上身分組系統。',
     panel_interest_stock: '已收到：你對股票有興趣。之後可接上身分組系統。',
-    panel_show_games: '請前往各 `🎮｜遊戲名稱` 分類查看遊戲頻道。',
+    panel_show_games: '請前往各 `🎮｜遊戲名稱` 分類查看遊戲頻道。想新增遊戲可到 `📋｜遊戲提議` 使用 `/suggest-game`。',
     panel_show_rules: '請查看 `社群規則` 或規則頻道。',
-    panel_show_chat: '請前往 `一般聊天` 或日常交流分類。',
+    panel_show_chat: '請前往 `💬｜一般聊天`。這裡適合打招呼、生活閒聊與輕鬆話題。',
+    panel_show_serious_discussion: '請前往 `🧠｜認真討論`。這裡適合較深入的觀點交流、科技、AI、社群想法與長篇討論。',
+    panel_show_discussion_format: '認真討論建議格式：\n```text\n主題：\n背景：\n我的想法：\n想聽大家討論的是：\n```',
+    panel_show_game_suggestions: '請前往 `📋｜遊戲提議`，或直接使用 `/suggest-game game_name reason`。',
     panel_show_party: '請前往該遊戲的找隊友頻道。',
     panel_show_party_format: '組隊格式：\n```text\n遊戲：\n模式：\n人數：\n牌位：\n語音：\n備註：\n```',
     panel_show_suggestion_format: '建議格式：\n```text\n建議類型：\n相關頻道：\n具體內容：\n預期效果：\n```',

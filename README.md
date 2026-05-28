@@ -302,3 +302,32 @@ AI 只負責輔助判斷：分類意圖、命名建議、刪除風險、使用�
 - 管理員後台核心頻道
 
 所有 create/edit/move/delete 都使用 queue delay、try/catch、server-logs 記錄與最後 summary。高風險項目會在 preview embed 裡獨立列出。
+
+## Channel Positioning & Game Suggestion Panels
+
+聊天頻道定位已拆清楚：
+
+- `💬｜一般聊天`：日常聊天、打招呼、生活閒聊、輕鬆話題。
+- `🧠｜認真討論`：較深入的話題、觀點交流、科技、AI、社群想法、比較長篇的討論。
+
+若伺服器裡已有 `🧠｜閒聊討論`，執行 `/bootstrap-community mode:execute` 或 `/rebuild-community-layout mode:execute` 會將它辨識為同一個頻道並改名成 `🧠｜認真討論`。
+
+遊戲提議入口：
+
+- `📋｜遊戲提議` 會有「🎮 遊戲分類提議中心」面板。
+- 使用者按「🎮 提議新遊戲」時，Bot 會提示使用 `/suggest-game game_name reason`。
+- 按「📋 查看提議流程」會顯示投票與管理員批准流程。
+- 按「🧭 查看目前遊戲分類」會列出目前存在的 `🎮｜遊戲名稱` 分類。
+
+重建或刷新面板：
+
+```text
+/setup-channel-panels mode:refresh target:all
+/setup-channel-panels mode:force target:current
+```
+
+測試遊戲提議：
+
+```text
+/suggest-game game_name:R.E.P.O reason:最近很多人在玩，希望有找隊友和語音入口
+```

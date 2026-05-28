@@ -21,7 +21,7 @@ const mixedCommunity = {
         { name: '🖼｜好圖分享', type: 'text' },
         { name: '🍜｜美食分享', type: 'text' },
         { name: '🎵｜音樂分享', type: 'text' },
-        { name: '🧠｜閒聊討論', type: 'text' }
+        { name: '🧠｜認真討論', type: 'text' }
       ]
     },
     {

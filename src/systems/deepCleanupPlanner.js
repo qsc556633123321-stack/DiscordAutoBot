@@ -77,7 +77,8 @@ function inferTargetCategory(channel) {
 
   if (/活動規劃|活動公告|投票區|活動|賽事|抽獎|投票/.test(normalized)) return ['🎉｜活動專區', '活動相關頻道'];
   if (/規則|公告|驗證區|驗證|身分組|身分|新人報到|說明/.test(normalized)) return ['📌｜社群入口', '社群入口資訊頻道'];
-  if (/美食分享|好圖分享|一般聊天|私人限定討論區|閒聊|聊天/.test(normalized)) return ['💬｜日常大廳', '日常聊天與分享頻道'];
+  if (/認真討論|閒聊討論|科技|ai|觀點/.test(normalized)) return ['💬｜社群大廳', '深入討論與觀點交流頻道'];
+  if (/美食分享|好圖分享|一般聊天|私人限定討論區|閒聊|聊天/.test(normalized)) return ['💬｜社群大廳', '日常聊天與分享頻道'];
   if (/找隊友|戰績分享|戰績|遊戲討論/.test(normalized)) return ['🎮｜遊戲大廳', '遊戲文字討論頻道'];
 
   if (/私人限定討論區/.test(normalized)) {
