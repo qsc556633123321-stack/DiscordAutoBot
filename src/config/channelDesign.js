@@ -23,10 +23,6 @@ const CHANNEL_DESIGN = [
       { key: 'general_chat', name: '💬｜一般聊天', type: ChannelType.GuildText, aliases: ['一般聊天', '聊天'] },
       { key: 'late_night_chat', name: '🌙｜深夜聊天', type: ChannelType.GuildText, aliases: ['深夜聊天'] },
       { key: 'party_lobby', name: '🎮｜找隊友大廳', type: ChannelType.GuildText, aliases: ['找隊友大廳'] },
-      { key: 'activity_announcement', name: '📅｜活動公告', type: ChannelType.GuildText, aliases: ['活動公告'] },
-      { key: 'image_share', name: '🖼｜好圖分享', type: ChannelType.GuildText, aliases: ['好圖分享', '迷因與好圖'] },
-      { key: 'food_share', name: '🍜｜美食分享', type: ChannelType.GuildText, aliases: ['美食分享'] },
-      { key: 'music_share', name: '🎵｜音樂分享', type: ChannelType.GuildText, aliases: ['音樂分享'] },
       { key: 'serious_discussion', name: '🧠｜認真討論', type: ChannelType.GuildText, aliases: ['認真討論', '閒聊討論', '討論區'] }
     ]
   },

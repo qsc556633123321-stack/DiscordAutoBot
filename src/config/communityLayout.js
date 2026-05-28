@@ -48,10 +48,7 @@ const COMMUNITY_LAYOUT = [
       { key: 'general_chat', name: '💬｜一般聊天', type: ChannelType.GuildText, aliases: ['一般聊天', '聊天', 'general'], visibilityType: VISIBILITY_TYPES.publicSocial },
       { key: 'late_night_chat', name: '🌙｜深夜聊天', type: ChannelType.GuildText, aliases: ['深夜聊天', '深夜'], visibilityType: VISIBILITY_TYPES.publicSocial },
       { key: 'party_lobby', name: '🎮｜找隊友大廳', type: ChannelType.GuildText, aliases: ['找隊友大廳', '找隊友', '組隊大廳'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'serious_discussion', name: '🧠｜認真討論', type: ChannelType.GuildText, aliases: ['認真討論', '閒聊討論', '討論區'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'music_share', name: '🎵｜音樂分享', type: ChannelType.GuildText, aliases: ['音樂分享'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'food_share', name: '🍜｜美食分享', type: ChannelType.GuildText, aliases: ['美食分享'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'image_share', name: '🖼｜迷因與好圖', type: ChannelType.GuildText, aliases: ['好圖分享', '迷因與好圖'], visibilityType: VISIBILITY_TYPES.publicSocial }
+      { key: 'serious_discussion', name: '🧠｜認真討論', type: ChannelType.GuildText, aliases: ['認真討論', '閒聊討論', '討論區'], visibilityType: VISIBILITY_TYPES.publicSocial }
     ]
   },
   {

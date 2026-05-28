@@ -133,6 +133,14 @@ function channelHasActivity(channel) {
   return Boolean(channel.lastMessageId) || (channel.members && channel.members.size > 0);
 }
 
+function isSimilarChannelMergeCandidate(name) {
+  return /閒聊討論|迷因與好圖|好圖分享|音樂分享|美食分享|活動公告|投票區|比賽與排行/i.test(name);
+}
+
+function isEmptyOrTestChannel(channel) {
+  return !channelHasActivity(channel) || /test-|測試|empty-|空白/i.test(channel.name);
+}
+
 function isEveryoneViewAllowed(channel) {
   const overwrite = channel.permissionOverwrites.cache.get(channel.guild.roles.everyone.id);
   if (overwrite?.deny?.has(PermissionFlagsBits.ViewChannel)) return false;
@@ -340,6 +348,27 @@ function buildUnmanagedActions(guild, expectedIndex, scope, aiVotes = []) {
     const ai = aiById.get(channel.id);
     const canDeleteByName = isDeleteNameCandidate(channel.name);
     const inactive = !channelHasActivity(channel);
+    if (isSimilarChannelMergeCandidate(channel.name)) {
+      if (isEmptyOrTestChannel(channel)) {
+        actions.push(action('delete', {
+          targetId: channel.id,
+          targetName: channel.name,
+          reason: '相似頻道精簡候選，且看起來是空頻道或測試頻道',
+          confidence: 82,
+          risk: 'high'
+        }));
+      } else {
+        actions.push(action('archive', {
+          targetId: channel.id,
+          targetName: channel.name,
+          targetCategoryKey: 'old_archive',
+          reason: '相似頻道精簡候選；已有訊息，先移到舊頻道封存',
+          confidence: 84,
+          risk: 'medium'
+        }));
+      }
+      continue;
+    }
     if (canDeleteByName || (inactive && ai?.action === 'delete' && ai.confidence >= 80)) {
       actions.push(action('delete', {
         targetId: channel.id,

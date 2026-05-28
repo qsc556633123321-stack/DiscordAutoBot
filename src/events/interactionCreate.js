@@ -74,7 +74,10 @@ const {
   getPolishPlan
 } = require('../systems/serverPolisher');
 const {
+  handleCreateSuggestionModal,
   handleGameSuggestionButton,
+  listPendingSuggestions,
+  showGameSuggestionModal,
   rejectSuggestion
 } = require('../systems/gameSuggestionSystem');
 const { handleConciergeButton } = require('../systems/communityConcierge');
@@ -799,22 +802,15 @@ async function handlePanelButton(interaction) {
   }
 
   if (interaction.customId === 'panel_suggest_game') {
-    await interaction.reply({
-      content: '請使用 `/suggest-game game_name reason` 送出提議。\n範例：`/suggest-game game_name:R.E.P.O reason:最近很多人想一起玩，需要找隊友和語音入口`',
-      ephemeral: true
-    });
+    await showGameSuggestionModal(interaction);
     return;
   }
 
   if (interaction.customId === 'panel_show_game_suggestion_flow') {
     await interaction.reply({
       content:
-        '遊戲分類提議流程：\n' +
-        '1. 使用 `/suggest-game game_name reason` 提出遊戲。\n' +
-        '2. 說明為什麼需要這個分類。\n' +
-        '3. 其他人可以按 👍 支持或 👎 反對。\n' +
-        '4. 管理員會批准或拒絕。\n' +
-        '5. 批准後 Bot 會自動建立遊戲分類、聊天、找隊友、資訊與語音入口。',
+        `目前提議：\n${listPendingSuggestions(interaction.guild.id)}\n\n` +
+        '流程：按「提議新遊戲」填表單，其他人投票，管理員批准後 Bot 會自動建立遊戲分類、聊天、找隊友、資訊與語音入口。',
       ephemeral: true
     });
     return;
@@ -845,7 +841,7 @@ async function handlePanelButton(interaction) {
     panel_show_chat: '請前往 `💬｜一般聊天`。這裡適合打招呼、生活閒聊與輕鬆話題。',
     panel_show_serious_discussion: '請前往 `🧠｜認真討論`。這裡適合較深入的觀點交流、科技、AI、社群想法與長篇討論。',
     panel_show_discussion_format: '認真討論建議格式：\n```text\n主題：\n背景：\n我的想法：\n想聽大家討論的是：\n```',
-    panel_show_game_suggestions: '請前往 `📋｜遊戲提議`，或直接使用 `/suggest-game game_name reason`。',
+    panel_show_game_suggestions: '請前往 `📋｜遊戲提議`，按「🎮 提議新遊戲」填表單即可，不需要記 slash command。',
     panel_show_party: '請前往該遊戲的找隊友頻道。',
     panel_show_party_format: '組隊格式：\n```text\n遊戲：\n模式：\n人數：\n牌位：\n語音：\n備註：\n```',
     panel_show_suggestion_format: '建議格式：\n```text\n建議類型：\n相關頻道：\n具體內容：\n預期效果：\n```',
@@ -1505,6 +1501,20 @@ module.exports = {
 
   async execute(interaction) {
     if (interaction.isModalSubmit()) {
+      if (interaction.customId === 'game_suggest_create_modal') {
+        try {
+          await handleCreateSuggestionModal(interaction);
+        } catch (error) {
+          console.error('Game suggestion create modal failed:', error);
+          if (!interaction.replied && !interaction.deferred) {
+            await interaction.reply({ content: '送出遊戲提議時發生錯誤，請稍後再試。', ephemeral: true });
+          } else {
+            await interaction.editReply({ content: '送出遊戲提議時發生錯誤，請稍後再試。' }).catch(() => null);
+          }
+        }
+        return;
+      }
+
       if (interaction.customId.startsWith('game_suggest_reject_modal_')) {
         try {
           await rejectSuggestion(interaction, interaction.customId.replace('game_suggest_reject_modal_', ''));

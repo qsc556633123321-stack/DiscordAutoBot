@@ -8,14 +8,14 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName('game_name')
-        .setDescription('遊戲名稱，例如 R.E.P.O')
+        .setDescription('遊戲名稱，例如 R.E.P.O、POE、魔物獵人')
         .setRequired(true)
         .setMaxLength(80)
     )
     .addStringOption((option) =>
       option
         .setName('reason')
-        .setDescription('為什麼想新增這個遊戲分類')
+        .setDescription('為什麼需要這個分類')
         .setRequired(true)
         .setMaxLength(500)
     ),
@@ -26,11 +26,11 @@ module.exports = {
     const reason = interaction.options.getString('reason', true).trim();
 
     if (gameName.length < 2) {
-      await interaction.editReply('遊戲名稱太短，請輸入更清楚的名稱。');
+      await interaction.editReply('遊戲名稱太短，請至少輸入 2 個字。');
       return;
     }
 
-    const { channel } = await createGameSuggestion(interaction, gameName, reason);
-    await interaction.editReply(`已送出遊戲分類提議，請到 ${channel} 查看與投票。`);
+    const { channel } = await createGameSuggestion(interaction, gameName, reason, '聊天、找隊友、資訊、建立語音');
+    await interaction.editReply(`已送出遊戲提議，請到 ${channel} 查看投票卡。`);
   }
 };

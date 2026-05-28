@@ -17,10 +17,7 @@ const mixedCommunity = {
       channels: [
         { name: '💬｜一般聊天', type: 'text' },
         { name: '🎮｜找隊友大廳', type: 'text' },
-        { name: '📅｜活動公告', type: 'text' },
-        { name: '🖼｜好圖分享', type: 'text' },
-        { name: '🍜｜美食分享', type: 'text' },
-        { name: '🎵｜音樂分享', type: 'text' },
+        { name: '🌙｜深夜聊天', type: 'text' },
         { name: '🧠｜認真討論', type: 'text' }
       ]
     },
@@ -91,14 +88,6 @@ const mixedCommunity = {
         { name: '📈｜盤勢觀察', type: 'text' },
         { name: '🧠｜投資筆記', type: 'text' },
         { name: '🤖｜股票AI工具', type: 'text' }
-      ]
-    },
-    {
-      name: '🎉｜活動專區',
-      channels: [
-        { name: '🗳｜投票區', type: 'text' },
-        { name: '🎁｜抽獎活動', type: 'text' },
-        { name: '🏆｜比賽與排行', type: 'text' }
       ]
     },
     {

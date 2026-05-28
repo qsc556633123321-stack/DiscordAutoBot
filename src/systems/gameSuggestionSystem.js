@@ -14,6 +14,8 @@ const {
 const { getOrCreateGameArchiveCategory, getOrCreateGameSuggestionChannel } = require('./communityStructureManager');
 const { registerCreateEntryChannel } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
+const { scheduleVoiceHubUpdate } = require('./voiceHub');
+const { setupChannelPanels } = require('./channelPanels');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SUGGESTION_FILE = path.join(DATA_DIR, 'game-suggestions.json');
@@ -67,13 +69,22 @@ function normalizeName(value) {
 }
 
 function makeShortName(gameName) {
-  const ascii = String(gameName || '').toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 10);
+  const aliases = [
+    { pattern: /聯盟戰棋|teamfight|tft/i, value: 'tft' },
+    { pattern: /英雄聯盟|league|lol/i, value: 'lol' },
+    { pattern: /minecraft|麥塊|mc/i, value: 'mc' },
+    { pattern: /特戰|valorant/i, value: 'valorant' },
+    { pattern: /apex/i, value: 'apex' }
+  ];
+  const matched = aliases.find((item) => item.pattern.test(gameName));
+  if (matched) return matched.value;
+  const ascii = String(gameName || '').toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 12);
   if (ascii) return ascii;
   return normalizeName(gameName).slice(0, 8) || 'game';
 }
 
 function makeVoiceLabel(gameName) {
-  return String(gameName || '').replace(/[^\p{Letter}\p{Number}]+/gu, '').slice(0, 16) || '遊戲';
+  return String(gameName || '').replace(/[^\p{Letter}\p{Number}]+/gu, '').slice(0, 18) || '遊戲';
 }
 
 function makeSuggestionId() {
@@ -92,29 +103,42 @@ function saveSuggestion(guildId, suggestionId, suggestion) {
   return suggestion;
 }
 
+function listPendingSuggestions(guildId, limit = 10) {
+  const suggestions = Object.values(readSuggestions()[guildId] || {})
+    .filter((item) => item.status === 'pending')
+    .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+    .slice(0, limit);
+  if (!suggestions.length) return '目前沒有等待審核的遊戲提議。';
+  return suggestions
+    .map((item) => {
+      const support = item.supporters?.length || 0;
+      const oppose = item.opposers?.length || 0;
+      return `- ${item.gameName}：👍 ${support} / 👎 ${oppose}`;
+    })
+    .join('\n');
+}
+
 function buildSuggestionEmbed(suggestion) {
-  const support = suggestion.supporters?.length || 0;
-  const oppose = suggestion.opposers?.length || 0;
   const statusText = {
-    pending: '等待投票',
-    approved: '已批准',
-    rejected: '已拒絕'
+    pending: '等待投票與管理員審核',
+    approved: '✅ 已批准',
+    rejected: '❌ 已拒絕'
   }[suggestion.status || 'pending'];
 
   const embed = new EmbedBuilder()
     .setColor(suggestion.status === 'rejected' ? 0xeb5757 : suggestion.status === 'approved' ? 0x57f287 : 0x5865f2)
     .setTitle('🎮 遊戲分類提議')
     .addFields(
-      { name: '遊戲', value: suggestion.gameName, inline: true },
+      { name: '遊戲', value: suggestion.gameName || '未命名', inline: true },
       { name: '提議者', value: `<@${suggestion.requestedById}>`, inline: true },
-      { name: '狀態', value: statusText, inline: true },
-      { name: '理由', value: suggestion.reason || '未提供', inline: false },
-      { name: '👍 支持', value: String(support), inline: true },
-      { name: '👎 反對', value: String(oppose), inline: true }
+      { name: '狀態', value: statusText, inline: false },
+      { name: '理由', value: suggestion.reason || '未填寫', inline: false }
     )
     .setTimestamp(new Date(suggestion.createdAt || Date.now()));
 
-  if (suggestion.rejectReason) embed.addFields({ name: '拒絕理由', value: suggestion.rejectReason, inline: false });
+  if (suggestion.rejectReason) {
+    embed.addFields({ name: '拒絕理由', value: suggestion.rejectReason, inline: false });
+  }
   return embed;
 }
 
@@ -128,7 +152,7 @@ async function generateCommunityText(kind, context, fallback) {
       messages: [
         {
           role: 'system',
-          content: '你是 Discord 遊戲社群管家。請用自然繁體中文，語氣輕鬆，40 字內，不要像客服。'
+          content: '你是 Discord 社群管家。請用自然、簡短、繁體中文寫一句社群感提示，不要像客服機器人。'
         },
         { role: 'user', content: JSON.stringify({ kind, context }) }
       ],
@@ -146,13 +170,13 @@ function buildSuggestionRows(suggestionId, disabled = false) {
     new ActionRowBuilder().addComponents(
       new ButtonBuilder().setCustomId(`game_suggest_support_${suggestionId}`).setLabel('支持').setEmoji('👍').setStyle(ButtonStyle.Secondary).setDisabled(disabled),
       new ButtonBuilder().setCustomId(`game_suggest_oppose_${suggestionId}`).setLabel('反對').setEmoji('👎').setStyle(ButtonStyle.Secondary).setDisabled(disabled),
-      new ButtonBuilder().setCustomId(`game_suggest_approve_${suggestionId}`).setLabel('管理員批准').setEmoji('✅').setStyle(ButtonStyle.Success).setDisabled(disabled),
-      new ButtonBuilder().setCustomId(`game_suggest_reject_${suggestionId}`).setLabel('管理員拒絕').setEmoji('❌').setStyle(ButtonStyle.Danger).setDisabled(disabled)
+      new ButtonBuilder().setCustomId(`game_suggest_approve_${suggestionId}`).setLabel('批准').setEmoji('✅').setStyle(ButtonStyle.Success).setDisabled(disabled),
+      new ButtonBuilder().setCustomId(`game_suggest_reject_${suggestionId}`).setLabel('拒絕').setEmoji('❌').setStyle(ButtonStyle.Danger).setDisabled(disabled)
     )
   ];
 }
 
-async function createGameSuggestion(interaction, gameName, reason) {
+async function createGameSuggestion(interaction, gameName, reason, requestedContent = '') {
   const channel = await getOrCreateGameSuggestionChannel(interaction.guild);
   const suggestionId = makeSuggestionId();
   const suggestion = {
@@ -160,6 +184,7 @@ async function createGameSuggestion(interaction, gameName, reason) {
     guildId: interaction.guild.id,
     gameName: String(gameName || '').trim().slice(0, 80),
     reason: String(reason || '').trim().slice(0, 500),
+    requestedContent: String(requestedContent || '').trim().slice(0, 300),
     requestedById: interaction.user.id,
     status: 'pending',
     supporters: [],
@@ -194,7 +219,7 @@ async function updateSuggestionMessage(guild, suggestion) {
 async function handleVote(interaction, suggestionId, vote) {
   const suggestion = getSuggestion(interaction.guild.id, suggestionId);
   if (!suggestion || suggestion.status !== 'pending') {
-    await interaction.reply({ content: '這個遊戲提議已不存在或已結案。', ephemeral: true });
+    await interaction.reply({ content: '這個提議已結束或不存在。', ephemeral: true });
     return;
   }
   suggestion.supporters = (suggestion.supporters || []).filter((id) => id !== interaction.user.id);
@@ -203,7 +228,7 @@ async function handleVote(interaction, suggestionId, vote) {
   if (vote === 'oppose') suggestion.opposers.push(interaction.user.id);
   saveSuggestion(interaction.guild.id, suggestionId, suggestion);
   await updateSuggestionMessage(interaction.guild, suggestion);
-  await interaction.reply({ content: vote === 'support' ? '已投支持票。' : '已投反對票。', ephemeral: true });
+  await interaction.reply({ content: vote === 'support' ? '已記錄你的支持。' : '已記錄你的反對。', ephemeral: true });
 }
 
 function buildGameChannelSpecs(gameName, shortName) {
@@ -219,18 +244,9 @@ function buildGameChannelSpecs(gameName, shortName) {
 function buildGameCategoryOverwrites(guild) {
   const gameRole = guild.roles.cache.find((role) => role.name === '🎮 遊戲玩家');
   const adminRoles = guild.roles.cache.filter((role) => ['站長', '管理員', '👑 站長', '🛡 管理員', '🔧 MOD'].includes(role.name));
+  const botId = guild.members.me?.id;
   const overwrites = [
     { id: guild.roles.everyone.id, deny: [PermissionFlagsBits.ViewChannel] },
-    {
-      id: guild.members.me.id,
-      allow: [
-        PermissionFlagsBits.ViewChannel,
-        PermissionFlagsBits.SendMessages,
-        PermissionFlagsBits.ReadMessageHistory,
-        PermissionFlagsBits.Connect,
-        PermissionFlagsBits.ManageChannels
-      ]
-    },
     ...adminRoles.map((role) => ({
       id: role.id,
       allow: [
@@ -241,6 +257,18 @@ function buildGameCategoryOverwrites(guild) {
       ]
     }))
   ];
+  if (botId) {
+    overwrites.push({
+      id: botId,
+      allow: [
+        PermissionFlagsBits.ViewChannel,
+        PermissionFlagsBits.SendMessages,
+        PermissionFlagsBits.ReadMessageHistory,
+        PermissionFlagsBits.Connect,
+        PermissionFlagsBits.ManageChannels
+      ]
+    });
+  }
   if (gameRole) {
     overwrites.push({
       id: gameRole.id,
@@ -258,7 +286,7 @@ function buildGameCategoryOverwrites(guild) {
 async function createDynamicGameCategory(guild, gameName, requestedById) {
   const shortName = makeShortName(gameName);
   const categoryName = `🎮｜${gameName}`;
-  const summary = { categoryName, shortName, created: [], existing: [], failed: [] };
+  const summary = { categoryName, shortName, created: [], existing: [], moved: [], failed: [] };
   let category = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && normalizeName(channel.name) === normalizeName(categoryName));
   if (!category) {
     category = await guild.channels.create({
@@ -285,11 +313,13 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
       if (existing.name !== spec.name) await existing.setName(spec.name, 'Dynamic game channel canonical name').catch(() => null);
       if (existing.parentId !== category.id) {
         await existing.setParent(category.id, { lockPermissions: false, reason: 'Dynamic game category placement' }).catch((error) => summary.failed.push(`${existing.name}: ${error.message}`));
+        summary.moved.push(existing.name);
+      } else {
+        summary.existing.push(existing.name);
       }
       await existing.lockPermissions().catch(() => null);
       await existing.setPosition(index).catch(() => null);
       if (spec.createEntry) registerCreateEntryChannel(guild, existing, gameName);
-      summary.existing.push(existing.name);
       continue;
     }
     try {
@@ -322,6 +352,11 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     archived: false
   };
   writeGameCategories(data);
+  try {
+    scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
+  } catch {
+    // Voice Hub sync is best-effort; game creation should not fail because of it.
+  }
   return summary;
 }
 
@@ -340,11 +375,11 @@ async function getLatestTextActivity(channel) {
 async function approveSuggestion(interaction, suggestionId) {
   const suggestion = getSuggestion(interaction.guild.id, suggestionId);
   if (!suggestion || suggestion.status !== 'pending') {
-    await interaction.reply({ content: '這個遊戲提議已不存在或已結案。', ephemeral: true });
+    await interaction.reply({ content: '這個提議已結束或不存在。', ephemeral: true });
     return;
   }
   if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
-    await interaction.reply({ content: '你需要 ManageChannels 權限才能批准遊戲分類。', ephemeral: true });
+    await interaction.reply({ content: '你需要 ManageChannels 權限才能批准遊戲提議。', ephemeral: true });
     return;
   }
   await interaction.deferReply({ ephemeral: true });
@@ -354,12 +389,25 @@ async function approveSuggestion(interaction, suggestionId) {
   suggestion.approvedAt = new Date().toISOString();
   saveSuggestion(interaction.guild.id, suggestionId, suggestion);
   await updateSuggestionMessage(interaction.guild, suggestion);
+  await setupChannelPanels({
+    client: interaction.client,
+    guild: interaction.guild,
+    currentChannel: null,
+    mode: 'refresh',
+    target: 'game'
+  }).catch(() => null);
   await writeServerLog(interaction.guild, {
-    title: '🎮 動態遊戲分類已批准',
+    title: '🎮 遊戲分類提議已批准',
     description: `${interaction.user} 批准：${suggestion.gameName}`,
     color: 0x57f287
   }).catch(() => null);
-  await interaction.editReply(`已建立或修復遊戲分類：${summary.categoryName}\n新建立：${summary.created.join('、') || '無'}\n已存在：${summary.existing.join('、') || '無'}\n失敗：${summary.failed.join('、') || '無'}`);
+  await interaction.editReply([
+    `已建立或修正遊戲分類：${summary.categoryName}`,
+    `新建立：${summary.created.join('、') || '無'}`,
+    `已存在：${summary.existing.join('、') || '無'}`,
+    `已移動：${summary.moved.join('、') || '無'}`,
+    `失敗：${summary.failed.join('、') || '無'}`
+  ].join('\n'));
 }
 
 async function showRejectModal(interaction, suggestionId) {
@@ -373,6 +421,7 @@ async function showRejectModal(interaction, suggestionId) {
   const input = new TextInputBuilder()
     .setCustomId('reason')
     .setLabel('拒絕理由')
+    .setPlaceholder('例如：目前需求不夠、先集中在既有遊戲區、之後再開')
     .setStyle(TextInputStyle.Paragraph)
     .setRequired(true)
     .setMaxLength(400);
@@ -383,7 +432,7 @@ async function showRejectModal(interaction, suggestionId) {
 async function rejectSuggestion(interaction, suggestionId) {
   const suggestion = getSuggestion(interaction.guild.id, suggestionId);
   if (!suggestion || suggestion.status !== 'pending') {
-    await interaction.reply({ content: '這個遊戲提議已不存在或已結案。', ephemeral: true });
+    await interaction.reply({ content: '這個提議已結束或不存在。', ephemeral: true });
     return;
   }
   const reason = interaction.fields.getTextInputValue('reason').slice(0, 400);
@@ -394,11 +443,57 @@ async function rejectSuggestion(interaction, suggestionId) {
   saveSuggestion(interaction.guild.id, suggestionId, suggestion);
   await updateSuggestionMessage(interaction.guild, suggestion);
   await writeServerLog(interaction.guild, {
-    title: '🎮 動態遊戲分類已拒絕',
+    title: '🎮 遊戲分類提議已拒絕',
     description: `${interaction.user} 拒絕：${suggestion.gameName}\n理由：${reason}`,
     color: 0xeb5757
   }).catch(() => null);
   await interaction.reply({ content: `已拒絕 ${suggestion.gameName}：${reason}`, ephemeral: true });
+}
+
+async function showGameSuggestionModal(interaction) {
+  const modal = new ModalBuilder()
+    .setCustomId('game_suggest_create_modal')
+    .setTitle('提議新遊戲分類');
+  const gameName = new TextInputBuilder()
+    .setCustomId('game_name')
+    .setLabel('遊戲名稱')
+    .setPlaceholder('例如：R.E.P.O、POE、魔物獵人')
+    .setStyle(TextInputStyle.Short)
+    .setRequired(true)
+    .setMaxLength(80);
+  const reason = new TextInputBuilder()
+    .setCustomId('reason')
+    .setLabel('為什麼需要這個分類？')
+    .setPlaceholder('例如：最近很多人在玩，希望有聊天、找隊友和語音入口')
+    .setStyle(TextInputStyle.Paragraph)
+    .setRequired(true)
+    .setMaxLength(500);
+  const requestedContent = new TextInputBuilder()
+    .setCustomId('requested_content')
+    .setLabel('你希望建立哪些內容？')
+    .setValue('聊天、找隊友、資訊、建立語音')
+    .setStyle(TextInputStyle.Paragraph)
+    .setRequired(false)
+    .setMaxLength(300);
+  modal.addComponents(
+    new ActionRowBuilder().addComponents(gameName),
+    new ActionRowBuilder().addComponents(reason),
+    new ActionRowBuilder().addComponents(requestedContent)
+  );
+  await interaction.showModal(modal);
+}
+
+async function handleCreateSuggestionModal(interaction) {
+  await interaction.deferReply({ ephemeral: true });
+  const gameName = interaction.fields.getTextInputValue('game_name').trim();
+  const reason = interaction.fields.getTextInputValue('reason').trim();
+  const requestedContent = interaction.fields.getTextInputValue('requested_content')?.trim() || '聊天、找隊友、資訊、建立語音';
+  if (gameName.length < 2) {
+    await interaction.editReply('遊戲名稱太短，請至少輸入 2 個字。');
+    return;
+  }
+  const { channel } = await createGameSuggestion(interaction, gameName, reason, requestedContent);
+  await interaction.editReply(`已送出遊戲提議，請到 ${channel} 查看投票卡。`);
 }
 
 async function handleGameSuggestionButton(interaction) {
@@ -464,6 +559,9 @@ module.exports = {
   createDynamicGameCategory,
   createGameSuggestion,
   generateCommunityText,
+  handleCreateSuggestionModal,
   handleGameSuggestionButton,
-  rejectSuggestion
+  listPendingSuggestions,
+  rejectSuggestion,
+  showGameSuggestionModal
 };

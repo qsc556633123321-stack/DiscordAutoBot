@@ -206,12 +206,12 @@ function buildPanel(panelType, channel) {
     game_suggestions: () => ({
       embed: new EmbedBuilder()
         .setColor(0x57f287)
-        .setTitle('🎮 遊戲分類提議中心')
-        .setDescription('想新增遊戲分類可以在這裡提議。\n如果有足夠需求，管理員會批准建立專屬分類與語音入口。\n\n1. 使用 `/suggest-game` 提出遊戲\n2. 說明為什麼需要這個分類\n3. 其他人可以按 👍 支持\n4. 管理員會選擇批准或拒絕\n5. 批准後會自動建立遊戲分類、聊天、找隊友、資訊與語音入口'),
+        .setTitle('🎮 想新增遊戲區嗎？')
+        .setDescription('按下方按鈕填表單。\n如果有足夠需求，管理員會批准建立專屬遊戲分類。\n\n提議通過後會自動建立聊天、找隊友、資訊與語音入口。'),
       buttons: [
         button('panel_suggest_game', '🎮 提議新遊戲', ButtonStyle.Primary),
-        button('panel_show_game_suggestion_flow', '📋 查看提議流程'),
-        button('panel_show_game_categories', '🧭 查看目前遊戲分類')
+        button('panel_show_game_suggestion_flow', '📋 查看目前提議'),
+        button('panel_show_game_categories', '🧭 查看已有遊戲區')
       ]
     }),
     party: () => ({
