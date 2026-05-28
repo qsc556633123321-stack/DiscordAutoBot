@@ -1,18 +1,40 @@
-const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { buildSummaryEmbed, repairChannelPermissions } = require('../systems/communityBootstrapSystem');
+const {
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  PermissionFlagsBits,
+  SlashCommandBuilder
+} = require('discord.js');
+const {
+  buildLayoutRepairEmbed,
+  buildLayoutRepairPlan,
+  saveLayoutRepairPlan
+} = require('../systems/layoutDecisionEngine');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('repair-channel-permissions')
-    .setDescription('依標準 public / role restricted / admin 權限架構修復頻道權限')
+    .setDescription('依 visibilityType 修復分類與頻道權限')
     .addStringOption((option) =>
       option
         .setName('mode')
-        .setDescription('preview 只預覽，execute 才執行')
+        .setDescription('preview 只預覽，execute 需確認')
         .setRequired(false)
         .addChoices(
           { name: 'preview', value: 'preview' },
           { name: 'execute', value: 'execute' }
+        ))
+    .addStringOption((option) =>
+      option
+        .setName('scope')
+        .setDescription('要修復的權限範圍')
+        .setRequired(false)
+        .addChoices(
+          { name: 'all', value: 'all' },
+          { name: 'onboarding', value: 'onboarding' },
+          { name: 'restricted', value: 'restricted' },
+          { name: 'admin', value: 'admin' },
+          { name: 'games', value: 'games' }
         ))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
@@ -28,7 +50,34 @@ module.exports = {
     }
 
     const mode = interaction.options.getString('mode') || 'preview';
-    const summary = await repairChannelPermissions(interaction.guild, { mode });
-    await interaction.editReply({ embeds: [buildSummaryEmbed('🔧 Repair Channel Permissions', summary)] });
+    const scope = interaction.options.getString('scope') || 'all';
+    const plan = buildLayoutRepairPlan(interaction.guild, {
+      mode,
+      scope: scope === 'all' ? 'permissions' : scope,
+      requestedById: interaction.user.id
+    });
+    plan.actions = plan.actions.filter((item) => ['sync_permission', 'sync_metadata', 'create_category', 'create_channel'].includes(item.action));
+
+    if (mode === 'preview') {
+      await interaction.editReply({ embeds: [buildLayoutRepairEmbed(plan, '🔧 Permission Repair Preview')] });
+      return;
+    }
+
+    saveLayoutRepairPlan(plan);
+    const row = new ActionRowBuilder().addComponents(
+      new ButtonBuilder()
+        .setCustomId(`permrepair_confirm_${plan.id}`)
+        .setLabel('確認修復權限')
+        .setStyle(ButtonStyle.Primary),
+      new ButtonBuilder()
+        .setCustomId(`permrepair_cancel_${plan.id}`)
+        .setLabel('取消')
+        .setStyle(ButtonStyle.Secondary)
+    );
+
+    await interaction.editReply({
+      embeds: [buildLayoutRepairEmbed(plan, '🔧 Permission Repair Confirm')],
+      components: [row]
+    });
   }
 };

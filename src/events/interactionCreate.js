@@ -84,6 +84,12 @@ const {
   executeDedupePlan,
   getDedupePlan
 } = require('../systems/communityBootstrapSystem');
+const {
+  buildLayoutRepairEmbed,
+  deleteLayoutRepairPlan,
+  executeLayoutRepairPlan,
+  getLayoutRepairPlan
+} = require('../systems/layoutDecisionEngine');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -111,6 +117,10 @@ const POLISH_CONFIRM_PREFIX = 'polish_confirm_';
 const POLISH_CANCEL_PREFIX = 'polish_cancel_';
 const DEDUPE_CONFIRM_PREFIX = 'dedupe_confirm_';
 const DEDUPE_CANCEL_PREFIX = 'dedupe_cancel_';
+const AI_LAYOUT_CONFIRM_PREFIX = 'ai_layout_confirm_';
+const AI_LAYOUT_CANCEL_PREFIX = 'ai_layout_cancel_';
+const PERM_REPAIR_CONFIRM_PREFIX = 'permrepair_confirm_';
+const PERM_REPAIR_CANCEL_PREFIX = 'permrepair_cancel_';
 
 function safeTicketName(username, userId) {
   const safeName = username
@@ -1522,6 +1532,70 @@ module.exports = {
     }
 
     if (!interaction.isButton()) return;
+
+    if (interaction.customId.startsWith(AI_LAYOUT_CANCEL_PREFIX) || interaction.customId.startsWith(PERM_REPAIR_CANCEL_PREFIX)) {
+      const prefix = interaction.customId.startsWith(AI_LAYOUT_CANCEL_PREFIX) ? AI_LAYOUT_CANCEL_PREFIX : PERM_REPAIR_CANCEL_PREFIX;
+      const planId = interaction.customId.slice(prefix.length);
+      const plan = getLayoutRepairPlan(planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個修復計畫已失效，請重新執行指令。', ephemeral: true });
+        return;
+      }
+      if (interaction.user.id !== plan.requestedById) {
+        await interaction.reply({ content: '只有原本建立計畫的管理員可以取消。', ephemeral: true });
+        return;
+      }
+      deleteLayoutRepairPlan(planId);
+      await interaction.update({ content: '已取消，不會修改伺服器。', embeds: [], components: [] });
+      return;
+    }
+
+    if (interaction.customId.startsWith(AI_LAYOUT_CONFIRM_PREFIX) || interaction.customId.startsWith(PERM_REPAIR_CONFIRM_PREFIX)) {
+      const prefix = interaction.customId.startsWith(AI_LAYOUT_CONFIRM_PREFIX) ? AI_LAYOUT_CONFIRM_PREFIX : PERM_REPAIR_CONFIRM_PREFIX;
+      const planId = interaction.customId.slice(prefix.length);
+      const plan = getLayoutRepairPlan(planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個修復計畫已失效，請重新執行指令。', ephemeral: true });
+        return;
+      }
+      if (interaction.user.id !== plan.requestedById) {
+        await interaction.reply({ content: '只有原本建立計畫的管理員可以確認執行。', ephemeral: true });
+        return;
+      }
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
+        await interaction.reply({ content: '你需要 ManageChannels 權限才能執行修復。', ephemeral: true });
+        return;
+      }
+      await interaction.update({ content: '正在執行 layout 修復，請稍候...', embeds: [], components: [] });
+      try {
+        const summary = await executeLayoutRepairPlan(interaction.guild, plan, {
+          allowDelete: plan.deleteConfirmText === 'DELETE CONFIRM'
+        });
+        deleteLayoutRepairPlan(planId);
+        const resultPlan = {
+          ...plan,
+          mode: 'execute result',
+          actions: [
+            ...summary.created.map((name) => ({ action: 'create_channel', targetName: name, reason: '已建立' })),
+            ...summary.permissions.map((name) => ({ action: 'sync_permission', targetName: name, reason: '已修權限' })),
+            ...summary.renamed.map((name) => ({ action: 'rename', targetName: name, reason: '已改名' })),
+            ...summary.moved.map((name) => ({ action: 'move', targetName: name, reason: '已搬移' })),
+            ...summary.archived.map((name) => ({ action: 'archive', targetName: name, reason: '已封存' })),
+            ...summary.deleted.map((name) => ({ action: 'delete', targetName: name, reason: '已刪除', risk: 'high' })),
+            ...summary.skipped.map((name) => ({ action: 'keep', targetName: name, reason: '已略過' }))
+          ]
+        };
+        await interaction.editReply({
+          content: summary.failed.length ? `完成，但有 ${summary.failed.length} 個失敗項目。` : 'Layout 修復完成。',
+          embeds: [buildLayoutRepairEmbed(resultPlan, '✅ Layout Repair Result')],
+          components: []
+        });
+      } catch (error) {
+        console.error('Layout repair execute failed:', error);
+        await interaction.editReply({ content: `Layout 修復失敗：${error.message}`, embeds: [], components: [] });
+      }
+      return;
+    }
 
     if (interaction.customId.startsWith(DEDUPE_CANCEL_PREFIX)) {
       const planId = interaction.customId.slice(DEDUPE_CANCEL_PREFIX.length);

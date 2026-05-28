@@ -7,6 +7,7 @@ const {
 } = require('discord.js');
 const { COMMUNITY_LAYOUT, PUBLIC_ONBOARDING_CHANNELS, REQUIRED_ROLES } = require('../config/communityLayout');
 const permissionTemplates = require('../config/permissionTemplates');
+const { buildVisibilityOverwrites } = require('../config/channelVisibilityRules');
 const { registerCreateEntryChannel, isCreateVoiceChannel, removeCreateEntryRecord } = require('./gameChannels');
 const { isTempVoice } = require('./tempVoice');
 const { setupCommunityGuide } = require('./communityConcierge');
@@ -125,6 +126,7 @@ function findLayoutChannel(key) {
 }
 
 function getTemplateOverwrites(guild, layoutItem) {
+  if (layoutItem.visibilityType) return buildVisibilityOverwrites(guild, layoutItem);
   if (layoutItem.permission === 'publicEntry') return permissionTemplates.publicEntry(guild);
   if (layoutItem.permission === 'semiPublic') return permissionTemplates.semiPublic(guild);
   if (layoutItem.permission === 'roleRestricted') return permissionTemplates.roleRestricted(guild, layoutItem.roleName);
@@ -365,7 +367,11 @@ async function ensureChannel(guild, layoutItem, category, spec, index, summary, 
     if (options.preview) {
       summary.repairedChannels.push(channel.name);
     } else {
-      await channel.lockPermissions()
+      const effectiveRule = { ...layoutItem, ...spec, roleName: spec.roleName || layoutItem.roleName, specialRoleName: spec.specialRoleName || layoutItem.specialRoleName };
+      const permissionTask = spec.visibilityType
+        ? channel.permissionOverwrites.set(buildVisibilityOverwrites(guild, effectiveRule), 'Community layout channel visibility repair')
+        : channel.lockPermissions();
+      await permissionTask
         .then(() => summary.repairedChannels.push(channel.name))
         .catch((error) => summary.warnings.push(`同步權限 ${channel.name}: ${error.message}`));
     }
@@ -471,7 +477,11 @@ async function repairChannelPermissions(guild, options = {}) {
           .then(() => summary.moved.push(`${channel.name} -> ${category.name}`))
           .catch((error) => summary.failed.push(`${channel.name} move: ${error.message}`));
       }
-      await channel.lockPermissions()
+      const effectiveRule = { ...layoutItem, ...spec, roleName: spec.roleName || layoutItem.roleName, specialRoleName: spec.specialRoleName || layoutItem.specialRoleName };
+      const permissionTask = spec.visibilityType
+        ? channel.permissionOverwrites.set(buildVisibilityOverwrites(guild, effectiveRule), 'Community permission repair visibility')
+        : channel.lockPermissions();
+      await permissionTask
         .then(() => summary.repairedChannels.push(channel.name))
         .catch((error) => summary.failed.push(`${channel.name}: ${error.message}`));
       if (spec.createEntryGame) {

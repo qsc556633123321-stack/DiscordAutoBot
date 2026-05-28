@@ -263,3 +263,42 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 ```bash
 npm run deploy
 ```
+## AI Layout Repair System
+
+Community Layout 現在支援更細的 `visibilityType`：
+
+- `public_entry`：新人與 @everyone 可見，例如新人報到、規則、身分組領取。
+- `public_social`：正式成員可發言，訪客可依設定只讀，例如一般聊天、找隊友大廳、組隊招募。
+- `role_restricted`：指定身分組才可見，例如遊戲分類、投資討論、創作與開發。
+- `semi_public_readonly`：新人可見但不能發言，例如公告、導覽、目前語音房。
+- `private_admin`：只有站長、管理員、MOD 與 Bot 可見。
+- `hidden_special`：特殊條件可見，例如 Night Crew。
+- `archive`：封存區，預設只有管理員可見。
+
+新增指令：
+
+- `/layout-doctor`：深度分析 visibilityType、權限外漏、子頻道同步、重複項目、封存候選、刪除候選。
+- `/repair-channel-permissions mode:preview scope:all`：預覽權限修復。
+- `/repair-channel-permissions mode:execute scope:all`：顯示確認按鈕，確認後執行權限修復。
+- `/ai-layout-repair mode:preview scope:all`：使用規則引擎，並在有 `OPENAI_API_KEY` 時加入 AI 輔助建議。
+- `/ai-layout-repair mode:execute scope:all delete_confirm_text:"DELETE CONFIRM"`：顯示確認按鈕，確認後執行。只有輸入 `DELETE CONFIRM` 才允許刪除候選真的刪除。
+
+AI 只負責輔助判斷：分類意圖、命名建議、刪除風險、使用者體驗建議。所有 AI 建議都會再通過 rule-based decision engine；若 AI 建議刪除 protected channel，會被駁回；AI 信心低於 80 的 delete 也會降級為 archive 或 keep。
+
+刪除頻道只會在以下情況出現：
+
+- 名稱符合 `delete-pending`、`test-`、`temp-test`、`old-unused`。
+- 或空頻道、無 metadata、無近期活動、非 protected，且 AI 與規則引擎都判定可刪。
+- execute 時仍必須輸入 `DELETE CONFIRM` 並按確認按鈕。
+
+永遠不刪：
+
+- `ticket-` 私人客服單
+- `server-logs`、`ticket-logs`、`bot-control`
+- active temp voice
+- LFG / Voice Hub / 遊戲提議 / 目前語音房
+- Discord system channel、rules channel、public updates channel
+- onboarding required channels
+- 管理員後台核心頻道
+
+所有 create/edit/move/delete 都使用 queue delay、try/catch、server-logs 記錄與最後 summary。高風險項目會在 preview embed 裡獨立列出。
