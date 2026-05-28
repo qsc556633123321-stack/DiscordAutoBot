@@ -1,6 +1,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType, PermissionFlagsBits } = require('discord.js');
+const { resolveGameIdentity } = require('../config/gameAliases');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const CREATE_ENTRY_FILE = path.join(DATA_DIR, 'temp-voice-create-entries.json');
@@ -38,58 +39,54 @@ function normalizeName(name) {
     .replace(/[^\p{Letter}\p{Number}]+/gu, '');
 }
 
-function formatCategoryName(game) {
-  return `🎮｜${game}`;
+function formatCategoryName(displayName) {
+  return `🎮｜${displayName}`;
 }
 
-function formatCreateVoiceName(game) {
-  return `➕｜建立${game}語音`;
+function formatCreateVoiceName(displayName) {
+  return `🔊｜➕｜建立${displayName}語音`;
 }
 
 function buildGameConfig(game, shortName, options = {}) {
-  const cleanGame = String(game || '').trim();
-  const cleanShortName = String(shortName || cleanGame).trim();
-  const voiceLabel = options.voiceLabel || cleanGame;
-  const clipsLabel = options.clipsLabel || '戰績分享';
-  const infoLabel = options.infoLabel || '資訊';
+  const identity = resolveGameIdentity(game);
+  const displayName = identity.displayName;
+  const slug = options.slug || identity.slug;
+  const channelPrefix = String(shortName || options.channelPrefix || displayName).trim() || displayName;
+  const voiceLabel = options.voiceLabel || displayName;
 
   return {
-    game: cleanGame,
-    shortName: cleanShortName,
-    categoryName: formatCategoryName(cleanGame),
+    game: displayName,
+    displayName,
+    slug,
+    shortName: channelPrefix,
+    categoryName: formatCategoryName(displayName),
     createVoiceName: formatCreateVoiceName(voiceLabel),
     channels: [
       {
         key: 'chat',
-        name: `💬｜${cleanShortName}-聊天`,
+        name: `💬｜${channelPrefix}-聊天`,
         type: ChannelType.GuildText,
-        aliases: [`${cleanShortName}-聊天`]
+        aliases: [`${channelPrefix}-聊天`, `${displayName}-聊天`]
       },
       {
         key: 'party',
-        name: `🧑‍🤝‍🧑｜${cleanShortName}-找隊友`,
+        name: `🧑‍🤝‍🧑｜${channelPrefix}-找隊友`,
         type: ChannelType.GuildText,
-        aliases: [`${cleanShortName}-找隊友`]
-      },
-      {
-        key: 'clips',
-        name: `🏆｜${cleanShortName}-${clipsLabel}`,
-        type: ChannelType.GuildText,
-        aliases: [`${cleanShortName}-${clipsLabel}`, ...(options.clipAliases || [])]
+        aliases: [`${channelPrefix}-找隊友`, `${displayName}-找隊友`]
       },
       {
         key: 'info',
-        name: `📌｜${cleanShortName}-${infoLabel}`,
+        name: `📌｜${channelPrefix}-資訊`,
         type: ChannelType.GuildText,
-        aliases: [`${cleanShortName}-${infoLabel}`, ...(options.infoAliases || [])]
+        aliases: [`${channelPrefix}-資訊`, `${displayName}-資訊`]
       },
       {
         key: 'createVoice',
         name: formatCreateVoiceName(voiceLabel),
         type: ChannelType.GuildVoice,
         aliases: [
-          `建立${cleanGame}語音`,
-          `➕｜建立${cleanGame}語音`,
+          `建立${displayName}語音`,
+          `➕｜建立${displayName}語音`,
           `建立${voiceLabel}語音`,
           `➕｜建立${voiceLabel}語音`,
           `🔊｜➕｜建立${voiceLabel}語音`
@@ -101,45 +98,43 @@ function buildGameConfig(game, shortName, options = {}) {
 }
 
 const DEFAULT_GAMES = [
-  buildGameConfig('APEX', 'apex'),
+  buildGameConfig('APEX', 'apex', { voiceLabel: 'APEX' }),
   buildGameConfig('特戰英豪', '特戰', { voiceLabel: '特戰' }),
-  buildGameConfig('Minecraft', 'mc', {
-    voiceLabel: 'MC',
-    clipsLabel: '建築分享',
-    infoLabel: '伺服器資訊',
-    clipAliases: ['mc-建築分享', '🏗｜mc-建築分享'],
-    infoAliases: ['mc-資訊', '📌｜mc-伺服器資訊']
-  }),
-  buildGameConfig('LOL', 'lol'),
+  buildGameConfig('Minecraft', 'mc', { voiceLabel: 'MC' }),
   buildGameConfig('英雄聯盟', 'lol', { voiceLabel: 'LOL' }),
   buildGameConfig('聯盟戰棋', 'tft', { voiceLabel: '聯盟戰棋' })
 ];
 
+function gameMatchesConfig(config, game, shortName = '') {
+  const normalized = normalizeName(game);
+  const normalizedShort = normalizeName(shortName);
+  return [
+    config.game,
+    config.displayName,
+    config.slug,
+    config.shortName,
+    config.categoryName,
+    config.createVoiceName,
+    ...(config.channels || []).flatMap((channel) => [channel.name, ...(channel.aliases || [])])
+  ].some((value) => {
+    const current = normalizeName(value);
+    return current && (current === normalized || current === normalizedShort || normalized.includes(current) || current.includes(normalized));
+  });
+}
+
 function getGameConfig(game, shortName) {
-  const normalizedGame = normalizeName(game);
-  const normalizedShortName = normalizeName(shortName);
-  const existing = DEFAULT_GAMES.find((item) => (
-    normalizeName(item.game) === normalizedGame ||
-    normalizeName(item.shortName) === normalizedGame ||
-    normalizeName(item.shortName) === normalizedShortName ||
-    normalizeName(item.createVoiceName).includes(normalizedGame)
-  ));
-
+  const existing = DEFAULT_GAMES.find((item) => gameMatchesConfig(item, game, shortName));
   if (!existing) return buildGameConfig(game, shortName);
-  if (!shortName || normalizeName(existing.shortName) === normalizedShortName) return existing;
-
-  return buildGameConfig(existing.game, shortName, {
-    voiceLabel: existing.game === 'Minecraft' ? 'MC' : existing.game === '特戰英豪' ? '特戰' : existing.game
+  if (!shortName || normalizeName(existing.shortName) === normalizeName(shortName)) return existing;
+  return buildGameConfig(existing.displayName, shortName, {
+    slug: existing.slug,
+    voiceLabel: existing.displayName === 'Minecraft' ? 'MC' : existing.displayName === '英雄聯盟' ? 'LOL' : existing.displayName
   });
 }
 
 function findGameConfigByName(name) {
   const normalized = normalizeName(name);
-  return DEFAULT_GAMES.find((config) => (
-    normalized.includes(normalizeName(config.game)) ||
-    normalized.startsWith(normalizeName(config.shortName)) ||
-    normalized.includes(normalizeName(config.shortName))
-  ));
+  return DEFAULT_GAMES.find((config) => gameMatchesConfig(config, normalized));
 }
 
 function findGameConfigByCategoryName(name) {
@@ -167,11 +162,14 @@ function removeCreateEntryRecord(guildId, channelId) {
 
 function registerCreateEntryChannel(guild, channel, game) {
   if (!guild || !channel || channel.type !== ChannelType.GuildVoice || !game) return null;
+  const identity = resolveGameIdentity(game);
   const data = readCreateEntryRegistry();
   if (!data[guild.id]) data[guild.id] = {};
   data[guild.id][channel.id] = {
     type: 'create_entry',
-    game,
+    game: identity.displayName,
+    displayName: identity.displayName,
+    slug: identity.slug,
     channelId: channel.id,
     channelName: channel.name,
     categoryId: channel.parentId || null,
@@ -192,45 +190,33 @@ function getGameNameFromCreateVoice(channelOrName) {
   const channel = typeof channelOrName === 'object' ? channelOrName : null;
   if (channel) {
     const record = getCreateEntryRecord(channel.guild.id, channel.id);
-    if (record?.game) return record.game;
+    if (record?.displayName || record?.game) return record.displayName || record.game;
     const parentConfig = findGameConfigByCategoryName(channel.parent?.name);
-    if (parentConfig) return parentConfig.game;
+    if (parentConfig) return parentConfig.displayName;
+    if (channel.parent?.name?.startsWith('🎮｜')) return channel.parent.name.replace(/^🎮｜/, '').trim();
   }
 
   const channelName = channel ? channel.name : String(channelOrName || '');
   const config = findGameConfigByName(channelName);
-  if (config) return config.game;
+  if (config) return config.displayName;
 
-  const raw = String(channelName || '').replace(/^[^\p{Letter}\p{Number}]*建立/u, '建立');
-  const match = raw.match(/建立(.+?)語音/u);
-  if (!match) return null;
-  return match[1].trim();
-}
-
-function inferCreateEntryGame(channelOrName) {
-  const channel = typeof channelOrName === 'object' ? channelOrName : null;
-  if (channel) {
-    const parentConfig = findGameConfigByCategoryName(channel.parent?.name);
-    if (parentConfig) return parentConfig.game;
-  }
-
-  const channelName = channel ? channel.name : String(channelOrName || '');
-  const config = findGameConfigByName(channelName);
-  if (config) return config.game;
-
-  const raw = String(channelName || '').replace(/^[^\p{Letter}\p{Number}]*建立/u, '建立');
-  const match = raw.match(/建立(.+?)語音/u);
+  const match = String(channelName || '').match(/建立(.+?)語音/u);
   return match ? match[1].trim() : null;
 }
 
+function inferCreateEntryGame(channelOrName) {
+  return getGameNameFromCreateVoice(channelOrName);
+}
+
 function findCategoryByName(guild, categoryName) {
+  const normalized = normalizeName(categoryName);
   return guild.channels.cache.find(
-    (channel) => channel.type === ChannelType.GuildCategory && channel.name === categoryName
+    (channel) => channel.type === ChannelType.GuildCategory && normalizeName(channel.name) === normalized
   );
 }
 
 async function findOrCreateGameCategory(guild, game) {
-  const config = getGameConfig(game, normalizeName(game));
+  const config = getGameConfig(game);
   const existing = findCategoryByName(guild, config.categoryName);
   if (existing) return existing;
 
@@ -242,7 +228,7 @@ async function findOrCreateGameCategory(guild, game) {
 }
 
 function findGameCategory(guild, game) {
-  const config = getGameConfig(game, normalizeName(game));
+  const config = getGameConfig(game);
   return findCategoryByName(guild, config.categoryName);
 }
 
@@ -272,7 +258,6 @@ function createSummary(config) {
 
 async function ensureGameCategory(guild, config, summary) {
   let category = findCategoryByName(guild, config.categoryName);
-
   if (!category) {
     category = await guild.channels.create({
       name: config.categoryName,
@@ -282,8 +267,8 @@ async function ensureGameCategory(guild, config, summary) {
     summary.created.push(config.categoryName);
   } else {
     summary.existing.push(config.categoryName);
+    if (category.name !== config.categoryName) await category.setName(config.categoryName, 'Game category canonical name').catch(() => null);
   }
-
   summary.category = category;
   return category;
 }
@@ -301,10 +286,7 @@ function buildCreateOptions(guild, category, spec) {
     options.permissionOverwrites = [
       {
         id: guild.roles.everyone.id,
-        allow: [
-          PermissionFlagsBits.ViewChannel,
-          PermissionFlagsBits.Connect
-        ],
+        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.Connect],
         deny: [PermissionFlagsBits.Speak]
       }
     ];
@@ -315,8 +297,8 @@ function buildCreateOptions(guild, category, spec) {
 
 async function ensureConfiguredChannel(guild, category, spec, summary, { createMissing }) {
   const existing = findMatchingChannel(guild, spec);
-
   if (existing) {
+    if (existing.name !== spec.name) await existing.setName(spec.name, 'Game channel canonical name').catch(() => null);
     if (existing.parentId !== category.id) {
       await existing.setParent(category.id, {
         lockPermissions: false,
@@ -326,8 +308,7 @@ async function ensureConfiguredChannel(guild, category, spec, summary, { createM
     } else {
       summary.existing.push(existing.name);
     }
-
-    if (spec.key === 'createVoice') registerCreateEntryChannel(guild, existing, summary.config.game);
+    if (spec.key === 'createVoice') registerCreateEntryChannel(guild, existing, summary.config.displayName);
     return existing;
   }
 
@@ -338,7 +319,7 @@ async function ensureConfiguredChannel(guild, category, spec, summary, { createM
 
   const channel = await guild.channels.create(buildCreateOptions(guild, category, spec));
   summary.created.push(spec.name);
-  if (spec.key === 'createVoice') registerCreateEntryChannel(guild, channel, summary.config.game);
+  if (spec.key === 'createVoice') registerCreateEntryChannel(guild, channel, summary.config.displayName);
   return channel;
 }
 
@@ -346,11 +327,8 @@ async function orderGameChannels(channels, summary) {
   for (let index = 0; index < channels.length; index += 1) {
     const channel = channels[index];
     if (!channel) continue;
-
     try {
-      await channel.setPosition(index, {
-        reason: 'Sort game category channels'
-      });
+      await channel.setPosition(index, { reason: 'Sort game category channels' });
     } catch (error) {
       summary.orderingWarnings.push(`${channel.name}: ${error.message}`);
     }
@@ -361,15 +339,11 @@ async function setupGameChannels(guild, { game, shortName, createDefaultChannels
   const config = getGameConfig(game, shortName);
   const summary = createSummary(config);
   const category = await ensureGameCategory(guild, config, summary);
-  const specs = createDefaultChannels
-    ? config.channels
-    : config.channels.filter((spec) => spec.key === 'createVoice');
+  const specs = createDefaultChannels ? config.channels : config.channels.filter((spec) => spec.key === 'createVoice');
 
   const ensuredChannels = [];
   for (const spec of specs) {
-    const channel = await ensureConfiguredChannel(guild, category, spec, summary, {
-      createMissing: true
-    });
+    const channel = await ensureConfiguredChannel(guild, category, spec, summary, { createMissing: true });
     ensuredChannels.push(channel);
   }
 
@@ -384,9 +358,7 @@ async function fixGameCategory(guild, { game, shortName }) {
   const ensuredChannels = [];
 
   for (const spec of config.channels) {
-    const channel = await ensureConfiguredChannel(guild, category, spec, summary, {
-      createMissing: false
-    });
+    const channel = await ensureConfiguredChannel(guild, category, spec, summary, { createMissing: false });
     ensuredChannels.push(channel);
   }
 
@@ -417,7 +389,7 @@ async function repairCreateEntryRegistry(guild) {
       removed.push(record.channelName || channelId);
       continue;
     }
-    const game = inferCreateEntryGame(channel) || record.game;
+    const game = inferCreateEntryGame(channel) || record.displayName || record.game;
     registerCreateEntryChannel(guild, channel, game);
     healthy.push(channel.name);
   }
@@ -463,7 +435,7 @@ async function diagnoseCreateEntries(guild) {
     lines.push({
       status: categoryOk ? '✅' : '⚠️',
       channelName: channel.name,
-      detail: categoryOk ? `metadata ok (${record.game})` : `category changed; repair recommended (${record.game})`
+      detail: categoryOk ? `metadata ok (${record.displayName || record.game})` : `category changed; repair recommended (${record.displayName || record.game})`
     });
   }
 

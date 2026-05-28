@@ -16,6 +16,8 @@ const { registerCreateEntryChannel } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { setupChannelPanels } = require('./channelPanels');
+const { resolveGameIdentity } = require('../config/gameAliases');
+const { systemEmbed, managerEmbed } = require('./personaMessageSystem');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SUGGESTION_FILE = path.join(DATA_DIR, 'game-suggestions.json');
@@ -66,21 +68,6 @@ function sleep(ms) {
 
 function normalizeName(value) {
   return String(value || '').trim().toLowerCase().replace(/[^\p{Letter}\p{Number}]+/gu, '');
-}
-
-function makeShortName(gameName) {
-  const aliases = [
-    { pattern: /聯盟戰棋|teamfight|tft/i, value: 'tft' },
-    { pattern: /英雄聯盟|league|lol/i, value: 'lol' },
-    { pattern: /minecraft|麥塊|mc/i, value: 'mc' },
-    { pattern: /特戰|valorant/i, value: 'valorant' },
-    { pattern: /apex/i, value: 'apex' }
-  ];
-  const matched = aliases.find((item) => item.pattern.test(gameName));
-  if (matched) return matched.value;
-  const ascii = String(gameName || '').toLowerCase().replace(/[^a-z0-9]+/g, '').slice(0, 12);
-  if (ascii) return ascii;
-  return normalizeName(gameName).slice(0, 8) || 'game';
 }
 
 function makeVoiceLabel(gameName) {
@@ -231,12 +218,12 @@ async function handleVote(interaction, suggestionId, vote) {
   await interaction.reply({ content: vote === 'support' ? '已記錄你的支持。' : '已記錄你的反對。', ephemeral: true });
 }
 
-function buildGameChannelSpecs(gameName, shortName) {
+function buildGameChannelSpecs(gameName) {
   const voiceLabel = makeVoiceLabel(gameName);
   return [
-    { name: `💬｜${shortName}-聊天`, type: ChannelType.GuildText },
-    { name: `🧑‍🤝‍🧑｜${shortName}-找隊友`, type: ChannelType.GuildText },
-    { name: `📌｜${shortName}-資訊`, type: ChannelType.GuildText },
+    { name: `💬｜${gameName}-聊天`, type: ChannelType.GuildText },
+    { name: `🧑‍🤝‍🧑｜${gameName}-找隊友`, type: ChannelType.GuildText },
+    { name: `📌｜${gameName}-資訊`, type: ChannelType.GuildText },
     { name: `🔊｜➕｜建立${voiceLabel}語音`, type: ChannelType.GuildVoice, createEntry: true, userLimit: 1 }
   ];
 }
@@ -284,9 +271,10 @@ function buildGameCategoryOverwrites(guild) {
 }
 
 async function createDynamicGameCategory(guild, gameName, requestedById) {
-  const shortName = makeShortName(gameName);
-  const categoryName = `🎮｜${gameName}`;
-  const summary = { categoryName, shortName, created: [], existing: [], moved: [], failed: [] };
+  const identity = resolveGameIdentity(gameName);
+  const displayName = identity.displayName;
+  const categoryName = `🎮｜${displayName}`;
+  const summary = { categoryName, displayName, slug: identity.slug, created: [], existing: [], moved: [], failed: [] };
   let category = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && normalizeName(channel.name) === normalizeName(categoryName));
   if (!category) {
     category = await guild.channels.create({
@@ -305,7 +293,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     });
   }
 
-  const specs = buildGameChannelSpecs(gameName, shortName);
+  const specs = buildGameChannelSpecs(displayName);
   for (let index = 0; index < specs.length; index += 1) {
     const spec = specs[index];
     const existing = guild.channels.cache.find((channel) => channel.type === spec.type && normalizeName(channel.name) === normalizeName(spec.name));
@@ -319,7 +307,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
       }
       await existing.lockPermissions().catch(() => null);
       await existing.setPosition(index).catch(() => null);
-      if (spec.createEntry) registerCreateEntryChannel(guild, existing, gameName);
+      if (spec.createEntry) registerCreateEntryChannel(guild, existing, displayName);
       continue;
     }
     try {
@@ -332,7 +320,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
       });
       await channel.lockPermissions().catch(() => null);
       await channel.setPosition(index).catch(() => null);
-      if (spec.createEntry) registerCreateEntryChannel(guild, channel, gameName);
+      if (spec.createEntry) registerCreateEntryChannel(guild, channel, displayName);
       summary.created.push(channel.name);
       await sleep(STEP_DELAY_MS);
     } catch (error) {
@@ -343,8 +331,9 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
   const data = readGameCategories();
   if (!data[guild.id]) data[guild.id] = {};
   data[guild.id][category.id] = {
-    gameName,
-    shortName,
+    gameName: displayName,
+    displayName,
+    slug: identity.slug,
     categoryId: category.id,
     categoryName,
     createdBy: requestedById,
@@ -401,13 +390,41 @@ async function approveSuggestion(interaction, suggestionId) {
     description: `${interaction.user} 批准：${suggestion.gameName}`,
     color: 0x57f287
   }).catch(() => null);
-  await interaction.editReply([
-    `已建立或修正遊戲分類：${summary.categoryName}`,
-    `新建立：${summary.created.join('、') || '無'}`,
-    `已存在：${summary.existing.join('、') || '無'}`,
-    `已移動：${summary.moved.join('、') || '無'}`,
-    `失敗：${summary.failed.join('、') || '無'}`
-  ].join('\n'));
+  await interaction.editReply({
+    embeds: [
+      systemEmbed({
+        title: '🎮 新遊戲分類已建立',
+        description: [
+          `《${summary.displayName}》`,
+          '',
+          '已新增或確認：',
+          '💬 聊天',
+          '🧑‍🤝‍🧑 找隊友',
+          '📌 資訊',
+          '🔊 建立語音',
+          '',
+          `slug：${summary.slug}`
+        ]
+      })
+    ],
+    content: summary.failed.length ? `有 ${summary.failed.length} 個項目失敗：${summary.failed.join('、')}` : null
+  });
+  const suggestionChannel = interaction.guild.channels.cache.get(suggestion.channelId);
+  if (suggestionChannel?.send) {
+    await suggestionChannel.send({
+      embeds: [
+        managerEmbed({
+          title: `《${summary.displayName}》遊戲區開好了`,
+          description: [
+            `最近好像不少人在玩《${summary.displayName}》👀`,
+            '就先幫大家開一區了。',
+            '',
+            '想找人一起玩的可以直接進來揪～'
+          ]
+        })
+      ]
+    }).catch(() => null);
+  }
 }
 
 async function showRejectModal(interaction, suggestionId) {

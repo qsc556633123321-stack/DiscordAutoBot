@@ -25,6 +25,7 @@ const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { createOrUpdateLfgCard, deleteLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
 const { recordTempVoiceCreated } = require('./voiceActivitySystem');
+const { resolveGameIdentity } = require('../config/gameAliases');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -108,6 +109,7 @@ function addTempVoice(guildId, channelId, metadata) {
     userLimit: metadata.userLimit ?? 5,
     linkedTextChannelId: metadata.linkedTextChannelId || null,
     textControlChannelId: metadata.textControlChannelId || null,
+    gameSlug: metadata.gameSlug || null,
     controlPanelChannelId: metadata.controlPanelChannelId || null,
     controlPanelMessageId: metadata.controlPanelMessageId || null,
     activityChannelId: metadata.activityChannelId || null,
@@ -163,6 +165,35 @@ function safeVoiceName(value) {
     .replace(/\s+/g, '-')
     .replace(/^-+|-+$/g, '')
     .slice(0, 30);
+}
+
+function cleanDisplayName(value) {
+  return String(value || '')
+    .trim()
+    .replace(/@everyone|@here/gi, '')
+    .replace(/discord\.gg\/?\S*/gi, '')
+    .replace(/\s+/g, ' ')
+    .slice(0, 30);
+}
+
+function isNightPeriod(date = new Date()) {
+  const hour = date.getHours();
+  return hour >= 0 && hour < 5;
+}
+
+function generateSmartVoiceRoomName({ member, game, name, tags = [] } = {}) {
+  const ownerName = cleanDisplayName(member?.displayName || member?.user?.globalName || member?.user?.username || '玩家') || '玩家';
+  const rawName = cleanDisplayName(name);
+  const tagText = `${rawName} ${tags.join(' ')}`;
+  const isRank = /上分|rank|rk|積分|排位/i.test(tagText);
+
+  if (isRank) return `🏆｜${ownerName} 上分房`;
+  if (/深夜|夜聊|night/i.test(String(game || '')) || isNightPeriod()) return `🌙｜${ownerName} 的深夜房`;
+
+  const identity = game ? resolveGameIdentity(game) : null;
+  if (identity?.displayName) return `🎮｜${ownerName} 的${identity.displayName}房`;
+
+  return `🎮｜${ownerName} 的語音房`;
 }
 
 function getCreateVoiceGame(channel) {
@@ -454,17 +485,19 @@ async function sendOwnerControlPanel({ guild, channel, member, interaction = nul
 async function createTemporaryVoice({ guild, member, game, name, limit = 5, createCategoryIfMissing = false }) {
   const category = createCategoryIfMissing ? await findOrCreateGameCategory(guild, game) : findGameCategory(guild, game);
   if (!category) throw new Error(`找不到 🎮｜${game} 分類，請先使用 /setup-game 建立遊戲分區。`);
-  const label = safeVoiceName(name || member.user.username) || member.user.id.slice(-6);
   const userLimit = Math.max(0, Math.min(Number(limit) || 5, 99));
+  const identity = resolveGameIdentity(game);
+  const roomName = generateSmartVoiceRoomName({ member, game: identity.displayName, name }).slice(0, 90);
   const channel = await guild.channels.create({
-    name: `🔊｜${game}-${label}`,
+    name: roomName,
     type: ChannelType.GuildVoice,
     parent: category.id,
     userLimit,
     reason: `Temporary party voice created by ${member.user.tag}`
   });
   addTempVoice(guild.id, channel.id, {
-    game,
+    game: identity.displayName,
+    gameSlug: identity.slug,
     ownerId: member.id,
     controlOwnerId: member.id,
     userLimit,
@@ -902,6 +935,7 @@ module.exports = {
   isTempVoice,
   readTempVoice,
   removeTempVoice,
+  generateSmartVoiceRoomName,
   scheduleTempVoiceDeletion,
   sendOwnerControlPanel,
   transferOwnerIfNeeded,

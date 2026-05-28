@@ -346,3 +346,79 @@ AI 只負責輔助判斷：分類意圖、命名建議、刪除風險、使用�
 ```text
 /ai-layout-repair mode:preview scope:archives
 ```
+
+## Dynamic Game Naming & Persona Layer
+
+遊戲分類現在使用 `displayName` / `slug` 分離：
+
+- `displayName`：Discord UI 顯示名稱，可以是中文、emoji、空白與符號，例如 `鬥陣特攻2`。
+- `slug`：metadata / internal key，只用小寫英文、數字與 hyphen，例如 `overwatch-2`。
+
+新增 alias 設定檔：
+
+```text
+src/config/gameAliases.js
+```
+
+新增遊戲 alias 時，在 `GAME_ALIAS_SLUGS` 加一筆即可：
+
+```js
+'鬥陣特攻2': 'overwatch-2'
+```
+
+如果沒有 alias mapping，系統會先嘗試 sanitize 英文名稱；若仍無法產生 slug，會 fallback 成 `game-{timestamp}`。slug 只存 metadata，不會顯示在 Discord 頻道名稱。
+
+Dynamic Game Category 會完整保留中文 displayName，例如：
+
+```text
+🎮｜鬥陣特攻2
+💬｜鬥陣特攻2-聊天
+🧑‍🤝‍🧑｜鬥陣特攻2-找隊友
+📌｜鬥陣特攻2-資訊
+🔊｜➕｜建立鬥陣特攻2語音
+```
+
+Temp Voice 智慧命名：
+
+- 一般遊戲：`🎮｜style0611 的鬥陣特攻2房`
+- 深夜時段或深夜分類：`🌙｜style0611 的深夜房`
+- 名稱或標籤包含上分 / rank / rk：`🏆｜style0611 上分房`
+
+Persona Layer System：
+
+```text
+src/systems/personaMessageSystem.js
+```
+
+目前支援：
+
+- `system`：冷靜、短、結構化，用於建立成功、修復完成、權限同步。
+- `ai_manager`：像社群管家 / 群友，用於社群互動、推薦聊天、AI 提醒。
+- `night_persona`：深夜感，用於 Night Crew、深夜語音氣氛。
+- `event_persona`：活動感，用於活動、投票、熱鬧提醒。
+
+可用 helper：
+
+```js
+sendSystemMessage(channel, payload)
+sendManagerMessage(channel, payload)
+sendNightMessage(channel, payload)
+sendEventMessage(channel, payload)
+```
+
+或只產生 embed：
+
+```js
+systemEmbed(payload)
+managerEmbed(payload)
+nightEmbed(payload)
+eventEmbed(payload)
+```
+
+重建已存在遊戲分類：
+
+```text
+/fix-game-category game:鬥陣特攻2 short_name:鬥陣特攻2
+```
+
+若是透過遊戲提議建立的分類，批准新的提議會自動使用 displayName 建立；舊的錯誤 `2-聊天` 頻道可先用 `/layout-doctor` 找出，再用 `/ai-layout-repair mode:preview scope:all` 預覽修復。
