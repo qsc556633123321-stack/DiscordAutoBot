@@ -133,8 +133,59 @@ function channelHasActivity(channel) {
   return Boolean(channel.lastMessageId) || (channel.members && channel.members.size > 0);
 }
 
-function isSimilarChannelMergeCandidate(name) {
-  return /閒聊討論|迷因與好圖|好圖分享|音樂分享|美食分享|活動公告|投票區|比賽與排行/i.test(name);
+function getChannelPurposeTags(channel) {
+  const text = `${channel.name} ${channel.parent?.name || ''}`.toLowerCase();
+  const tags = new Set();
+  if (/一般聊天|聊天|閒聊|general/.test(text)) tags.add('general_chat');
+  if (/認真討論|科技|ai|觀點|長篇/.test(text)) tags.add('serious_discussion');
+  if (/找隊友|組隊|party|lfg/.test(text)) tags.add('party');
+  if (/音樂|music/.test(text)) tags.add('music');
+  if (/美食|料理|food/.test(text)) tags.add('food');
+  if (/迷因|好圖|圖片|梗圖|meme|image/.test(text)) tags.add('images');
+  if (/活動公告|活動|投票|比賽|排行|抽獎|event/.test(text)) tags.add('event');
+  if (/server-logs|ticket-logs|bot-control|管理|後台/.test(text)) tags.add('admin');
+  if (/ticket-|客服|支援/.test(text)) tags.add('support');
+  return [...tags];
+}
+
+function classifyChannel(channel, expectedRecord = null) {
+  if (expectedRecord) return { type: 'core_channel', confidence: 100, tags: getChannelPurposeTags(channel), reason: '已在標準 layout 中' };
+  const tags = getChannelPurposeTags(channel);
+  const hasActivity = channelHasActivity(channel);
+  const name = channel.name;
+
+  if (/音樂分享|美食分享|迷因與好圖|好圖分享|攝影分享|影劇動漫/i.test(name)) {
+    return {
+      type: hasActivity ? 'low_activity_channel' : 'interest_channel',
+      confidence: 82,
+      tags,
+      targetCategoryKey: 'interest_zone',
+      reason: '興趣交流頻道，不屬於相似頻道'
+    };
+  }
+
+  if (/閒聊討論/i.test(name)) {
+    return {
+      type: 'duplicate_channel',
+      confidence: 88,
+      tags,
+      targetName: '🧠｜認真討論',
+      reason: '與認真討論用途重疊，適合語意清理'
+    };
+  }
+
+  if (!hasActivity && !tags.length && !isMetadataChannel(channel.guild, channel)) {
+    return { type: 'dead_channel', confidence: 80, tags, reason: '無近期活動、無 metadata、用途不明' };
+  }
+
+  return { type: 'unknown', confidence: 55, tags, reason: '用途不明，需要人工判斷' };
+}
+
+function isSimilarChannelMergeCandidate(channel) {
+  const classification = typeof channel === 'string'
+    ? { type: /閒聊討論/i.test(channel) ? 'duplicate_channel' : 'unknown', confidence: /閒聊討論/i.test(channel) ? 88 : 0 }
+    : classifyChannel(channel);
+  return classification.type === 'duplicate_channel' && classification.confidence >= 85;
 }
 
 function isEmptyOrTestChannel(channel) {
@@ -173,11 +224,39 @@ function action(type, payload) {
   };
   return {
     action: type,
+    type,
     confidence: payload.confidence ?? 90,
     risk: payload.risk || riskByType[type] || 'medium',
     requiresConfirmation: type !== 'keep',
     ...payload
   };
+}
+
+function getActionType(item) {
+  return item.action || item.type;
+}
+
+function inferRenamePriority(oldName, newName) {
+  const withoutCaseOld = oldName.toLowerCase();
+  const withoutCaseNew = newName.toLowerCase();
+  if (withoutCaseOld === withoutCaseNew && oldName !== newName) return 'casing normalize';
+  if (!/^[\p{Emoji_Presentation}\p{Extended_Pictographic}]/u.test(oldName) && /^[\p{Emoji_Presentation}\p{Extended_Pictographic}]/u.test(newName)) return 'emoji consistency';
+  if (/閒聊討論/.test(oldName) && /認真討論/.test(newName)) return 'semantic cleanup';
+  if (/\b\d-/.test(oldName) || /^.?｜\d-/.test(oldName)) return 'game naming consistency';
+  return 'semantic cleanup';
+}
+
+function filterActionsByOptimizationMode(actions, optimizationMode = 'balanced') {
+  if (optimizationMode === 'conservative') {
+    return actions.filter((item) => ['sync_permission', 'sync_metadata', 'keep'].includes(getActionType(item)));
+  }
+  if (optimizationMode === 'aggressive') return actions;
+  return actions.filter((item) => {
+    const type = getActionType(item);
+    if (type === 'delete') return false;
+    if (type === 'archive' && item.classification !== 'duplicate_channel') return false;
+    return true;
+  });
 }
 
 function shouldIncludeScope(scope, record) {
@@ -265,6 +344,7 @@ function buildMissingAndRepairActions(guild, expectedIndex, scope) {
         targetName: record.current.name,
         newName: record.config.name,
         reason: '名稱與 canonical layout 不一致',
+        renamePriority: inferRenamePriority(record.current.name, record.config.name),
         confidence: 96,
         risk: 'low'
       }));
@@ -348,27 +428,72 @@ function buildUnmanagedActions(guild, expectedIndex, scope, aiVotes = []) {
     const ai = aiById.get(channel.id);
     const canDeleteByName = isDeleteNameCandidate(channel.name);
     const inactive = !channelHasActivity(channel);
-    if (isSimilarChannelMergeCandidate(channel.name)) {
-      if (isEmptyOrTestChannel(channel)) {
-        actions.push(action('delete', {
-          targetId: channel.id,
-          targetName: channel.name,
-          reason: '相似頻道精簡候選，且看起來是空頻道或測試頻道',
-          confidence: 82,
-          risk: 'high'
-        }));
-      } else {
-        actions.push(action('archive', {
-          targetId: channel.id,
-          targetName: channel.name,
-          targetCategoryKey: 'old_archive',
-          reason: '相似頻道精簡候選；已有訊息，先移到舊頻道封存',
-          confidence: 84,
-          risk: 'medium'
-        }));
-      }
+    const classification = classifyChannel(channel);
+
+    if (classification.type === 'duplicate_channel' && classification.confidence >= 85) {
+      actions.push(action('rename', {
+        targetId: channel.id,
+        targetName: channel.name,
+        newName: classification.targetName || '🧠｜認真討論',
+        reason: classification.reason,
+        renamePriority: inferRenamePriority(channel.name, classification.targetName || '🧠｜認真討論'),
+        classification: classification.type,
+        confidence: classification.confidence,
+        risk: 'low'
+      }));
       continue;
     }
+
+    if (classification.type === 'interest_channel') {
+      actions.push(action('move', {
+        targetId: channel.id,
+        targetName: channel.name,
+        targetCategoryKey: classification.targetCategoryKey,
+        reason: classification.reason,
+        classification: classification.type,
+        confidence: classification.confidence,
+        risk: 'low'
+      }));
+      continue;
+    }
+
+    if (classification.type === 'low_activity_channel') {
+      actions.push(action('move', {
+        targetId: channel.id,
+        targetName: channel.name,
+        targetCategoryKey: classification.targetCategoryKey,
+        reason: '低活躍興趣頻道，移到興趣交流而不是合併',
+        classification: classification.type,
+        confidence: classification.confidence,
+        risk: 'low'
+      }));
+      continue;
+    }
+
+    if (classification.type === 'dead_channel' && classification.confidence >= 75) {
+      actions.push(action(isEmptyOrTestChannel(channel) ? 'delete' : 'archive', {
+        targetId: channel.id,
+        targetName: channel.name,
+        targetCategoryKey: 'old_archive',
+        reason: classification.reason,
+        classification: classification.type,
+        confidence: classification.confidence,
+        risk: isEmptyOrTestChannel(channel) ? 'high' : 'medium'
+      }));
+      continue;
+    }
+
+    if (ai && ai.confidence < 70) {
+      actions.push(action('keep', {
+        targetId: channel.id,
+        targetName: channel.name,
+        reason: `AI 信心低於 70，只列建議不執行：${ai.reason || '未提供原因'}`,
+        confidence: ai.confidence,
+        classification: 'suggest_only'
+      }));
+      continue;
+    }
+
     if (canDeleteByName || (inactive && ai?.action === 'delete' && ai.confidence >= 80)) {
       actions.push(action('delete', {
         targetId: channel.id,
@@ -396,6 +521,7 @@ function buildUnmanagedActions(guild, expectedIndex, scope, aiVotes = []) {
 
 function buildLayoutRepairPlan(guild, options = {}) {
   const scope = options.scope || 'all';
+  const optimizationMode = options.optimizationMode || 'balanced';
   const expectedIndex = buildExpectedIndex(guild);
   const actions = [
     ...buildMissingAndRepairActions(guild, expectedIndex, scope),
@@ -411,18 +537,20 @@ function buildLayoutRepairPlan(guild, options = {}) {
     seen.add(dedupeKey);
     unique.push(item);
   }
+  const filtered = filterActionsByOptimizationMode(unique, optimizationMode);
 
   return {
     id: options.id || `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
     guildId: guild.id,
     requestedById: options.requestedById,
     scope,
+    optimizationMode,
     mode: options.mode || 'preview',
     deleteConfirmText: options.deleteConfirmText || '',
     aiUsed: Boolean(options.aiUsed),
     aiNotes: options.aiNotes || [],
     createdAt: Date.now(),
-    actions: unique
+    actions: filtered
   };
 }
 
@@ -460,13 +588,14 @@ async function findOrCreateArchiveCategory(guild, summary) {
 
 async function executeOneAction(guild, item, summary, options = {}) {
   const channel = item.targetId ? guild.channels.cache.get(item.targetId) : null;
+  const itemType = getActionType(item);
   try {
-    if (item.action === 'keep') {
+    if (itemType === 'keep') {
       summary.skipped.push(`${item.targetName}: ${item.reason}`);
       return;
     }
 
-    if (item.action === 'create_category') {
+    if (itemType === 'create_category') {
       const config = COMMUNITY_LAYOUT.find((category) => category.key === item.key);
       const created = await discordOp(() => guild.channels.create({
         name: config.name,
@@ -479,7 +608,7 @@ async function executeOneAction(guild, item, summary, options = {}) {
       return;
     }
 
-    if (item.action === 'create_channel') {
+    if (itemType === 'create_channel') {
       const record = flattenLayout().find((entry) => entry.config.key === item.key);
       const parent = record ? findExpectedChannel(guild, record.category, ChannelType.GuildCategory) : null;
       if (!record || !parent) {
@@ -505,18 +634,27 @@ async function executeOneAction(guild, item, summary, options = {}) {
       return;
     }
 
-    if (protectedReason(guild, channel) && ['archive', 'delete'].includes(item.action)) {
-      summary.skipped.push(`${channel.name}: protected，不執行 ${item.action}`);
+    if (protectedReason(guild, channel) && ['archive', 'delete'].includes(itemType)) {
+      summary.skipped.push(`${channel.name}: protected，不執行 ${itemType}`);
       return;
     }
 
-    if (item.action === 'rename') {
-      await discordOp(() => channel.setName(item.newName, 'AI layout repair rename'));
-      summary.renamed.push(`${item.targetName} -> ${item.newName}`);
+    if (itemType === 'rename') {
+      if (!item.newName || channel.name === item.newName) {
+        summary.skipped.push(`${channel.name}: rename skipped`);
+        return;
+      }
+      await discordOp(() => channel.setName(item.newName, `AI layout repair rename: ${item.renamePriority || 'normalize'}`));
+      summary.renamed.push(`✅ ${item.targetName} -> ${item.newName}`);
+      await writeServerLog(guild, {
+        title: '✅ rename success',
+        description: `${item.targetName} -> ${item.newName}\npriority: ${item.renamePriority || 'normalize'}`,
+        color: 0x57f287
+      }).catch(() => null);
       return;
     }
 
-    if (item.action === 'move') {
+    if (itemType === 'move') {
       const category = guild.channels.cache.get(item.targetCategoryId) ||
         findExpectedChannel(guild, COMMUNITY_LAYOUT.find((entry) => entry.key === item.targetCategoryKey), ChannelType.GuildCategory);
       if (!category) {
@@ -528,7 +666,7 @@ async function executeOneAction(guild, item, summary, options = {}) {
       return;
     }
 
-    if (item.action === 'sync_permission') {
+    if (itemType === 'sync_permission') {
       const record = flattenLayout().find((entry) => entry.config.key === item.key);
       const rule = record
         ? { ...record.category, ...record.config, roleName: record.config.roleName || record.category.roleName, specialRoleName: record.config.specialRoleName || record.category.specialRoleName }
@@ -538,13 +676,13 @@ async function executeOneAction(guild, item, summary, options = {}) {
       return;
     }
 
-    if (item.action === 'sync_metadata') {
+    if (itemType === 'sync_metadata') {
       registerCreateEntryChannel(guild, channel, item.game);
       summary.metadata.push(`${channel.name} -> ${item.game}`);
       return;
     }
 
-    if (item.action === 'archive') {
+    if (itemType === 'archive') {
       const archive = await findOrCreateArchiveCategory(guild, summary);
       await discordOp(() => channel.setParent(archive.id, { lockPermissions: false, reason: 'AI layout repair archive' }));
       if (isCreateVoiceChannel(channel)) removeCreateEntryRecord(guild.id, channel.id);
@@ -552,7 +690,7 @@ async function executeOneAction(guild, item, summary, options = {}) {
       return;
     }
 
-    if (item.action === 'delete') {
+    if (itemType === 'delete') {
       if (!options.allowDelete) {
         summary.skipped.push(`${channel.name}: 缺少 DELETE CONFIRM，略過刪除`);
         return;
@@ -570,7 +708,14 @@ async function executeOneAction(guild, item, summary, options = {}) {
       summary.deleted.push(item.targetName);
     }
   } catch (error) {
-    summary.failed.push(`${item.targetName || item.key}: ${error.message}`);
+    summary.failed.push(`❌ ${itemType} ${item.targetName || item.key}: ${error.message}`);
+    if (itemType === 'rename') {
+      await writeServerLog(guild, {
+        title: '❌ rename failed',
+        description: `${item.targetName} -> ${item.newName}\n${error.message}`,
+        color: 0xeb5757
+      }).catch(() => null);
+    }
   } finally {
     await sleep();
   }
@@ -630,13 +775,14 @@ function groupActions(plan) {
     highRisk: []
   };
   for (const item of plan.actions) {
-    if (item.action === 'create_category' || item.action === 'create_channel') groups.create.push(item);
-    else if (item.action === 'sync_permission') groups.permissions.push(item);
-    else if (item.action === 'sync_metadata') groups.metadata.push(item);
-    else if (item.action === 'rename') groups.rename.push(item);
-    else if (item.action === 'move') groups.move.push(item);
-    else if (item.action === 'archive') groups.archive.push(item);
-    else if (item.action === 'delete') groups.delete.push(item);
+    const itemType = getActionType(item);
+    if (itemType === 'create_category' || itemType === 'create_channel') groups.create.push(item);
+    else if (itemType === 'sync_permission') groups.permissions.push(item);
+    else if (itemType === 'sync_metadata') groups.metadata.push(item);
+    else if (itemType === 'rename') groups.rename.push(item);
+    else if (itemType === 'move') groups.move.push(item);
+    else if (itemType === 'archive') groups.archive.push(item);
+    else if (itemType === 'delete') groups.delete.push(item);
     else groups.keep.push(item);
     if (item.risk === 'high') groups.highRisk.push(item);
   }
@@ -656,6 +802,7 @@ function buildLayoutRepairEmbed(plan, title = '🛠️ Layout Repair Plan') {
     .setDescription([
       `mode: ${plan.mode}`,
       `scope: ${plan.scope}`,
+      `optimizationMode: ${plan.optimizationMode || 'balanced'}`,
       `AI: ${plan.aiUsed ? '已參與建議，仍由規則引擎驗證' : '未使用或未設定 OPENAI_API_KEY'}`,
       groups.delete.length ? '刪除動作 execute 需要 `DELETE CONFIRM`。' : null
     ].filter(Boolean).join('\n'))
@@ -663,7 +810,7 @@ function buildLayoutRepairEmbed(plan, title = '🛠️ Layout Repair Plan') {
       { name: '將建立', value: lines(groups.create, (item) => `${item.targetName} - ${item.reason}`), inline: false },
       { name: '將修權限', value: lines(groups.permissions, (item) => `${item.targetName} - ${item.visibilityType}`), inline: false },
       { name: '將同步 metadata', value: lines(groups.metadata, (item) => `${item.targetName} - ${item.game}`), inline: false },
-      { name: '將改名', value: lines(groups.rename, (item) => `${item.targetName} -> ${item.newName}`), inline: false },
+      { name: '將改名', value: lines(groups.rename, (item) => `${item.targetName} -> ${item.newName} (${item.renamePriority || 'normalize'})`), inline: false },
       { name: '將搬移', value: lines(groups.move, (item) => `${item.targetName} -> ${item.targetCategoryKey}`), inline: false },
       { name: '將封存', value: lines(groups.archive, (item) => `${item.targetName} - ${item.reason}`), inline: false },
       { name: '將刪除', value: lines(groups.delete, (item) => `${item.targetName} - ${item.reason}`), inline: false },
@@ -705,6 +852,7 @@ module.exports = {
   buildLayoutDoctorReport,
   buildLayoutRepairEmbed,
   buildLayoutRepairPlan,
+  classifyChannel,
   deleteLayoutRepairPlan,
   executeLayoutRepairPlan,
   getLayoutRepairPlan,

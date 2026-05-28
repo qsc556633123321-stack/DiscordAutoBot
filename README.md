@@ -280,10 +280,40 @@ Community Layout 現在支援更細的 `visibilityType`：
 - `/layout-doctor`：深度分析 visibilityType、權限外漏、子頻道同步、重複項目、封存候選、刪除候選。
 - `/repair-channel-permissions mode:preview scope:all`：預覽權限修復。
 - `/repair-channel-permissions mode:execute scope:all`：顯示確認按鈕，確認後執行權限修復。
-- `/ai-layout-repair mode:preview scope:all`：使用規則引擎，並在有 `OPENAI_API_KEY` 時加入 AI 輔助建議。
-- `/ai-layout-repair mode:execute scope:all delete_confirm_text:"DELETE CONFIRM"`：顯示確認按鈕，確認後執行。只有輸入 `DELETE CONFIRM` 才允許刪除候選真的刪除。
+- `/ai-layout-repair mode:preview scope:all optimization_mode:balanced`：使用規則引擎，並在有 `OPENAI_API_KEY` 時加入 AI 輔助建議。
+- `/ai-layout-repair mode:execute scope:all optimization_mode:balanced delete_confirm_text:"DELETE CONFIRM"`：顯示確認按鈕，確認後執行。只有輸入 `DELETE CONFIRM` 才允許刪除候選真的刪除。
 
-AI 只負責輔助判斷：分類意圖、命名建議、刪除風險、使用者體驗建議。所有 AI 建議都會再通過 rule-based decision engine；若 AI 建議刪除 protected channel，會被駁回；AI 信心低於 80 的 delete 也會降級為 archive 或 keep。
+`optimization_mode`：
+
+- `conservative`：只修權限與 metadata，不做 rename / move / archive。
+- `balanced`：預設模式，允許 rename、move、低風險整理與 duplicate 修正，但不自動刪除。
+- `aggressive`：允許 archive、dedupe、cleanup 與 delete 候選；刪除仍需要 `DELETE CONFIRM`。
+
+Channel classification：
+
+- `duplicate_channel`：真正重複頻道，例如 `閒聊討論` 與 `認真討論`。需用途高度重疊、purpose tags 相近、visibilityType 相同且信心高於 85。
+- `low_activity_channel`：低活躍興趣頻道，例如 `🍜｜美食分享`、`🎵｜音樂分享`。不會列為 merge，只會建議保留、移到 `🎨｜興趣交流` 或在 aggressive 下封存。
+- `dead_channel`：無近期訊息、無 metadata、無 role、用途不明、非 protected 的頻道。可列為封存或刪除候選。
+
+Rename priority：
+
+- `casing normalize`：例如 `ai工具` -> `AI工具`。
+- `emoji consistency`：補齊標準 emoji。
+- `semantic cleanup`：例如 `閒聊討論` -> `認真討論`。
+- `game naming consistency`：例如 `2-聊天` -> `鬥陣特攻2-聊天`。
+
+興趣交流分類：
+
+```text
+🎨｜興趣交流
+🎵｜音樂分享
+🍜｜美食分享
+🖼｜迷因與好圖
+📷｜攝影分享
+🎬｜影劇動漫
+```
+
+AI 只負責輔助判斷：分類意圖、命名建議、刪除風險、使用者體驗建議。所有 AI 建議都會再通過 rule-based decision engine；若 AI 建議刪除 protected channel，會被駁回；AI 信心低於 70 只會列為 suggest，不會 execute。
 
 刪除頻道只會在以下情況出現：
 

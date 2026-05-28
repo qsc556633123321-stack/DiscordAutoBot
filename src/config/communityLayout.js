@@ -52,6 +52,19 @@ const COMMUNITY_LAYOUT = [
     ]
   },
   {
+    key: 'interest_zone',
+    name: '🎨｜興趣交流',
+    aliases: ['興趣交流', '興趣專區', '生活分享'],
+    visibilityType: VISIBILITY_TYPES.publicSocial,
+    channels: [
+      { key: 'music_share', name: '🎵｜音樂分享', type: ChannelType.GuildText, aliases: ['音樂分享', 'music'], visibilityType: VISIBILITY_TYPES.publicSocial },
+      { key: 'food_share', name: '🍜｜美食分享', type: ChannelType.GuildText, aliases: ['美食分享', 'food'], visibilityType: VISIBILITY_TYPES.publicSocial },
+      { key: 'meme_images', name: '🖼｜迷因與好圖', type: ChannelType.GuildText, aliases: ['迷因與好圖', '好圖分享', '迷因', '圖片分享'], visibilityType: VISIBILITY_TYPES.publicSocial },
+      { key: 'photo_share', name: '📷｜攝影分享', type: ChannelType.GuildText, aliases: ['攝影分享', '照片分享'], visibilityType: VISIBILITY_TYPES.publicSocial },
+      { key: 'movie_anime', name: '🎬｜影劇動漫', type: ChannelType.GuildText, aliases: ['影劇動漫', '動畫漫畫', '動漫'], visibilityType: VISIBILITY_TYPES.publicSocial }
+    ]
+  },
+  {
     key: 'game_center',
     name: '🎮｜遊戲中心',
     aliases: ['遊戲中心', '遊戲大廳'],

@@ -42,6 +42,16 @@ module.exports = {
         .setName('delete_confirm_text')
         .setDescription('若要允許刪除，請輸入 DELETE CONFIRM')
         .setRequired(false))
+    .addStringOption((option) =>
+      option
+        .setName('optimization_mode')
+        .setDescription('Layout optimization 強度，預設 balanced')
+        .setRequired(false)
+        .addChoices(
+          { name: 'conservative', value: 'conservative' },
+          { name: 'balanced', value: 'balanced' },
+          { name: 'aggressive', value: 'aggressive' }
+        ))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
   async execute(interaction) {
@@ -58,10 +68,12 @@ module.exports = {
     const mode = interaction.options.getString('mode');
     const scope = interaction.options.getString('scope');
     const deleteConfirmText = interaction.options.getString('delete_confirm_text') || '';
+    const optimizationMode = interaction.options.getString('optimization_mode') || 'balanced';
     const ai = await getAiLayoutSuggestions(interaction.guild, { scope });
     const plan = buildLayoutRepairPlan(interaction.guild, {
       mode,
       scope,
+      optimizationMode,
       requestedById: interaction.user.id,
       deleteConfirmText,
       aiVotes: ai.votes,
