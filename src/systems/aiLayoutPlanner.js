@@ -1,5 +1,6 @@
 const OpenAI = require('openai');
 const { protectedReason } = require('./layoutDecisionEngine');
+const { validateLayoutAction } = require('../config/communityRules');
 
 function compactGuildLayout(guild) {
   return [...guild.channels.cache.values()].map((channel) => ({
@@ -65,6 +66,13 @@ async function getAiLayoutSuggestions(guild, options = {}) {
       if (!channel) return false;
       if (protectedReason(guild, channel) && vote.action === 'delete') return false;
       if (vote.action === 'delete' && Number(vote.confidence || 0) < 80) return false;
+      const validation = validateLayoutAction({
+        ...vote,
+        targetId: vote.channelId,
+        targetName: vote.targetName || channel.name,
+        newName: vote.newName || vote.targetName
+      }, { channel });
+      if (!validation.allowed) return false;
       return true;
     });
     return {

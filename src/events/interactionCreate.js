@@ -93,6 +93,12 @@ const {
   executeLayoutRepairPlan,
   getLayoutRepairPlan
 } = require('../systems/layoutDecisionEngine');
+const {
+  deleteGameRegistryDoctorPlan,
+  executeGameRegistryDoctorPlan,
+  getGameRegistryDoctorPlan
+} = require('../systems/gameChannels');
+const { buildEmbed: buildGameRegistryDoctorEmbed } = require('../commands/game-registry-doctor');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -1713,6 +1719,57 @@ module.exports = {
           await interaction.reply({ content: '處理遊戲提議按鈕時發生錯誤。', ephemeral: true });
         }
       }
+      return;
+    }
+
+    if (interaction.customId.startsWith('game_registry_doctor_cancel_')) {
+      const planId = interaction.customId.replace('game_registry_doctor_cancel_', '');
+      const plan = getGameRegistryDoctorPlan(planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個 Game Registry Doctor 計畫已失效，請重新執行 `/game-registry-doctor`。', ephemeral: true });
+        return;
+      }
+      if (plan.requestedById !== interaction.user.id) {
+        await interaction.reply({ content: '只有原本執行 `/game-registry-doctor` 的人可以取消。', ephemeral: true });
+        return;
+      }
+      deleteGameRegistryDoctorPlan(planId);
+      await interaction.update({ content: '已取消 Game Registry Doctor，不做任何變更。', embeds: [], components: [] });
+      return;
+    }
+
+    if (interaction.customId.startsWith('game_registry_doctor_confirm_')) {
+      const planId = interaction.customId.replace('game_registry_doctor_confirm_', '');
+      const plan = getGameRegistryDoctorPlan(planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個 Game Registry Doctor 計畫已失效，請重新執行 `/game-registry-doctor`。', ephemeral: true });
+        return;
+      }
+      if (plan.requestedById !== interaction.user.id) {
+        await interaction.reply({ content: '只有原本執行 `/game-registry-doctor` 的人可以確認。', ephemeral: true });
+        return;
+      }
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
+        await interaction.reply({ content: '你需要 ManageChannels 權限才能執行 Game Registry Doctor。', ephemeral: true });
+        return;
+      }
+      await interaction.update({ content: '正在修復 Game Registry，請稍候...', embeds: [], components: [] });
+      const summary = await executeGameRegistryDoctorPlan(interaction.guild, plan);
+      deleteGameRegistryDoctorPlan(planId);
+      const doneEmbed = buildGameRegistryDoctorEmbed({
+        ...plan,
+        actions: [
+          ...summary.metadata.map((name) => ({ type: 'repair_metadata', categoryName: name })),
+          ...summary.renamed.map((name) => ({ type: 'rename_child', channelName: name, newName: '已修正' })),
+          ...summary.createEntries.map((name) => ({ type: 'repair_create_entry', channelName: name, displayName: '已註冊' })),
+          ...summary.archived.map((name) => ({ type: 'archive_duplicate_category', categoryName: name, keepCategoryName: '已封存' }))
+        ]
+      }).setTitle('✅ Game Registry Doctor 修復完成');
+      await interaction.editReply({
+        content: `完成。失敗：${summary.failed.length}，略過：${summary.skipped.length}`,
+        embeds: [doneEmbed],
+        components: []
+      });
       return;
     }
 

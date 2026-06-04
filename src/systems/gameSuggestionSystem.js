@@ -12,11 +12,16 @@ const {
   TextInputStyle
 } = require('discord.js');
 const { getOrCreateGameArchiveCategory, getOrCreateGameSuggestionChannel } = require('./communityStructureManager');
-const { registerCreateEntryChannel, upsertDynamicGameMetadata } = require('./gameChannels');
+const {
+  findGameCategory,
+  registerCreateEntryChannel,
+  setupGameChannels,
+  upsertDynamicGameMetadata
+} = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { setupChannelPanels } = require('./channelPanels');
-const { resolveGameIdentity } = require('../config/gameAliases');
+const { resolveGameIdentity } = require('./gameIdentityService');
 const { systemEmbed, managerEmbed } = require('./personaMessageSystem');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -126,6 +131,9 @@ function buildSuggestionEmbed(suggestion) {
   if (suggestion.rejectReason) {
     embed.addFields({ name: '拒絕理由', value: suggestion.rejectReason, inline: false });
   }
+  if (suggestion.note) {
+    embed.addFields({ name: '系統備註', value: suggestion.note, inline: false });
+  }
   return embed;
 }
 
@@ -219,12 +227,11 @@ async function handleVote(interaction, suggestionId, vote) {
 }
 
 function buildGameChannelSpecs(gameName) {
-  const voiceLabel = makeVoiceLabel(gameName);
   return [
-    { key: 'chat', name: `💬｜${gameName}-聊天`, type: ChannelType.GuildText },
-    { key: 'lfg', name: `🧑‍🤝‍🧑｜${gameName}-找隊友`, type: ChannelType.GuildText },
-    { key: 'info', name: `📌｜${gameName}-資訊`, type: ChannelType.GuildText },
-    { key: 'voiceCreate', name: `🔊｜➕｜建立${voiceLabel}語音`, type: ChannelType.GuildVoice, createEntry: true, userLimit: 1 }
+    { key: 'chat', name: '💬｜聊天', type: ChannelType.GuildText },
+    { key: 'lfg', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText },
+    { key: 'info', name: '📌｜資訊', type: ChannelType.GuildText },
+    { key: 'voiceCreate', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, createEntry: true, userLimit: 1 }
   ];
 }
 
@@ -274,8 +281,9 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
   const identity = resolveGameIdentity(gameName);
   const displayName = identity.displayName;
   const categoryName = `🎮｜${displayName}`;
-  const summary = { categoryName, displayName, slug: identity.slug, created: [], existing: [], moved: [], failed: [] };
-  let category = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && normalizeName(channel.name) === normalizeName(categoryName));
+  const summary = { categoryName, displayName, gameId: identity.gameId || identity.id, slug: identity.slug, created: [], existing: [], moved: [], failed: [], alreadyExists: false };
+  let category = findGameCategory(guild, displayName) ||
+    guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && normalizeName(channel.name) === normalizeName(categoryName));
   if (!category) {
     category = await guild.channels.create({
       name: categoryName,
@@ -286,8 +294,8 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     summary.created.push(category.name);
     await sleep(STEP_DELAY_MS);
   } else {
+    summary.alreadyExists = true;
     summary.existing.push(category.name);
-    if (category.name !== categoryName) await category.setName(categoryName, 'Dynamic game category canonical name').catch(() => null);
     await category.permissionOverwrites.set(buildGameCategoryOverwrites(guild), 'Dynamic game category permissions').catch((error) => {
       summary.failed.push(`${category.name} permissions: ${error.message}`);
     });
@@ -297,7 +305,11 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
   const channelMap = {};
   for (let index = 0; index < specs.length; index += 1) {
     const spec = specs[index];
-    const existing = guild.channels.cache.find((channel) => channel.type === spec.type && normalizeName(channel.name) === normalizeName(spec.name));
+    const existing = guild.channels.cache.find((channel) => (
+      channel.type === spec.type &&
+      channel.parentId === category.id &&
+      normalizeName(channel.name) === normalizeName(spec.name)
+    ));
     if (existing) {
       if (existing.name !== spec.name) await existing.setName(spec.name, 'Dynamic game channel canonical name').catch(() => null);
       if (existing.parentId !== category.id) {
@@ -331,7 +343,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     }
   }
 
-  upsertDynamicGameMetadata(guild, category, { displayName, slug: identity.slug }, channelMap, requestedById);
+  upsertDynamicGameMetadata(guild, category, { displayName, slug: identity.slug, gameId: identity.gameId || identity.id }, channelMap, requestedById);
   try {
     scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
   } catch {
@@ -363,6 +375,30 @@ async function approveSuggestion(interaction, suggestionId) {
     return;
   }
   await interaction.deferReply({ ephemeral: true });
+  const existingCategory = findGameCategory(interaction.guild, suggestion.gameName);
+  if (existingCategory) {
+    const identity = resolveGameIdentity(suggestion.gameName);
+    suggestion.status = 'approved';
+    suggestion.approvedById = interaction.user.id;
+    suggestion.approvedAt = new Date().toISOString();
+    suggestion.existingCategoryId = existingCategory.id;
+    suggestion.note = '已存在相同遊戲分類，不重複建立';
+    saveSuggestion(interaction.guild.id, suggestionId, suggestion);
+    await updateSuggestionMessage(interaction.guild, suggestion);
+    await upsertDynamicGameMetadata(
+      interaction.guild,
+      existingCategory,
+      {
+        displayName: identity.displayName,
+        slug: identity.slug,
+        gameId: identity.gameId || identity.id
+      },
+      {},
+      interaction.user.id
+    );
+    await interaction.editReply(`已存在相同遊戲分類：${existingCategory}，不重複建立。`);
+    return;
+  }
   const summary = await createDynamicGameCategory(interaction.guild, suggestion.gameName, interaction.user.id);
   suggestion.status = 'approved';
   suggestion.approvedById = interaction.user.id;

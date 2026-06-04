@@ -14,6 +14,12 @@ const {
 const { isTempVoice } = require('./tempVoice');
 const { writeServerLog } = require('./serverLogs');
 const { normalizeChannelName } = require('./communityBootstrapSystem');
+const {
+  COMMUNITY_RULES_VERSION,
+  classifyChannelByRules,
+  validateLayoutAction
+} = require('../config/communityRules');
+const { isSameGame, stripGameCategoryPrefix } = require('./gameIdentityService');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REPAIR_PLANS_FILE = path.join(DATA_DIR, 'layout-repair-plans.json');
@@ -128,10 +134,10 @@ function getProtectedSemanticType(guild, channel) {
 
 function getDynamicGameExpectedName(channel, metadata) {
   if (!metadata?.displayName || !channel || channel.type === ChannelType.GuildCategory) return null;
-  if (/聊天/.test(channel.name)) return `💬｜${metadata.displayName}-聊天`;
-  if (/找隊友|lfg/i.test(channel.name)) return `🧑‍🤝‍🧑｜${metadata.displayName}-找隊友`;
-  if (/資訊|info/i.test(channel.name)) return `📌｜${metadata.displayName}-資訊`;
-  if (channel.type === ChannelType.GuildVoice && /建立.*語音/u.test(channel.name)) return `🔊｜➕｜建立${metadata.displayName}語音`;
+  if (/聊天/.test(channel.name)) return '💬｜聊天';
+  if (/找隊友|lfg/i.test(channel.name)) return '🧑‍🤝‍🧑｜找隊友';
+  if (/資訊|info/i.test(channel.name)) return '📌｜資訊';
+  if (channel.type === ChannelType.GuildVoice && /建立.*語音/u.test(channel.name)) return '🔊｜➕｜建立語音';
   return null;
 }
 
@@ -141,6 +147,11 @@ function protectedReason(guild, channel, expectedRecord = null) {
   if (channel.id === guild.systemChannelId || channel.id === guild.rulesChannelId || channel.id === guild.publicUpdatesChannelId) return 'Discord 系統頻道';
   if (channel.name.startsWith('ticket-')) return 'Ticket 私人頻道';
   if (/server-logs|ticket-logs|bot-control|語音控制台/i.test(channel.name)) return 'logs / bot control';
+  const communityRule = classifyChannelByRules({
+    channel,
+    metadata: findDynamicGameMetadataByChannel(guild, channel)
+  });
+  if (communityRule.protected) return communityRule.reason;
   const semanticType = getProtectedSemanticType(guild, channel);
   if (semanticType) return semanticType;
   if (isTempVoice(guild.id, channel.id)) return 'active temp voice';
@@ -190,6 +201,24 @@ function classifyChannel(channel, expectedRecord = null) {
       displayName: dynamicGame.displayName,
       slug: dynamicGame.slug,
       reason: 'dynamic_game metadata 保護'
+    };
+  }
+  const communityRule = classifyChannelByRules({ channel });
+  if (communityRule.categoryType === 'hobby') {
+    return {
+      type: 'low_activity_channel',
+      confidence: 86,
+      tags: getChannelPurposeTags(channel),
+      targetCategoryKey: 'interest_zone',
+      reason: 'Community Rules v1: hobby 頻道不可判定為 duplicate，只能保留或移到興趣交流'
+    };
+  }
+  if (['onboarding', 'social', 'game_center', 'development', 'admin'].includes(communityRule.categoryType)) {
+    return {
+      type: `${communityRule.categoryType}_channel`,
+      confidence: 95,
+      tags: getChannelPurposeTags(channel),
+      reason: communityRule.reason
     };
   }
   const tags = getChannelPurposeTags(channel);
@@ -301,6 +330,29 @@ function filterActionsByOptimizationMode(actions, optimizationMode = 'balanced')
   });
 }
 
+function validateActionsWithCommunityRules(guild, actions) {
+  return actions.map((item) => {
+    const channel = item.targetId ? guild.channels.cache.get(item.targetId) : null;
+    const dynamicGame = channel ? findDynamicGameMetadataByChannel(guild, channel) : null;
+    const validation = validateLayoutAction(item, { channel, dynamicGame });
+    if (validation.allowed) {
+      return {
+        ...item,
+        communityRulesVersion: COMMUNITY_RULES_VERSION,
+        categoryType: item.categoryType || validation.categoryType
+      };
+    }
+    return action('keep', {
+      targetId: item.targetId,
+      targetName: item.targetName || item.name || item.key || 'unknown',
+      confidence: 100,
+      communityRulesVersion: COMMUNITY_RULES_VERSION,
+      rejectedAction: getActionType(item),
+      reason: `${validation.reason}；Community Rules v1 已拒絕原動作 ${getActionType(item)}`
+    });
+  });
+}
+
 function shouldIncludeScope(scope, record) {
   if (scope === 'all') return true;
   const type = record.config.visibilityType || record.category.visibilityType;
@@ -314,6 +366,43 @@ function shouldIncludeScope(scope, record) {
 
 function buildDuplicateActions(guild, expectedIndex, scope) {
   if (!['all', 'duplicates'].includes(scope)) return [];
+  const actions = [];
+  const gameGroups = new Map();
+  for (const channel of guild.channels.cache.values()) {
+    if (channel.type !== ChannelType.GuildCategory || !channel.name.startsWith('🎮｜')) continue;
+    if (/遊戲中心|遊戲大廳/.test(channel.name)) continue;
+    const displayName = stripGameCategoryPrefix(channel.name);
+    const existingKey = [...gameGroups.keys()].find((key) => isSameGame(key, displayName));
+    const key = existingKey || displayName;
+    if (!gameGroups.has(key)) gameGroups.set(key, []);
+    gameGroups.get(key).push(channel);
+  }
+
+  for (const channels of gameGroups.values()) {
+    if (channels.length < 2) continue;
+    const sorted = [...channels].sort((a, b) => {
+      const aMeta = isMetadataChannel(guild, a) ? 1 : 0;
+      const bMeta = isMetadataChannel(guild, b) ? 1 : 0;
+      if (aMeta !== bMeta) return bMeta - aMeta;
+      const aChildren = guild.channels.cache.filter((item) => item.parentId === a.id).size;
+      const bChildren = guild.channels.cache.filter((item) => item.parentId === b.id).size;
+      if (aChildren !== bChildren) return bChildren - aChildren;
+      return a.rawPosition - b.rawPosition;
+    });
+    const keep = sorted[0];
+    for (const duplicate of sorted.slice(1)) {
+      actions.push(action('archive', {
+        targetId: duplicate.id,
+        targetName: duplicate.name,
+        targetCategoryKey: 'old_archive',
+        classification: 'duplicate_game_category',
+        reason: `semantic duplicate game category，保留 ${keep.name}`,
+        confidence: 95,
+        risk: 'medium'
+      }));
+    }
+  }
+
   const groups = new Map();
   for (const channel of guild.channels.cache.values()) {
     const key = `${channel.type}:${normalizeChannelName(channel.name)}`;
@@ -321,7 +410,6 @@ function buildDuplicateActions(guild, expectedIndex, scope) {
     groups.get(key).push(channel);
   }
 
-  const actions = [];
   for (const channels of groups.values()) {
     if (channels.length < 2) continue;
     const sorted = [...channels].sort((a, b) => {
@@ -453,6 +541,7 @@ function buildUnmanagedActions(guild, expectedIndex, scope, aiVotes = []) {
           reason: `dynamic_game 子頻道名稱依 parent displayName 修正：${dynamicGame.displayName}`,
           renamePriority: 'game naming consistency',
           classification: 'dynamic_game',
+          displayName: dynamicGame.displayName,
           confidence: 100,
           risk: 'low'
         }));
@@ -618,7 +707,10 @@ function buildLayoutRepairPlan(guild, options = {}) {
     seen.add(dedupeKey);
     unique.push(item);
   }
-  const filtered = filterActionsByOptimizationMode(unique, optimizationMode);
+  const filtered = validateActionsWithCommunityRules(
+    guild,
+    filterActionsByOptimizationMode(unique, optimizationMode)
+  );
 
   return {
     id: options.id || `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
@@ -630,6 +722,7 @@ function buildLayoutRepairPlan(guild, options = {}) {
     deleteConfirmText: options.deleteConfirmText || '',
     aiUsed: Boolean(options.aiUsed),
     aiNotes: options.aiNotes || [],
+    communityRulesVersion: COMMUNITY_RULES_VERSION,
     createdAt: Date.now(),
     actions: filtered
   };
@@ -715,7 +808,21 @@ async function executeOneAction(guild, item, summary, options = {}) {
       return;
     }
 
-    if (protectedReason(guild, channel) && ['archive', 'delete'].includes(itemType)) {
+    const communityValidation = validateLayoutAction(item, {
+      channel,
+      dynamicGame: findDynamicGameMetadataByChannel(guild, channel)
+    });
+    if (!communityValidation.allowed) {
+      summary.skipped.push(`${channel.name}: ${communityValidation.reason}`);
+      await writeServerLog(guild, {
+        title: '🛡️ Community Rules v1 rejected layout action',
+        description: `action: ${itemType}\nchannel: ${channel.name}\nreason: ${communityValidation.reason}`,
+        color: 0xf1c40f
+      }).catch(() => null);
+      return;
+    }
+
+    if (protectedReason(guild, channel) && ['archive', 'delete'].includes(itemType) && item.classification !== 'duplicate_game_category') {
       summary.skipped.push(`${channel.name}: protected，不執行 ${itemType}`);
       return;
     }
@@ -780,6 +887,17 @@ async function executeOneAction(guild, item, summary, options = {}) {
 
     if (itemType === 'archive') {
       const archive = await findOrCreateArchiveCategory(guild, summary);
+      if (channel.type === ChannelType.GuildCategory) {
+        const children = guild.channels.cache.filter((child) => child.parentId === channel.id);
+        for (const child of children.values()) {
+          await discordOp(() => child.setParent(archive.id, { lockPermissions: false, reason: 'AI layout repair archive duplicate category child' }));
+        }
+        if (!channel.name.startsWith('duplicate-game-')) {
+          await discordOp(() => channel.setName(`duplicate-game-${channel.name}`.slice(0, 95), 'AI layout repair mark duplicate game category'));
+        }
+        summary.archived.push(`${item.targetName} -> ${archive.name}`);
+        return;
+      }
       await discordOp(() => channel.setParent(archive.id, { lockPermissions: false, reason: 'AI layout repair archive' }));
       if (isCreateVoiceChannel(channel)) removeCreateEntryRecord(guild.id, channel.id);
       summary.archived.push(channel.name);
@@ -899,6 +1017,7 @@ function buildLayoutRepairEmbed(plan, title = '🛠️ Layout Repair Plan') {
       `mode: ${plan.mode}`,
       `scope: ${plan.scope}`,
       `optimizationMode: ${plan.optimizationMode || 'balanced'}`,
+      `rules: Community Layout Rules ${plan.communityRulesVersion || COMMUNITY_RULES_VERSION}`,
       `AI: ${plan.aiUsed ? '已參與建議，仍由規則引擎驗證' : '未使用或未設定 OPENAI_API_KEY'}`,
       groups.delete.length ? '刪除動作 execute 需要 `DELETE CONFIRM`。' : null
     ].filter(Boolean).join('\n'))

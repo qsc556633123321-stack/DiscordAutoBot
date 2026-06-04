@@ -536,3 +536,62 @@ src/config/gameDomains.js
 - `SUSPICIOUS`：刪除並警告。
 - `MALICIOUS`：刪除，並對新帳號或違規者 timeout。
 - AI 失敗：fallback 規則為非官方 steam-like domain 一律封鎖。
+## Community Layout Rules v1
+
+`src/config/communityRules.js` 是社群整理系統的唯一結構規則來源。AI Layout Repair、rename、move、archive、delete 等高風險整理動作，都必須先通過 Community Rules validator；違反規則的 AI proposal 會被直接轉成 `keep`，並在 preview 的「不處理原因」中顯示拒絕理由。
+
+核心規則：
+
+- `onboarding`：新人報到、社群規則、公告、伺服器導覽、身分組領取。不可搬移、不可封存、不可刪除。
+- `social`：一般聊天、深夜聊天、認真討論、找隊友大廳、目前語音房。不可封存。
+- `game_center`：組隊招募、遊戲提議、遊戲封存區。不可刪除。
+- `dynamic_game`：LOL、TFT、APEX、VALORANT、Minecraft、GTFO、鬥陣特攻2 與未來新增遊戲。子頻道固定為聊天、找隊友、資訊、建立語音。不可封存、不可刪除。
+- `hobby`：音樂分享、美食分享、迷因與好圖。不可判定為 duplicate，只能保留或移到興趣交流。
+- `development`：程式開發、AI工具、設計作品、作品展示。不可封存。
+- `investment`：盤勢討論、投資筆記。
+- `events`：活動公告、投票區、抽獎活動、比賽與排行。允許整合，不允許刪除。
+- `admin`：server-logs、ticket-logs、bot-control、語音控制台、整理紀錄。永遠保護。
+
+Rename 只允許明確白名單，例如 `ai工具 -> AI工具`、`股票ai工具 -> 股票AI工具`、`閒聊討論 -> 認真討論`。禁止 alias 反向覆蓋 displayName，例如 `VALORANT -> 特戰`、`APEX -> Apex區`、`Minecraft -> MC`。
+
+Similarity 只允許兩組 duplicate 判定：`一般聊天 / 閒聊討論`、`組隊招募 / 找隊友大廳`。其他頻道即使低活躍，也不能被 AI 當成 merge candidate。
+
+Archive 只允許 `test-`、`old-`、`delete-pending`、`temp-` 開頭或真正 dead channel。Delete 必須同時符合 `dead`、`not protected`、`not dynamic_game`、`not onboarding`，並仍需管理員 preview + execute 確認。
+
+## Community Schema v2: Game Registry
+
+Community Schema v2 新增 Game Registry + Semantic Identity Engine，用來避免遊戲分類重複建立、中文遊戲名稱被截斷、alias 反向覆蓋 displayName，以及 AI Layout Repair 誤判動態遊戲分類。
+
+核心檔案：
+
+- `src/config/gameRegistry.js`：定義 canonical game identity，例如 `VALORANT`、`英雄聯盟`、`聯盟戰棋`、`APEX`、`Minecraft`、`鬥陣特攻2`、`GTFO`。
+- `src/systems/gameIdentityService.js`：提供 `findGameIdentity()`、`normalizeGameName()`、`getCanonicalDisplayName()`、`getGameId()`、`isSameGame()`。
+- `src/data/game-categories.json`：動態遊戲分類 metadata 會記錄 `gameId`、`displayName`、`slug`、`type: "dynamic_game"` 與子頻道 ID。
+
+語意規則：
+
+- `VALORANT`、`特戰`、`特戰英豪`、`瓦羅蘭` 都會被視為同一個 `gameId: valorant`。
+- alias 只用於搜尋與辨識，不可把既有分類 displayName 反向改成 alias。
+- 找不到 registry 的遊戲會建立 `custom_*` gameId，但 displayName 會完整保留，不會截斷中文。
+- `/setup-game` 與 `/suggest-game` 批准前會先查同 gameId 分類；已存在就不重複建立。
+
+遊戲分類 v2 命名：
+
+```text
+🎮｜VALORANT
+💬｜聊天
+🧑‍🤝‍🧑｜找隊友
+📌｜資訊
+🔊｜➕｜建立語音
+```
+
+分類本身代表遊戲，所以子頻道不再重複寫 `VALORANT-聊天` 或 `特戰-聊天`。Temp Voice metadata 仍會保存 `gameId` 與 `displayName`，供 Voice Hub、LFG、AI Repair 使用。
+
+修復工具：
+
+```text
+/game-registry-doctor mode:preview
+/game-registry-doctor mode:execute
+```
+
+`/game-registry-doctor` 會掃描重複遊戲分類、缺 metadata、子頻道命名不一致、create entry 未註冊。execute 需要二次確認，只會補 metadata、修正子頻道名稱、修 create entry metadata，並把語意重複分類移到舊頻道封存；不直接刪除。
