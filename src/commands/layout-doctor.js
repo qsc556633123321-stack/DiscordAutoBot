@@ -25,6 +25,7 @@ module.exports = {
       .setTitle('🩺 Layout Doctor')
       .setDescription('這裡只做分析，不會修改伺服器。要執行修復請使用 `/ai-layout-repair` 或 `/repair-channel-permissions`。')
       .addFields(
+        { name: 'dynamic_game metadata', value: list(report.dynamicGameMetadata), inline: false },
         { name: 'visibilityType 狀態', value: list(report.visibility), inline: false },
         { name: '子頻道未同步分類', value: list(report.unsynced), inline: false },
         { name: '建議修權限', value: list(actions.filter((item) => item.action === 'sync_permission').map((item) => `${item.targetName}: ${item.reason}`)), inline: false },

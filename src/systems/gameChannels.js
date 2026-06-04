@@ -5,6 +5,7 @@ const { resolveGameIdentity } = require('../config/gameAliases');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const CREATE_ENTRY_FILE = path.join(DATA_DIR, 'temp-voice-create-entries.json');
+const GAME_CATEGORY_FILE = path.join(DATA_DIR, 'game-categories.json');
 
 function ensureDataFile() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -31,6 +32,35 @@ function writeCreateEntryRegistry(data) {
   }
 }
 
+function ensureJsonFile(filePath) {
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, '{}\n', 'utf8');
+}
+
+function readJsonFile(filePath) {
+  ensureJsonFile(filePath);
+  try {
+    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8') || '{}');
+    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  } catch (error) {
+    console.error(`[GameChannels] read failed ${path.basename(filePath)}:`, error);
+    return {};
+  }
+}
+
+function writeJsonFile(filePath, data) {
+  ensureJsonFile(filePath);
+  fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+}
+
+function readGameCategoryMetadata() {
+  return readJsonFile(GAME_CATEGORY_FILE);
+}
+
+function writeGameCategoryMetadata(data) {
+  writeJsonFile(GAME_CATEGORY_FILE, data);
+}
+
 function normalizeName(name) {
   return String(name || '')
     .trim()
@@ -51,14 +81,15 @@ function buildGameConfig(game, shortName, options = {}) {
   const identity = resolveGameIdentity(game);
   const displayName = identity.displayName;
   const slug = options.slug || identity.slug;
-  const channelPrefix = String(shortName || options.channelPrefix || displayName).trim() || displayName;
+  const channelPrefix = String(options.channelPrefix || displayName).trim() || displayName;
   const voiceLabel = options.voiceLabel || displayName;
 
   return {
     game: displayName,
     displayName,
     slug,
-    shortName: channelPrefix,
+    shortName: String(shortName || slug).trim() || slug,
+    channelPrefix,
     categoryName: formatCategoryName(displayName),
     createVoiceName: formatCreateVoiceName(voiceLabel),
     channels: [
@@ -98,11 +129,11 @@ function buildGameConfig(game, shortName, options = {}) {
 }
 
 const DEFAULT_GAMES = [
-  buildGameConfig('APEX', 'apex', { voiceLabel: 'APEX' }),
-  buildGameConfig('特戰英豪', '特戰', { voiceLabel: '特戰' }),
-  buildGameConfig('Minecraft', 'mc', { voiceLabel: 'MC' }),
-  buildGameConfig('英雄聯盟', 'lol', { voiceLabel: 'LOL' }),
-  buildGameConfig('聯盟戰棋', 'tft', { voiceLabel: '聯盟戰棋' })
+  buildGameConfig('APEX', 'apex'),
+  buildGameConfig('特戰英豪', '特戰'),
+  buildGameConfig('Minecraft', 'mc'),
+  buildGameConfig('英雄聯盟', 'lol'),
+  buildGameConfig('聯盟戰棋', 'tft')
 ];
 
 function gameMatchesConfig(config, game, shortName = '') {
@@ -123,12 +154,14 @@ function gameMatchesConfig(config, game, shortName = '') {
 }
 
 function getGameConfig(game, shortName) {
-  const existing = DEFAULT_GAMES.find((item) => gameMatchesConfig(item, game, shortName));
-  if (!existing) return buildGameConfig(game, shortName);
-  if (!shortName || normalizeName(existing.shortName) === normalizeName(shortName)) return existing;
-  return buildGameConfig(existing.displayName, shortName, {
-    slug: existing.slug,
-    voiceLabel: existing.displayName === 'Minecraft' ? 'MC' : existing.displayName === '英雄聯盟' ? 'LOL' : existing.displayName
+  const exact = DEFAULT_GAMES.find((item) => normalizeName(item.displayName) === normalizeName(game));
+  if (exact && !shortName) return exact;
+
+  const aliasMatch = DEFAULT_GAMES.find((item) => gameMatchesConfig(item, game, shortName));
+  const slug = aliasMatch?.slug || resolveGameIdentity(game).slug;
+  return buildGameConfig(game, shortName, {
+    slug,
+    voiceLabel: game
   });
 }
 
@@ -178,6 +211,63 @@ function registerCreateEntryChannel(guild, channel, game) {
   };
   writeCreateEntryRegistry(data);
   return data[guild.id][channel.id];
+}
+
+function upsertDynamicGameMetadata(guild, category, config, channels = {}, createdBy = null) {
+  if (!guild || !category || !config) return null;
+  const data = readGameCategoryMetadata();
+  if (!data[guild.id]) data[guild.id] = {};
+  const existing = data[guild.id][category.id] || {};
+  const channelIds = {
+    chat: channels.chat?.id || existing.channels?.chat || null,
+    lfg: channels.party?.id || channels.lfg?.id || existing.channels?.lfg || null,
+    info: channels.info?.id || existing.channels?.info || null,
+    voiceCreate: channels.createVoice?.id || channels.voiceCreate?.id || existing.channels?.voiceCreate || null
+  };
+  data[guild.id][category.id] = {
+    guildId: guild.id,
+    categoryId: category.id,
+    displayName: config.displayName,
+    slug: config.slug,
+    type: 'dynamic_game',
+    createdBy: existing.createdBy || createdBy || null,
+    createdAt: existing.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    channels: channelIds
+  };
+  writeGameCategoryMetadata(data);
+  return data[guild.id][category.id];
+}
+
+function getDynamicGameMetadata(guildId, categoryId) {
+  return readGameCategoryMetadata()[guildId]?.[categoryId] || null;
+}
+
+function findDynamicGameMetadataByChannel(guild, channel) {
+  if (!guild || !channel) return null;
+  const data = readGameCategoryMetadata()[guild.id] || {};
+  const categoryId = channel.type === ChannelType.GuildCategory ? channel.id : channel.parentId;
+  if (categoryId && data[categoryId]?.type === 'dynamic_game') return data[categoryId];
+  return Object.values(data).find((record) => (
+    record?.type === 'dynamic_game' &&
+    Object.values(record.channels || {}).includes(channel.id)
+  )) || null;
+}
+
+function repairDynamicGameMetadataForCategory(guild, category, createdBy = null) {
+  if (!guild || !category || category.type !== ChannelType.GuildCategory || !category.name.startsWith('🎮｜')) return null;
+  const displayName = category.name.replace(/^🎮｜/, '').trim();
+  const config = getGameConfig(displayName);
+  const children = guild.channels.cache.filter((channel) => channel.parentId === category.id);
+  const channelMap = {};
+  for (const child of children.values()) {
+    if (/聊天/.test(child.name)) channelMap.chat = child;
+    else if (/找隊友|lfg/i.test(child.name)) channelMap.lfg = child;
+    else if (/資訊|info/i.test(child.name)) channelMap.info = child;
+    else if (child.type === ChannelType.GuildVoice && /建立.*語音/u.test(child.name)) channelMap.voiceCreate = child;
+  }
+  if (channelMap.voiceCreate) registerCreateEntryChannel(guild, channelMap.voiceCreate, config.displayName);
+  return upsertDynamicGameMetadata(guild, category, config, channelMap, createdBy);
 }
 
 function isCreateVoiceChannel(channel) {
@@ -342,12 +432,15 @@ async function setupGameChannels(guild, { game, shortName, createDefaultChannels
   const specs = createDefaultChannels ? config.channels : config.channels.filter((spec) => spec.key === 'createVoice');
 
   const ensuredChannels = [];
+  const channelMap = {};
   for (const spec of specs) {
     const channel = await ensureConfiguredChannel(guild, category, spec, summary, { createMissing: true });
     ensuredChannels.push(channel);
+    if (channel) channelMap[spec.key === 'party' ? 'lfg' : spec.key] = channel;
   }
 
   await orderGameChannels(ensuredChannels, summary);
+  upsertDynamicGameMetadata(guild, category, config, channelMap, null);
   return summary;
 }
 
@@ -356,13 +449,16 @@ async function fixGameCategory(guild, { game, shortName }) {
   const summary = createSummary(config);
   const category = await ensureGameCategory(guild, config, summary);
   const ensuredChannels = [];
+  const channelMap = {};
 
   for (const spec of config.channels) {
     const channel = await ensureConfiguredChannel(guild, category, spec, summary, { createMissing: false });
     ensuredChannels.push(channel);
+    if (channel) channelMap[spec.key === 'party' ? 'lfg' : spec.key] = channel;
   }
 
   await orderGameChannels(ensuredChannels, summary);
+  upsertDynamicGameMetadata(guild, category, config, channelMap, null);
   return summary;
 }
 
@@ -454,17 +550,22 @@ module.exports = {
   findGameCategory,
   findOrCreateGameCategory,
   fixGameCategory,
+  findDynamicGameMetadataByChannel,
   getCreateEntryRecord,
   getGameConfig,
+  getDynamicGameMetadata,
   getGameNameFromCreateVoice,
   inferCreateEntryGame,
   inferGameCategoryName,
   isCreateVoiceChannel,
   normalizeName,
   readCreateEntryRegistry,
+  readGameCategoryMetadata,
+  repairDynamicGameMetadataForCategory,
   registerCreateEntryChannel,
   removeCreateEntryRecord,
   repairCreateEntryRegistry,
   repairCreateEntryRegistryForClient,
-  setupGameChannels
+  setupGameChannels,
+  upsertDynamicGameMetadata
 };

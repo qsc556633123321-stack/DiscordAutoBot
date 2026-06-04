@@ -12,7 +12,7 @@ const {
   TextInputStyle
 } = require('discord.js');
 const { getOrCreateGameArchiveCategory, getOrCreateGameSuggestionChannel } = require('./communityStructureManager');
-const { registerCreateEntryChannel } = require('./gameChannels');
+const { registerCreateEntryChannel, upsertDynamicGameMetadata } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { setupChannelPanels } = require('./channelPanels');
@@ -221,10 +221,10 @@ async function handleVote(interaction, suggestionId, vote) {
 function buildGameChannelSpecs(gameName) {
   const voiceLabel = makeVoiceLabel(gameName);
   return [
-    { name: `💬｜${gameName}-聊天`, type: ChannelType.GuildText },
-    { name: `🧑‍🤝‍🧑｜${gameName}-找隊友`, type: ChannelType.GuildText },
-    { name: `📌｜${gameName}-資訊`, type: ChannelType.GuildText },
-    { name: `🔊｜➕｜建立${voiceLabel}語音`, type: ChannelType.GuildVoice, createEntry: true, userLimit: 1 }
+    { key: 'chat', name: `💬｜${gameName}-聊天`, type: ChannelType.GuildText },
+    { key: 'lfg', name: `🧑‍🤝‍🧑｜${gameName}-找隊友`, type: ChannelType.GuildText },
+    { key: 'info', name: `📌｜${gameName}-資訊`, type: ChannelType.GuildText },
+    { key: 'voiceCreate', name: `🔊｜➕｜建立${voiceLabel}語音`, type: ChannelType.GuildVoice, createEntry: true, userLimit: 1 }
   ];
 }
 
@@ -294,6 +294,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
   }
 
   const specs = buildGameChannelSpecs(displayName);
+  const channelMap = {};
   for (let index = 0; index < specs.length; index += 1) {
     const spec = specs[index];
     const existing = guild.channels.cache.find((channel) => channel.type === spec.type && normalizeName(channel.name) === normalizeName(spec.name));
@@ -308,6 +309,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
       await existing.lockPermissions().catch(() => null);
       await existing.setPosition(index).catch(() => null);
       if (spec.createEntry) registerCreateEntryChannel(guild, existing, displayName);
+      channelMap[spec.key] = existing;
       continue;
     }
     try {
@@ -321,6 +323,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
       await channel.lockPermissions().catch(() => null);
       await channel.setPosition(index).catch(() => null);
       if (spec.createEntry) registerCreateEntryChannel(guild, channel, displayName);
+      channelMap[spec.key] = channel;
       summary.created.push(channel.name);
       await sleep(STEP_DELAY_MS);
     } catch (error) {
@@ -328,19 +331,7 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     }
   }
 
-  const data = readGameCategories();
-  if (!data[guild.id]) data[guild.id] = {};
-  data[guild.id][category.id] = {
-    gameName: displayName,
-    displayName,
-    slug: identity.slug,
-    categoryId: category.id,
-    categoryName,
-    createdBy: requestedById,
-    createdAt: new Date().toISOString(),
-    archived: false
-  };
-  writeGameCategories(data);
+  upsertDynamicGameMetadata(guild, category, { displayName, slug: identity.slug }, channelMap, requestedById);
   try {
     scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
   } catch {

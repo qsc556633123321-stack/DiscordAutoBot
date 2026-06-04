@@ -26,7 +26,13 @@ const GAME_ALIAS_SLUGS = {
   'Path of Exile': 'path-of-exile',
   'R.E.P.O': 'repo',
   REPO: 'repo',
-  repo: 'repo'
+  repo: 'repo',
+  魔物獵人: 'monster-hunter',
+  絕地求生: 'pubg',
+  三角洲行動: 'delta-force',
+  'Path of Exile 2': 'path-of-exile-2',
+  POE2: 'path-of-exile-2',
+  poe2: 'path-of-exile-2'
 };
 
 function normalizeAlias(value) {
@@ -67,9 +73,14 @@ function resolveGameIdentity(displayName, options = {}) {
   };
 }
 
+function resolveGameDisplayName(displayName) {
+  return String(displayName || '').trim() || '未命名遊戲';
+}
+
 module.exports = {
   GAME_ALIAS_SLUGS,
   normalizeAlias,
+  resolveGameDisplayName,
   resolveGameIdentity,
   resolveGameSlug,
   sanitizeGameSlug

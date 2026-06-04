@@ -3,7 +3,14 @@ const path = require('node:path');
 const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { COMMUNITY_LAYOUT, PUBLIC_ONBOARDING_CHANNELS } = require('../config/communityLayout');
 const { VISIBILITY_TYPES, buildVisibilityOverwrites } = require('../config/channelVisibilityRules');
-const { isCreateVoiceChannel, registerCreateEntryChannel, removeCreateEntryRecord } = require('./gameChannels');
+const {
+  findDynamicGameMetadataByChannel,
+  isCreateVoiceChannel,
+  readGameCategoryMetadata,
+  repairDynamicGameMetadataForCategory,
+  registerCreateEntryChannel,
+  removeCreateEntryRecord
+} = require('./gameChannels');
 const { isTempVoice } = require('./tempVoice');
 const { writeServerLog } = require('./serverLogs');
 const { normalizeChannelName } = require('./communityBootstrapSystem');
@@ -109,12 +116,33 @@ function isMetadataChannel(guild, channel) {
   return false;
 }
 
+function getProtectedSemanticType(guild, channel) {
+  if (!channel) return null;
+  if (findDynamicGameMetadataByChannel(guild, channel)) return 'dynamic_game';
+  if (isCreateVoiceChannel(channel)) return 'temp_voice_create_entry';
+  if (/目前語音房|voice hub/i.test(channel.name)) return 'voice_hub';
+  if (/組隊招募|lfg/i.test(channel.name)) return 'lfg_channel';
+  if (/遊戲提議|suggest-game/i.test(channel.name)) return 'game_suggestion_channel';
+  return null;
+}
+
+function getDynamicGameExpectedName(channel, metadata) {
+  if (!metadata?.displayName || !channel || channel.type === ChannelType.GuildCategory) return null;
+  if (/聊天/.test(channel.name)) return `💬｜${metadata.displayName}-聊天`;
+  if (/找隊友|lfg/i.test(channel.name)) return `🧑‍🤝‍🧑｜${metadata.displayName}-找隊友`;
+  if (/資訊|info/i.test(channel.name)) return `📌｜${metadata.displayName}-資訊`;
+  if (channel.type === ChannelType.GuildVoice && /建立.*語音/u.test(channel.name)) return `🔊｜➕｜建立${metadata.displayName}語音`;
+  return null;
+}
+
 function protectedReason(guild, channel, expectedRecord = null) {
   if (!channel) return '頻道不存在';
   if (expectedRecord) return '核心 layout 頻道';
   if (channel.id === guild.systemChannelId || channel.id === guild.rulesChannelId || channel.id === guild.publicUpdatesChannelId) return 'Discord 系統頻道';
   if (channel.name.startsWith('ticket-')) return 'Ticket 私人頻道';
   if (/server-logs|ticket-logs|bot-control|語音控制台/i.test(channel.name)) return 'logs / bot control';
+  const semanticType = getProtectedSemanticType(guild, channel);
+  if (semanticType) return semanticType;
   if (isTempVoice(guild.id, channel.id)) return 'active temp voice';
   if (/組隊招募|目前語音房|遊戲提議|開啟客服單|一般聊天|深夜聊天|找隊友大廳/.test(channel.name)) return '社群核心功能頻道';
   if (isMetadataChannel(guild, channel)) return 'metadata 記錄頻道';
@@ -150,6 +178,20 @@ function getChannelPurposeTags(channel) {
 
 function classifyChannel(channel, expectedRecord = null) {
   if (expectedRecord) return { type: 'core_channel', confidence: 100, tags: getChannelPurposeTags(channel), reason: '已在標準 layout 中' };
+  const dynamicGame = findDynamicGameMetadataByChannel(channel.guild, channel);
+  if (dynamicGame) {
+    const expectedName = getDynamicGameExpectedName(channel, dynamicGame);
+    return {
+      type: 'dynamic_game',
+      confidence: 100,
+      tags: ['dynamic_game'],
+      targetName: expectedName,
+      targetCategoryId: dynamicGame.categoryId,
+      displayName: dynamicGame.displayName,
+      slug: dynamicGame.slug,
+      reason: 'dynamic_game metadata 保護'
+    };
+  }
   const tags = getChannelPurposeTags(channel);
   const hasActivity = channelHasActivity(channel);
   const name = channel.name;
@@ -248,7 +290,7 @@ function inferRenamePriority(oldName, newName) {
 
 function filterActionsByOptimizationMode(actions, optimizationMode = 'balanced') {
   if (optimizationMode === 'conservative') {
-    return actions.filter((item) => ['sync_permission', 'sync_metadata', 'keep'].includes(getActionType(item)));
+    return actions.filter((item) => ['sync_permission', 'sync_metadata', 'sync_game_metadata', 'keep'].includes(getActionType(item)));
   }
   if (optimizationMode === 'aggressive') return actions;
   return actions.filter((item) => {
@@ -400,6 +442,34 @@ function buildUnmanagedActions(guild, expectedIndex, scope, aiVotes = []) {
 
   for (const channel of guild.channels.cache.values()) {
     if (expectedIndex.byChannelId.has(channel.id)) continue;
+    const dynamicGame = findDynamicGameMetadataByChannel(guild, channel);
+    if (dynamicGame) {
+      const expectedName = getDynamicGameExpectedName(channel, dynamicGame);
+      if (expectedName && channel.name !== expectedName) {
+        actions.push(action('rename', {
+          targetId: channel.id,
+          targetName: channel.name,
+          newName: expectedName,
+          reason: `dynamic_game 子頻道名稱依 parent displayName 修正：${dynamicGame.displayName}`,
+          renamePriority: 'game naming consistency',
+          classification: 'dynamic_game',
+          confidence: 100,
+          risk: 'low'
+        }));
+      }
+      if (channel.type === ChannelType.GuildVoice && /建立.*語音/u.test(channel.name)) {
+        actions.push(action('sync_metadata', {
+          targetId: channel.id,
+          targetName: channel.name,
+          game: dynamicGame.displayName,
+          reason: 'dynamic_game Temp Voice create entry metadata 修正',
+          classification: 'dynamic_game',
+          confidence: 100,
+          risk: 'low'
+        }));
+      }
+      continue;
+    }
     const protection = protectedReason(guild, channel);
     if (protection) {
       actions.push(action('keep', {
@@ -412,6 +482,17 @@ function buildUnmanagedActions(guild, expectedIndex, scope, aiVotes = []) {
     }
 
     if (channel.type === ChannelType.GuildCategory) {
+      if (channel.name.startsWith('🎮｜') && !['🎮｜遊戲中心', '🎮｜遊戲大廳'].includes(channel.name)) {
+        actions.push(action('sync_game_metadata', {
+          targetId: channel.id,
+          targetName: channel.name,
+          reason: '補齊 dynamic_game metadata',
+          classification: 'dynamic_game',
+          confidence: 95,
+          risk: 'low'
+        }));
+        continue;
+      }
       const children = guild.channels.cache.filter((child) => child.parentId === channel.id);
       if (children.size === 0) {
         actions.push(action('delete', {
@@ -682,6 +763,21 @@ async function executeOneAction(guild, item, summary, options = {}) {
       return;
     }
 
+    if (itemType === 'sync_game_metadata') {
+      const record = repairDynamicGameMetadataForCategory(guild, channel, options.requestedById || null);
+      if (record) {
+        summary.metadata.push(`${channel.name} -> dynamic_game (${record.displayName})`);
+        await writeServerLog(guild, {
+          title: '✅ dynamic game metadata repaired',
+          description: `${channel.name}\ndisplayName: ${record.displayName}\nslug: ${record.slug}`,
+          color: 0x57f287
+        }).catch(() => null);
+      } else {
+        summary.skipped.push(`${channel.name}: 無法補齊 dynamic_game metadata`);
+      }
+      return;
+    }
+
     if (itemType === 'archive') {
       const archive = await findOrCreateArchiveCategory(guild, summary);
       await discordOp(() => channel.setParent(archive.id, { lockPermissions: false, reason: 'AI layout repair archive' }));
@@ -742,7 +838,7 @@ async function executeLayoutRepairPlan(guild, plan, options = {}) {
   }).catch(() => null);
 
   for (const item of plan.actions) {
-    await executeOneAction(guild, item, summary, { allowDelete });
+    await executeOneAction(guild, item, summary, { allowDelete, requestedById: plan.requestedById });
   }
 
   await writeServerLog(guild, {
@@ -778,7 +874,7 @@ function groupActions(plan) {
     const itemType = getActionType(item);
     if (itemType === 'create_category' || itemType === 'create_channel') groups.create.push(item);
     else if (itemType === 'sync_permission') groups.permissions.push(item);
-    else if (itemType === 'sync_metadata') groups.metadata.push(item);
+    else if (itemType === 'sync_metadata' || itemType === 'sync_game_metadata') groups.metadata.push(item);
     else if (itemType === 'rename') groups.rename.push(item);
     else if (itemType === 'move') groups.move.push(item);
     else if (itemType === 'archive') groups.archive.push(item);
@@ -829,6 +925,16 @@ function buildLayoutDoctorReport(guild) {
   const plan = buildLayoutRepairPlan(guild, { scope: 'all', mode: 'preview' });
   const visibility = [];
   const unsynced = [];
+  const dynamicGameMetadata = [];
+  const gameMetadata = readGameCategoryMetadata()[guild.id] || {};
+  const gameCategories = guild.channels.cache.filter((channel) => channel.type === ChannelType.GuildCategory && channel.name.startsWith('🎮｜'));
+  for (const category of gameCategories.values()) {
+    if (['🎮｜遊戲中心', '🎮｜遊戲大廳'].includes(category.name)) continue;
+    const record = gameMetadata[category.id];
+    dynamicGameMetadata.push(record?.type === 'dynamic_game'
+      ? `✅ ${category.name} - ${record.displayName} (${record.slug})`
+      : `⚠️ ${category.name} - 缺少 dynamic_game metadata`);
+  }
   for (const record of expectedIndex.byKey.values()) {
     if (!record.current) continue;
     const health = permissionHealth(record);
@@ -841,6 +947,7 @@ function buildLayoutDoctorReport(guild) {
     }
   }
   return {
+    dynamicGameMetadata,
     visibility,
     unsynced,
     plan

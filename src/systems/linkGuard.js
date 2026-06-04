@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { PermissionFlagsBits } = require('discord.js');
 const { writeServerLog } = require('./serverLogs');
+const { SAFE_GAME_DOMAINS, isSafeGameDomain, isSteamLikeDomain } = require('../config/gameDomains');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SETTINGS_FILE = path.join(DATA_DIR, 'link-guard-settings.json');
@@ -16,7 +17,8 @@ const DEFAULT_WHITELIST = [
   'github.com',
   'google.com',
   'bahamut.com.tw',
-  'gamer.com.tw'
+  'gamer.com.tw',
+  ...SAFE_GAME_DOMAINS
 ];
 
 const HIGH_RISK_KEYWORDS = [
@@ -226,6 +228,34 @@ function isExternalLink(url) {
   return Boolean(url.hostname);
 }
 
+async function classifySteamLikeUrlWithAi(url) {
+  if (!process.env.OPENAI_API_KEY) return null;
+  try {
+    const { default: OpenAI } = await import('openai');
+    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [
+        {
+          role: 'system',
+          content: '判斷網址是否偽裝 Steam 官方網站、釣魚登入頁、免費禮物詐騙、帳號驗證詐騙。只能回傳 SAFE、SUSPICIOUS、MALICIOUS 其中一個字。'
+        },
+        {
+          role: 'user',
+          content: JSON.stringify({ hostname: url.hostname, href: url.href, path: url.pathname })
+        }
+      ],
+      temperature: 0,
+      max_tokens: 8
+    });
+    const verdict = response.choices?.[0]?.message?.content?.trim()?.toUpperCase();
+    return ['SAFE', 'SUSPICIOUS', 'MALICIOUS'].includes(verdict) ? verdict : null;
+  } catch (error) {
+    console.error('Steam-like AI classification failed:', error.message);
+    return null;
+  }
+}
+
 function isNewAccount(member, days) {
   return Date.now() - member.user.createdTimestamp < days * 24 * 60 * 60 * 1000;
 }
@@ -240,9 +270,13 @@ function detectLinkSpam(message, settings, linkCount) {
   return bucket.length > settings.linkSpamLimit;
 }
 
-function analyzeUrl(url, settings) {
+async function analyzeUrl(url, settings) {
   const haystack = `${url.href} ${url.hostname} ${url.pathname}`.toLowerCase();
   const inviteCode = getInviteCode(url);
+
+  if (isSafeGameDomain(url.hostname) && !inviteCode) {
+    return { blocked: false, allowed: true, reason: 'SAFE game link allowed', domain: url.hostname || url.raw, safeGameDomain: true };
+  }
 
   if (HIGH_RISK_KEYWORDS.some((keyword) => haystack.includes(keyword))) {
     return { blocked: true, reason: '高風險黑名單關鍵字', domain: url.hostname || url.raw };
@@ -258,6 +292,20 @@ function analyzeUrl(url, settings) {
 
   if (/(disc0rd|d1scord|stearn|comrnunity)/i.test(haystack)) {
     return { blocked: true, reason: '疑似仿冒網域', domain: url.hostname || url.raw };
+  }
+
+  if (isSteamLikeDomain(url.hostname) && !isSafeGameDomain(url.hostname)) {
+    const verdict = await classifySteamLikeUrlWithAi(url);
+    if (verdict === 'SAFE') {
+      return { blocked: false, allowed: true, reason: 'SAFE steam-like link allowed by AI', domain: url.hostname || url.raw, aiVerdict: verdict };
+    }
+    if (verdict === 'SUSPICIOUS') {
+      return { blocked: true, reason: 'suspicious steam-like link blocked', domain: url.hostname || url.raw, aiVerdict: verdict };
+    }
+    if (verdict === 'MALICIOUS') {
+      return { blocked: true, reason: 'malicious steam-like link blocked', domain: url.hostname || url.raw, timeoutMinutes: settings.newAccountTimeoutMinutes, aiVerdict: verdict };
+    }
+    return { blocked: true, reason: '非官方 steam-like domain，AI 失敗 fallback 封鎖', domain: url.hostname || url.raw };
   }
 
   const sensitiveBrand = /(discord|steam|nitro|gift|login|verify)/i.test(haystack);
@@ -309,9 +357,9 @@ function redactContent(content) {
 
 async function logLinkGuard(message, result) {
   await writeServerLog(message.guild, {
-    title: '🚨 Link Guard 阻擋連結',
-    color: 0xeb5757,
-    description: '偵測到可疑連結並已執行防護。',
+    title: result.allowed ? '✅ SAFE game link allowed' : '🚨 Link Guard 阻擋連結',
+    color: result.allowed ? 0x57f287 : 0xeb5757,
+    description: result.allowed ? '允許官方或 AI 判定安全的遊戲連結。' : '偵測到可疑連結並已執行防護。',
     fields: [
       { name: '使用者', value: `${message.author.tag} (${message.author.id})`, inline: false },
       { name: '頻道', value: `${message.channel}`, inline: true },
@@ -365,11 +413,20 @@ async function handleLinkGuardMessage(message) {
   }
 
   if (settings.newAccountDays > 0 && isNewAccount(message.member, settings.newAccountDays) && urls.some(isExternalLink)) {
-    return applyLinkGuardAction(message, settings, {
-      reason: `新帳號 ${settings.newAccountDays} 天內發送外部連結`,
-      domain: urls[0].hostname || urls[0].raw,
-      timeoutMinutes: settings.newAccountTimeoutMinutes
+    const blockedUrl = urls.find((url) => {
+      const haystack = `${url.href} ${url.hostname}`.toLowerCase();
+      return getInviteCode(url) ||
+        SHORTENER_KEYWORDS.some((keyword) => haystack.includes(keyword)) ||
+        (isSteamLikeDomain(url.hostname) && !isSafeGameDomain(url.hostname)) ||
+        !isSafeGameDomain(url.hostname);
     });
+    if (blockedUrl) {
+      return applyLinkGuardAction(message, settings, {
+        reason: `新帳號 ${settings.newAccountDays} 天內只允許官方白名單遊戲網址`,
+        domain: blockedUrl.hostname || blockedUrl.raw,
+        timeoutMinutes: settings.newAccountTimeoutMinutes
+      });
+    }
   }
 
   if (detectLinkSpam(message, settings, urls.length)) {
@@ -381,8 +438,12 @@ async function handleLinkGuardMessage(message) {
   }
 
   for (const url of urls) {
-    if (isAllowedDomain(url.hostname, settings) && !getInviteCode(url)) continue;
-    const result = analyzeUrl(url, settings);
+    const result = await analyzeUrl(url, settings);
+    if (result.allowed) {
+      await logLinkGuard(message, { ...result, action: '允許' }).catch(() => null);
+      continue;
+    }
+    if (isAllowedDomain(url.hostname, settings) && !getInviteCode(url) && !isSteamLikeDomain(url.hostname)) continue;
     if (result.blocked) return applyLinkGuardAction(message, settings, result);
   }
 

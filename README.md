@@ -452,3 +452,87 @@ eventEmbed(payload)
 ```
 
 若是透過遊戲提議建立的分類，批准新的提議會自動使用 displayName 建立；舊的錯誤 `2-聊天` 頻道可先用 `/layout-doctor` 找出，再用 `/ai-layout-repair mode:preview scope:all` 預覽修復。
+
+## Dynamic Game Metadata & Link Guard Game Domains
+
+Dynamic game category 會寫入：
+
+```text
+src/data/game-categories.json
+```
+
+格式：
+
+```json
+{
+  "guildId": {
+    "categoryId": {
+      "guildId": "guildId",
+      "categoryId": "categoryId",
+      "displayName": "VALORANT",
+      "slug": "valorant",
+      "type": "dynamic_game",
+      "createdBy": "userId",
+      "createdAt": "ISO時間",
+      "channels": {
+        "chat": "channelId",
+        "lfg": "channelId",
+        "info": "channelId",
+        "voiceCreate": "channelId"
+      }
+    }
+  }
+}
+```
+
+會寫入 metadata 的流程：
+
+- `/suggest-game` 批准後
+- `/setup-game`
+- `/fix-game-category`
+- `/ai-layout-repair` 偵測到缺 metadata 的 `🎮｜遊戲名` 分類時
+
+命名規則：
+
+- category displayName 永遠是 Discord UI 的來源。
+- alias 只用於 slug、搜尋、同義辨識。
+- `🎮｜VALORANT` 底下必須是 `VALORANT-聊天`、`VALORANT-找隊友`、`VALORANT-資訊`、`建立VALORANT語音`。
+- `🎮｜特戰英豪` 底下才會是 `特戰英豪-聊天`。
+- 不允許 alias 反向覆蓋 displayName。
+
+AI Layout Repair 會保護 semantic types：
+
+- `dynamic_game`
+- `temp_voice_create_entry`
+- `voice_hub`
+- `lfg_channel`
+- `game_suggestion_channel`
+
+dynamic game 頻道不可封存、不可刪除、不可跨分類搬移；只允許補 metadata、修 Temp Voice create entry、同步權限、修明顯錯位，以及用 parent displayName 修正子頻道名稱。
+
+Steam / 遊戲官方網域白名單：
+
+```text
+src/config/gameDomains.js
+```
+
+允許 exact hostname 或合法 subdomain，例如：
+
+- `store.steampowered.com/app/xxxx`
+- `help.steampowered.com`
+- `steamcommunity.com`
+
+不會放行：
+
+- `steam-freegift.com`
+- `steamcommunity-login.xyz`
+- `store-steampowered.com.fake.site`
+- `steampowered.verify-login.com`
+
+若網址包含 steam / steampowered / steamcommunity 但不是官方網域：
+
+- 有 `OPENAI_API_KEY`：AI 只能回 `SAFE`、`SUSPICIOUS`、`MALICIOUS`。
+- `SAFE`：允許並寫入 server-logs。
+- `SUSPICIOUS`：刪除並警告。
+- `MALICIOUS`：刪除，並對新帳號或違規者 timeout。
+- AI 失敗：fallback 規則為非官方 steam-like domain 一律封鎖。
