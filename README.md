@@ -595,3 +595,50 @@ Community Schema v2 新增 Game Registry + Semantic Identity Engine，用來避�
 ```
 
 `/game-registry-doctor` 會掃描重複遊戲分類、缺 metadata、子頻道命名不一致、create entry 未註冊。execute 需要二次確認，只會補 metadata、修正子頻道名稱、修 create entry metadata，並把語意重複分類移到舊頻道封存；不直接刪除。
+
+## Community Architect System
+
+Community Architect 讓 Kuro 用「社群架構師」角度診斷整體 Discord，而不是只做工程式頻道修補。它會先計算健康分數，再產生可執行修復方案；AI 可參與診斷與建議，但所有 action 仍必須通過 Community Rules validator，且 v1 不會直接刪除頻道，只會封存。
+
+指令：
+
+```text
+/community-architect mode:diagnose scope:all strategy:balanced
+/community-architect mode:preview scope:all strategy:balanced
+/community-architect mode:execute scope:all strategy:balanced
+```
+
+模式：
+
+- `diagnose`：只分析，不修改。顯示社群健康度、問題摘要、建議與 AI notes。
+- `preview`：產生並保存 repair plan 到 `src/data/community-architect-plans.json`。
+- `execute`：讀取最近一次 plan，顯示確認按鈕，按確認後才執行。
+
+Scope：
+
+- `all`：完整診斷。
+- `games`：遊戲分類、動態遊戲 metadata、子頻道命名。
+- `social`：公開大廳與社交入口。
+- `interests`：興趣交流集中。
+- `permissions`：子頻道同步分類權限。
+- `duplicates`：重複遊戲分類。
+
+健康分數：
+
+- 頻道清晰度 0-20
+- 遊戲分類健康度 0-20
+- 新人理解度 0-20
+- 權限安全 0-20
+- 社群活躍感 0-20
+
+Community Architect 與 AI Layout Repair 的差異：
+
+- AI Layout Repair 偏工程修復：rename、move、權限、metadata、封存候選。
+- Community Architect 偏社群顧問：會從新人理解、遊戲排版、興趣頻道集中、活躍感與結構健康度看整體問題。
+
+常見修復：
+
+- `VALORANT / 特戰 / 特戰英豪`：使用 `gameIdentityService.isSameGame()` 判定同一 `gameId`，保留 metadata/活動較完整的一個，其餘分類移到 `📦｜遊戲封存區`，不刪除。
+- `鬥陣特攻2 → 2-聊天`：preview 會列出 `2-聊天 → 💬｜聊天`、`2-找隊友 → 🧑‍🤝‍🧑｜找隊友`、`2-資訊 → 📌｜資訊`。
+- 興趣頻道集中：音樂分享、美食分享、迷因與好圖、攝影分享、影劇動漫會移到 `🎨｜興趣交流`。
+- 遊戲分層：建立 `🎯｜熱門遊戲` 與 `🧩｜其他遊戲`，熱門清單由 `src/config/gameRegistry.js` 的 `tier` 設定。

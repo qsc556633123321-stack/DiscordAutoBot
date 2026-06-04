@@ -94,6 +94,12 @@ const {
   getLayoutRepairPlan
 } = require('../systems/layoutDecisionEngine');
 const {
+  buildPreviewEmbed: buildCommunityArchitectPreviewEmbed,
+  deleteCommunityArchitectPlan,
+  executeCommunityArchitectPlan,
+  getCommunityArchitectPlan
+} = require('../systems/communityArchitect');
+const {
   deleteGameRegistryDoctorPlan,
   executeGameRegistryDoctorPlan,
   getGameRegistryDoctorPlan
@@ -1719,6 +1725,56 @@ module.exports = {
           await interaction.reply({ content: '處理遊戲提議按鈕時發生錯誤。', ephemeral: true });
         }
       }
+      return;
+    }
+
+    if (interaction.customId.startsWith('community_architect_cancel_')) {
+      const planId = interaction.customId.replace('community_architect_cancel_', '');
+      const plan = getCommunityArchitectPlan(interaction.guild.id, planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個 Community Architect 計畫已失效，請重新執行 `/community-architect mode:preview`。', ephemeral: true });
+        return;
+      }
+      if (plan.createdBy !== interaction.user.id) {
+        await interaction.reply({ content: '只有原本產生計畫的人可以取消。', ephemeral: true });
+        return;
+      }
+      deleteCommunityArchitectPlan(interaction.guild.id, planId);
+      await interaction.update({ content: '已取消 Community Architect 計畫，不做任何變更。', embeds: [], components: [] });
+      return;
+    }
+
+    if (interaction.customId.startsWith('community_architect_confirm_')) {
+      const planId = interaction.customId.replace('community_architect_confirm_', '');
+      const plan = getCommunityArchitectPlan(interaction.guild.id, planId);
+      if (!plan) {
+        await interaction.reply({ content: '這個 Community Architect 計畫已失效，請重新執行 `/community-architect mode:preview`。', ephemeral: true });
+        return;
+      }
+      if (plan.createdBy !== interaction.user.id) {
+        await interaction.reply({ content: '只有原本產生計畫的人可以確認執行。', ephemeral: true });
+        return;
+      }
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
+        await interaction.reply({ content: '你需要 ManageChannels 權限才能執行 Community Architect。', ephemeral: true });
+        return;
+      }
+      await interaction.update({ content: '正在執行 Community Architect 修復，不會刪除頻道，請稍候...', embeds: [], components: [] });
+      const summary = await executeCommunityArchitectPlan(interaction.guild, plan);
+      deleteCommunityArchitectPlan(interaction.guild.id, planId);
+      await interaction.editReply({
+        content: [
+          '✅ Community Architect 修復完成',
+          `建立：${summary.created.length}`,
+          `改名：${summary.renamed.length}`,
+          `移動：${summary.moved.length}`,
+          `修權限：${summary.permissions.length}`,
+          `封存：${summary.archived.length}`,
+          `失敗：${summary.failed.length}`
+        ].join('\n'),
+        embeds: [buildCommunityArchitectPreviewEmbed({ ...plan, actions: [] })],
+        components: []
+      });
       return;
     }
 

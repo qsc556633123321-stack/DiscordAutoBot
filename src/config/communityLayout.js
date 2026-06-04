@@ -199,7 +199,15 @@ const COMMUNITY_LAYOUT = [
   }
 ];
 
+const COMMUNITY_ARCHITECT_GAME_TIERS = [
+  { key: 'game_center', name: '🎮｜遊戲中心', role: 'entry' },
+  { key: 'popular_games', name: '🎯｜熱門遊戲', role: 'popular_games' },
+  { key: 'other_games', name: '🧩｜其他遊戲', role: 'other_games' },
+  { key: 'game_archive', name: '📦｜遊戲封存區', role: 'archive' }
+];
+
 module.exports = {
+  COMMUNITY_ARCHITECT_GAME_TIERS,
   COMMUNITY_LAYOUT,
   PUBLIC_ONBOARDING_CHANNELS,
   REQUIRED_ROLES

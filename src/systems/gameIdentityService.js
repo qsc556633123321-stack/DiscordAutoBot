@@ -47,6 +47,7 @@ function findGameIdentity(inputName) {
       displayName: '未命名遊戲',
       aliases: [],
       emoji: '🎮',
+      tier: 'other',
       custom: true
     };
   }
@@ -62,6 +63,7 @@ function findGameIdentity(inputName) {
     displayName: displayInput,
     aliases: [],
     emoji: '🎮',
+    tier: 'other',
     custom: true
   };
 }
