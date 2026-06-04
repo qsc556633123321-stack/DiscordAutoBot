@@ -892,9 +892,6 @@ async function executeOneAction(guild, item, summary, options = {}) {
         for (const child of children.values()) {
           await discordOp(() => child.setParent(archive.id, { lockPermissions: false, reason: 'AI layout repair archive duplicate category child' }));
         }
-        if (!channel.name.startsWith('duplicate-game-')) {
-          await discordOp(() => channel.setName(`duplicate-game-${channel.name}`.slice(0, 95), 'AI layout repair mark duplicate game category'));
-        }
         summary.archived.push(`${item.targetName} -> ${archive.name}`);
         return;
       }

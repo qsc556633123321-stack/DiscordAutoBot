@@ -15,6 +15,22 @@ const PLANS_FILE = path.join(DATA_DIR, 'community-architect-plans.json');
 
 const INTEREST_TARGET = '🎨｜興趣交流';
 const GAME_ARCHIVE = '📦｜遊戲封存區';
+const MAIN_CATEGORY_ORDER = [
+  '📌｜社群入口',
+  '💬｜社群大廳',
+  '🎮｜遊戲中心',
+  '🎯｜熱門遊戲',
+  '🧩｜其他遊戲',
+  '🎨｜興趣交流',
+  '🛠｜創作與開發',
+  '📈｜投資討論',
+  '🌙｜Night Crew',
+  '🎫｜客服支援',
+  '🔒｜管理員後台',
+  '📦｜遊戲封存區',
+  '📦｜舊頻道封存'
+];
+const GAME_CENTER_CHANNELS = ['組隊招募', '目前語音房', '遊戲提議'];
 function ensurePlansFile() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
   if (!fs.existsSync(PLANS_FILE)) fs.writeFileSync(PLANS_FILE, '{}\n', 'utf8');
@@ -46,6 +62,24 @@ function action(type, payload) {
   };
 }
 
+function architectPhase(item) {
+  const order = {
+    restore_duplicate_game_name: 10,
+    rename: 20,
+    repair_metadata: 30,
+    repair_create_entry: 35,
+    create_category: 40,
+    create_missing_channel: 45,
+    move: 60,
+    merge_duplicate_game: 70,
+    archive: 75,
+    sync_permission: 80,
+    reorder_category: 90,
+    suggest: 99
+  };
+  return order[item.type] || 50;
+}
+
 function categoryHasMetadata(guild, category) {
   return Boolean(findDynamicGameMetadataByChannel(guild, category));
 }
@@ -58,10 +92,12 @@ function categoryActivityScore(guild, category) {
 
 function chooseDuplicateGameKeeper(guild, group) {
   return [...group].sort((a, b) => {
-    const aIdentity = findGameIdentity(stripGameCategoryPrefix(a.name));
-    const bIdentity = findGameIdentity(stripGameCategoryPrefix(b.name));
-    const aCanonical = stripGameCategoryPrefix(a.name) === aIdentity.displayName ? 5 : 0;
-    const bCanonical = stripGameCategoryPrefix(b.name) === bIdentity.displayName ? 5 : 0;
+    const aDisplayName = stripGameCategoryPrefix(categoryNameWithoutDuplicatePrefix(a.name));
+    const bDisplayName = stripGameCategoryPrefix(categoryNameWithoutDuplicatePrefix(b.name));
+    const aIdentity = findGameIdentity(aDisplayName);
+    const bIdentity = findGameIdentity(bDisplayName);
+    const aCanonical = aDisplayName === aIdentity.displayName ? 5 : 0;
+    const bCanonical = bDisplayName === bIdentity.displayName ? 5 : 0;
     const scoreA = categoryActivityScore(guild, a) + aCanonical;
     const scoreB = categoryActivityScore(guild, b) + bCanonical;
     if (scoreA !== scoreB) return scoreB - scoreA;
@@ -73,9 +109,17 @@ function isScopeEnabled(scope, names) {
   return scope === 'all' || names.includes(scope);
 }
 
+function hasCategory(guild, name) {
+  return guild.channels.cache.some((channel) => channel.type === ChannelType.GuildCategory && channel.name === name);
+}
+
+function categoryNameWithoutDuplicatePrefix(name = '') {
+  return String(name).replace(/^duplicate-game-/i, '');
+}
+
 function validateArchitectActions(guild, actions) {
   return actions.map((item) => {
-    if (['create_category', 'reorder_category', 'repair_metadata', 'merge_duplicate_game', 'create_missing_channel'].includes(item.type)) {
+    if (['create_category', 'reorder_category', 'repair_metadata', 'merge_duplicate_game', 'create_missing_channel', 'restore_duplicate_game_name'].includes(item.type)) {
       return item;
     }
     const channel = item.targetId ? guild.channels.cache.get(item.targetId) : null;
@@ -106,15 +150,34 @@ async function buildCommunityArchitectPlan(guild, options = {}) {
   const warnings = [];
   const issues = [];
 
+  for (const categoryName of MAIN_CATEGORY_ORDER) {
+    if (!hasCategory(guild, categoryName)) {
+      actions.push(action('create_category', {
+        targetName: categoryName,
+        phase: 'create_main_category',
+        reason: '建立唯一主分類層級'
+      }));
+    }
+  }
+
   if (isScopeEnabled(scope, ['games', 'duplicates'])) {
     for (const group of health.findings.duplicateGames) {
       const keep = chooseDuplicateGameKeeper(guild, group);
-      const identity = findGameIdentity(stripGameCategoryPrefix(keep.name));
-      issues.push(`🎮 遊戲分類重複：${group.map((item) => stripGameCategoryPrefix(item.name)).join(' / ')}`);
+      const identity = findGameIdentity(stripGameCategoryPrefix(categoryNameWithoutDuplicatePrefix(keep.name)));
+      issues.push(`🎮 遊戲分類重複：${group.map((item) => stripGameCategoryPrefix(categoryNameWithoutDuplicatePrefix(item.name))).join(' / ')}`);
       for (const duplicate of group.filter((item) => item.id !== keep.id)) {
+        const originalName = categoryNameWithoutDuplicatePrefix(duplicate.name);
+        if (duplicate.name !== originalName) {
+          actions.push(action('restore_duplicate_game_name', {
+            targetId: duplicate.id,
+            targetName: duplicate.name,
+            newName: originalName,
+            reason: '修正既有 duplicate-game-* 不自然分類名稱'
+          }));
+        }
         actions.push(action('merge_duplicate_game', {
           targetId: duplicate.id,
-          targetName: duplicate.name,
+          targetName: originalName,
           keepCategoryId: keep.id,
           keepCategoryName: keep.name,
           targetCategoryName: GAME_ARCHIVE,
@@ -137,17 +200,9 @@ async function buildCommunityArchitectPlan(guild, options = {}) {
       }));
     }
 
-    for (const name of ['🎯｜熱門遊戲', '🧩｜其他遊戲']) {
-      if (!guild.channels.cache.some((channel) => channel.type === ChannelType.GuildCategory && channel.name === name)) {
-        actions.push(action('create_category', { targetName: name, reason: '建立遊戲分類分層' }));
-      }
-    }
   }
 
   if (isScopeEnabled(scope, ['interests', 'social'])) {
-    if (!guild.channels.cache.some((channel) => channel.type === ChannelType.GuildCategory && channel.name === INTEREST_TARGET)) {
-      actions.push(action('create_category', { targetName: INTEREST_TARGET, reason: '集中興趣交流頻道' }));
-    }
     if (health.findings.scatteredInterests.length) {
       issues.push(`🎨 興趣交流分散：${health.findings.scatteredInterests.map((channel) => channel.name).join('、')}`);
     }
@@ -162,6 +217,32 @@ async function buildCommunityArchitectPlan(guild, options = {}) {
     }
   }
 
+  if (isScopeEnabled(scope, ['games', 'social'])) {
+    const gameCenter = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && channel.name === '🎮｜遊戲中心');
+    for (const channel of guild.channels.cache.filter((item) => item.type !== ChannelType.GuildCategory).values()) {
+      if (!GAME_CENTER_CHANNELS.some((keyword) => channel.name.includes(keyword))) continue;
+      if (!gameCenter || channel.parentId !== gameCenter.id) {
+        actions.push(action('move', {
+          targetId: channel.id,
+          targetName: channel.name,
+          targetCategoryName: '🎮｜遊戲中心',
+          targetCategoryKey: 'game_center',
+          reason: '遊戲中心只保留組隊招募、目前語音房、遊戲提議'
+        }));
+      }
+    }
+    if (gameCenter) {
+      for (const channel of guild.channels.cache.filter((item) => item.parentId === gameCenter.id).values()) {
+        if (GAME_CENTER_CHANNELS.some((keyword) => channel.name.includes(keyword))) continue;
+        actions.push(action('suggest', {
+          targetId: channel.id,
+          targetName: channel.name,
+          reason: '遊戲中心過胖：此頻道不屬於遊戲中心三個核心入口，請由 Architect 其他 scope 判斷歸屬'
+        }));
+      }
+    }
+  }
+
   if (isScopeEnabled(scope, ['permissions'])) {
     if (health.findings.permissionIssues.length) issues.push(`🔒 權限同步異常：${health.findings.permissionIssues.length} 個子頻道`);
     for (const channel of health.findings.permissionIssues.slice(0, strategy === 'aggressive' ? 50 : 20)) {
@@ -173,10 +254,23 @@ async function buildCommunityArchitectPlan(guild, options = {}) {
     }
   }
 
-  const gameCategories = guild.channels.cache.filter((channel) => channel.type === ChannelType.GuildCategory && channel.name.startsWith('🎮｜'));
+  const gameCategories = guild.channels.cache.filter((channel) => (
+    channel.type === ChannelType.GuildCategory &&
+    (channel.name.startsWith('🎮｜') || channel.name.startsWith('duplicate-game-🎮｜'))
+  ));
   for (const category of gameCategories.values()) {
     if (/遊戲中心|遊戲大廳/.test(category.name)) continue;
-    const identity = findGameIdentity(stripGameCategoryPrefix(category.name));
+    const identity = findGameIdentity(stripGameCategoryPrefix(categoryNameWithoutDuplicatePrefix(category.name)));
+    const metadata = findDynamicGameMetadataByChannel(guild, category);
+    if (!metadata || metadata.gameId !== identity.id) {
+      actions.push(action('repair_metadata', {
+        targetId: category.id,
+        targetName: category.name,
+        gameId: identity.id,
+        displayName: identity.displayName,
+        reason: '補齊或修正 dynamic_game metadata'
+      }));
+    }
     const targetCategoryName = identity.tier === 'popular' ? '🎯｜熱門遊戲' : '🧩｜其他遊戲';
     actions.push(action('reorder_category', {
       targetId: category.id,
@@ -198,7 +292,8 @@ async function buildCommunityArchitectPlan(guild, options = {}) {
   }
 
   const validatedActions = validateArchitectActions(guild, actions)
-    .filter((item) => item.type !== 'suggest' || strategy !== 'conservative');
+    .filter((item) => item.type !== 'suggest' || strategy !== 'conservative')
+    .sort((a, b) => architectPhase(a) - architectPhase(b));
 
   const plan = {
     planId: options.planId || `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,

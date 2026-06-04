@@ -14,7 +14,7 @@ const CATEGORY_TYPES = {
   },
   game_center: {
     label: '遊戲中心',
-    channels: ['組隊招募', '遊戲提議', '遊戲封存區'],
+    channels: ['組隊招募', '目前語音房', '遊戲提議'],
     protectedActions: ['delete']
   },
   dynamic_game: {

@@ -757,9 +757,6 @@ async function executeGameRegistryDoctorPlan(guild, plan) {
         for (const child of children.values()) {
           await child.setParent(archive.id, { lockPermissions: false, reason: 'Archive duplicate game category child' });
         }
-        if (!category.name.startsWith('duplicate-game-')) {
-          await category.setName(`duplicate-game-${category.name}`.slice(0, 95), 'Mark duplicate game category');
-        }
         summary.archived.push(`${item.categoryName} -> ${archive.name}`);
       }
     } catch (error) {

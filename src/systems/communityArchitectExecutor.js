@@ -6,6 +6,21 @@ const {
 const { writeServerLog } = require('./serverLogs');
 
 const STEP_DELAY_MS = 800;
+const MAIN_CATEGORY_ORDER = [
+  '📌｜社群入口',
+  '💬｜社群大廳',
+  '🎮｜遊戲中心',
+  '🎯｜熱門遊戲',
+  '🧩｜其他遊戲',
+  '🎨｜興趣交流',
+  '🛠｜創作與開發',
+  '📈｜投資討論',
+  '🌙｜Night Crew',
+  '🎫｜客服支援',
+  '🔒｜管理員後台',
+  '📦｜遊戲封存區',
+  '📦｜舊頻道封存'
+];
 
 function sleep(ms = STEP_DELAY_MS) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -38,6 +53,28 @@ async function archiveDuplicateGameCategory(guild, item, summary) {
     await sleep();
   }
   summary.archived.push(`${category.name} -> ${archive.name}`);
+  await writeServerLog(guild, {
+    title: '📦 Community Architect archived duplicate game',
+    description: [
+      `duplicate: ${category.name}`,
+      `kept: ${item.keepCategoryName || 'unknown'}`,
+      `archive: ${archive.name}`,
+      `reason: ${item.reason}`
+    ].join('\n'),
+    color: 0xf2c94c
+  }).catch(() => null);
+}
+
+async function sortMainCategories(guild, summary) {
+  for (let index = 0; index < MAIN_CATEGORY_ORDER.length; index += 1) {
+    const name = MAIN_CATEGORY_ORDER[index];
+    const category = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && channel.name === name);
+    if (!category) continue;
+    await category.setPosition(index, { reason: 'Community Architect main category order' }).catch((error) => {
+      summary.failed.push(`${name} sort: ${error.message}`);
+    });
+    await sleep(250);
+  }
 }
 
 async function executeCommunityArchitectPlan(guild, plan) {
@@ -59,6 +96,9 @@ async function executeCommunityArchitectPlan(guild, plan) {
     color: 0x5865f2
   }).catch(() => null);
 
+  let sortedMainBeforeReorder = false;
+  let didReorder = false;
+
   for (const item of plan.actions) {
     try {
       if (item.type === 'suggest') {
@@ -78,6 +118,18 @@ async function executeCommunityArchitectPlan(guild, plan) {
           continue;
         }
         if (channel.name !== item.newName) await channel.setName(item.newName, 'Community Architect rename');
+        summary.renamed.push(`${item.targetName} -> ${item.newName}`);
+        await sleep();
+        continue;
+      }
+
+      if (item.type === 'restore_duplicate_game_name') {
+        const category = guild.channels.cache.get(item.targetId);
+        if (!category) {
+          summary.skipped.push(`${item.targetName}: 分類不存在`);
+          continue;
+        }
+        if (category.name !== item.newName) await category.setName(item.newName, 'Community Architect restore duplicate-game name');
         summary.renamed.push(`${item.targetName} -> ${item.newName}`);
         await sleep();
         continue;
@@ -138,6 +190,10 @@ async function executeCommunityArchitectPlan(guild, plan) {
       }
 
       if (item.type === 'reorder_category') {
+        if (!sortedMainBeforeReorder) {
+          await sortMainCategories(guild, summary);
+          sortedMainBeforeReorder = true;
+        }
         const category = guild.channels.cache.get(item.targetId);
         const anchor = await getOrCreateCategory(guild, item.targetCategoryName, summary);
         if (!category) {
@@ -146,12 +202,15 @@ async function executeCommunityArchitectPlan(guild, plan) {
         }
         await category.setPosition(anchor.rawPosition + 1, { reason: 'Community Architect reorder game tier' }).catch(() => null);
         summary.reordered.push(`${category.name} near ${anchor.name}`);
+        didReorder = true;
         await sleep();
       }
     } catch (error) {
       summary.failed.push(`${item.targetName || item.type}: ${error.message}`);
     }
   }
+
+  if (!didReorder) await sortMainCategories(guild, summary);
 
   await writeServerLog(guild, {
     title: '✅ Community Architect completed',

@@ -635,6 +635,7 @@ Community Architect 與 AI Layout Repair 的差異：
 
 - AI Layout Repair 偏工程修復：rename、move、權限、metadata、封存候選。
 - Community Architect 偏社群顧問：會從新人理解、遊戲排版、興趣頻道集中、活躍感與結構健康度看整體問題。
+- Community Architect 是最高層社群結構整理工具；AI Layout Repair 只是底層修復工具，不應覆蓋 Community Architect 的 Schema v2 遊戲命名、主分類排序與封存策略。
 
 常見修復：
 
@@ -642,3 +643,32 @@ Community Architect 與 AI Layout Repair 的差異：
 - `鬥陣特攻2 → 2-聊天`：preview 會列出 `2-聊天 → 💬｜聊天`、`2-找隊友 → 🧑‍🤝‍🧑｜找隊友`、`2-資訊 → 📌｜資訊`。
 - 興趣頻道集中：音樂分享、美食分享、迷因與好圖、攝影分享、影劇動漫會移到 `🎨｜興趣交流`。
 - 遊戲分層：建立 `🎯｜熱門遊戲` 與 `🧩｜其他遊戲`，熱門清單由 `src/config/gameRegistry.js` 的 `tier` 設定。
+
+Community Architect 固定主分類排序：
+
+```text
+1. 📌｜社群入口
+2. 💬｜社群大廳
+3. 🎮｜遊戲中心
+4. 🎯｜熱門遊戲
+5. 🧩｜其他遊戲
+6. 🎨｜興趣交流
+7. 🛠｜創作與開發
+8. 📈｜投資討論
+9. 🌙｜Night Crew
+10. 🎫｜客服支援
+11. 🔒｜管理員後台
+12. 📦｜遊戲封存區
+13. 📦｜舊頻道封存
+```
+
+`🎮｜遊戲中心` 只保留三個入口：`📢｜組隊招募`、`🎮｜目前語音房`、`📋｜遊戲提議`。`📦｜遊戲封存區` 是獨立分類，不再是遊戲中心內的文字頻道。
+
+既有 `duplicate-game-*` 修復：
+
+```text
+/community-architect mode:preview scope:games strategy:balanced
+/community-architect mode:execute scope:games strategy:balanced
+```
+
+Architect 會先把 `duplicate-game-*` 還原成原名，再把重複遊戲分類的子頻道移到 `📦｜遊戲封存區`，並在 `server-logs` 記錄原因。它不會建立新的 `duplicate-game-*` 名稱，也不會刪除頻道。

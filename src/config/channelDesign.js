@@ -34,8 +34,7 @@ const CHANNEL_DESIGN = [
     channels: [
       { key: 'lfg_recruit', name: '📢｜組隊招募', type: ChannelType.GuildText, aliases: ['組隊招募', 'lfg'] },
       { key: 'voice_hub', name: '🎮｜目前語音房', type: ChannelType.GuildText, aliases: ['目前語音房', 'voice hub'] },
-      { key: 'game_suggestions', name: '📋｜遊戲提議', type: ChannelType.GuildText, aliases: ['遊戲提議', '提議遊戲', 'suggest-game'] },
-      { key: 'game_archive_info', name: '📦｜遊戲封存區', type: ChannelType.GuildText, aliases: ['遊戲封存區'] }
+      { key: 'game_suggestions', name: '📋｜遊戲提議', type: ChannelType.GuildText, aliases: ['遊戲提議', '提議遊戲', 'suggest-game'] }
     ]
   },
   {
@@ -44,10 +43,10 @@ const CHANNEL_DESIGN = [
     aliases: ['TFT', '聯盟戰棋', 'Teamfight Tactics'],
     permission: 'game',
     channels: [
-      { key: 'tft_chat', name: '💬｜tft-聊天', type: ChannelType.GuildText, aliases: ['tft-聊天'] },
-      { key: 'tft_party', name: '🧑‍🤝‍🧑｜tft-找隊友', type: ChannelType.GuildText, aliases: ['tft-找隊友'] },
-      { key: 'tft_info', name: '📌｜tft-資訊', type: ChannelType.GuildText, aliases: ['tft-資訊'] },
-      { key: 'tft_create_voice', name: '🔊｜➕｜建立TFT語音', type: ChannelType.GuildVoice, aliases: ['建立TFT語音', '建立聯盟戰棋語音'] }
+      { key: 'tft_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['tft-聊天'] },
+      { key: 'tft_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['tft-找隊友'] },
+      { key: 'tft_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['tft-資訊'] },
+      { key: 'tft_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立TFT語音', '建立聯盟戰棋語音'] }
     ]
   },
   {
@@ -56,10 +55,10 @@ const CHANNEL_DESIGN = [
     aliases: ['LOL', '英雄聯盟', 'League of Legends', 'league-of-legends'],
     permission: 'game',
     channels: [
-      { key: 'lol_chat', name: '💬｜lol-聊天', type: ChannelType.GuildText, aliases: ['lol-聊天'] },
-      { key: 'lol_party', name: '🧑‍🤝‍🧑｜lol-找隊友', type: ChannelType.GuildText, aliases: ['lol-找隊友'] },
-      { key: 'lol_info', name: '📌｜lol-資訊', type: ChannelType.GuildText, aliases: ['lol-資訊'] },
-      { key: 'lol_create_voice', name: '🔊｜➕｜建立LOL語音', type: ChannelType.GuildVoice, aliases: ['建立LOL語音'] }
+      { key: 'lol_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['lol-聊天'] },
+      { key: 'lol_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['lol-找隊友'] },
+      { key: 'lol_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['lol-資訊'] },
+      { key: 'lol_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立LOL語音'] }
     ]
   },
   {
@@ -68,10 +67,10 @@ const CHANNEL_DESIGN = [
     aliases: ['APEX', 'Apex Legends'],
     permission: 'game',
     channels: [
-      { key: 'apex_chat', name: '💬｜apex-聊天', type: ChannelType.GuildText, aliases: ['apex-聊天'] },
-      { key: 'apex_party', name: '🧑‍🤝‍🧑｜apex-找隊友', type: ChannelType.GuildText, aliases: ['apex-找隊友'] },
-      { key: 'apex_info', name: '📌｜apex-資訊', type: ChannelType.GuildText, aliases: ['apex-資訊'] },
-      { key: 'apex_create_voice', name: '🔊｜➕｜建立APEX語音', type: ChannelType.GuildVoice, aliases: ['建立APEX語音'] }
+      { key: 'apex_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['apex-聊天'] },
+      { key: 'apex_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['apex-找隊友'] },
+      { key: 'apex_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['apex-資訊'] },
+      { key: 'apex_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立APEX語音'] }
     ]
   },
   {
@@ -80,10 +79,10 @@ const CHANNEL_DESIGN = [
     aliases: ['VALORANT', '特戰英豪', '特戰'],
     permission: 'game',
     channels: [
-      { key: 'valorant_chat', name: '💬｜特戰-聊天', type: ChannelType.GuildText, aliases: ['特戰-聊天', 'valorant-聊天'] },
-      { key: 'valorant_party', name: '🧑‍🤝‍🧑｜特戰-找隊友', type: ChannelType.GuildText, aliases: ['特戰-找隊友', 'valorant-找隊友'] },
-      { key: 'valorant_info', name: '📌｜特戰-資訊', type: ChannelType.GuildText, aliases: ['特戰-資訊', 'valorant-資訊'] },
-      { key: 'valorant_create_voice', name: '🔊｜➕｜建立VALORANT語音', type: ChannelType.GuildVoice, aliases: ['建立VALORANT語音', '建立特戰語音'] }
+      { key: 'valorant_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['特戰-聊天', 'valorant-聊天'] },
+      { key: 'valorant_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['特戰-找隊友', 'valorant-找隊友'] },
+      { key: 'valorant_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['特戰-資訊', 'valorant-資訊'] },
+      { key: 'valorant_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立VALORANT語音', '建立特戰語音'] }
     ]
   },
   {

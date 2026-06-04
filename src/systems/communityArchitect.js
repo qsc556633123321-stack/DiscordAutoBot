@@ -18,6 +18,11 @@ function groupActions(actions = []) {
     move: actions.filter((item) => item.type === 'move'),
     archive: actions.filter((item) => item.type === 'merge_duplicate_game' || item.type === 'archive'),
     create: actions.filter((item) => item.type === 'create_category' || item.type === 'create_missing_channel'),
+    createMain: actions.filter((item) => item.phase === 'create_main_category'),
+    gameChildRename: actions.filter((item) => item.type === 'rename' && item.classification === 'dynamic_game'),
+    gameCategoryMove: actions.filter((item) => item.type === 'reorder_category'),
+    interestMove: actions.filter((item) => item.type === 'move' && item.targetCategoryName === '🎨｜興趣交流'),
+    restoreNames: actions.filter((item) => item.type === 'restore_duplicate_game_name'),
     permission: actions.filter((item) => item.type === 'sync_permission'),
     metadata: actions.filter((item) => item.type === 'repair_metadata' || item.type === 'repair_create_entry'),
     reorder: actions.filter((item) => item.type === 'reorder_category'),
@@ -58,13 +63,15 @@ function buildPreviewEmbed(plan) {
       'Community Architect v1 不會直接刪除頻道，只允許封存。'
     ].join('\n'))
     .addFields(
-      { name: '將改名', value: lines(groups.rename, (item) => `${item.targetName} → ${item.newName}`), inline: false },
-      { name: '將移動', value: lines(groups.move, (item) => `${item.targetName} → ${item.targetCategoryName}`), inline: false },
-      { name: '將合併 / 封存', value: lines(groups.archive, (item) => `${item.targetName} → ${item.targetCategoryName}\n原因：${item.reason}`), inline: false },
-      { name: '將建立', value: lines(groups.create, (item) => `${item.targetName} - ${item.reason}`), inline: false },
+      { name: '將建立主分類', value: lines(groups.createMain, (item) => `${item.targetName} - ${item.reason}`), inline: false },
+      { name: '將修正遊戲子頻道', value: lines(groups.gameChildRename, (item) => `${item.targetName} → ${item.newName}`), inline: false },
+      { name: '將移動遊戲分類', value: lines(groups.gameCategoryMove, (item) => `${item.targetName} → ${item.targetCategoryName}`), inline: false },
+      { name: '將移動興趣頻道', value: lines(groups.interestMove, (item) => `${item.targetName} → ${item.targetCategoryName}`), inline: false },
+      { name: '將封存重複遊戲', value: lines(groups.archive, (item) => `${item.targetName} → ${item.targetCategoryName}\n原因：${item.reason}`), inline: false },
+      { name: '將修正 duplicate-game 名稱', value: lines(groups.restoreNames, (item) => `${item.targetName} → ${item.newName}`), inline: false },
       { name: '將修權限', value: lines(groups.permission, (item) => `${item.targetName} - ${item.reason}`), inline: false },
       { name: '將修 metadata', value: lines(groups.metadata, (item) => `${item.targetName || item.categoryName} - ${item.reason}`), inline: false },
-      { name: '將調整排版', value: lines(groups.reorder, (item) => `${item.targetName} → ${item.targetCategoryName}`), inline: false },
+      { name: '將建立其他項目', value: lines(groups.create.filter((item) => item.phase !== 'create_main_category'), (item) => `${item.targetName} - ${item.reason}`), inline: false },
       { name: '規則降級為建議', value: lines(groups.suggest, (item) => `${item.targetName}: ${item.reason}`), inline: false },
       { name: '高風險', value: lines(groups.highRisk, (item) => `${item.type}: ${item.targetName}`), inline: false }
     )

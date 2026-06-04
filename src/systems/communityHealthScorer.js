@@ -15,12 +15,12 @@ function findDuplicateGameGroups(guild) {
   const buckets = [];
   const gameCategories = guild.channels.cache.filter((channel) => (
     channel.type === ChannelType.GuildCategory &&
-    channel.name.startsWith('🎮｜') &&
+    (channel.name.startsWith('🎮｜') || channel.name.startsWith('duplicate-game-🎮｜')) &&
     !/遊戲中心|遊戲大廳/.test(channel.name)
   ));
 
   for (const category of gameCategories.values()) {
-    const displayName = stripGameCategoryPrefix(category.name);
+    const displayName = stripGameCategoryPrefix(category.name.replace(/^duplicate-game-/i, ''));
     const bucket = buckets.find((item) => isSameGame(item.displayName, displayName));
     if (bucket) bucket.categories.push(category);
     else buckets.push({ displayName, categories: [category] });
@@ -36,7 +36,7 @@ function findBadGameChildNames(guild) {
   const bad = [];
   const gameMetadata = readGameCategoryMetadata()[guild.id] || {};
   const gameCategoryIds = new Set(Object.keys(gameMetadata));
-  for (const category of guild.channels.cache.filter((channel) => channel.type === ChannelType.GuildCategory && channel.name.startsWith('🎮｜')).values()) {
+  for (const category of guild.channels.cache.filter((channel) => channel.type === ChannelType.GuildCategory && (channel.name.startsWith('🎮｜') || channel.name.startsWith('duplicate-game-🎮｜'))).values()) {
     if (/遊戲中心|遊戲大廳/.test(category.name)) continue;
     gameCategoryIds.add(category.id);
   }

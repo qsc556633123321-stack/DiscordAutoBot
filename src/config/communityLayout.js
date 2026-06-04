@@ -72,8 +72,7 @@ const COMMUNITY_LAYOUT = [
     channels: [
       { key: 'lfg_recruit', name: '📢｜組隊招募', type: ChannelType.GuildText, aliases: ['組隊招募', 'lfg', '招募'], visibilityType: VISIBILITY_TYPES.publicSocial },
       { key: 'voice_hub', name: '🎮｜目前語音房', type: ChannelType.GuildText, aliases: ['目前語音房', '語音房', 'voice hub'], visibilityType: VISIBILITY_TYPES.semiPublicReadonly },
-      { key: 'game_suggestions', name: '📋｜遊戲提議', type: ChannelType.GuildText, aliases: ['遊戲提議', '提議遊戲', 'suggest-game'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'game_archive_info', name: '📦｜遊戲封存區', type: ChannelType.GuildText, aliases: ['遊戲封存區', '遊戲封存'], visibilityType: VISIBILITY_TYPES.archive }
+      { key: 'game_suggestions', name: '📋｜遊戲提議', type: ChannelType.GuildText, aliases: ['遊戲提議', '提議遊戲', 'suggest-game'], visibilityType: VISIBILITY_TYPES.publicSocial }
     ]
   },
   {
@@ -83,10 +82,10 @@ const COMMUNITY_LAYOUT = [
     visibilityType: VISIBILITY_TYPES.roleRestricted,
     roleName: ROLE_NAMES.game,
     channels: [
-      { key: 'tft_chat', name: '💬｜tft-聊天', type: ChannelType.GuildText, aliases: ['tft聊天', 'tft-聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'tft_party', name: '🧑‍🤝‍🧑｜tft-找隊友', type: ChannelType.GuildText, aliases: ['tft找隊友', 'tft-找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'tft_info', name: '📌｜tft-資訊', type: ChannelType.GuildText, aliases: ['tft資訊', 'tft-資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'tft_create_voice', name: '🔊｜➕｜建立TFT語音', type: ChannelType.GuildVoice, aliases: ['建立TFT語音', '➕｜建立TFT語音', '建立聯盟戰棋語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'TFT', userLimit: 1 }
+      { key: 'tft_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['tft聊天', 'tft-聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'tft_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['tft找隊友', 'tft-找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'tft_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['tft資訊', 'tft-資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'tft_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立TFT語音', '➕｜建立TFT語音', '建立聯盟戰棋語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'TFT', userLimit: 1 }
     ]
   },
   {
@@ -96,10 +95,10 @@ const COMMUNITY_LAYOUT = [
     visibilityType: VISIBILITY_TYPES.roleRestricted,
     roleName: ROLE_NAMES.game,
     channels: [
-      { key: 'lol_chat', name: '💬｜lol-聊天', type: ChannelType.GuildText, aliases: ['lol聊天', 'lol-聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'lol_party', name: '🧑‍🤝‍🧑｜lol-找隊友', type: ChannelType.GuildText, aliases: ['lol找隊友', 'lol-找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'lol_info', name: '📌｜lol-資訊', type: ChannelType.GuildText, aliases: ['lol資訊', 'lol-資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'lol_create_voice', name: '🔊｜➕｜建立LOL語音', type: ChannelType.GuildVoice, aliases: ['建立LOL語音', '➕｜建立LOL語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'LOL', userLimit: 1 }
+      { key: 'lol_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['lol聊天', 'lol-聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'lol_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['lol找隊友', 'lol-找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'lol_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['lol資訊', 'lol-資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'lol_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立LOL語音', '➕｜建立LOL語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'LOL', userLimit: 1 }
     ]
   },
   {
@@ -109,10 +108,10 @@ const COMMUNITY_LAYOUT = [
     visibilityType: VISIBILITY_TYPES.roleRestricted,
     roleName: ROLE_NAMES.game,
     channels: [
-      { key: 'apex_chat', name: '💬｜apex-聊天', type: ChannelType.GuildText, aliases: ['apex聊天', 'apex-聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'apex_party', name: '🧑‍🤝‍🧑｜apex-找隊友', type: ChannelType.GuildText, aliases: ['apex找隊友', 'apex-找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'apex_info', name: '📌｜apex-資訊', type: ChannelType.GuildText, aliases: ['apex資訊', 'apex-資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'apex_create_voice', name: '🔊｜➕｜建立APEX語音', type: ChannelType.GuildVoice, aliases: ['建立APEX語音', '➕｜建立APEX語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'APEX', userLimit: 1 }
+      { key: 'apex_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['apex聊天', 'apex-聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'apex_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['apex找隊友', 'apex-找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'apex_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['apex資訊', 'apex-資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'apex_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立APEX語音', '➕｜建立APEX語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'APEX', userLimit: 1 }
     ]
   },
   {
@@ -122,10 +121,10 @@ const COMMUNITY_LAYOUT = [
     visibilityType: VISIBILITY_TYPES.roleRestricted,
     roleName: ROLE_NAMES.game,
     channels: [
-      { key: 'valorant_chat', name: '💬｜特戰-聊天', type: ChannelType.GuildText, aliases: ['特戰聊天', '特戰-聊天', 'valorant聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'valorant_party', name: '🧑‍🤝‍🧑｜特戰-找隊友', type: ChannelType.GuildText, aliases: ['特戰找隊友', '特戰-找隊友', 'valorant找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'valorant_info', name: '📌｜特戰-資訊', type: ChannelType.GuildText, aliases: ['特戰資訊', '特戰-資訊', 'valorant資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
-      { key: 'valorant_create_voice', name: '🔊｜➕｜建立VALORANT語音', type: ChannelType.GuildVoice, aliases: ['建立VALORANT語音', '建立特戰語音', '➕｜建立特戰語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'VALORANT', userLimit: 1 }
+      { key: 'valorant_chat', name: '💬｜聊天', type: ChannelType.GuildText, aliases: ['特戰聊天', '特戰-聊天', 'valorant聊天'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'valorant_party', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText, aliases: ['特戰找隊友', '特戰-找隊友', 'valorant找隊友'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'valorant_info', name: '📌｜資訊', type: ChannelType.GuildText, aliases: ['特戰資訊', '特戰-資訊', 'valorant資訊'], visibilityType: VISIBILITY_TYPES.roleRestricted },
+      { key: 'valorant_create_voice', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, aliases: ['建立VALORANT語音', '建立特戰語音', '➕｜建立特戰語音'], visibilityType: VISIBILITY_TYPES.roleRestricted, createEntryGame: 'VALORANT', userLimit: 1 }
     ]
   },
   {
