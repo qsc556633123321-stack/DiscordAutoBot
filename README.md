@@ -223,7 +223,7 @@ Link Guard 會刪除高風險連結、短網址、可疑 Discord/Steam/Nitro/Log
 - 新增 `/repair-channel-permissions`：依 `src/config/communityLayout.js` 與 `src/config/permissionTemplates.js` 重新套用分類/頻道權限。
 - 新增 `/rebuild-community-layout`：重整分類順序、頻道順序、權限與導覽入口，不刪除訊息。
 - 新增 `/check-onboarding-visibility`：檢查哪些頻道 Discord 原生 Onboarding 可見，哪些因 @everyone 無 View Channel 無法偵測。
-- Onboarding compatible 公開入口：`👋｜新人報到`、`📜｜社群規則`、`📢｜公告`、`🧭｜伺服器導覽`、`💬｜一般聊天`、`🌙｜深夜聊天`、`🎮｜找隊友大廳`、`🎮｜目前語音房`。
+- Onboarding compatible 公開入口：`👋｜新人報到`、`📜｜社群規則`、`📢｜公告`、`🧭｜伺服器導覽`、`✅｜身分組領取`、`🎫｜客服支援`。
 - Role restricted：遊戲分類給 `🎮 遊戲玩家`，Night Crew 給 `🌙 Night Crew`，創作開發給 `🛠 開發/AI`，投資討論給 `📈 股票投資`。
 - Private management：`🔒｜管理員後台` 只給站長/管理員/MOD 與 Bot。
 - 防呆：不刪除頻道、不刪 Ticket、不刪 Temp Voice、不刪 logs；Temp Voice 建立入口會重新註冊 metadata。
@@ -300,6 +300,8 @@ Community Layout 現在支援更細的 `visibilityType`：
 ```
 
 執行修復前請先使用 preview。修復完成後，用 Discord 的「以身分組檢視伺服器」分別檢查 `@everyone`、`訪客`、`🎮 遊戲玩家`。
+
+Discord 原生 Server Guide / Onboarding 任務引用的頻道通常需要對新人可見，因此不要把正式成員區、`🎮｜遊戲中心`、`🎮｜目前語音房` 或任何遊戲分類設為原生任務頻道。這些入口應放在 Bot 的互動導覽面板中。`/check-guest-visibility` 會額外掃描原生 Onboarding 預設頻道與任務選項，列出可能與 Guest Gate 衝突的引用。
 - `/ai-layout-repair mode:preview scope:all optimization_mode:balanced`：使用規則引擎，並在有 `OPENAI_API_KEY` 時加入 AI 輔助建議。
 - `/ai-layout-repair mode:execute scope:all optimization_mode:balanced delete_confirm_text:"DELETE CONFIRM"`：顯示確認按鈕，確認後執行。只有輸入 `DELETE CONFIRM` 才允許刪除候選真的刪除。
 

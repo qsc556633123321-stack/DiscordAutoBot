@@ -99,6 +99,14 @@ function canRoleView(channel, role) {
   return Boolean(role && channel.permissionsFor(role)?.has(PermissionFlagsBits.ViewChannel));
 }
 
+function mustForceGuestHidden(channel) {
+  const record = findLayoutRecord(channel);
+  return record?.category?.key === 'game_center' ||
+    record?.spec?.key === 'voice_hub' ||
+    isGameCategory(channel) ||
+    Boolean(channel.parent && isGameCategory(channel.parent));
+}
+
 function checkGuestVisibility(guild) {
   const guestRole = guild.roles.cache.find((role) => ['👤 訪客', '訪客'].includes(role.name)) || null;
   return [...guild.channels.cache.values()].map((channel) => {
@@ -113,10 +121,49 @@ function checkGuestVisibility(guild) {
       shouldBeVisible,
       everyoneVisible,
       guestVisible,
+      forceHidden: mustForceGuestHidden(channel),
       leaked: !shouldBeVisible && (everyoneVisible || guestVisible),
       missing: shouldBeVisible && (!everyoneVisible || !guestVisible)
     };
   }).filter(Boolean);
+}
+
+async function checkNativeOnboardingReferences(guild) {
+  const references = [];
+  try {
+    const onboarding = await guild.fetchOnboarding();
+    for (const [channelId, channel] of onboarding.defaultChannels) {
+      const resolved = channel || guild.channels.cache.get(channelId);
+      const rule = resolved ? ruleForChannel(resolved) : null;
+      if (resolved && ![VISIBILITY_TYPES.publicEntry, VISIBILITY_TYPES.semiPublicReadonly].includes(rule?.visibilityType)) {
+        references.push({
+          channel: resolved,
+          source: 'Discord Onboarding 預設頻道',
+          warning: '此頻道若被 Discord 原生導覽任務使用，可能必須對 @everyone 可見'
+        });
+      }
+    }
+    for (const prompt of onboarding.prompts.values()) {
+      for (const option of prompt.options.values()) {
+        for (const [channelId, channel] of option.channels) {
+          const resolved = channel || guild.channels.cache.get(channelId);
+          const rule = resolved ? ruleForChannel(resolved) : null;
+          if (resolved && ![VISIBILITY_TYPES.publicEntry, VISIBILITY_TYPES.semiPublicReadonly].includes(rule?.visibilityType)) {
+            references.push({
+              channel: resolved,
+              source: `Discord Onboarding 任務：${prompt.title}`,
+              warning: '此頻道若被 Discord 原生導覽任務使用，可能必須對 @everyone 可見'
+            });
+          }
+        }
+      }
+    }
+  } catch (error) {
+    return { references: [], fetchWarning: `無法讀取 Discord 原生 Onboarding 設定：${error.message}` };
+  }
+  const unique = new Map();
+  for (const item of references) unique.set(`${item.channel.id}:${item.source}`, item);
+  return { references: [...unique.values()], fetchWarning: null };
 }
 
 function buildGuestGatePlan(guild, options = {}) {
@@ -129,7 +176,7 @@ function buildGuestGatePlan(guild, options = {}) {
     mode: options.mode || 'preview',
     createdAt: Date.now(),
     actions: checkGuestVisibility(guild)
-      .filter((item) => item.leaked || item.missing || options.includeHealthy)
+      .filter((item) => item.leaked || item.missing || item.forceHidden || options.includeHealthy)
       .map((item) => ({
         action: 'sync_permission',
         type: 'sync_permission',
@@ -138,7 +185,13 @@ function buildGuestGatePlan(guild, options = {}) {
         visibilityType: item.rule.visibilityType,
         roleName: item.rule.roleName,
         specialRoleName: item.rule.specialRoleName,
-        reason: item.leaked ? 'Guest Gate 外漏，將關閉新人可見性' : item.missing ? '入口頻道不可見，將恢復新人可見性' : 'Guest Gate 權限同步',
+        reason: item.leaked
+          ? 'Guest Gate 外漏，將關閉新人可見性'
+          : item.missing
+            ? '入口頻道不可見，將恢復新人可見性'
+            : item.forceHidden
+              ? 'Guest Gate 強制保護遊戲中心、目前語音房與遊戲分類'
+              : 'Guest Gate 權限同步',
         confidence: 100,
         risk: 'medium',
         requiresConfirmation: true
@@ -146,21 +199,32 @@ function buildGuestGatePlan(guild, options = {}) {
   };
 }
 
-function buildGuestVisibilityEmbed(results) {
+function buildGuestVisibilityEmbed(results, nativeOnboarding = { references: [], fetchWarning: null }) {
   const visible = results.filter((item) => item.shouldBeVisible && !item.missing);
   const leaked = results.filter((item) => item.leaked);
   const missing = results.filter((item) => item.missing);
   const list = (items, mapper) => items.length ? items.slice(0, 20).map(mapper).join('\n').slice(0, 1024) : '無';
   return new EmbedBuilder()
-    .setColor(leaked.length || missing.length ? 0xed4245 : 0x57f287)
+    .setColor(leaked.length || missing.length || nativeOnboarding.references?.length ? 0xed4245 : 0x57f287)
     .setTitle('🚪 Guest Gate Visibility Check')
     .setDescription('以 @everyone 與訪客身分檢查頻道可見性。')
     .addFields(
       { name: '✅ 應該可見', value: list(visible, (item) => item.channel.name) },
       { name: '❌ 不該可見但外漏', value: list(leaked, (item) => `${item.channel.name} - ${item.rule.label}`) },
-      { name: '⚠️ 應該可見但看不到', value: list(missing, (item) => item.channel.name) }
+      { name: '⚠️ 應該可見但看不到', value: list(missing, (item) => item.channel.name) },
+      {
+        name: '🧭 Discord 原生導覽衝突',
+        value: list(nativeOnboarding.references || [], (item) => `${item.channel.name} - ${item.source}\n${item.warning}`)
+      },
+      ...(nativeOnboarding.fetchWarning ? [{ name: '原生導覽檢查提醒', value: nativeOnboarding.fetchWarning.slice(0, 1024) }] : [])
     )
     .setTimestamp();
 }
 
-module.exports = { buildGuestGatePlan, buildGuestVisibilityEmbed, checkGuestVisibility, ruleForChannel };
+module.exports = {
+  buildGuestGatePlan,
+  buildGuestVisibilityEmbed,
+  checkGuestVisibility,
+  checkNativeOnboardingReferences,
+  ruleForChannel
+};

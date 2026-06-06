@@ -15,6 +15,12 @@ const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
 const ROADMAP_FILE = path.join(DATA_DIR, 'community-roadmap.json');
 const GUIDE_CHANNEL_NAME = '🧭｜伺服器導覽';
 const ROADMAP_CHANNEL_NAME = '🚧｜社群開發日誌';
+const NATIVE_ONBOARDING_RECOMMENDATIONS = [
+  '👋｜新人報到',
+  '✅｜身分組領取',
+  '🧭｜伺服器導覽',
+  '📜｜社群規則'
+];
 
 function ensureFile(filePath, fallback = '{}') {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -229,7 +235,9 @@ async function setupCommunityGuide(guild, options = {}) {
   }
   saveOnboarding(guild.id, {
     guideChannelId: channel.id,
-    guideMessageId: message.id
+    guideMessageId: message.id,
+    nativeTaskRecommendations: NATIVE_ONBOARDING_RECOMMENDATIONS,
+    nativeTaskExcludedChannels: ['🎮｜目前語音房', '🎮｜遊戲中心']
   });
   return { channel, message };
 }
@@ -367,6 +375,7 @@ async function sendConciergeWelcome(member) {
 
 module.exports = {
   GUIDE_CHANNEL_NAME,
+  NATIVE_ONBOARDING_RECOMMENDATIONS,
   ROADMAP_CHANNEL_NAME,
   buildAboutEmbed,
   buildRoadmapEmbed,
