@@ -4,6 +4,8 @@ const {
   registerCreateEntryChannel
 } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
+const { buildVisibilityOverwrites } = require('../config/channelVisibilityRules');
+const { ruleForChannel } = require('./guestGate');
 
 const STEP_DELAY_MS = 800;
 const MAIN_CATEGORY_ORDER = [
@@ -32,6 +34,9 @@ async function getOrCreateCategory(guild, name, summary) {
   category = await guild.channels.create({
     name,
     type: ChannelType.GuildCategory,
+    permissionOverwrites: buildVisibilityOverwrites(guild, ruleForChannel({ type: ChannelType.GuildCategory, name }) || {
+      visibilityType: 'formal_member_visible'
+    }),
     reason: 'Community Architect create category'
   });
   summary.created.push(name);
@@ -150,11 +155,22 @@ async function executeCommunityArchitectPlan(guild, plan) {
 
       if (item.type === 'sync_permission') {
         const channel = guild.channels.cache.get(item.targetId);
-        if (!channel?.parent) {
-          summary.skipped.push(`${item.targetName}: 沒有分類可同步`);
+        if (!channel) {
+          summary.skipped.push(`${item.targetName}: 頻道不存在`);
           continue;
         }
-        await channel.lockPermissions();
+        const guestGateRule = ruleForChannel(channel);
+        if (guestGateRule) {
+          await channel.permissionOverwrites.set(
+            buildVisibilityOverwrites(guild, guestGateRule),
+            'Community Architect Guest Gate permission sync'
+          );
+        } else if (channel.parent) {
+          await channel.lockPermissions();
+        } else {
+          summary.skipped.push(`${item.targetName}: 沒有可套用的權限規則`);
+          continue;
+        }
         summary.permissions.push(channel.name);
         await sleep();
         continue;

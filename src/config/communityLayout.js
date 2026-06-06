@@ -43,36 +43,36 @@ const COMMUNITY_LAYOUT = [
     key: 'public_lobby',
     name: '💬｜社群大廳',
     aliases: ['社群大廳', '公開大廳', '日常交流'],
-    visibilityType: VISIBILITY_TYPES.publicSocial,
+    visibilityType: VISIBILITY_TYPES.formalMemberVisible,
     channels: [
-      { key: 'general_chat', name: '💬｜一般聊天', type: ChannelType.GuildText, aliases: ['一般聊天', '聊天', 'general'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'late_night_chat', name: '🌙｜深夜聊天', type: ChannelType.GuildText, aliases: ['深夜聊天', '深夜'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'party_lobby', name: '🎮｜找隊友大廳', type: ChannelType.GuildText, aliases: ['找隊友大廳', '找隊友', '組隊大廳'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'serious_discussion', name: '🧠｜認真討論', type: ChannelType.GuildText, aliases: ['認真討論', '閒聊討論', '討論區'], visibilityType: VISIBILITY_TYPES.publicSocial }
+      { key: 'general_chat', name: '💬｜一般聊天', type: ChannelType.GuildText, aliases: ['一般聊天', '聊天', 'general'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'late_night_chat', name: '🌙｜深夜聊天', type: ChannelType.GuildText, aliases: ['深夜聊天', '深夜'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'party_lobby', name: '🎮｜找隊友大廳', type: ChannelType.GuildText, aliases: ['找隊友大廳', '找隊友', '組隊大廳'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'serious_discussion', name: '🧠｜認真討論', type: ChannelType.GuildText, aliases: ['認真討論', '閒聊討論', '討論區'], visibilityType: VISIBILITY_TYPES.formalMemberVisible }
     ]
   },
   {
     key: 'interest_zone',
     name: '🎨｜興趣交流',
     aliases: ['興趣交流', '興趣專區', '生活分享'],
-    visibilityType: VISIBILITY_TYPES.publicSocial,
+    visibilityType: VISIBILITY_TYPES.formalMemberVisible,
     channels: [
-      { key: 'music_share', name: '🎵｜音樂分享', type: ChannelType.GuildText, aliases: ['音樂分享', 'music'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'food_share', name: '🍜｜美食分享', type: ChannelType.GuildText, aliases: ['美食分享', 'food'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'meme_images', name: '🖼｜迷因與好圖', type: ChannelType.GuildText, aliases: ['迷因與好圖', '好圖分享', '迷因', '圖片分享'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'photo_share', name: '📷｜攝影分享', type: ChannelType.GuildText, aliases: ['攝影分享', '照片分享'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'movie_anime', name: '🎬｜影劇動漫', type: ChannelType.GuildText, aliases: ['影劇動漫', '動畫漫畫', '動漫'], visibilityType: VISIBILITY_TYPES.publicSocial }
+      { key: 'music_share', name: '🎵｜音樂分享', type: ChannelType.GuildText, aliases: ['音樂分享', 'music'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'food_share', name: '🍜｜美食分享', type: ChannelType.GuildText, aliases: ['美食分享', 'food'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'meme_images', name: '🖼｜迷因與好圖', type: ChannelType.GuildText, aliases: ['迷因與好圖', '好圖分享', '迷因', '圖片分享'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'photo_share', name: '📷｜攝影分享', type: ChannelType.GuildText, aliases: ['攝影分享', '照片分享'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'movie_anime', name: '🎬｜影劇動漫', type: ChannelType.GuildText, aliases: ['影劇動漫', '動畫漫畫', '動漫'], visibilityType: VISIBILITY_TYPES.formalMemberVisible }
     ]
   },
   {
     key: 'game_center',
     name: '🎮｜遊戲中心',
     aliases: ['遊戲中心', '遊戲大廳'],
-    visibilityType: VISIBILITY_TYPES.publicSocial,
+    visibilityType: VISIBILITY_TYPES.formalMemberVisible,
     channels: [
-      { key: 'lfg_recruit', name: '📢｜組隊招募', type: ChannelType.GuildText, aliases: ['組隊招募', 'lfg', '招募'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'voice_hub', name: '🎮｜目前語音房', type: ChannelType.GuildText, aliases: ['目前語音房', '語音房', 'voice hub'], visibilityType: VISIBILITY_TYPES.semiPublicReadonly },
-      { key: 'game_suggestions', name: '📋｜遊戲提議', type: ChannelType.GuildText, aliases: ['遊戲提議', '提議遊戲', 'suggest-game'], visibilityType: VISIBILITY_TYPES.publicSocial }
+      { key: 'lfg_recruit', name: '📢｜組隊招募', type: ChannelType.GuildText, aliases: ['組隊招募', 'lfg', '招募'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'voice_hub', name: '🎮｜目前語音房', type: ChannelType.GuildText, aliases: ['目前語音房', '語音房', 'voice hub'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'game_suggestions', name: '📋｜遊戲提議', type: ChannelType.GuildText, aliases: ['遊戲提議', '提議遊戲', 'suggest-game'], visibilityType: VISIBILITY_TYPES.formalMemberVisible }
     ]
   },
   {
@@ -172,8 +172,8 @@ const COMMUNITY_LAYOUT = [
     visibilityType: VISIBILITY_TYPES.publicEntry,
     channels: [
       { key: 'open_ticket', name: '🎟｜開啟客服單', type: ChannelType.GuildText, aliases: ['開啟客服單', 'ticket'], visibilityType: VISIBILITY_TYPES.publicEntry },
-      { key: 'bug_report', name: '🐞｜問題回報', type: ChannelType.GuildText, aliases: ['問題回報'], visibilityType: VISIBILITY_TYPES.publicSocial },
-      { key: 'suggestions', name: '💡｜建議區', type: ChannelType.GuildText, aliases: ['建議區'], visibilityType: VISIBILITY_TYPES.publicSocial }
+      { key: 'bug_report', name: '🐞｜問題回報', type: ChannelType.GuildText, aliases: ['問題回報'], visibilityType: VISIBILITY_TYPES.formalMemberVisible },
+      { key: 'suggestions', name: '💡｜建議區', type: ChannelType.GuildText, aliases: ['建議區'], visibilityType: VISIBILITY_TYPES.formalMemberVisible }
     ]
   },
   {

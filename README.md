@@ -268,9 +268,9 @@ npm run deploy
 Community Layout 現在支援更細的 `visibilityType`：
 
 - `public_entry`：新人與 @everyone 可見，例如新人報到、規則、身分組領取。
-- `public_social`：正式成員可發言，訪客可依設定只讀，例如一般聊天、找隊友大廳、組隊招募。
+- `public_social`：舊版相容名稱，現在等同 `formal_member_visible`；訪客與 @everyone 不可見。
 - `role_restricted`：指定身分組才可見，例如遊戲分類、投資討論、創作與開發。
-- `semi_public_readonly`：新人可見但不能發言，例如公告、導覽、目前語音房。
+- `semi_public_readonly`：新人可見但不能發言，例如公告與導覽。
 - `private_admin`：只有站長、管理員、MOD 與 Bot 可見。
 - `hidden_special`：特殊條件可見，例如 Night Crew。
 - `archive`：封存區，預設只有管理員可見。
@@ -280,6 +280,26 @@ Community Layout 現在支援更細的 `visibilityType`：
 - `/layout-doctor`：深度分析 visibilityType、權限外漏、子頻道同步、重複項目、封存候選、刪除候選。
 - `/repair-channel-permissions mode:preview scope:all`：預覽權限修復。
 - `/repair-channel-permissions mode:execute scope:all`：顯示確認按鈕，確認後執行權限修復。
+
+### Guest Gate Permission Model
+
+新人與 `@everyone` 預設只能看見社群入口、規則、公告、導覽、身分組領取、新人報到與客服開單入口。
+
+- `public_entry` / `semi_public_readonly`：新人可見。
+- `formal_member_visible`：只有已驗證成員或任一正式身分組可見。
+- `public_social`：為相容舊設定保留，但權限行為等同 `formal_member_visible`，不再對 `@everyone` 公開。
+- `role_restricted`：只有指定興趣身分組可見；所有遊戲分類至少需要 `🎮 遊戲玩家`。
+- `private_admin` / `archive`：新人與訪客不可見。
+
+檢查與修復：
+
+```text
+/check-guest-visibility
+/repair-channel-permissions mode:preview scope:guest_gate
+/repair-channel-permissions mode:execute scope:guest_gate
+```
+
+執行修復前請先使用 preview。修復完成後，用 Discord 的「以身分組檢視伺服器」分別檢查 `@everyone`、`訪客`、`🎮 遊戲玩家`。
 - `/ai-layout-repair mode:preview scope:all optimization_mode:balanced`：使用規則引擎，並在有 `OPENAI_API_KEY` 時加入 AI 輔助建議。
 - `/ai-layout-repair mode:execute scope:all optimization_mode:balanced delete_confirm_text:"DELETE CONFIRM"`：顯示確認按鈕，確認後執行。只有輸入 `DELETE CONFIRM` 才允許刪除候選真的刪除。
 

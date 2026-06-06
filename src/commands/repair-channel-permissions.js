@@ -10,6 +10,7 @@ const {
   buildLayoutRepairPlan,
   saveLayoutRepairPlan
 } = require('../systems/layoutDecisionEngine');
+const { buildGuestGatePlan } = require('../systems/guestGate');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -34,7 +35,8 @@ module.exports = {
           { name: 'onboarding', value: 'onboarding' },
           { name: 'restricted', value: 'restricted' },
           { name: 'admin', value: 'admin' },
-          { name: 'games', value: 'games' }
+          { name: 'games', value: 'games' },
+          { name: 'guest_gate', value: 'guest_gate' }
         ))
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels),
 
@@ -51,11 +53,16 @@ module.exports = {
 
     const mode = interaction.options.getString('mode') || 'preview';
     const scope = interaction.options.getString('scope') || 'all';
-    const plan = buildLayoutRepairPlan(interaction.guild, {
-      mode,
-      scope: scope === 'all' ? 'permissions' : scope,
-      requestedById: interaction.user.id
-    });
+    const plan = scope === 'guest_gate'
+      ? buildGuestGatePlan(interaction.guild, {
+        mode,
+        requestedById: interaction.user.id
+      })
+      : buildLayoutRepairPlan(interaction.guild, {
+        mode,
+        scope: scope === 'all' ? 'permissions' : scope,
+        requestedById: interaction.user.id
+      });
     plan.actions = plan.actions.filter((item) => ['sync_permission', 'sync_metadata', 'create_category', 'create_channel'].includes(item.action));
 
     if (mode === 'preview') {

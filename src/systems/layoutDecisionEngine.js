@@ -275,7 +275,7 @@ function permissionHealth(record) {
   const channel = record.current;
   if (!channel) return { ok: false, reason: '不存在' };
   const type = record.config.visibilityType || record.category.visibilityType || VISIBILITY_TYPES.publicEntry;
-  const publicTypes = new Set([VISIBILITY_TYPES.publicEntry, VISIBILITY_TYPES.publicSocial, VISIBILITY_TYPES.semiPublicReadonly]);
+  const publicTypes = new Set([VISIBILITY_TYPES.publicEntry, VISIBILITY_TYPES.semiPublicReadonly]);
   const everyoneCanView = isEveryoneViewAllowed(channel);
   if (publicTypes.has(type) && !everyoneCanView) return { ok: false, reason: `${type} 應公開但 @everyone 不可見` };
   if (!publicTypes.has(type) && everyoneCanView) return { ok: false, reason: `${type} 應限制但 @everyone 可見` };
