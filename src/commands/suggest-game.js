@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { createGameSuggestion } = require('../systems/gameSuggestionSystem');
+const gameCategoryService = require('../services/games/gameCategoryService');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -30,7 +30,9 @@ module.exports = {
       return;
     }
 
-    const { channel } = await createGameSuggestion(interaction, gameName, reason, '聊天、找隊友、資訊、建立語音');
+    const result = await gameCategoryService.suggest(interaction, gameName, reason, '聊天、找隊友、資訊、建立語音');
+    if (!result.ok) return interaction.editReply(result.error.message);
+    const { channel } = result.data;
     await interaction.editReply(`已送出遊戲提議，請到 ${channel} 查看投票卡。`);
   }
 };

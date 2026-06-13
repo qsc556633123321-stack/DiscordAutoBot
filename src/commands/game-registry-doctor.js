@@ -6,7 +6,7 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const { buildGameRegistryDoctorPlan } = require('../systems/gameChannels');
+const gameCategoryService = require('../services/games/gameCategoryService');
 
 function list(items, mapper, empty = '無') {
   const lines = items.map(mapper).filter(Boolean);
@@ -60,7 +60,9 @@ module.exports = {
     }
 
     const mode = interaction.options.getString('mode');
-    const plan = buildGameRegistryDoctorPlan(interaction.guild, interaction.user.id);
+    const result = await gameCategoryService.buildDoctorPlan(interaction.guild, interaction.user.id);
+    if (!result.ok) return interaction.editReply(result.error.message);
+    const plan = result.data;
     const embed = buildEmbed(plan);
 
     if (mode === 'preview' || !plan.actions.length) {

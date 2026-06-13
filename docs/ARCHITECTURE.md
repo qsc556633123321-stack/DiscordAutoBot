@@ -13,13 +13,19 @@ Commands 只解析 Discord interaction 與參數。Community Architecture V3 是
 
 所有新版 service 回傳 `{ ok, data, error }` Result。尚未完整遷移的功能透過 `createLegacyFacade().invoke()` 呼叫，避免 legacy exceptions 穿透 service boundary。
 
-## Phase 1 Compatibility
+## Phase 2 Consolidation
 
-Phase 1 不刪除舊 systems。以下入口已接新版 service adapter：
+舊 systems 暫時保留為 service 背後的 legacy engines。Commands 不再直接依賴主要 Community、Permission、Game 與 Panel engines。
 
 - `/rebuild-community-v3`
 - `/repair-channel-permissions`
 - `/check-guest-visibility`
 - `/community-architect`
+- `/bootstrap-community`
+- `/rebuild-community-layout`
+- `/polish-server-design`
+- `/setup-channel-panels`
+- `/setup-game`
+- `/fix-game-category`
 
-其餘 commands 保持 legacy runtime，將於 Phase 2 分批遷移。
+詳細殘留與 Phase 3 清單請參考 [REFACTOR_AUDIT.md](REFACTOR_AUDIT.md)。

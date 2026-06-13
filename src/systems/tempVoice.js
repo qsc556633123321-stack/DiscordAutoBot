@@ -24,7 +24,7 @@ const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { createOrUpdateLfgCard, deleteLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
 const { recordTempVoiceCreated } = require('./voiceActivitySystem');
-const { resolveGameIdentity } = require('../config/gameAliases');
+const { resolveGameIdentity } = require('../domain/games/gameIdentityService');
 const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');

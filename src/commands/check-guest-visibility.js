@@ -1,7 +1,4 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const {
-  buildGuestVisibilityEmbed,
-} = require('../systems/guestGate');
 const { permissions } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
@@ -23,7 +20,7 @@ module.exports = {
         return;
       }
       await interaction.editReply({
-        embeds: [buildGuestVisibilityEmbed(result.data.visibility, result.data.onboarding)]
+        embeds: [permissions.buildGuestVisibilityEmbed(result.data.visibility, result.data.onboarding)]
       });
     } catch (error) {
       console.error('[GuestGate] visibility check failed:', error);

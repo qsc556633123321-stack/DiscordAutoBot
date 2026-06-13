@@ -5,11 +5,7 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const {
-  buildPermissionPlan,
-  buildRolePermissionEmbed,
-  saveRolePermissionPlan
-} = require('../systems/rolePermissions');
+const { permissions } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -44,9 +40,11 @@ module.exports = {
     }
 
     const mode = interaction.options.getString('mode');
-    const plan = buildPermissionPlan(interaction.guild, interaction.user.id);
+    const result = permissions.buildRolePlan(interaction.guild, interaction.user.id);
+    if (!result.ok) return interaction.reply({ content: result.error.message, ephemeral: true });
+    const plan = result.data;
     plan.mode = mode;
-    saveRolePermissionPlan(interaction.id, plan);
+    permissions.saveRolePlan(interaction.id, plan);
 
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
@@ -61,7 +59,7 @@ module.exports = {
     );
 
     await interaction.reply({
-      embeds: [buildRolePermissionEmbed(plan)],
+      embeds: [permissions.buildRolePlanEmbed(plan)],
       components: [row],
       ephemeral: true
     });

@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { bootstrapCommunity, buildSummaryEmbed } = require('../systems/communityBootstrapSystem');
+const { rebuild } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -28,7 +28,7 @@ module.exports = {
     }
 
     const mode = interaction.options.getString('mode') || 'preview';
-    const summary = await bootstrapCommunity(interaction.guild, { mode, order: true });
-    await interaction.editReply({ embeds: [buildSummaryEmbed('🧱 Community Bootstrap', summary)] });
+    const result = await rebuild.runBootstrap(interaction.guild, { mode, order: true });
+    await interaction.editReply(result.ok ? { embeds: [result.data.embed] } : result.error.message);
   }
 };

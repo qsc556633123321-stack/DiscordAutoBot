@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const path = require('node:path');
 const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const {
@@ -7,17 +6,12 @@ const {
   repairCreateEntryRegistry
 } = require('../systems/gameChannels');
 const { readTempVoice } = require('../systems/tempVoice');
+const { readJson } = require('../infrastructure/storage/jsonStore');
 
 const VOICE_HUB_FILE = path.join(__dirname, '..', 'data', 'voice-hub.json');
 
 function readVoiceHubData() {
-  try {
-    if (!fs.existsSync(VOICE_HUB_FILE)) return {};
-    const parsed = JSON.parse(fs.readFileSync(VOICE_HUB_FILE, 'utf8') || '{}');
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch (error) {
-    return {};
-  }
+  return readJson(VOICE_HUB_FILE, {});
 }
 
 function truncateList(lines, max = 10) {

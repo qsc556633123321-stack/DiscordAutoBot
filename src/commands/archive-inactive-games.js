@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { archiveInactiveGames } = require('../systems/gameSuggestionSystem');
+const gameCategoryService = require('../services/games/gameCategoryService');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,7 +15,9 @@ module.exports = {
       return;
     }
 
-    const summary = await archiveInactiveGames(interaction.guild);
+    const result = await gameCategoryService.archiveInactive(interaction.guild);
+    if (!result.ok) return interaction.editReply(result.error.message);
+    const summary = result.data;
     const embed = new EmbedBuilder()
       .setColor(summary.failed.length ? 0xf2c94c : 0x5865f2)
       .setTitle('📦 遊戲分類封存檢查')

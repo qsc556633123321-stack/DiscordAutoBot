@@ -5,10 +5,6 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const {
-  buildLayoutRepairEmbed,
-  saveLayoutRepairPlan
-} = require('../systems/layoutDecisionEngine');
 const { permissions } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
@@ -64,11 +60,11 @@ module.exports = {
     const plan = result.data;
 
     if (mode === 'preview') {
-      await interaction.editReply({ embeds: [buildLayoutRepairEmbed(plan, '🔧 Permission Repair Preview')] });
+      await interaction.editReply({ embeds: [permissions.buildRepairEmbed(plan, '🔧 Permission Repair Preview')] });
       return;
     }
 
-    saveLayoutRepairPlan(plan);
+    permissions.saveRepairPlan(plan);
     const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId(`permrepair_confirm_${plan.id}`)
@@ -81,7 +77,7 @@ module.exports = {
     );
 
     await interaction.editReply({
-      embeds: [buildLayoutRepairEmbed(plan, '🔧 Permission Repair Confirm')],
+      embeds: [permissions.buildRepairEmbed(plan, '🔧 Permission Repair Confirm')],
       components: [row]
     });
   }

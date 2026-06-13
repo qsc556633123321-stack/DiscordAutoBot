@@ -1,4 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
+const { permissions } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -17,11 +18,13 @@ module.exports = {
       return;
     }
 
-    await interaction.channel.permissionOverwrites.edit(interaction.guild.roles.everyone, {
-      SendMessages: null
-    }, {
-      reason: `Channel unlocked by ${interaction.user.tag}`
-    });
+    const result = await permissions.setChannelLocked(
+      interaction.channel,
+      interaction.guild.roles.everyone,
+      false,
+      interaction.user.tag
+    );
+    if (!result.ok) return interaction.reply({ content: result.error.message, ephemeral: true });
 
     await interaction.reply({ content: `已解鎖 ${interaction.channel}，發言權限恢復繼承設定。` });
   }

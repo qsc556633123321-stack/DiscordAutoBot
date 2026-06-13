@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { buildOnboardingCheckEmbed, checkOnboardingVisibility } = require('../systems/communityBootstrapSystem');
+const { permissions } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -13,7 +13,7 @@ module.exports = {
       await interaction.editReply('你需要 ManageChannels 權限才能檢查 onboarding visibility。');
       return;
     }
-    const results = checkOnboardingVisibility(interaction.guild);
-    await interaction.editReply({ embeds: [buildOnboardingCheckEmbed(results)] });
+    const result = permissions.inspectOnboarding(interaction.guild);
+    await interaction.editReply(result.ok ? { embeds: [permissions.buildOnboardingEmbed(result.data)] } : result.error.message);
   }
 };

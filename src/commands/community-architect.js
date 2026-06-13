@@ -5,12 +5,6 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const {
-  buildDiagnoseEmbed,
-  buildPreviewEmbed,
-  getCommunityArchitectPlan,
-  saveCommunityArchitectPlan
-} = require('../systems/communityArchitect');
 const { communityArchitect } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
@@ -67,40 +61,40 @@ module.exports = {
     const strategy = interaction.options.getString('strategy') || 'balanced';
 
     if (mode === 'diagnose') {
-      const result = await communityArchitect.buildPlan(interaction.guild, {
+      const result = await communityArchitect.buildArchitectPlan(interaction.guild, {
         scope,
         strategy,
         createdBy: interaction.user.id
       });
       if (!result.ok) return interaction.editReply(`Community Architect failed: ${result.error.message}`);
       const plan = result.data;
-      await interaction.editReply({ embeds: [buildDiagnoseEmbed(plan)] });
+      await interaction.editReply({ embeds: [communityArchitect.architectBuildDiagnoseEmbed(plan)] });
       return;
     }
 
     if (mode === 'preview') {
-      const result = await communityArchitect.buildPlan(interaction.guild, {
+      const result = await communityArchitect.buildArchitectPlan(interaction.guild, {
         scope,
         strategy,
         createdBy: interaction.user.id
       });
       if (!result.ok) return interaction.editReply(`Community Architect failed: ${result.error.message}`);
       const plan = result.data;
-      saveCommunityArchitectPlan(plan);
-      await interaction.editReply({ embeds: [buildPreviewEmbed(plan)] });
+      communityArchitect.saveArchitectPlan(plan);
+      await interaction.editReply({ embeds: [communityArchitect.architectBuildPreviewEmbed(plan)] });
       return;
     }
 
-    let plan = getCommunityArchitectPlan(interaction.guild.id);
+    let plan = communityArchitect.getArchitectPlan(interaction.guild.id);
     if (!plan || plan.scope !== scope || plan.strategy !== strategy) {
-      const result = await communityArchitect.buildPlan(interaction.guild, {
+      const result = await communityArchitect.buildArchitectPlan(interaction.guild, {
         scope,
         strategy,
         createdBy: interaction.user.id
       });
       if (!result.ok) return interaction.editReply(`Community Architect failed: ${result.error.message}`);
       plan = result.data;
-      saveCommunityArchitectPlan(plan);
+      communityArchitect.saveArchitectPlan(plan);
     }
 
     const row = new ActionRowBuilder().addComponents(
@@ -115,7 +109,7 @@ module.exports = {
     );
 
     await interaction.editReply({
-      embeds: [buildPreviewEmbed(plan)],
+      embeds: [communityArchitect.architectBuildPreviewEmbed(plan)],
       components: [row]
     });
   }

@@ -53,6 +53,7 @@ npm run dashboard:dev
 - [Security](docs/SECURITY.md)
 - [Voice System](docs/VOICE_SYSTEM.md)
 - [Operations](docs/OPERATIONS.md)
+- [Refactor Audit](docs/REFACTOR_AUDIT.md)
 
 ## 驗證
 

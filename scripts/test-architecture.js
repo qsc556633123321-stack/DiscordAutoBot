@@ -23,6 +23,43 @@ assert.deepEqual(guestVisible, ['entry', 'support']);
 
 assert.equal(isSameGame('VALORANT', '特戰'), true);
 assert.equal(isSameGame('VALORANT', '特戰英豪'), true);
+assert.equal(isGuestVisible('public_social'), false);
+assert.deepEqual(
+  architecture.gameChannels.map((channel) => channel.key),
+  ['chat', 'lfg', 'info', 'voice_create']
+);
+
+const commandDir = path.join(__dirname, '..', 'src', 'commands');
+const consolidatedCommands = new Set([
+  'apply-role-permissions.js',
+  'bootstrap-community.js',
+  'check-guest-visibility.js',
+  'check-onboarding-visibility.js',
+  'community-architect.js',
+  'fix-game-category.js',
+  'polish-server-design.js',
+  'rebuild-community-layout.js',
+  'rebuild-community-v3.js',
+  'repair-channel-permissions.js',
+  'setup-channel-panels.js',
+  'setup-game.js',
+  'suggest-game.js'
+]);
+for (const file of fs.readdirSync(commandDir).filter((name) => name.endsWith('.js'))) {
+  const source = fs.readFileSync(path.join(commandDir, file), 'utf8');
+  assert.ok(source.split(/\r?\n/).length <= 120, `${file} exceeds 120 lines`);
+  assert.equal(/permissionOverwrites\.(set|edit)/.test(source), false, `${file} writes permissions directly`);
+  assert.equal(/await\s+[^\n]*\.setParent\(/.test(source), false, `${file} moves channels directly`);
+  assert.equal(/await\s+[^\n]*\.setName\(/.test(source), false, `${file} renames channels directly`);
+  assert.equal(/guild\.channels\.create\(/.test(source), false, `${file} creates channels directly`);
+  assert.equal(/fs\.(readFileSync|writeFileSync)/.test(source), false, `${file} reads or writes JSON directly`);
+  if (consolidatedCommands.has(file)) {
+    assert.equal(/require\(['"]\.\.\/systems\//.test(source), false, `${file} bypasses consolidated services`);
+  }
+}
+
+const communityDomainSource = fs.readFileSync(path.join(__dirname, '..', 'src', 'domain', 'community', 'communityArchitectureV3.js'), 'utf8');
+assert.equal(/require\(['"].*config\//.test(communityDomainSource), false, 'Community V3 domain must not depend on legacy config');
 
 const storeTestFile = path.join(os.tmpdir(), `discord-community-os-${process.pid}.json`);
 writeJsonAtomic(storeTestFile, { version: 1 });

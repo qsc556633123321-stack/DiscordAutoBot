@@ -5,7 +5,6 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const { saveV3Plan } = require('../systems/communityV3Builder');
 const { rebuild } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
@@ -42,7 +41,7 @@ module.exports = {
       return;
     }
     const { plan, embed } = result.data;
-    saveV3Plan(plan);
+    rebuild.saveV3Plan(plan);
     if (mode === 'preview') {
       await interaction.editReply({ embeds: [embed] });
       return;

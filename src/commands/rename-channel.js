@@ -3,6 +3,7 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
+const channelMutationService = require('../services/community/channelMutationService');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -50,7 +51,8 @@ module.exports = {
 
     try {
       const oldName = channel.name;
-      await channel.setName(newName, `Renamed by ${interaction.user.tag}`);
+      const result = await channelMutationService.rename(channel, newName, interaction.user.tag);
+      if (!result.ok) throw new Error(result.error.message);
       await interaction.reply({
         content: `已將頻道名稱從 \`${oldName}\` 改為 \`${channel.name}\`。`,
         ephemeral: true

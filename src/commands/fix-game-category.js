@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { fixGameCategory } = require('../systems/gameChannels');
+const gameCategoryService = require('../services/games/gameCategoryService');
 
 function formatList(items, emptyText = '無') {
   return items.length ? items.map((item) => `- ${item}`).join('\n') : emptyText;
@@ -47,7 +47,9 @@ module.exports = {
     await interaction.deferReply({ ephemeral: true });
 
     try {
-      const result = await fixGameCategory(interaction.guild, { game, shortName });
+      const serviceResult = await gameCategoryService.fix(interaction.guild, { game, shortName });
+      if (!serviceResult.ok) throw new Error(serviceResult.error.message);
+      const result = serviceResult.data;
       const warningText = result.orderingWarnings.length
         ? `\n\n排序提醒：\n${formatList(result.orderingWarnings)}`
         : '';

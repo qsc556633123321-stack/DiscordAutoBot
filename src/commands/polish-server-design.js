@@ -5,7 +5,7 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const { buildPolishEmbed, buildPolishPlan, savePolishPlan } = require('../systems/serverPolisher');
+const { rebuild } = require('../adapters/legacy/legacyCommandAdapters');
 const { safeDeferReply, safeEditReply } = require('../utils/interactionReplies');
 
 module.exports = {
@@ -71,7 +71,7 @@ module.exports = {
       }
 
       const mode = interaction.options.getString('mode', true);
-      const plan = buildPolishPlan(interaction.guild, {
+      const result = rebuild.buildPolishPlan(interaction.guild, {
         mode,
         theme: interaction.options.getString('theme', true),
         renameChannels: interaction.options.getBoolean('rename_channels', true),
@@ -80,7 +80,8 @@ module.exports = {
         requestedById: interaction.user.id,
         sourceChannelId: interaction.channelId
       });
-      const embed = buildPolishEmbed(plan);
+      if (!result.ok) throw new Error(result.error.message);
+      const { plan, embed } = result.data;
 
       if (mode === 'preview') {
         await safeEditReply(interaction, { embeds: [embed], components: [] });
@@ -88,7 +89,7 @@ module.exports = {
       }
 
       const planId = `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-      savePolishPlan(planId, plan);
+      rebuild.polishSavePlan(planId, plan);
       const row = new ActionRowBuilder().addComponents(
         new ButtonBuilder()
           .setCustomId(`polish_confirm_${planId}`)

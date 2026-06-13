@@ -3,6 +3,7 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
+const channelMutationService = require('../services/community/channelMutationService');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -43,10 +44,8 @@ module.exports = {
 
     try {
       const oldCategoryName = channel.parent ? channel.parent.name : '無分類';
-      await channel.setParent(category.id, {
-        lockPermissions: false,
-        reason: `Moved by ${interaction.user.tag}`
-      });
+      const result = await channelMutationService.move(channel, category.id, interaction.user.tag);
+      if (!result.ok) throw new Error(result.error.message);
 
       await interaction.reply({
         content: `已將 ${channel} 從 \`${oldCategoryName}\` 移動到 \`${category.name}\`。`,

@@ -3,8 +3,8 @@ const {
   normalizeGameName,
   resolveGameIdentity,
   sanitizeGameId
-} = require('../systems/gameIdentityService');
-const { GAME_REGISTRY } = require('./gameRegistry');
+} = require('../../domain/games/gameIdentityService');
+const GAME_REGISTRY = require('../../domain/games/gameRegistry');
 
 const GAME_ALIAS_SLUGS = Object.fromEntries(
   GAME_REGISTRY.flatMap((game) => (
