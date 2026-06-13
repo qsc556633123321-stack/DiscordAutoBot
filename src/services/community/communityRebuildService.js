@@ -1,7 +1,7 @@
 const { fromThrowable, ok } = require('../../core/result');
 const legacyBuilder = require('../../systems/communityV3Builder');
-const bootstrap = require('../../systems/communityBootstrapSystem');
-const polisher = require('../../systems/serverPolisher');
+const bootstrap = require('../../legacy/community/communityBootstrapSystem');
+const polisher = require('../../legacy/community/serverPolisher');
 const architect = require('../../systems/communityArchitect');
 
 function previewV3(guild, requestedById) {

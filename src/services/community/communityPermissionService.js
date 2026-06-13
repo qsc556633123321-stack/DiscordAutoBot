@@ -1,8 +1,8 @@
 const { fromThrowable, ok } = require('../../core/result');
-const { buildGuestGatePlan, checkGuestVisibility, checkNativeOnboardingReferences } = require('../../systems/guestGate');
+const { buildGuestGatePlan, checkGuestVisibility, checkNativeOnboardingReferences } = require('../../legacy/permissions/guestGate');
 const { buildLayoutRepairPlan } = require('../../systems/layoutDecisionEngine');
-const rolePermissions = require('../../systems/rolePermissions');
-const communityBootstrap = require('../../systems/communityBootstrapSystem');
+const rolePermissions = require('../../legacy/permissions/rolePermissions');
+const communityBootstrap = require('../../legacy/community/communityBootstrapSystem');
 const permissionWriter = require('../../infrastructure/discord/discordPermissionWriter');
 
 function buildRepairPlan(guild, options = {}) {
@@ -55,7 +55,7 @@ async function setChannelLocked(channel, everyoneRole, locked, actorTag) {
 }
 
 module.exports = {
-  buildGuestVisibilityEmbed: require('../../systems/guestGate').buildGuestVisibilityEmbed,
+  buildGuestVisibilityEmbed: require('../../legacy/permissions/guestGate').buildGuestVisibilityEmbed,
   buildOnboardingEmbed: communityBootstrap.buildOnboardingCheckEmbed,
   buildRepairPlan,
   buildRepairEmbed: require('../../systems/layoutDecisionEngine').buildLayoutRepairEmbed,

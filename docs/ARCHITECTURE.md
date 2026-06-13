@@ -1,31 +1,36 @@
 # Project Architecture V2
 
-## Layers
+## Layer Boundaries
 
-- `src/core`: framework-neutral Result、errors、logger 與共用常數。
-- `src/domain`: Community V3、遊戲、安全、語音等純規則。
-- `src/services`: 業務流程與 use cases，統一回傳 Result。
-- `src/infrastructure`: Discord API、JSON storage、OpenAI、Git 與 logs。
-- `src/adapters/legacy`: 舊 commands/systems 接入新版 services 的相容層。
-- `src/modules`: Phase 2 起逐步收斂各功能模組。
+- `src/core`: framework-neutral Result, errors, logger, constants, and permission helpers.
+- `src/domain`: Community Architecture V3 policies and canonical game identity rules.
+- `src/services`: business use cases and the only supported entry points for commands.
+- `src/infrastructure`: Discord writers, atomic JSON storage, OpenAI, Git, and logging adapters.
+- `src/adapters/legacy`: compatibility facades for old command contracts.
+- `src/legacy`: isolated implementations that still power compatibility paths during migration.
+- `src/commands`: Discord interaction parsing and Result rendering only.
 
-Commands 只解析 Discord interaction 與參數。Community Architecture V3 是唯一社群結構來源。
+## Phase 3 Service Boundaries
 
-所有新版 service 回傳 `{ ok, data, error }` Result。尚未完整遷移的功能透過 `createLegacyFacade().invoke()` 呼叫，避免 legacy exceptions 穿透 service boundary。
+These are the canonical service entry points:
 
-## Phase 2 Consolidation
+- Permissions and Guest Gate: `src/services/community/communityPermissionService.js`
+- Community bootstrap, rebuild, polish, Architect, and V3: `src/services/community/communityRebuildService.js`
+- Game identity and categories: `src/domain/games/gameIdentityService.js` and `src/services/games/gameCategoryService.js`
+- Channel panels: `src/services/community/channelPanelService.js`
 
-舊 systems 暫時保留為 service 背後的 legacy engines。Commands 不再直接依賴主要 Community、Permission、Game 與 Panel engines。
+Old import paths remain as very small adapters so events and factory-reset flows keep working.
+Their implementations now live under:
 
-- `/rebuild-community-v3`
-- `/repair-channel-permissions`
-- `/check-guest-visibility`
-- `/community-architect`
-- `/bootstrap-community`
-- `/rebuild-community-layout`
-- `/polish-server-design`
-- `/setup-channel-panels`
-- `/setup-game`
-- `/fix-game-category`
+- `src/legacy/permissions`
+- `src/legacy/games`
+- `src/legacy/community`
 
-詳細殘留與 Phase 3 清單請參考 [REFACTOR_AUDIT.md](REFACTOR_AUDIT.md)。
+Commands must not import these legacy implementations or directly write Discord state.
+
+## Migration Rule
+
+New work enters through a service. Legacy implementations may be replaced behind that boundary,
+but no new feature may add another parallel permission, game identity, or community rebuild path.
+
+See [REFACTOR_AUDIT.md](REFACTOR_AUDIT.md) for remaining migration debt.

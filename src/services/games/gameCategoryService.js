@@ -1,5 +1,5 @@
 const { fromThrowable, ok } = require('../../core/result');
-const legacy = require('../../systems/gameChannels');
+const legacy = require('../../legacy/games/gameChannels');
 const suggestions = require('../../systems/gameSuggestionSystem');
 const policy = require('../../domain/games/gameCategoryPolicy');
 

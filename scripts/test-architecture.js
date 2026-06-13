@@ -70,6 +70,22 @@ fs.unlinkSync(storeTestFile);
 const facade = createLegacyFacade({ echo: (value) => value }, 'TEST');
 assert.equal(typeof facade.invoke, 'function');
 
+const compatibilityAdapters = [
+  'src/config/permissionTemplates.js',
+  'src/systems/communityBootstrapSystem.js',
+  'src/systems/communityV3PermissionBuilder.js',
+  'src/systems/gameChannels.js',
+  'src/systems/guestGate.js',
+  'src/systems/rolePermissions.js',
+  'src/systems/serverPolisher.js',
+  'src/systems/serverRebuilder.js'
+];
+for (const relativeFile of compatibilityAdapters) {
+  const source = fs.readFileSync(path.join(__dirname, '..', relativeFile), 'utf8');
+  assert.ok(source.split(/\r?\n/).length <= 4, `${relativeFile} must remain a thin compatibility adapter`);
+  assert.equal(source.includes('legacy/'), true, `${relativeFile} must point to an isolated legacy implementation`);
+}
+
 const audit = auditCommands();
 assert.equal(audit.invalid.length, 0, 'all command files must be loadable');
 assert.equal(audit.documentedOnly.length, 0, 'documented slash commands must exist');

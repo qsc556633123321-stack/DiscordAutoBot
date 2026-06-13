@@ -2,87 +2,67 @@
 
 Updated: 2026-06-13
 
-## Phase 2 Completed
+## Phase 3 Completed
 
-- Community Architecture V3 implementation moved to `src/domain/community/communityArchitectureV3.js`.
-- Game Registry and Game Identity implementation moved to `src/domain/games/`.
-- Legacy config/system paths now act as compatibility adapters.
-- Community rebuild entry point: `src/services/community/communityRebuildService.js`.
-- Permission entry point: `src/services/community/communityPermissionService.js`.
-- Game category entry point: `src/services/games/gameCategoryService.js`.
-- Panel entry point: `src/services/community/channelPanelService.js`.
-- Commands no longer directly create, rename, move, or write channel permissions.
-- All command files are at most 120 lines.
-- V3 plans, architect plans, Temp Voice, game metadata, create-entry metadata, and voice activity use atomic JSON storage.
+Phase 3 isolated the three highest-value legacy implementation groups while preserving stable
+imports for events, factory reset, and interaction confirmation flows.
 
-## Moved To Legacy
+Canonical entry points:
 
-- `src/legacy/commands/setupServerLegacy.js`
-- `src/legacy/commands/setupTicketLegacy.js`
-- `src/legacy/commands/analyze_server.js`
-- `src/legacy/commands/ai_reorganize_server.js`
-- `src/legacy/commands/auto_organize.js`
-- `src/legacy/commands/deep_cleanup.js`
-- `src/legacy/commands/plan_cleanup.js`
-- `src/legacy/commands/rebuild_server.js`
-- `src/legacy/games/gameAliases.js`
+- Permissions: `src/services/community/communityPermissionService.js`
+- Community rebuild: `src/services/community/communityRebuildService.js`
+- Game identity: `src/domain/games/gameIdentityService.js`
+- Game categories: `src/services/games/gameCategoryService.js`
 
-These remain callable through thin commands and services while their internal workflows are migrated.
+## Moved To Legacy In Phase 3
 
-## Duplicate Logic Audit
+### Permissions
 
-### Permission Logic
+- `src/legacy/permissions/permissionTemplates.js`
+- `src/legacy/permissions/guestGate.js`
+- `src/legacy/permissions/rolePermissions.js`
+- `src/legacy/permissions/communityV3PermissionBuilder.js`
 
-Canonical service: `communityPermissionService`.
+### Games
 
-Legacy dependencies still active:
+- `src/legacy/games/gameChannels.js`
 
-- `src/config/permissionTemplates.js`
-- `src/systems/communityBootstrapSystem.js`
-- `src/systems/guestGate.js`
-- `src/systems/rolePermissions.js`
-- `src/systems/communityV3PermissionBuilder.js`
-- permission execution branches in `src/events/interactionCreate.js`
+### Community
 
-### Layout / Rebuild Logic
+- `src/legacy/community/communityBootstrapSystem.js`
+- `src/legacy/community/serverPolisher.js`
+- `src/legacy/community/serverRebuilder.js`
 
-Canonical service: `communityRebuildService`.
+Their old `src/systems` or `src/config` paths are now thin compatibility adapters. Architecture
+tests enforce that those adapters remain at most four lines and point into `src/legacy`.
 
-Legacy engines still active behind the service:
+## Fully Converged Command Paths
 
-- `communityBootstrapSystem`
-- `communityStructureManager`
-- `serverPolisher`
-- `serverRebuilder`
-- `communityArchitect`
-- `communityV3Builder`
+The permission, community rebuild, and game category commands enter through their canonical
+services. Command files do not directly create, rename, move, write permissions, or read JSON.
 
-They cannot be moved yet because button interactions and factory reset still import their plan executors directly.
+## High-Risk Legacy Left In Place
 
-### Game Identity
+These remain active and should be migrated behind services in Phase 4:
 
-Canonical sources:
+- `src/events/interactionCreate.js`: directly calls legacy plan executors for button confirmations.
+- `src/systems/communityArchitect.js`, `communityArchitectPlanner.js`, `communityArchitectExecutor.js`.
+- `src/systems/communityV3Builder.js`: V3 plan persistence and execution.
+- `src/systems/communityStructureManager.js`: dynamic structure workflow.
+- `src/systems/gameSuggestionSystem.js`: approval flow and game creation integration.
+- `src/systems/channelPanels.js`: panel builders used by interaction handlers.
+- Temp Voice, Voice Hub, and LFG systems share `gameChannels` compatibility contracts.
 
-- `src/domain/games/gameRegistry.js`
-- `src/domain/games/gameIdentityService.js`
-- `src/services/games/gameCategoryService.js`
-
-`src/config/gameRegistry.js` and `src/systems/gameIdentityService.js` are compatibility adapters only.
-
-### Panel Setup
-
-Canonical service: `channelPanelService`.
-
-`src/systems/channelPanels.js` remains the legacy implementation because interaction handlers still use its panel builders.
+Moving these now would risk breaking persisted button custom IDs and in-flight plans, so they are
+documented instead of force-migrated.
 
 ## Direct JSON I/O Remaining
 
-The following legacy systems still use direct synchronous file access and must migrate to `jsonStore`:
+Legacy systems still using direct synchronous file access include:
 
 - `announcementPin.js`
 - `autoMod.js`
 - `channelPanels.js`
-- `communityBootstrapSystem.js`
 - `communityConcierge.js`
 - `factoryReset.js`
 - `gameSuggestionSystem.js`
@@ -98,23 +78,11 @@ The following legacy systems still use direct synchronous file access and must m
 
 ## Direct Discord Writes Remaining
 
-Commands contain no direct Discord channel or permission writes.
+Commands contain no direct Discord channel or permission writes. Legacy systems still writing
+Discord state directly include Community Architect/V3 execution, game suggestion, Temp Voice,
+Voice Hub, LFG, factory reset, cleanup, and safety workflows.
 
-Legacy systems still writing Discord state directly include:
-
-- Community/layout: `communityBootstrapSystem`, `communityStructureManager`, `communityV3Builder`, `serverPolisher`, `serverRebuilder`, `layoutDecisionEngine`
-- Games/voice: `gameChannels`, `gameSuggestionSystem`, `tempVoice`, `voiceHub`, `lfgSystem`
-- Safety/operations: `memberGuard`, `serverLogs`, `deepCleanupExecutor`, `categoryCleaner`, `factoryReset`
-
-Phase 3 should migrate these writes behind `discordChannelRepository` and `discordPermissionWriter`, starting with Community V3 execution and game category creation.
-
-## Command Audit
-
-- Implemented: 63
-- Documented only: 0
-- Missing deploy: 0
-- Commands over 120 lines: 0
-- Commands directly writing channel permissions: 0
+## Verification
 
 Run:
 
@@ -122,3 +90,10 @@ Run:
 npm run test:architecture
 npm run audit:commands
 ```
+
+Current expected audit:
+
+- Implemented commands: 63
+- Invalid commands: 0
+- Documented only: 0
+- Undocumented: 0
