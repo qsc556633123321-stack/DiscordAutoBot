@@ -301,6 +301,15 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     });
   }
 
+  const playerGameAnchor = guild.channels.cache.find((channel) => (
+    channel.type === ChannelType.GuildCategory && channel.name === '🎲｜玩家遊戲區'
+  ));
+  if (playerGameAnchor) {
+    await category.setPosition(playerGameAnchor.rawPosition + 1, {
+      reason: 'Dynamic games default to Community Architecture V3 player games tier'
+    }).catch((error) => summary.failed.push(`${category.name} position: ${error.message}`));
+  }
+
   const specs = buildGameChannelSpecs(displayName);
   const channelMap = {};
   for (let index = 0; index < specs.length; index += 1) {
@@ -343,7 +352,12 @@ async function createDynamicGameCategory(guild, gameName, requestedById) {
     }
   }
 
-  upsertDynamicGameMetadata(guild, category, { displayName, slug: identity.slug, gameId: identity.gameId || identity.id }, channelMap, requestedById);
+  upsertDynamicGameMetadata(guild, category, {
+    displayName,
+    slug: identity.slug,
+    gameId: identity.gameId || identity.id,
+    tier: 'player'
+  }, channelMap, requestedById);
   try {
     scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
   } catch {

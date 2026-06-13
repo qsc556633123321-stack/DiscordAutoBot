@@ -14,6 +14,7 @@ const VISIBILITY_TYPES = {
 const ADMIN_ROLE_NAMES = ['站長', '管理員', '👑 站長', '🛡 管理員', '🔧 MOD'];
 const FORMAL_ROLE_NAMES = [
   '✅ 已驗證成員',
+  '👤 正式成員',
   '正式成員',
   '成員',
   '🎮 遊戲玩家',
@@ -25,7 +26,7 @@ const FORMAL_ROLE_NAMES = [
   '📢 公告通知',
   '🎉 活動通知'
 ];
-const GUEST_ROLE_NAMES = ['👤 訪客', '訪客'];
+const GUEST_ROLE_NAMES = ['👀 訪客', '👤 訪客', '訪客'];
 
 function roleByName(guild, roleName) {
   return guild.roles.cache.find((role) => role.name === roleName) || null;
@@ -81,6 +82,7 @@ function guestDeny(guild) {
 function buildVisibilityOverwrites(guild, rule = {}) {
   const visibilityType = rule.visibilityType || VISIBILITY_TYPES.publicEntry;
   const targetRole = rule.roleName ? roleByName(guild, rule.roleName) : null;
+  const targetRoles = rolesByNames(guild, rule.roleNames || []);
   const specialRole = rule.specialRoleName ? roleByName(guild, rule.specialRoleName) : targetRole;
   const formalRoles = rolesByNames(guild, FORMAL_ROLE_NAMES);
   const everyoneId = guild.roles.everyone.id;
@@ -113,6 +115,7 @@ function buildVisibilityOverwrites(guild, rule = {}) {
     overwrites.unshift({ id: everyoneId, deny: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.MentionEveryone] });
     overwrites.push(...guestDeny(guild));
     if (targetRole) overwrites.push({ id: targetRole.id, allow: commonSend });
+    overwrites.push(...targetRoles.map((role) => ({ id: role.id, allow: commonSend })));
     return overwrites;
   }
 

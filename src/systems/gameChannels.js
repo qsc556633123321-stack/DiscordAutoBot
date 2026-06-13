@@ -245,6 +245,7 @@ function upsertDynamicGameMetadata(guild, category, config, channels = {}, creat
     gameId: config.gameId || getGameId(config.displayName),
     displayName: config.displayName,
     slug: config.slug,
+    tier: config.tier || existing.tier || 'player',
     type: 'dynamic_game',
     createdBy: existing.createdBy || createdBy || null,
     createdAt: existing.createdAt || new Date().toISOString(),

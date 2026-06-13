@@ -93,6 +93,9 @@ function inferPanelType(channel) {
   if (/遊戲提議|提議遊戲|suggestgame/.test(normalized)) return 'game_suggestions';
   if (/一般聊天|general/.test(normalized) && !isGameCategory) return 'general_chat';
   if (/認真討論|閒聊討論/.test(normalized) && !isGameCategory) return 'serious_discussion';
+  if (/遊戲資料庫/.test(normalized)) return 'game_center';
+  if (/AI工具|程式開發|學習資源/.test(normalized)) return 'knowledge';
+  if (/音樂$|動漫影劇|攝影$|汽機車|旅遊$/.test(normalized)) return 'interests';
   if (/美食分享|美食/.test(normalized)) return 'food';
   if (/好圖分享|迷因與好圖|圖片/.test(normalized)) return 'images';
   if (/開啟客服單|客服支援|ticket/.test(normalized)) return 'support';
@@ -201,6 +204,37 @@ function buildPanel(panelType, channel) {
         button('panel_show_chat', '💬 回一般聊天'),
         button('panel_show_discussion_format', '📝 討論格式'),
         button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary)
+      ]
+    }),
+    game_center: () => ({
+      embed: new EmbedBuilder()
+        .setColor(0x3498db)
+        .setTitle('🎮 遊戲中心')
+        .setDescription('從組隊招募找到夥伴、查看目前語音房，或提議建立新的玩家遊戲區。熱門與玩家遊戲分類都需要先領取遊戲玩家身分組。'),
+      buttons: [
+        button('panel_show_game_categories', '🧭 查看遊戲分類'),
+        button('panel_suggest_game', '🎮 提議新遊戲', ButtonStyle.Primary),
+        button('panel_create_voice', '🔊 建立臨時語音')
+      ]
+    }),
+    knowledge: () => ({
+      embed: new EmbedBuilder()
+        .setColor(0x9b59b6)
+        .setTitle('🧠 知識交流')
+        .setDescription('這裡集中 AI 工具、程式開發、股票投資、理財與學習資源。請依主題發文，分享來源並尊重不同觀點。'),
+      buttons: [
+        button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary),
+        button('panel_show_guide', '🧭 查看社群導覽')
+      ]
+    }),
+    interests: () => ({
+      embed: new EmbedBuilder()
+        .setColor(0xe84393)
+        .setTitle('🎨 興趣交流')
+        .setDescription('音樂、動漫影劇、攝影、美食、汽機車與旅遊都在這裡。歡迎分享作品、心得與生活靈感。'),
+      buttons: [
+        button('panel_open_roles', '🎭 領取身分組', ButtonStyle.Primary),
+        button('panel_show_chat', '💭 前往一般聊天')
       ]
     }),
     game_suggestions: () => ({

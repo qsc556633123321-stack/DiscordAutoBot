@@ -32,7 +32,7 @@ const GAME_REGISTRY = [
     displayName: 'Minecraft',
     aliases: ['MC', 'mc', '麥塊'],
     emoji: '⛏️',
-    tier: 'other'
+    tier: 'popular'
   },
   {
     id: 'overwatch_2',
@@ -45,6 +45,27 @@ const GAME_REGISTRY = [
     id: 'gtfo',
     displayName: 'GTFO',
     aliases: ['gtfo'],
+    emoji: '🧟',
+    tier: 'other'
+  },
+  {
+    id: 'repo',
+    displayName: 'R.E.P.O',
+    aliases: ['REPO', 'repo', 'R.E.P.O'],
+    emoji: '🤖',
+    tier: 'other'
+  },
+  {
+    id: 'cs2',
+    displayName: 'CS2',
+    aliases: ['Counter-Strike 2', 'counter strike 2'],
+    emoji: '🔫',
+    tier: 'other'
+  },
+  {
+    id: 'project_zomboid',
+    displayName: 'Project Zomboid',
+    aliases: ['Zomboid', 'PZ'],
     emoji: '🧟',
     tier: 'other'
   }

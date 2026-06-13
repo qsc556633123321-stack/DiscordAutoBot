@@ -176,14 +176,14 @@ function buildWelcomeEmbed(member) {
 }
 
 async function ensureGuestRole(member) {
-  let role = member.guild.roles.cache.find((item) => item.name === '訪客');
+  let role = member.guild.roles.cache.find((item) => ['👀 訪客', '👤 訪客', '訪客'].includes(item.name));
   if (!role) {
     if (!member.guild.members.me.permissions.has(PermissionFlagsBits.ManageRoles)) {
       await logWelcomeIssue(member.guild, 'Bot 缺少 ManageRoles，無法建立訪客角色。');
       return null;
     }
     role = await member.guild.roles.create({
-      name: '訪客',
+      name: '👀 訪客',
       permissions: [],
       mentionable: false,
       reason: 'Welcome system guest role'
@@ -237,7 +237,7 @@ function scheduleRoleReminder(member, welcomeChannel, settings) {
     try {
       const freshMember = await member.guild.members.fetch(member.id).catch(() => null);
       if (!freshMember) return;
-      const hasAssignableRole = freshMember.roles.cache.some((role) => role.name !== '@everyone' && role.name !== '訪客');
+      const hasAssignableRole = freshMember.roles.cache.some((role) => role.name !== '@everyone' && !['👀 訪客', '👤 訪客', '訪客'].includes(role.name));
       if (hasAssignableRole) return;
       await welcomeChannel.send({
         content: `${freshMember} 可以點擊上方「領取身分組」解鎖對應頻道。`

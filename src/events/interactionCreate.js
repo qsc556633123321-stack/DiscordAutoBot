@@ -105,6 +105,11 @@ const {
   getGameRegistryDoctorPlan
 } = require('../systems/gameChannels');
 const { buildEmbed: buildGameRegistryDoctorEmbed } = require('../commands/game-registry-doctor');
+const {
+  deleteV3Plan,
+  executeCommunityV3,
+  getV3Plan
+} = require('../systems/communityV3Builder');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -1741,6 +1746,52 @@ module.exports = {
       }
       deleteCommunityArchitectPlan(interaction.guild.id, planId);
       await interaction.update({ content: '已取消 Community Architect 計畫，不做任何變更。', embeds: [], components: [] });
+      return;
+    }
+
+    if (interaction.customId.startsWith('community_v3_cancel_')) {
+      const planId = interaction.customId.replace('community_v3_cancel_', '');
+      const plan = getV3Plan(planId);
+      if (!plan || plan.createdBy !== interaction.user.id) {
+        await interaction.reply({ content: '此 V3 計畫不存在，或你不是原執行者。', ephemeral: true });
+        return;
+      }
+      deleteV3Plan(planId);
+      await interaction.update({ content: '已取消 Community Architecture V3，不做任何變更。', embeds: [], components: [] });
+      return;
+    }
+
+    if (interaction.customId.startsWith('community_v3_confirm_')) {
+      const planId = interaction.customId.replace('community_v3_confirm_', '');
+      const plan = getV3Plan(planId);
+      if (!plan || plan.createdBy !== interaction.user.id) {
+        await interaction.reply({ content: '此 V3 計畫不存在，或你不是原執行者。', ephemeral: true });
+        return;
+      }
+      if (!interaction.memberPermissions.has(PermissionFlagsBits.ManageGuild) ||
+          !interaction.memberPermissions.has(PermissionFlagsBits.ManageChannels)) {
+        await interaction.reply({ content: '你需要 ManageGuild 與 ManageChannels 權限。', ephemeral: true });
+        return;
+      }
+      await interaction.update({ content: '正在重建 Community Architecture V3，請稍候...', embeds: [], components: [] });
+      try {
+        const summary = await executeCommunityV3(interaction.guild, plan, interaction.client);
+        deleteV3Plan(planId);
+        await interaction.editReply({
+          content: [
+            '✅ Community Architecture V3 重建完成',
+            `建立：${summary.created.length}`,
+            `更新：${summary.updated.length}`,
+            `封存：${summary.archived.length}`,
+            `失敗：${summary.failed.length}`,
+            `驗證問題：${summary.validation?.issues?.length || 0}`
+          ].join('\n'),
+          components: []
+        });
+      } catch (error) {
+        console.error('[CommunityV3] execute failed:', error);
+        await interaction.editReply({ content: `⚠️ V3 重建失敗：${error.message}`, components: [] });
+      }
       return;
     }
 

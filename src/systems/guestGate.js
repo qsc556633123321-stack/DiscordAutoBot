@@ -43,6 +43,9 @@ function ruleForChannel(channel) {
   if (/Night Crew/u.test(channel.name) || /Night Crew/u.test(channel.parent?.name || '')) {
     return { visibilityType: VISIBILITY_TYPES.hiddenSpecial, roleName: '🌙 Night Crew', specialRoleName: '🌙 Night Crew', label: 'Night Crew 限定' };
   }
+  if (/知識交流/u.test(channel.name) || /知識交流/u.test(channel.parent?.name || '')) {
+    return { visibilityType: VISIBILITY_TYPES.roleRestricted, roleNames: ['🧠 開發/AI', '📈 股票投資'], label: '知識身分組限定' };
+  }
   if (/創作與開發/u.test(channel.name) || /創作與開發/u.test(channel.parent?.name || '')) {
     return { visibilityType: VISIBILITY_TYPES.roleRestricted, roleName: '🛠 開發/AI', label: '開發身分組限定' };
   }
@@ -85,7 +88,7 @@ function ruleForChannel(channel) {
     return { visibilityType: VISIBILITY_TYPES.formalMemberVisible, label: '正式成員限定' };
   }
 
-  if (/熱門遊戲|其他遊戲|興趣交流|社群大廳|遊戲中心/u.test(channel.name)) {
+  if (/熱門遊戲|玩家遊戲區|其他遊戲|興趣交流|社群大廳|遊戲中心|活動專區/u.test(channel.name)) {
     return { visibilityType: VISIBILITY_TYPES.formalMemberVisible, label: '正式成員限定' };
   }
   if (/管理員後台|server-logs|ticket-logs|bot-control|語音控制台/u.test(channel.name)) {
@@ -184,6 +187,7 @@ function buildGuestGatePlan(guild, options = {}) {
         targetName: item.channel.name,
         visibilityType: item.rule.visibilityType,
         roleName: item.rule.roleName,
+        roleNames: item.rule.roleNames,
         specialRoleName: item.rule.specialRoleName,
         reason: item.leaked
           ? 'Guest Gate 外漏，將關閉新人可見性'

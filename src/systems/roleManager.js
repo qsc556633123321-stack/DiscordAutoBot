@@ -6,7 +6,7 @@ const { writeServerLog } = require('./serverLogs');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ROLE_SETTINGS_FILE = path.join(DATA_DIR, 'role-settings.json');
 
-const GUEST_ROLE_NAME = '訪客';
+const GUEST_ROLE_NAME = '👀 訪客';
 const GUEST_CLEANUP_DELAY_MIN_MS = 1200;
 const GUEST_CLEANUP_DELAY_MAX_MS = 1800;
 const GUEST_CLEANUP_PROGRESS_INTERVAL = 5;
@@ -19,21 +19,18 @@ const DEFAULT_ROLE_SETTINGS = {
 
 const SELF_ASSIGNABLE_ROLES = [
   '🎮 遊戲玩家',
-  '🧑‍🤝‍🧑 找隊友通知',
   '📈 股票投資',
-  '🛠 開發/AI',
-  '🎨 設計創作',
-  '🍜 生活閒聊',
-  '📢 公告通知',
-  '🎉 活動通知'
+  '🧠 開發/AI',
+  '🎨 創作者',
+  '👤 正式成員'
 ];
 
 const ROLE_UNLOCKS = {
-  '🎮 遊戲玩家': ['🎮｜聯盟戰棋', '🎮｜APEX', '🎮｜特戰英豪', '🎮｜LOL', '🎮｜Minecraft'],
-  '📈 股票投資': ['📈｜投資討論'],
-  '🛠 開發/AI': ['🛠｜創作與開發'],
-  '🎨 設計創作': ['🎨｜設計作品', '📁｜作品展示', '🖼｜好圖分享'],
-  '🍜 生活閒聊': ['💬｜公開大廳', '💬｜日常交流']
+  '🎮 遊戲玩家': ['🎮｜遊戲中心', '🔥｜熱門遊戲', '🎲｜玩家遊戲區'],
+  '📈 股票投資': ['🧠｜知識交流'],
+  '🧠 開發/AI': ['🧠｜知識交流'],
+  '🎨 創作者': ['🎨｜興趣交流'],
+  '👤 正式成員': ['💬｜社群大廳', '🎮｜遊戲中心', '🎨｜興趣交流', '🎉｜活動專區']
 };
 
 function ensureSettingsFile() {
@@ -83,13 +80,10 @@ function updateRoleSettings(guildId, patch) {
 function getRoleOptions() {
   return [
     { label: '遊戲玩家', value: '🎮 遊戲玩家', emoji: '🎮' },
-    { label: '找隊友通知', value: '🧑‍🤝‍🧑 找隊友通知', emoji: '🧑‍🤝‍🧑' },
     { label: '股票投資', value: '📈 股票投資', emoji: '📈' },
-    { label: '開發/AI', value: '🛠 開發/AI', emoji: '🛠' },
-    { label: '設計創作', value: '🎨 設計創作', emoji: '🎨' },
-    { label: '生活閒聊', value: '🍜 生活閒聊', emoji: '🍜' },
-    { label: '公告通知', value: '📢 公告通知', emoji: '📢' },
-    { label: '活動通知', value: '🎉 活動通知', emoji: '🎉' }
+    { label: '開發/AI', value: '🧠 開發/AI', emoji: '🧠' },
+    { label: '創作者', value: '🎨 創作者', emoji: '🎨' },
+    { label: '先看看再說', value: '👤 正式成員', emoji: '👤' }
   ];
 }
 
@@ -128,7 +122,7 @@ function canManageRole(botMember, role) {
 }
 
 function findGuestRole(guild) {
-  return guild.roles.cache.find((role) => role.name === GUEST_ROLE_NAME) || null;
+  return guild.roles.cache.find((role) => [GUEST_ROLE_NAME, '👤 訪客', '訪客'].includes(role.name)) || null;
 }
 
 function isProtectedRole(role) {
@@ -247,6 +241,14 @@ async function updateMemberRoles(interaction) {
     if (!selected.has(roleName) && member.roles.cache.has(role.id)) {
       await member.roles.remove(role, 'Self assign role select menu');
       removed.push(role.name);
+    }
+  }
+
+  if (selected.size > 0) {
+    const memberRole = interaction.guild.roles.cache.find((role) => role.name === '👤 正式成員');
+    if (memberRole && canManageRole(botMember, memberRole) && !member.roles.cache.has(memberRole.id)) {
+      await member.roles.add(memberRole, 'Grant formal member after V3 role selection');
+      added.push(memberRole.name);
     }
   }
 

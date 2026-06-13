@@ -302,6 +302,34 @@ Community Layout 現在支援更細的 `visibilityType`：
 執行修復前請先使用 preview。修復完成後，用 Discord 的「以身分組檢視伺服器」分別檢查 `@everyone`、`訪客`、`🎮 遊戲玩家`。
 
 Discord 原生 Server Guide / Onboarding 任務引用的頻道通常需要對新人可見，因此不要把正式成員區、`🎮｜遊戲中心`、`🎮｜目前語音房` 或任何遊戲分類設為原生任務頻道。這些入口應放在 Bot 的互動導覽面板中。`/check-guest-visibility` 會額外掃描原生 Onboarding 預設頻道與任務選項，列出可能與 Guest Gate 衝突的引用。
+
+## Community Architecture V3
+
+V3 是「科幻基地」唯一的新社群架構來源，定位為綜合型宅宅基地，整合遊戲找隊友、深夜語音、AI / 程式開發、股票投資、興趣生活分享與 Kuro 社群管家。
+
+```text
+/rebuild-community-v3 mode:preview
+/rebuild-community-v3 mode:execute
+```
+
+- `preview`：列出將建立、改名、搬移、封存與修權限的內容，不修改伺服器。
+- `execute`：顯示二次確認按鈕後才執行。
+- 不刪除任何頻道或訊息；非 V3 頻道移至 `📦｜舊頻道封存`。
+- 重複遊戲透過 Game Registry 判斷，內容移至 `📦｜遊戲封存區`，原分類改為封存標記。
+- `/suggest-game` 批准的新遊戲預設標記為玩家遊戲，排序在 `🎲｜玩家遊戲區` 後。
+
+Discord 不支援「分類放進分類」，因此 `🔥｜熱門遊戲` 與 `🎲｜玩家遊戲區` 是視覺排序分隔分類；實際遊戲分類會緊接在對應分隔分類後，tier 同時寫入遊戲 metadata。
+
+### V3 權限模型
+
+- 新人、`@everyone`、`👀 訪客`：只能看 `📌｜社群入口` 與 `🎫｜客服支援`。
+- `👤 正式成員`：可看社群大廳、遊戲中心、熱門/玩家遊戲分隔、興趣交流、活動專區。
+- `🎮 遊戲玩家`：可看所有實際遊戲分類。
+- `🧠 開發/AI`、`📈 股票投資`：依角色進入知識交流。
+- `🌙 Night Crew`：可看 Night Crew。
+- 管理員、站長、MOD 與 Bot：可看管理員後台。
+
+Discord 原生 Onboarding 只建議使用新人報到、身分組領取、伺服器導覽與社群規則。遊戲中心、目前語音房與社群大廳只放在 Bot 導覽面板，不放進原生任務。
 - `/ai-layout-repair mode:preview scope:all optimization_mode:balanced`：使用規則引擎，並在有 `OPENAI_API_KEY` 時加入 AI 輔助建議。
 - `/ai-layout-repair mode:execute scope:all optimization_mode:balanced delete_confirm_text:"DELETE CONFIRM"`：顯示確認按鈕，確認後執行。只有輸入 `DELETE CONFIRM` 才允許刪除候選真的刪除。
 
