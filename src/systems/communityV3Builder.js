@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const {
@@ -18,6 +17,7 @@ const { setupChannelPanels } = require('./channelPanels');
 const { setupCommunityGuide } = require('./communityConcierge');
 const { writeServerLog } = require('./serverLogs');
 const { validateCommunityV3 } = require('./communityV3Validator');
+const { readJson, updateJson } = require('../infrastructure/storage/jsonStore');
 
 const PLAN_FILE = path.join(__dirname, '..', 'data', 'community-v3-plans.json');
 const STEP_DELAY_MS = 800;
@@ -33,25 +33,15 @@ function normalize(name = '') {
     .trim();
 }
 
-function ensurePlanFile() {
-  const dir = path.dirname(PLAN_FILE);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(PLAN_FILE)) fs.writeFileSync(PLAN_FILE, '{}\n', 'utf8');
-}
-
 function readPlans() {
-  ensurePlanFile();
-  try {
-    return JSON.parse(fs.readFileSync(PLAN_FILE, 'utf8') || '{}');
-  } catch {
-    return {};
-  }
+  return readJson(PLAN_FILE, {});
 }
 
 function saveV3Plan(plan) {
-  const data = readPlans();
-  data[plan.planId] = plan;
-  fs.writeFileSync(PLAN_FILE, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+  updateJson(PLAN_FILE, (data) => {
+    data[plan.planId] = plan;
+    return data;
+  }, {});
 }
 
 function getV3Plan(planId) {
@@ -59,9 +49,10 @@ function getV3Plan(planId) {
 }
 
 function deleteV3Plan(planId) {
-  const data = readPlans();
-  delete data[planId];
-  fs.writeFileSync(PLAN_FILE, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+  updateJson(PLAN_FILE, (data) => {
+    delete data[planId];
+    return data;
+  }, {});
 }
 
 function namesFor(config) {

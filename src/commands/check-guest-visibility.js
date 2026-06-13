@@ -1,9 +1,8 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
 const {
   buildGuestVisibilityEmbed,
-  checkGuestVisibility,
-  checkNativeOnboardingReferences
 } = require('../systems/guestGate');
+const { permissions } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -18,9 +17,13 @@ module.exports = {
         await interaction.editReply('你需要 ManageChannels 權限才能檢查 Guest Gate。');
         return;
       }
-      const nativeOnboarding = await checkNativeOnboardingReferences(interaction.guild);
+      const result = await permissions.inspectGuestGate(interaction.guild);
+      if (!result.ok) {
+        await interaction.editReply(`Guest Gate inspection failed: ${result.error.message}`);
+        return;
+      }
       await interaction.editReply({
-        embeds: [buildGuestVisibilityEmbed(checkGuestVisibility(interaction.guild), nativeOnboarding)]
+        embeds: [buildGuestVisibilityEmbed(result.data.visibility, result.data.onboarding)]
       });
     } catch (error) {
       console.error('[GuestGate] visibility check failed:', error);

@@ -12,7 +12,9 @@
     "api:dev": "nodemon apps/api/server.js",
     "dev": "concurrently \"npm run api:dev\" \"npm run dashboard:dev\"",
     "dashboard:build": "next build apps/web",
-    "dashboard:start": "node apps/api/start-production.js"
+    "dashboard:start": "node apps/api/start-production.js",
+    "test:architecture": "node scripts/test-architecture.js",
+    "audit:commands": "node scripts/audit-commands.js"
   },
   "keywords": [
     "discord",

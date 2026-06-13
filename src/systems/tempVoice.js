@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const path = require('node:path');
 const {
   ActionRowBuilder,
@@ -26,6 +25,7 @@ const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { createOrUpdateLfgCard, deleteLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
 const { recordTempVoiceCreated } = require('./voiceActivitySystem');
 const { resolveGameIdentity } = require('../config/gameAliases');
+const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -43,26 +43,13 @@ const DEFAULT_SETTINGS = {
   cleanupMode: 'disable_panel'
 };
 
-function ensureFile(filePath, fallback = '{}') {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, fallback, 'utf8');
-}
-
 function readJsonFile(filePath) {
-  ensureFile(filePath);
-  try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8') || '{}');
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch (error) {
-    console.error(`讀取 ${path.basename(filePath)} 失敗:`, error);
-    return {};
-  }
+  return readJson(filePath, {});
 }
 
 function writeJsonFile(filePath, data) {
-  ensureFile(filePath);
   try {
-    fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+    writeJsonAtomic(filePath, data);
   } catch (error) {
     console.error(`寫入 ${path.basename(filePath)} 失敗:`, error);
   }

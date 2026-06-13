@@ -107,9 +107,9 @@ const {
 const { buildEmbed: buildGameRegistryDoctorEmbed } = require('../commands/game-registry-doctor');
 const {
   deleteV3Plan,
-  executeCommunityV3,
   getV3Plan
 } = require('../systems/communityV3Builder');
+const { rebuild: communityRebuildService } = require('../adapters/legacy/legacyCommandAdapters');
 
 const TICKET_CATEGORY_NAME = '🎫｜客服支援';
 const TICKET_LOG_CHANNEL_NAME = '📑｜ticket-logs';
@@ -1775,7 +1775,9 @@ module.exports = {
       }
       await interaction.update({ content: '正在重建 Community Architecture V3，請稍候...', embeds: [], components: [] });
       try {
-        const summary = await executeCommunityV3(interaction.guild, plan, interaction.client);
+        const result = await communityRebuildService.executeV3(interaction.guild, plan, interaction.client);
+        if (!result.ok) throw new Error(result.error.message);
+        const summary = result.data;
         deleteV3Plan(planId);
         await interaction.editReply({
           content: [

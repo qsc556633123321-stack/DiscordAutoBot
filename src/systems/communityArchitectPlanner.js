@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType } = require('discord.js');
 const { validateLayoutAction } = require('../config/communityRules');
@@ -9,6 +8,7 @@ const {
 } = require('./communityHealthScorer');
 const { findGameIdentity, stripGameCategoryPrefix } = require('./gameIdentityService');
 const { findDynamicGameMetadataByChannel } = require('./gameChannels');
+const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const PLANS_FILE = path.join(DATA_DIR, 'community-architect-plans.json');
@@ -31,24 +31,12 @@ const MAIN_CATEGORY_ORDER = [
   '📦｜舊頻道封存'
 ];
 const GAME_CENTER_CHANNELS = ['組隊招募', '目前語音房', '遊戲提議'];
-function ensurePlansFile() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(PLANS_FILE)) fs.writeFileSync(PLANS_FILE, '{}\n', 'utf8');
-}
-
 function readPlans() {
-  ensurePlansFile();
-  try {
-    const parsed = JSON.parse(fs.readFileSync(PLANS_FILE, 'utf8') || '{}');
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch {
-    return {};
-  }
+  return readJson(PLANS_FILE, {});
 }
 
 function writePlans(data) {
-  ensurePlansFile();
-  fs.writeFileSync(PLANS_FILE, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+  writeJsonAtomic(PLANS_FILE, data);
 }
 
 function action(type, payload) {

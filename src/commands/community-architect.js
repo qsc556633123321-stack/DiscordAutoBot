@@ -6,12 +6,12 @@ const {
   SlashCommandBuilder
 } = require('discord.js');
 const {
-  buildCommunityArchitectPlan,
   buildDiagnoseEmbed,
   buildPreviewEmbed,
   getCommunityArchitectPlan,
   saveCommunityArchitectPlan
 } = require('../systems/communityArchitect');
+const { communityArchitect } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -67,21 +67,25 @@ module.exports = {
     const strategy = interaction.options.getString('strategy') || 'balanced';
 
     if (mode === 'diagnose') {
-      const plan = await buildCommunityArchitectPlan(interaction.guild, {
+      const result = await communityArchitect.buildPlan(interaction.guild, {
         scope,
         strategy,
         createdBy: interaction.user.id
       });
+      if (!result.ok) return interaction.editReply(`Community Architect failed: ${result.error.message}`);
+      const plan = result.data;
       await interaction.editReply({ embeds: [buildDiagnoseEmbed(plan)] });
       return;
     }
 
     if (mode === 'preview') {
-      const plan = await buildCommunityArchitectPlan(interaction.guild, {
+      const result = await communityArchitect.buildPlan(interaction.guild, {
         scope,
         strategy,
         createdBy: interaction.user.id
       });
+      if (!result.ok) return interaction.editReply(`Community Architect failed: ${result.error.message}`);
+      const plan = result.data;
       saveCommunityArchitectPlan(plan);
       await interaction.editReply({ embeds: [buildPreviewEmbed(plan)] });
       return;
@@ -89,11 +93,13 @@ module.exports = {
 
     let plan = getCommunityArchitectPlan(interaction.guild.id);
     if (!plan || plan.scope !== scope || plan.strategy !== strategy) {
-      plan = await buildCommunityArchitectPlan(interaction.guild, {
+      const result = await communityArchitect.buildPlan(interaction.guild, {
         scope,
         strategy,
         createdBy: interaction.user.id
       });
+      if (!result.ok) return interaction.editReply(`Community Architect failed: ${result.error.message}`);
+      plan = result.data;
       saveCommunityArchitectPlan(plan);
     }
 

@@ -5,11 +5,8 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const {
-  buildCommunityV3Plan,
-  buildV3PreviewEmbed,
-  saveV3Plan
-} = require('../systems/communityV3Builder');
+const { saveV3Plan } = require('../systems/communityV3Builder');
+const { rebuild } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -39,10 +36,15 @@ module.exports = {
     }
 
     const mode = interaction.options.getString('mode');
-    const plan = buildCommunityV3Plan(interaction.guild, interaction.user.id);
+    const result = rebuild.previewV3(interaction.guild, interaction.user.id);
+    if (!result.ok) {
+      await interaction.editReply(`V3 preview failed: ${result.error.message}`);
+      return;
+    }
+    const { plan, embed } = result.data;
     saveV3Plan(plan);
     if (mode === 'preview') {
-      await interaction.editReply({ embeds: [buildV3PreviewEmbed(plan)] });
+      await interaction.editReply({ embeds: [embed] });
       return;
     }
 
@@ -56,6 +58,6 @@ module.exports = {
         .setLabel('取消')
         .setStyle(ButtonStyle.Secondary)
     );
-    await interaction.editReply({ embeds: [buildV3PreviewEmbed(plan)], components: [row] });
+    await interaction.editReply({ embeds: [embed], components: [row] });
   }
 };

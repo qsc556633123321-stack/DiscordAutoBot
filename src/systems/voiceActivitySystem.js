@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType } = require('discord.js');
 const {
@@ -12,6 +11,7 @@ const {
   getTopKey,
   getWeekKey
 } = require('../utils/voiceStats');
+const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const VOICE_ACTIVITY_FILE = path.join(DATA_DIR, 'voice-activity.json');
@@ -25,29 +25,16 @@ function getTempVoiceSystem() {
   return require('./tempVoice');
 }
 
-function ensureFile() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(VOICE_ACTIVITY_FILE)) fs.writeFileSync(VOICE_ACTIVITY_FILE, '{}\n', 'utf8');
-}
-
 function readVoiceActivity() {
-  ensureFile();
   if (cache) return cache;
-  try {
-    const parsed = JSON.parse(fs.readFileSync(VOICE_ACTIVITY_FILE, 'utf8') || '{}');
-    cache = parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch (error) {
-    console.error('Voice activity read failed:', error);
-    cache = {};
-  }
+  cache = readJson(VOICE_ACTIVITY_FILE, {});
   return cache;
 }
 
 function writeVoiceActivityNow() {
-  ensureFile();
   if (!cache || !dirty) return;
   try {
-    fs.writeFileSync(VOICE_ACTIVITY_FILE, `${JSON.stringify(cache, null, 2)}\n`, 'utf8');
+    writeJsonAtomic(VOICE_ACTIVITY_FILE, cache);
     dirty = false;
   } catch (error) {
     console.error('Voice activity write failed:', error);

@@ -7,10 +7,9 @@ const {
 } = require('discord.js');
 const {
   buildLayoutRepairEmbed,
-  buildLayoutRepairPlan,
   saveLayoutRepairPlan
 } = require('../systems/layoutDecisionEngine');
-const { buildGuestGatePlan } = require('../systems/guestGate');
+const { permissions } = require('../adapters/legacy/legacyCommandAdapters');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -53,17 +52,16 @@ module.exports = {
 
     const mode = interaction.options.getString('mode') || 'preview';
     const scope = interaction.options.getString('scope') || 'all';
-    const plan = scope === 'guest_gate'
-      ? buildGuestGatePlan(interaction.guild, {
-        mode,
-        requestedById: interaction.user.id
-      })
-      : buildLayoutRepairPlan(interaction.guild, {
-        mode,
-        scope: scope === 'all' ? 'permissions' : scope,
-        requestedById: interaction.user.id
-      });
-    plan.actions = plan.actions.filter((item) => ['sync_permission', 'sync_metadata', 'create_category', 'create_channel'].includes(item.action));
+    const result = permissions.buildRepairPlan(interaction.guild, {
+      mode,
+      scope,
+      requestedById: interaction.user.id
+    });
+    if (!result.ok) {
+      await interaction.editReply(`Permission preview failed: ${result.error.message}`);
+      return;
+    }
+    const plan = result.data;
 
     if (mode === 'preview') {
       await interaction.editReply({ embeds: [buildLayoutRepairEmbed(plan, '🔧 Permission Repair Preview')] });

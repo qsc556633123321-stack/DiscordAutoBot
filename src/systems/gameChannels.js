@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType, PermissionFlagsBits } = require('discord.js');
 const {
@@ -8,6 +7,7 @@ const {
   resolveGameIdentity,
   stripGameCategoryPrefix
 } = require('./gameIdentityService');
+const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const CREATE_ENTRY_FILE = path.join(DATA_DIR, 'temp-voice-create-entries.json');
@@ -15,50 +15,24 @@ const GAME_CATEGORY_FILE = path.join(DATA_DIR, 'game-categories.json');
 const pendingGameRegistryDoctorPlans = new Map();
 const GAME_REGISTRY_DOCTOR_TTL_MS = 15 * 60 * 1000;
 
-function ensureDataFile() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(CREATE_ENTRY_FILE)) fs.writeFileSync(CREATE_ENTRY_FILE, '{}\n', 'utf8');
-}
-
 function readCreateEntryRegistry() {
-  ensureDataFile();
-  try {
-    const parsed = JSON.parse(fs.readFileSync(CREATE_ENTRY_FILE, 'utf8') || '{}');
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch (error) {
-    console.error('[TempVoice Debug] create entry registry read failed:', error);
-    return {};
-  }
+  return readJson(CREATE_ENTRY_FILE, {});
 }
 
 function writeCreateEntryRegistry(data) {
-  ensureDataFile();
   try {
-    fs.writeFileSync(CREATE_ENTRY_FILE, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+    writeJsonAtomic(CREATE_ENTRY_FILE, data);
   } catch (error) {
     console.error('[TempVoice Debug] create entry registry write failed:', error);
   }
 }
 
-function ensureJsonFile(filePath) {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, '{}\n', 'utf8');
-}
-
 function readJsonFile(filePath) {
-  ensureJsonFile(filePath);
-  try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8') || '{}');
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
-  } catch (error) {
-    console.error(`[GameChannels] read failed ${path.basename(filePath)}:`, error);
-    return {};
-  }
+  return readJson(filePath, {});
 }
 
 function writeJsonFile(filePath, data) {
-  ensureJsonFile(filePath);
-  fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
+  writeJsonAtomic(filePath, data);
 }
 
 function readGameCategoryMetadata() {
