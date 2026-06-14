@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const ROOT = path.join(__dirname, '..');
-const COMMANDS_DIR = path.join(ROOT, 'src', 'commands');
+const { getCommandRegistry } = require('../src/modules/commands/commandRegistry');
 const DOC_FILES = [
   path.join(ROOT, 'README.md'),
   path.join(ROOT, 'docs', 'COMMANDS.md')
@@ -19,19 +19,18 @@ function commandNamesFromDocs() {
 }
 
 function auditCommands() {
-  const files = fs.readdirSync(COMMANDS_DIR).filter((file) => file.endsWith('.js'));
+  const registry = getCommandRegistry();
   const implemented = new Map();
   const invalid = [];
-  for (const file of files) {
+  for (const [name, command] of registry) {
     try {
-      const command = require(path.join(COMMANDS_DIR, file));
       if (!command.data?.name || typeof command.execute !== 'function') {
-        invalid.push({ file, reason: 'Missing SlashCommandBuilder data/name or execute().' });
+        invalid.push({ file: name, reason: 'Missing SlashCommandBuilder data/name or execute().' });
         continue;
       }
-      implemented.set(command.data.name, file);
+      implemented.set(command.data.name, command.main ? 'main' : 'alias');
     } catch (error) {
-      invalid.push({ file, reason: error.message });
+      invalid.push({ file: name, reason: error.message });
     }
   }
 
@@ -43,13 +42,17 @@ function auditCommands() {
     invalid,
     documentedOnly,
     undocumented,
-    deployMode: 'automatic-directory-scan'
+    main: [...registry.values()].filter((command) => command.main).map((command) => command.data.name).sort(),
+    aliases: [...registry.values()].filter((command) => command.alias).map((command) => command.data.name).sort(),
+    deployMode: 'command-registry'
   };
 }
 
 if (require.main === module) {
   const report = auditCommands();
   console.log(`Implemented: ${report.implemented.length}`);
+  console.log(`Main: ${report.main.length}`);
+  console.log(`Aliases: ${report.aliases.length}`);
   console.log(`Invalid: ${report.invalid.length}`);
   console.log(`Documented only: ${report.documentedOnly.length}`);
   console.log(`Undocumented: ${report.undocumented.length}`);

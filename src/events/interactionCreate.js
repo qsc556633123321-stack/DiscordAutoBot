@@ -104,7 +104,7 @@ const {
   executeGameRegistryDoctorPlan,
   getGameRegistryDoctorPlan
 } = require('../systems/gameChannels');
-const { buildEmbed: buildGameRegistryDoctorEmbed } = require('../commands/game-registry-doctor');
+const { buildEmbed: buildGameRegistryDoctorEmbed } = require('../legacy/commands/game-registry-doctor');
 const {
   deleteV3Plan,
   getV3Plan

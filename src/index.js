@@ -1,6 +1,5 @@
 require('dotenv').config();
 
-const fs = require('node:fs');
 const path = require('node:path');
 const {
   Client,
@@ -9,11 +8,8 @@ const {
   GatewayIntentBits,
   Partials
 } = require('discord.js');
-const { cleanupMissingTempVoices } = require('./systems/tempVoice');
-const { repairCreateEntryRegistryForClient } = require('./systems/gameChannels');
-const { restoreVoiceHubs } = require('./systems/voiceHub');
-const { restoreLfgCards } = require('./systems/lfgSystem');
-const { initVoiceActivitySystem } = require('./systems/voiceActivitySystem');
+const fs = require('node:fs');
+const { getCommandRegistry } = require('./modules/commands/commandRegistry');
 
 const { DISCORD_TOKEN } = process.env;
 
@@ -33,19 +29,7 @@ const client = new Client({
   partials: [Partials.Channel]
 });
 
-client.commands = new Collection();
-
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-  const command = require(path.join(commandsPath, file));
-  if ('data' in command && 'execute' in command) {
-    client.commands.set(command.data.name, command);
-  } else {
-    console.warn(`[WARN] ${file} 缺少 data 或 execute，已略過。`);
-  }
-}
+client.commands = new Collection(getCommandRegistry());
 
 const eventsPath = path.join(__dirname, 'events');
 if (fs.existsSync(eventsPath)) {
@@ -58,23 +42,17 @@ if (fs.existsSync(eventsPath)) {
       continue;
     }
 
-    client.on(event.name, (...args) => event.execute(...args));
+    const register = event.name === Events.ClientReady ? client.once.bind(client) : client.on.bind(client);
+    register(event.name, (...args) => event.execute(...args));
   }
 }
 
-client.once(Events.ClientReady, async () => {
-  console.log(`Discord Server Architect Bot 已上線：${client.user.tag}`);
-  try {
-    const repairs = await repairCreateEntryRegistryForClient(client);
-    const repairedCount = repairs.reduce((total, item) => total + item.repaired.length + item.removed.length, 0);
-    if (repairedCount > 0) console.log(`[TempVoice Debug] create entry registry repaired ${repairedCount} item(s).`);
-    await cleanupMissingTempVoices(client);
-    await restoreVoiceHubs(client);
-    await restoreLfgCards(client);
-    initVoiceActivitySystem(client);
-  } catch (error) {
-    console.error('Temp Voice startup cleanup failed:', error);
+const legacyEventsPath = path.join(__dirname, 'legacy', 'events');
+if (fs.existsSync(legacyEventsPath)) {
+  for (const file of fs.readdirSync(legacyEventsPath).filter((name) => name.endsWith('.js'))) {
+    const event = require(path.join(legacyEventsPath, file));
+    if (event.name && event.execute) client.on(event.name, (...args) => event.execute(...args));
   }
-});
+}
 
 client.login(DISCORD_TOKEN);

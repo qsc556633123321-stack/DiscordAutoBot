@@ -1,21 +1,9 @@
 require('dotenv').config();
 
-const fs = require('node:fs');
-const path = require('node:path');
 const { REST, Routes } = require('discord.js');
+const { getCommandRegistry } = require('./modules/commands/commandRegistry');
 
-const commands = [];
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-  const command = require(path.join(commandsPath, file));
-  if ('data' in command && 'execute' in command) {
-    commands.push(command.data.toJSON());
-  } else {
-    console.warn(`[WARN] ${file} 缺少 data 或 execute，已略過。`);
-  }
-}
+const commands = [...getCommandRegistry().values()].map((command) => command.data.toJSON());
 
 const { DISCORD_TOKEN, CLIENT_ID, GUILD_ID } = process.env;
 

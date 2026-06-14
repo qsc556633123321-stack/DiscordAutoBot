@@ -9,6 +9,7 @@ const { validateLayoutAction } = require('../src/config/communityRules');
 const { createLegacyFacade } = require('../src/core/serviceFacade');
 const { readJson, updateJson, writeJsonAtomic } = require('../src/infrastructure/storage/jsonStore');
 const { auditCommands } = require('./audit-commands');
+const { getCommandRegistry } = require('../src/modules/commands/commandRegistry');
 
 function assertUnique(items, label) {
   assert.equal(new Set(items).size, items.length, `${label} must be unique`);
@@ -107,5 +108,13 @@ for (const relativeFile of compatibilityAdapters) {
 const audit = auditCommands();
 assert.equal(audit.invalid.length, 0, 'all command files must be loadable');
 assert.equal(audit.documentedOnly.length, 0, 'documented slash commands must exist');
+assert.equal(audit.main.length, 7, 'command architecture must expose seven main entrypoints');
+assert.equal(audit.aliases.length, 65, 'all previous slash commands must remain as aliases');
+assert.deepEqual(
+  audit.main,
+  ['admin', 'community', 'dev', 'game', 'panel', 'security', 'voice']
+);
+assert.equal(getCommandRegistry().size, 72);
+assert.equal(fs.readdirSync(path.join(__dirname, '..', 'src', 'events')).filter((name) => name.endsWith('.js')).length, 6);
 
 console.log(`Architecture V2 tests passed. Commands: ${audit.implemented.length}`);

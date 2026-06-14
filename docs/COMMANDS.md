@@ -1,5 +1,9 @@
 # Slash Commands
 
+主要入口：`/community` `/game` `/voice` `/security` `/panel` `/admin` `/dev`
+
+舊指令仍作為 alias 保留，並透過統一 command router 呼叫 legacy handler。
+
 部署程式會自動掃描 `src/commands/*.js`，因此有效 command file 都會加入 deploy。
 
 ## Community
