@@ -1,2 +1,3 @@
-const service = require('../../services/community/legacyAnalysisCommandService');
-module.exports = { data: service.commands.rebuildServer.data, execute: (interaction) => service.execute('rebuildServer', interaction) };
+const service = require('../../services/community/communityService');
+const handler = require('./rebuild_server');
+module.exports = { data: handler.data, execute: (interaction) => service.executeLegacy('rebuildServer', interaction) };

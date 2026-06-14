@@ -1,5 +1,5 @@
 const legacy = require('../../legacy/commands/setupServerLegacy');
-const setupService = require('../../services/community/legacySetupService');
+const setupService = require('../../services/community/communityService');
 
 module.exports = {
   data: legacy.data,

@@ -1,5 +1,5 @@
 const { ChannelType, EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { setupVoiceHub } = require('../../systems/voiceHub');
+const { setupVoiceHub } = require('../../services/voice/voiceHubService');
 
 module.exports = {
   data: new SlashCommandBuilder()

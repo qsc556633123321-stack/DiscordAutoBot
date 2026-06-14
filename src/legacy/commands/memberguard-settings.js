@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { applyGuestLockdownPermissions, getMemberGuardSettings, updateMemberGuardSettings } = require('../../systems/memberGuard');
+const { applyGuestLockdownPermissions, getMemberGuardSettings, updateMemberGuardSettings } = require('../../services/security/memberGuardService');
 const { safeDeferReply, safeEditReply } = require('../../utils/interactionReplies');
 
 module.exports = {

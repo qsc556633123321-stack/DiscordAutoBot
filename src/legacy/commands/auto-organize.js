@@ -1,2 +1,3 @@
-const service = require('../../services/community/legacyAnalysisCommandService');
-module.exports = { data: service.commands.autoOrganize.data, execute: (interaction) => service.execute('autoOrganize', interaction) };
+const service = require('../../services/community/communityService');
+const handler = require('./auto_organize');
+module.exports = { data: handler.data, execute: (interaction) => service.executeLegacy('autoOrganize', interaction) };

@@ -1,6 +1,6 @@
 const { ChannelType, PermissionFlagsBits } = require('discord.js');
 const { CATEGORIES, GAMES, GAME_CHANNELS, V3_VERSION } = require('../config/communityArchitectureV3');
-const { isSameGame, stripGameCategoryPrefix } = require('./gameIdentityService');
+const { isSameGame, stripGameCategoryPrefix } = require('../domain/games/gameIdentityService');
 
 function everyoneCanView(channel) {
   return Boolean(channel.permissionsFor(channel.guild.roles.everyone)?.has(PermissionFlagsBits.ViewChannel));

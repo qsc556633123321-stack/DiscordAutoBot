@@ -1,4 +1,4 @@
-const channelRepository = require('../../infrastructure/discord/discordChannelRepository');
+const channelRepository = require('../../../../infrastructure/discord/discordChannelRepository');
 
 module.exports = {
   move: (channel, categoryId, actorTag) => channelRepository.move(channel, categoryId, {

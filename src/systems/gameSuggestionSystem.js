@@ -21,7 +21,7 @@ const {
 const { writeServerLog } = require('./serverLogs');
 const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { setupChannelPanels } = require('./channelPanels');
-const { resolveGameIdentity } = require('./gameIdentityService');
+const { resolveGameIdentity } = require('../domain/games/gameIdentityService');
 const { systemEmbed, managerEmbed } = require('./personaMessageSystem');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');

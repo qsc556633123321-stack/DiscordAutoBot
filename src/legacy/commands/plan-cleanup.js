@@ -1,2 +1,3 @@
-const service = require('../../services/community/legacyAnalysisCommandService');
-module.exports = { data: service.commands.planCleanup.data, execute: (interaction) => service.execute('planCleanup', interaction) };
+const service = require('../../services/community/communityService');
+const handler = require('./plan_cleanup');
+module.exports = { data: handler.data, execute: (interaction) => service.executeLegacy('planCleanup', interaction) };

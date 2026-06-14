@@ -10,9 +10,9 @@ const {
   sendOwnerControlPanel,
   transferOwnerIfNeeded
 } = require('../systems/tempVoice');
-const { scheduleVoiceHubUpdate } = require('../systems/voiceHub');
+const { scheduleVoiceHubUpdate } = require('../services/voice/voiceHubService');
 const { scheduleLfgUpdate } = require('../systems/lfgSystem');
-const { getRestrictionMessage, isMemberRestricted } = require('../systems/memberGuard');
+const { getRestrictionMessage, isMemberRestricted } = require('../services/security/memberGuardService');
 const { trackVoiceStateUpdate } = require('../systems/voiceActivitySystem');
 const { evaluateNightCrewMember } = require('../systems/nightCrewSystem');
 

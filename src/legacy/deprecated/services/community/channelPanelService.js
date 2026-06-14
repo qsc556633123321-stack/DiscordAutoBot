@@ -1,5 +1,5 @@
-const { fromThrowable, ok } = require('../../core/result');
-const legacy = require('../../systems/channelPanels');
+const { fromThrowable, ok } = require('../../../../core/result');
+const legacy = require('../../../../systems/channelPanels');
 
 async function setup(options) {
   try {

@@ -3,10 +3,10 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const architecture = require('../src/domain/community/communityArchitectureV3');
-const { isGuestVisible } = require('../src/domain/community/visibilityPolicy');
+const { roleCanAccessCategory } = require('../src/domain/community/permissionMatrix');
 const { isSameGame } = require('../src/domain/games/gameIdentityService');
 const { validateLayoutAction } = require('../src/config/communityRules');
-const { createLegacyFacade } = require('../src/core/serviceFacade');
+const { createLegacyFacade } = require('../src/tests/fixtures/serviceFacade');
 const { readJson, updateJson, writeJsonAtomic } = require('../src/infrastructure/storage/jsonStore');
 const { auditCommands } = require('./audit-commands');
 const { getCommandRegistry } = require('../src/modules/commands/commandRegistry');
@@ -33,7 +33,7 @@ assert.equal(validateLayoutAction({
   reason: 'orphan channel'
 }).allowed, true);
 
-const guestVisible = architecture.categories.filter(isGuestVisible).map((item) => item.key).sort();
+const guestVisible = architecture.categories.filter((item) => roleCanAccessCategory(['guest'], item.key)).map((item) => item.key).sort();
 assert.deepEqual(guestVisible, ['entry']);
 
 assert.equal(isSameGame('VALORANT', '特戰'), true);
@@ -42,7 +42,7 @@ assert.equal(isSameGame('VALORANT', '瓦羅蘭'), true);
 assert.equal(isSameGame('League of Legends', '英雄聯盟'), true);
 assert.equal(isSameGame('Counter Strike 2', 'CS2'), true);
 assert.equal(isSameGame('Minecraft', 'MC'), true);
-assert.equal(isGuestVisible('public_social'), false);
+assert.equal(roleCanAccessCategory(['guest'], 'lobby'), false);
 assert.deepEqual(
   architecture.gameChannels.map((channel) => channel.key),
   ['chat', 'lfg', 'info', 'voice_create']

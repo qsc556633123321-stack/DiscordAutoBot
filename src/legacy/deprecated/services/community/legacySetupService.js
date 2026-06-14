@@ -1,6 +1,6 @@
-const { fromThrowable, ok } = require('../../core/result');
-const setupServerLegacy = require('../../legacy/commands/setupServerLegacy');
-const setupTicketLegacy = require('../../legacy/commands/setupTicketLegacy');
+const { fromThrowable, ok } = require('../../../../core/result');
+const setupServerLegacy = require('../../../commands/setupServerLegacy');
+const setupTicketLegacy = require('../../../commands/setupTicketLegacy');
 
 async function invoke(handler, interaction, code) {
   try {

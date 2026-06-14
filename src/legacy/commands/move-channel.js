@@ -3,7 +3,7 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const channelMutationService = require('../../services/community/channelMutationService');
+const communityService = require('../../services/community/communityService');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -44,7 +44,7 @@ module.exports = {
 
     try {
       const oldCategoryName = channel.parent ? channel.parent.name : '無分類';
-      const result = await channelMutationService.move(channel, category.id, interaction.user.tag);
+      const result = await communityService.moveChannel(channel, category.id, interaction.user.tag);
       if (!result.ok) throw new Error(result.error.message);
 
       await interaction.reply({

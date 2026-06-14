@@ -1,5 +1,5 @@
 const legacy = require('../../legacy/commands/setupTicketLegacy');
-const setupService = require('../../services/community/legacySetupService');
+const setupService = require('../../services/community/communityService');
 
 module.exports = {
   data: legacy.data,

@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const { cleanupMissingTempVoices } = require('../systems/tempVoice');
 const { repairCreateEntryRegistryForClient } = require('../systems/gameChannels');
-const { restoreVoiceHubs } = require('../systems/voiceHub');
+const { restoreVoiceHubs } = require('../services/voice/voiceHubService');
 const { restoreLfgCards } = require('../systems/lfgSystem');
 const { initVoiceActivitySystem } = require('../systems/voiceActivitySystem');
 

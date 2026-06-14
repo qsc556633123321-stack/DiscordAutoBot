@@ -3,7 +3,7 @@ const {
   PermissionFlagsBits,
   SlashCommandBuilder
 } = require('discord.js');
-const channelPanelService = require('../../services/community/channelPanelService');
+const communityService = require('../../services/community/communityService');
 
 function summarize(results) {
   const counts = results.reduce((acc, item) => {
@@ -70,7 +70,7 @@ module.exports = {
     try {
       const mode = interaction.options.getString('mode');
       const target = interaction.options.getString('target');
-      const result = await channelPanelService.setup({
+      const result = await communityService.setupPanels({
         client: interaction.client,
         guild: interaction.guild,
         currentChannel: interaction.channel,

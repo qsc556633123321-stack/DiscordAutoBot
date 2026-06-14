@@ -1,5 +1,5 @@
 const { ChannelType } = require('discord.js');
-const { isSameGame, stripGameCategoryPrefix } = require('./gameIdentityService');
+const { isSameGame, stripGameCategoryPrefix } = require('../domain/games/gameIdentityService');
 const { readGameCategoryMetadata } = require('./gameChannels');
 
 const INTEREST_KEYWORDS = ['音樂分享', '美食分享', '迷因與好圖', '攝影分享', '影劇動漫'];

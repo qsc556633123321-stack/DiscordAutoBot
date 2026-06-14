@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { getRestrictionMessage, isMemberRestricted } = require('../../systems/memberGuard');
+const { getRestrictionMessage, isMemberRestricted } = require('../../services/security/memberGuardService');
 const { buildTempVoiceControlPayload, createTemporaryVoice } = require('../../systems/tempVoice');
 
 module.exports = {

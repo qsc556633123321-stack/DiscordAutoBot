@@ -1,7 +1,7 @@
 const { Events } = require('discord.js');
 const { handleAnnouncementMessage } = require('../systems/announcementPin');
 const { handleAutoModMessage } = require('../systems/autoMod');
-const { handleMemberGuardMessage } = require('../systems/memberGuard');
+const { handleMemberGuardMessage } = require('../services/security/memberGuardService');
 
 module.exports = {
   name: Events.MessageCreate,

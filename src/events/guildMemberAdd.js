@@ -1,5 +1,5 @@
 const { Events } = require('discord.js');
-const { handleMemberGuardJoin } = require('../systems/memberGuard');
+const { handleMemberGuardJoin } = require('../services/security/memberGuardService');
 const { handleGuildMemberAdd } = require('../systems/welcomeSystem');
 const { sendConciergeWelcome } = require('../systems/communityConcierge');
 

@@ -19,7 +19,7 @@ const {
   classifyChannelByRules,
   validateLayoutAction
 } = require('../config/communityRules');
-const { isSameGame, stripGameCategoryPrefix } = require('./gameIdentityService');
+const { isSameGame, stripGameCategoryPrefix } = require('../domain/games/gameIdentityService');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const REPAIR_PLANS_FILE = path.join(DATA_DIR, 'layout-repair-plans.json');

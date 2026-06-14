@@ -6,7 +6,7 @@ const {
   expectedGameChildName,
   scoreCommunityHealth
 } = require('./communityHealthScorer');
-const { findGameIdentity, stripGameCategoryPrefix } = require('./gameIdentityService');
+const { findGameIdentity, stripGameCategoryPrefix } = require('../domain/games/gameIdentityService');
 const { findDynamicGameMetadataByChannel } = require('./gameChannels');
 const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
 

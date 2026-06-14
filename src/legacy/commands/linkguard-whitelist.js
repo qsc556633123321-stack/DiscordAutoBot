@@ -5,7 +5,7 @@ const {
   getLinkGuardSettings,
   removeWhitelistDomain,
   removeWhitelistInvite
-} = require('../../systems/linkGuard');
+} = require('../../services/security/linkGuardService');
 
 module.exports = {
   data: new SlashCommandBuilder()

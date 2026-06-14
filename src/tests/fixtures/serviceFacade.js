@@ -1,4 +1,4 @@
-const { fromThrowable, ok } = require('./result');
+const { fromThrowable, ok } = require('../../core/result');
 
 function createLegacyFacade(legacy, namespace = 'LEGACY') {
   return {

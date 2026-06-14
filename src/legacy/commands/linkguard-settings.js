@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { getLinkGuardSettings, updateLinkGuardSettings } = require('../../systems/linkGuard');
+const { getLinkGuardSettings, updateLinkGuardSettings } = require('../../services/security/linkGuardService');
 
 module.exports = {
   data: new SlashCommandBuilder()

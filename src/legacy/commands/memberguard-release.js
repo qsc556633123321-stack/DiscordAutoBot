@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { releaseMember } = require('../../systems/memberGuard');
+const { releaseMember } = require('../../services/security/memberGuardService');
 const { safeDeferReply, safeEditReply } = require('../../utils/interactionReplies');
 
 module.exports = {

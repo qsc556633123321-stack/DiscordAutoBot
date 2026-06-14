@@ -10,7 +10,7 @@ const {
   V3_VERSION
 } = require('../config/communityArchitectureV3');
 const { buildV3Overwrites } = require('./communityV3PermissionBuilder');
-const { isSameGame, resolveGameIdentity, stripGameCategoryPrefix } = require('./gameIdentityService');
+const { isSameGame, resolveGameIdentity, stripGameCategoryPrefix } = require('../domain/games/gameIdentityService');
 const { registerCreateEntryChannel, upsertDynamicGameMetadata } = require('./gameChannels');
 const { isTempVoice } = require('./tempVoice');
 const { setupChannelPanels } = require('./channelPanels');
