@@ -5,6 +5,7 @@ const path = require('node:path');
 const architecture = require('../src/domain/community/communityArchitectureV3');
 const { isGuestVisible } = require('../src/domain/community/visibilityPolicy');
 const { isSameGame } = require('../src/domain/games/gameIdentityService');
+const { validateLayoutAction } = require('../src/config/communityRules');
 const { createLegacyFacade } = require('../src/core/serviceFacade');
 const { readJson, updateJson, writeJsonAtomic } = require('../src/infrastructure/storage/jsonStore');
 const { auditCommands } = require('./audit-commands');
@@ -13,16 +14,33 @@ function assertUnique(items, label) {
   assert.equal(new Set(items).size, items.length, `${label} must be unique`);
 }
 
-assert.equal(architecture.version, '3.0.0');
+assert.equal(architecture.version, '4.0.0-lite');
 assertUnique(architecture.categories.map((item) => item.key), 'category keys');
 assertUnique(architecture.channels.map((item) => item.key), 'channel keys');
 assertUnique(architecture.roles.map((item) => item.key), 'role keys');
+assert.equal(architecture.categories.length, 8, 'Community V4 Lite must have exactly eight main categories');
+assert.deepEqual(
+  architecture.categories.map((item) => item.key),
+  ['entry', 'lobby', 'game_center', 'popular_games', 'player_games', 'interests', 'events', 'admin']
+);
+assert.deepEqual(architecture.archiveRules, { mode: 'delete', enabled: false });
+assert.equal(architecture.categories.some((item) => item.key.includes('archive')), false);
+assert.equal(validateLayoutAction({
+  type: 'delete',
+  targetName: 'unused-channel',
+  classification: 'orphan_channel',
+  reason: 'orphan channel'
+}).allowed, true);
 
 const guestVisible = architecture.categories.filter(isGuestVisible).map((item) => item.key).sort();
-assert.deepEqual(guestVisible, ['entry', 'support']);
+assert.deepEqual(guestVisible, ['entry']);
 
 assert.equal(isSameGame('VALORANT', '特戰'), true);
 assert.equal(isSameGame('VALORANT', '特戰英豪'), true);
+assert.equal(isSameGame('VALORANT', '瓦羅蘭'), true);
+assert.equal(isSameGame('League of Legends', '英雄聯盟'), true);
+assert.equal(isSameGame('Counter Strike 2', 'CS2'), true);
+assert.equal(isSameGame('Minecraft', 'MC'), true);
 assert.equal(isGuestVisible('public_social'), false);
 assert.deepEqual(
   architecture.gameChannels.map((channel) => channel.key),

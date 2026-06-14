@@ -1,4 +1,5 @@
 const COMMUNITY_RULES_VERSION = 'v1';
+const ARCHIVE_MODE = 'delete';
 
 const CATEGORY_TYPES = {
   onboarding: {
@@ -171,7 +172,7 @@ function validateLayoutAction(action, context = {}) {
   const targetName = action.targetName || context.channel?.name || '';
 
   if (rule?.protectedActions?.includes(type)) {
-    if (type === 'archive' && action.classification === 'duplicate_game_category') {
+    if (['archive', 'delete'].includes(type) && action.classification === 'duplicate_game_category') {
       return { allowed: true, reason: 'Community Rules v1 validated duplicate_game_category', categoryType: classification.categoryType };
     }
     return { allowed: false, reason: `${classification.reason} 不允許 ${type}` };
@@ -209,8 +210,10 @@ function validateLayoutAction(action, context = {}) {
 
   if (type === 'delete') {
     const dead = action.classification === 'dead_channel' || /dead|死亡/i.test(action.reason || '');
+    const cleanupCandidate = ['duplicate_channel', 'duplicate_game_category', 'orphan_channel'].includes(action.classification) ||
+      /duplicate|orphan/i.test(action.reason || '');
     const protectedType = ['onboarding', 'dynamic_game', 'admin'].includes(classification.categoryType);
-    if (!dead || protectedType) {
+    if ((!dead && !cleanupCandidate) || protectedType) {
       return { allowed: false, reason: 'Community Rules v1: delete 必須 dead 且非 protected/dynamic_game/onboarding' };
     }
   }
@@ -238,6 +241,7 @@ function applyCommunityRulesToActions(actions = [], context = {}) {
 }
 
 module.exports = {
+  ARCHIVE_MODE,
   ALLOWED_RENAMES,
   ARCHIVE_PREFIXES,
   CATEGORY_TYPES,

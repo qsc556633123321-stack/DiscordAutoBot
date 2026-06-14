@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const { ChannelType, Collection } = require('discord.js');
 const architecture = require('../src/domain/community/communityArchitectureV3');
 const permissionService = require('../src/services/community/communityPermissionService');
+const { createCategoryCleanupPlan } = require('../src/systems/categoryCleaner');
 const {
   CATEGORY_ACCESS,
   ROLE_INHERITANCE,
@@ -19,8 +20,8 @@ function assertIncludes(actual, expected, label) {
   for (const item of expected) assert.ok(actual.includes(item), `${label} must include ${item}`);
 }
 
-assert.deepEqual(visibleCategories(['guest']).sort(), ['entry', 'support']);
-assert.deepEqual(visibleCategories(['everyone']).sort(), ['entry', 'support']);
+assert.deepEqual(visibleCategories(['guest']).sort(), ['entry']);
+assert.deepEqual(visibleCategories(['everyone']).sort(), ['entry']);
 
 assertIncludes(
   visibleCategories(['member']),
@@ -28,8 +29,10 @@ assertIncludes(
   'formal member visibility'
 );
 
-assert.deepEqual(ROLE_INHERITANCE.game, ['member']);
-assert.ok(expandRoleKeys(['game']).includes('member'), 'game role must inherit member');
+for (const roleKey of ['game', 'dev', 'invest', 'creator', 'night']) {
+  assert.deepEqual(ROLE_INHERITANCE[roleKey], ['member'], `${roleKey} must inherit formal member`);
+  assert.ok(expandRoleKeys([roleKey]).includes('member'), `${roleKey} must expand to formal member`);
+}
 assertIncludes(
   visibleCategories(['game']),
   ['lobby', 'game_center', 'popular_games', 'player_games'],
@@ -39,7 +42,7 @@ assert.ok(directRoleKeysForCategory('game_center').includes('game'), 'game role 
 assert.deepEqual(directRoleKeysForCategory('popular_games'), ['game']);
 assert.ok(directRoleKeysForProfile('formal_member').includes('game'), 'formal member overwrite must allow game role inheritance');
 
-assert.ok(roleCanAccessCategory(['night'], 'night_crew'), 'Night Crew must see Night Crew category');
+assert.ok(roleCanAccessCategory(['night'], 'lobby'), 'Night Crew must inherit formal member visibility');
 assert.ok(roleCanAccessCategory(['admin'], 'admin'), 'admin must see admin category');
 assert.equal(roleCanAccessCategory(['guest'], 'game_center'), false, 'guest must not see game center');
 assert.equal(roleCanAccessCategory(['everyone'], 'popular_games'), false, '@everyone must not see popular games');
@@ -61,11 +64,13 @@ for (const [categoryKey, roleKeys] of Object.entries(CATEGORY_ACCESS)) {
 const lobby = architecture.categories.find((category) => category.key === 'lobby');
 assert.deepEqual(
   lobby.channels.map((channel) => channel.key),
-  ['general', 'late_night', 'life_share', 'meme_share'],
+  ['general', 'late_night', 'life_share', 'meme_share', 'night_lounge'],
   'community lobby must remain simplified'
 );
 const interests = architecture.categories.find((category) => category.key === 'interests');
 assert.ok(interests.channels.some((channel) => channel.key === 'casual_voice'), 'casual voice must move to interests');
+assert.ok(interests.channels.some((channel) => channel.key === 'ai_tools'), 'AI tools must converge into interests');
+assert.ok(interests.channels.some((channel) => channel.key === 'stocks'), 'investment channels must converge into interests');
 const gameCenter = architecture.categories.find((category) => category.key === 'game_center');
 assert.deepEqual(
   gameCenter.channels.map((channel) => channel.key),
@@ -94,5 +99,22 @@ const permissionPlan = permissionService.buildRepairPlan(mockGuild, { scope: 'al
 assert.equal(permissionPlan.ok, true);
 assert.equal(permissionPlan.data.actions.some((action) => action.visibilityType === undefined), false);
 assert.equal(permissionPlan.data.actions.some((action) => action.targetName === undefined), false);
+
+const cleanupGuild = {
+  id: 'cleanup-guild',
+  systemChannelId: null,
+  rulesChannelId: null,
+  publicUpdatesChannelId: null,
+  channels: { cache: new Collection() }
+};
+const duplicateA = { id: 'duplicate-a', name: 'Unused Category', type: ChannelType.GuildCategory, guild: cleanupGuild };
+const duplicateB = { id: 'duplicate-b', name: 'Unused Category', type: ChannelType.GuildCategory, guild: cleanupGuild };
+const orphan = { id: 'orphan', name: 'unused-channel', type: ChannelType.GuildText, parentId: null, guild: cleanupGuild };
+cleanupGuild.channels.cache.set(duplicateA.id, duplicateA);
+cleanupGuild.channels.cache.set(duplicateB.id, duplicateB);
+cleanupGuild.channels.cache.set(orphan.id, orphan);
+const cleanupPlan = createCategoryCleanupPlan(cleanupGuild);
+assert.equal(cleanupPlan.items.filter((item) => item.duplicate && item.candidate).length, 1);
+assert.deepEqual(cleanupPlan.orphanChannels.map((item) => item.channelId), ['orphan']);
 
 console.log('Permission Matrix tests passed.');

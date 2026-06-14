@@ -61,8 +61,8 @@ function buildMatrixPermissionRepairPlan(guild, options = {}) {
     }
     if (scope === 'games' && !['game_center', 'popular_games', 'player_games', 'dynamic_game'].includes(categoryKey)) continue;
     if (scope === 'admin' && categoryKey !== 'admin') continue;
-    if (scope === 'onboarding' && !['entry', 'support'].includes(categoryKey)) continue;
-    if (scope === 'restricted' && ['entry', 'support', 'lobby', 'game_center', 'interests', 'events'].includes(categoryKey)) continue;
+    if (scope === 'onboarding' && categoryKey !== 'entry') continue;
+    if (scope === 'restricted' && ['entry', 'lobby', 'game_center', 'interests', 'events'].includes(categoryKey)) continue;
 
     const rule = permissionRuleForCategoryKey(categoryKey);
     if (!rule?.visibilityType) {

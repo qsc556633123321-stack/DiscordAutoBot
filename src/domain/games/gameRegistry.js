@@ -7,7 +7,7 @@ const GAME_REGISTRY = [
   { id: 'overwatch_2', displayName: '鬥陣特攻2', aliases: ['OW2', 'ow2', '鬥陣', '鬥陣特攻'], emoji: '🛡️', tier: 'other' },
   { id: 'gtfo', displayName: 'GTFO', aliases: ['gtfo'], emoji: '🧟', tier: 'other' },
   { id: 'repo', displayName: 'R.E.P.O', aliases: ['REPO', 'repo', 'R.E.P.O'], emoji: '🤖', tier: 'other' },
-  { id: 'cs2', displayName: 'CS2', aliases: ['Counter-Strike 2', 'counter strike 2'], emoji: '🔫', tier: 'other' },
+  { id: 'cs2', displayName: 'CS2', aliases: ['Counter-Strike 2', 'Counter Strike 2', 'counter strike 2'], emoji: '🔫', tier: 'other' },
   { id: 'project_zomboid', displayName: 'Project Zomboid', aliases: ['Zomboid', 'PZ'], emoji: '🧟', tier: 'other' }
 ];
 

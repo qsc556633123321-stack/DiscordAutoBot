@@ -1,6 +1,6 @@
 const { ChannelType } = require('discord.js');
 
-const V3_VERSION = '3.0.0';
+const V3_VERSION = '4.0.0-lite';
 
 const ROLES = [
   { key: 'owner', name: '👑 站長', aliases: ['站長'], color: 0xf1c40f, hoist: true },
@@ -22,13 +22,8 @@ const CATEGORY_ORDER = [
   'popular_games',
   'player_games',
   'interests',
-  'knowledge',
-  'night_crew',
   'events',
-  'support',
-  'admin',
-  'game_archive',
-  'old_archive'
+  'admin'
 ];
 
 const CATEGORIES = [
@@ -39,7 +34,8 @@ const CATEGORIES = [
       ['rules', '📜｜社群規則', ChannelType.GuildText],
       ['announcement', '📢｜公告', ChannelType.GuildText, 'public_readonly'],
       ['guide', '🧭｜伺服器導覽', ChannelType.GuildText, 'public_readonly'],
-      ['roles', '✅｜身分組領取', ChannelType.GuildText]
+      ['roles', '✅｜身分組領取', ChannelType.GuildText],
+      ['open_ticket', '🎫｜開啟客服單', ChannelType.GuildText]
     ]
   },
   {
@@ -48,7 +44,8 @@ const CATEGORIES = [
       ['general', '💭｜一般聊天', ChannelType.GuildText],
       ['late_night', '🌙｜深夜聊天', ChannelType.GuildText],
       ['life_share', '📷｜生活分享', ChannelType.GuildText],
-      ['meme_share', '😂｜迷因分享', ChannelType.GuildText]
+      ['meme_share', '😂｜迷因分享', ChannelType.GuildText],
+      ['night_lounge', '🎧｜掛機休息室', ChannelType.GuildVoice]
     ]
   },
   {
@@ -72,25 +69,11 @@ const CATEGORIES = [
       ['food', '🍜｜美食', ChannelType.GuildText],
       ['vehicles', '🏍｜汽機車', ChannelType.GuildText],
       ['travel', '✈️｜旅遊', ChannelType.GuildText],
-      ['casual_voice', '🎤｜閒聊語音', ChannelType.GuildVoice]
-    ]
-  },
-  {
-    key: 'knowledge', name: '🧠｜知識交流', aliases: ['創作與開發', '投資討論', '知識交流'], permission: 'knowledge',
-    channels: [
+      ['casual_voice', '🎤｜閒聊語音', ChannelType.GuildVoice],
       ['ai_tools', '🤖｜AI工具', ChannelType.GuildText, 'dev'],
       ['programming', '💻｜程式開發', ChannelType.GuildText, 'dev'],
       ['stocks', '📈｜股票投資', ChannelType.GuildText, 'invest'],
-      ['finance', '💰｜理財交流', ChannelType.GuildText, 'invest'],
-      ['learning', '📚｜學習資源', ChannelType.GuildText, 'knowledge']
-    ]
-  },
-  {
-    key: 'night_crew', name: '🌙｜Night Crew', aliases: ['Night Crew'], permission: 'night',
-    channels: [
-      ['night_chat', '🌙｜夜貓聊天', ChannelType.GuildText],
-      ['night_lounge', '🎧｜掛機休息室', ChannelType.GuildVoice],
-      ['night_cafe', '☕｜凌晨茶水間', ChannelType.GuildText]
+      ['finance', '💰｜理財交流', ChannelType.GuildText, 'invest']
     ]
   },
   {
@@ -103,14 +86,6 @@ const CATEGORIES = [
     ]
   },
   {
-    key: 'support', name: '🎫｜客服支援', aliases: ['客服支援'], permission: 'public_entry',
-    channels: [
-      ['open_ticket', '🎫｜開啟客服單', ChannelType.GuildText],
-      ['bug_report', '🐞｜問題回報', ChannelType.GuildText],
-      ['suggestions', '💡｜建議區', ChannelType.GuildText]
-    ]
-  },
-  {
     key: 'admin', name: '🔒｜管理員後台', aliases: ['管理員後台'], permission: 'admin',
     channels: [
       ['server_logs', 'server-logs', ChannelType.GuildText],
@@ -119,9 +94,7 @@ const CATEGORIES = [
       ['voice_control', '語音控制台', ChannelType.GuildText],
       ['organize_logs', '整理紀錄', ChannelType.GuildText]
     ]
-  },
-  { key: 'game_archive', name: '📦｜遊戲封存區', aliases: ['遊戲封存區'], permission: 'archive', channels: [] },
-  { key: 'old_archive', name: '📦｜舊頻道封存', aliases: ['舊頻道封存', '舊頻道封存區'], permission: 'archive', channels: [] }
+  }
 ].map((category) => ({
   ...category,
   channels: category.channels.map(([key, name, type, permission]) => ({
@@ -185,7 +158,7 @@ module.exports = {
   ONBOARDING,
   ROLES,
   V3_VERSION,
-  archiveRules: { neverDelete: true, oldCategoryKey: 'old_archive', gameCategoryKey: 'game_archive' },
+  archiveRules: { mode: 'delete', enabled: false },
   categories,
   categoryOrder: CATEGORY_ORDER,
   channels,

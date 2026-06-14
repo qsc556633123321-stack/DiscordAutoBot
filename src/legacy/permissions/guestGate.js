@@ -41,7 +41,7 @@ function matrixRuleForCategoryKey(categoryKey) {
     const roleName = roleNameForKey('night');
     return { visibilityType: VISIBILITY_TYPES.hiddenSpecial, roleName, specialRoleName: roleName, label: 'Permission Matrix Night Crew' };
   }
-  if (categoryKey === 'admin' || categoryKey.endsWith('archive')) {
+  if (categoryKey === 'admin' || categoryKey?.endsWith('archive')) {
     return {
       visibilityType: categoryKey === 'admin' ? VISIBILITY_TYPES.privateAdmin : VISIBILITY_TYPES.archive,
       label: `Permission Matrix ${categoryKey}`

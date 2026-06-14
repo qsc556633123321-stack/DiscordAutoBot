@@ -283,6 +283,7 @@ function permissionHealth(record) {
 }
 
 function action(type, payload) {
+  const effectiveType = type === 'archive' ? 'delete' : type;
   const riskByType = {
     create_category: 'low',
     create_channel: 'low',
@@ -294,17 +295,18 @@ function action(type, payload) {
     keep: 'low'
   };
   return {
-    action: type,
-    type,
+    ...payload,
+    action: effectiveType,
+    type: effectiveType,
     confidence: payload.confidence ?? 90,
-    risk: payload.risk || riskByType[type] || 'medium',
-    requiresConfirmation: type !== 'keep',
-    ...payload
+    risk: effectiveType === 'delete' ? 'high' : (payload.risk || riskByType[effectiveType] || 'medium'),
+    requiresConfirmation: effectiveType !== 'keep'
   };
 }
 
 function getActionType(item) {
-  return item.action || item.type;
+  const type = item.action || item.type;
+  return type === 'archive' ? 'delete' : type;
 }
 
 function inferRenamePriority(oldName, newName) {
@@ -744,22 +746,6 @@ function deleteLayoutRepairPlan(id) {
   writeJson(REPAIR_PLANS_FILE, data);
 }
 
-async function findOrCreateArchiveCategory(guild, summary) {
-  const archiveConfig = COMMUNITY_LAYOUT.find((category) => category.key === 'old_archive');
-  let archive = findExpectedChannel(guild, archiveConfig, ChannelType.GuildCategory);
-  if (archive) return archive;
-  archive = await discordOp(() => guild.channels.create({
-    name: archiveConfig.name,
-    type: ChannelType.GuildCategory,
-    permissionOverwrites: buildVisibilityOverwrites(guild, archiveConfig),
-    reason: 'Layout repair archive category setup'
-  }));
-  writeRegistryRecord(guild, archiveConfig.key, archive);
-  summary.created.push(archive.name);
-  await sleep();
-  return archive;
-}
-
 async function executeOneAction(guild, item, summary, options = {}) {
   const channel = item.targetId ? guild.channels.cache.get(item.targetId) : null;
   const itemType = getActionType(item);
@@ -882,22 +868,6 @@ async function executeOneAction(guild, item, summary, options = {}) {
       } else {
         summary.skipped.push(`${channel.name}: 無法補齊 dynamic_game metadata`);
       }
-      return;
-    }
-
-    if (itemType === 'archive') {
-      const archive = await findOrCreateArchiveCategory(guild, summary);
-      if (channel.type === ChannelType.GuildCategory) {
-        const children = guild.channels.cache.filter((child) => child.parentId === channel.id);
-        for (const child of children.values()) {
-          await discordOp(() => child.setParent(archive.id, { lockPermissions: false, reason: 'AI layout repair archive duplicate category child' }));
-        }
-        summary.archived.push(`${item.targetName} -> ${archive.name}`);
-        return;
-      }
-      await discordOp(() => channel.setParent(archive.id, { lockPermissions: false, reason: 'AI layout repair archive' }));
-      if (isCreateVoiceChannel(channel)) removeCreateEntryRecord(guild.id, channel.id);
-      summary.archived.push(channel.name);
       return;
     }
 

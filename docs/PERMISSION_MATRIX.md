@@ -1,44 +1,39 @@
 # Permission Matrix
 
-此文件描述 Bug Fix Sprint 1 的唯一權限矩陣。程式來源為
-`src/domain/community/permissionMatrix.js`，權限 builder、可見性檢查與測試都必須讀取該矩陣。
+Community V4 Lite 的唯一權限來源是
+`src/domain/community/permissionMatrix.js`。Command 不得自行定義權限。
 
 ## Role Inheritance
 
-| 角色 | 自動繼承 |
+`👤 正式成員`是基礎身份。以下特殊身份必須自動繼承正式成員可見性：
+
+| 特殊身份 | 繼承 |
 | --- | --- |
 | 🎮 遊戲玩家 | 👤 正式成員 |
-| 🧠 開發/AI | 👤 正式成員 |
+| 🤖 AI開發 | 👤 正式成員 |
 | 📈 股票投資 | 👤 正式成員 |
 | 🎨 創作者 | 👤 正式成員 |
 | 🌙 Night Crew | 👤 正式成員 |
 
-Discord 本身沒有角色繼承功能。Bot 會在身分組選單中補發繼承角色；權限 overwrite
-也會直接允許繼承來源角色，讓尚未補發正式成員的既有成員不會被誤擋。
+Discord 不會自動繼承角色，因此 Permission Builder 會在正式成員可見分類中，同時允許上述特殊身份。
 
 ## Category Visibility
 
-| 分類 key | 可見角色 |
+| Category key | 可見身份 |
 | --- | --- |
 | `entry` | `@everyone`、訪客 |
-| `support` | `@everyone`、訪客 |
-| `lobby` | 正式成員與繼承正式成員的角色 |
-| `game_center` | 正式成員與繼承正式成員的角色 |
+| `lobby` | 正式成員與其衍生身份 |
+| `game_center` | 正式成員與其衍生身份 |
 | `popular_games` | 遊戲玩家 |
 | `player_games` | 遊戲玩家 |
 | `dynamic_game` | 遊戲玩家 |
-| `interests` | 正式成員與繼承正式成員的角色 |
-| `events` | 正式成員與繼承正式成員的角色 |
-| `knowledge` | 開發/AI、股票投資 |
-| `night_crew` | Night Crew |
+| `interests` | 正式成員與其衍生身份 |
+| `events` | 正式成員與其衍生身份 |
 | `admin` | 站長、管理員、MOD、Bot |
-| `game_archive`、`old_archive` | 站長、管理員、MOD、Bot |
 
-## Diagnostics
+## Cleanup Policy
 
-- `/check-role-visibility role:<role>`：比較矩陣預期與 Discord 實際可見性。
-- `/debug-permissions channel:<channel>`：顯示分類 key、矩陣角色與實際 overwrite。
-- `/repair-channel-permissions mode:execute scope:guest_gate`：修正 Guest Gate 外漏。
+Community V4 Lite 停用 archive。空白、重複、孤兒項目經確認後直接清理；受保護頻道、系統頻道、Ticket、Temp Voice 不得刪除。
 
 ## Verification
 

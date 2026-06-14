@@ -8,18 +8,13 @@ const ROLE_INHERITANCE = Object.freeze({
 
 const CATEGORY_ACCESS = Object.freeze({
   entry: ['everyone', 'guest'],
-  support: ['everyone', 'guest'],
   lobby: ['member'],
   game_center: ['member'],
   popular_games: ['game'],
   player_games: ['game'],
   interests: ['member'],
-  knowledge: ['dev', 'invest'],
-  night_crew: ['night'],
   events: ['member'],
   admin: ['owner', 'admin', 'mod'],
-  game_archive: ['owner', 'admin', 'mod'],
-  old_archive: ['owner', 'admin', 'mod'],
   dynamic_game: ['game']
 });
 
@@ -34,7 +29,7 @@ const PERMISSION_PROFILE_ACCESS = Object.freeze({
   knowledge: ['dev', 'invest'],
   night: ['night'],
   admin: ['owner', 'admin', 'mod'],
-  archive: ['owner', 'admin', 'mod']
+  archive: []
 });
 
 function expandRoleKeys(roleKeys = []) {
@@ -73,13 +68,10 @@ function directRoleKeysForCategory(categoryKey) {
 }
 
 function permissionProfileForCategory(categoryKey) {
-  if (['entry', 'support'].includes(categoryKey)) return 'public_entry';
+  if (categoryKey === 'entry') return 'public_entry';
   if (['lobby', 'game_center', 'interests', 'events'].includes(categoryKey)) return 'formal_member';
   if (['popular_games', 'player_games', 'dynamic_game'].includes(categoryKey)) return 'game';
-  if (categoryKey === 'knowledge') return 'knowledge';
-  if (categoryKey === 'night_crew') return 'night';
   if (categoryKey === 'admin') return 'admin';
-  if (['game_archive', 'old_archive'].includes(categoryKey)) return 'archive';
   return null;
 }
 

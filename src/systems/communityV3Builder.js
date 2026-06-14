@@ -99,7 +99,8 @@ function findGameChild(guild, category, spec) {
 }
 
 function protectedChannel(guild, channel) {
-  return channel.name.startsWith('ticket-') ||
+  if (!channel) return true;
+  return channel.name?.startsWith('ticket-') ||
     isTempVoice(guild.id, channel.id) ||
     [guild.systemChannelId, guild.rulesChannelId, guild.publicUpdatesChannelId].includes(channel.id);
 }
@@ -165,7 +166,7 @@ function buildCommunityV3Plan(guild, createdBy) {
       const duplicates = findGameCategories(guild, game).filter((item) => item.id !== category.id);
       for (const duplicate of duplicates.values()) {
         actions.push({
-          type: 'archive_game_category',
+          type: 'delete_duplicate_game_category',
           targetId: duplicate.id,
           targetName: duplicate.name,
           targetCategory: '📦｜遊戲封存區',
@@ -175,12 +176,11 @@ function buildCommunityV3Plan(guild, createdBy) {
     }
   }
 
-  const archive = CATEGORIES.find((item) => item.key === 'old_archive');
-  const gameArchive = CATEGORIES.find((item) => item.key === 'game_archive');
   for (const channel of guild.channels.cache.values()) {
     if (channel.type === ChannelType.GuildCategory || managed.has(channel.id) || protectedChannel(guild, channel)) continue;
-    if (channel.parent && [archive.name, gameArchive.name].map(normalize).includes(normalize(channel.parent.name))) continue;
-    actions.push({ type: 'archive', targetId: channel.id, targetName: channel.name, targetCategory: archive.name });
+    if (!channel.parentId || !guild.channels.cache.has(channel.parentId)) {
+      actions.push({ type: 'delete_orphan', targetId: channel.id, targetName: channel.name, reason: 'orphan channel' });
+    }
   }
 
   actions.push({ type: 'reorder', targetName: 'V3 主分類與遊戲分類' });
@@ -378,7 +378,50 @@ async function executeCommunityV3(guild, plan, client) {
     if (category) gameMap.set(game.id, category);
   }
 
-  const gameArchive = categoryMap.get('game_archive');
+  for (const game of GAMES) {
+    const canonical = gameMap.get(game.id);
+    if (!canonical) continue;
+    const duplicates = findGameCategories(guild, game).filter((category) => category.id !== canonical.id);
+    for (const duplicate of duplicates.values()) {
+      try {
+        const children = guild.channels.cache.filter((channel) => channel.parentId === duplicate.id);
+        for (const child of children.values()) {
+          if (protectedChannel(guild, child)) continue;
+          await retryOperation(() => child.delete('Community V4 Lite duplicate game cleanup'));
+          summary.archived.push(`deleted ${duplicate.name} / ${child.name}`);
+          await sleep();
+        }
+        const protectedChildren = guild.channels.cache
+          .filter((channel) => channel.parentId === duplicate.id)
+          .some((channel) => protectedChannel(guild, channel));
+        if (protectedChildren) {
+          summary.skipped.push(`${duplicate.name}: contains protected channels`);
+        } else {
+          await retryOperation(() => duplicate.delete('Community V4 Lite duplicate game cleanup'));
+          summary.archived.push(`deleted ${duplicate.name}`);
+        }
+      } catch (error) {
+        summary.failed.push(`${duplicate.name} duplicate cleanup: ${error.message}`);
+      }
+    }
+  }
+
+  const managedChannels = collectExpectedMatches(guild);
+  for (const channel of guild.channels.cache.values()) {
+    if (channel.type === ChannelType.GuildCategory ||
+        managedChannels.has(channel.id) ||
+        protectedChannel(guild, channel) ||
+        (channel.parentId && guild.channels.cache.has(channel.parentId))) continue;
+    try {
+      await retryOperation(() => channel.delete('Community V4 Lite orphan cleanup'));
+      summary.archived.push(`deleted ${channel.name}`);
+    } catch (error) {
+      summary.failed.push(`${channel.name} orphan cleanup: ${error.message}`);
+    }
+    await sleep();
+  }
+
+  const gameArchive = null;
   for (const game of GAMES) {
     const canonical = gameMap.get(game.id);
     if (!canonical || !gameArchive) continue;
@@ -403,13 +446,14 @@ async function executeCommunityV3(guild, plan, client) {
   }
 
   const managed = collectExpectedMatches(guild);
-  const archive = categoryMap.get('old_archive');
+  const archive = null;
   for (const channel of guild.channels.cache.values()) {
     if (channel.type === ChannelType.GuildCategory ||
         managed.has(channel.id) ||
         protectedChannel(guild, channel) ||
         channel.parentId === archive?.id ||
-        channel.parentId === gameArchive?.id) continue;
+        channel.parentId === gameArchive?.id ||
+        !archive) continue;
     try {
       await retryOperation(() => channel.setParent(archive.id, { lockPermissions: false, reason: 'Community Architecture V3 archive old channel' }));
       await retryOperation(() => channel.permissionOverwrites.set(buildV3Overwrites(guild, 'archive'), 'Community Architecture V3 archive permission'));
@@ -450,7 +494,7 @@ function buildV3PreviewEmbed(plan) {
       { name: '將建立', value: lines(plan.actions.filter((item) => item.type.startsWith('create_')), (item) => item.targetName) },
       { name: '將改名', value: lines(by('rename'), (item) => `${item.targetName} -> ${item.newName}`) },
       { name: '將搬移', value: lines(by('move'), (item) => `${item.targetName} -> ${item.targetCategory}`) },
-      { name: '將封存', value: lines(plan.actions.filter((item) => ['archive', 'archive_game_category'].includes(item.type)), (item) => `${item.targetName} -> ${item.targetCategory}`) },
+      { name: '將清理', value: lines(plan.actions.filter((item) => ['delete_orphan', 'delete_duplicate_game_category'].includes(item.type)), (item) => `${item.targetName} - ${item.reason}`) },
       { name: '將修權限', value: lines(by('sync_permission'), (item) => `${item.targetName} - ${item.permission}`) },
       { name: '遊戲分類', value: lines(plan.actions.filter((item) => ['create_game', 'repair_game'].includes(item.type)), (item) => `${item.targetName} - ${item.tier}`) },
       { name: '原生 Onboarding', value: ONBOARDING.nativeTaskChannelKeys.join('、') }
