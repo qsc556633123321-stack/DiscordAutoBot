@@ -191,7 +191,7 @@ async function applyPermissionPlan(guild, plan) {
     const allowedRoleIds = plan.actions
       .filter((action) => action.type === 'role_category_access' && action.categoryName === categoryName)
       .map((action) => action.roleId);
-    const publicCategory = accessConfig.publicCategories.includes(categoryName);
+    const publicCategory = (plan.publicCategories || accessConfig.publicCategories).includes(categoryName);
 
     const overwrites = [
       {
@@ -263,9 +263,9 @@ async function applyPermissionPlan(guild, plan) {
 }
 
 function buildRolePermissionEmbed(plan) {
-  const ruleLines = accessConfig.roleAccess.map((rule) => (
-    `${rule.roleName} → ${rule.categories.join('、')}`
-  ));
+  const ruleLines = plan.actions
+    .filter((action) => action.type === 'role_category_access')
+    .map((action) => `${action.roleName} → ${action.categoryName}`);
 
   const actionLines = plan.actions.map((action) => {
     if (action.type === 'public_category') return `公開：${action.categoryName}`;
@@ -277,7 +277,7 @@ function buildRolePermissionEmbed(plan) {
     .setTitle('身分組與頻道權限套用預覽')
     .setDescription('preview 不會修改權限；execute 會顯示確認按鈕，確認後才套用。')
     .addFields(
-      { name: '@everyone 可看分類', value: accessConfig.publicCategories.join('\n') || '無' },
+      { name: '@everyone 可看分類', value: (plan.publicCategories || []).join('\n') || '無' },
       { name: '身分組解鎖分類', value: ruleLines.join('\n').slice(0, 1024) || '無' },
       { name: '將更新的分類', value: actionLines.join('\n').slice(0, 1024) || '無' },
       { name: '安全保護', value: '不處理 ticket- 頻道、不處理臨時語音、不刪除頻道、不改名頻道。' },

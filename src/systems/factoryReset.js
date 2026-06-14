@@ -4,7 +4,8 @@ const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js')
 const { getTemplate, getOrCreateLogChannel, createTemplateStructure } = require('./serverRebuilder');
 const { setupChannelPanels } = require('./channelPanels');
 const { SELF_ASSIGNABLE_ROLES, setupSelfAssignableRoles } = require('./roleManager');
-const { buildPermissionPlan, applyPermissionPlan } = require('./rolePermissions');
+const { applyPermissionPlan } = require('./rolePermissions');
+const { buildRolePlan } = require('../services/community/communityPermissionService');
 const { isActiveProtectedChannel } = require('./activeChannelProtector');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -363,7 +364,9 @@ async function rebuildAfterReset(interaction, plan, summary) {
     target: 'all'
   });
   summary.roles = await setupSelfAssignableRoles(interaction.guild);
-  const permissionPlan = buildPermissionPlan(interaction.guild, interaction.user.id);
+  const permissionResult = buildRolePlan(interaction.guild, interaction.user.id);
+  if (!permissionResult.ok) throw new Error(permissionResult.error.message);
+  const permissionPlan = permissionResult.data;
   permissionPlan.mode = 'execute';
   summary.permissions = await applyPermissionPlan(interaction.guild, permissionPlan);
 }

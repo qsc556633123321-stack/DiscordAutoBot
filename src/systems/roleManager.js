@@ -2,6 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType, PermissionFlagsBits } = require('discord.js');
 const { writeServerLog } = require('./serverLogs');
+const architecture = require('../domain/community/communityArchitectureV3');
+const { expandRoleKeys } = require('../domain/community/permissionMatrix');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ROLE_SETTINGS_FILE = path.join(DATA_DIR, 'role-settings.json');
@@ -200,6 +202,47 @@ function getUnlockedCategoriesForRoles(roleNames) {
   return [...categories];
 }
 
+function roleConfigForName(roleName) {
+  return architecture.roles.find((config) => (
+    config.name === roleName || (config.aliases || []).includes(roleName)
+  )) || null;
+}
+
+function findConfiguredRole(guild, roleKey) {
+  const config = architecture.roles.find((item) => item.key === roleKey);
+  if (!config) return null;
+  const names = new Set([config.name, ...(config.aliases || [])]);
+  return guild.roles.cache.find((role) => names.has(role.name)) || null;
+}
+
+async function syncMemberRoleInheritance(member, reason = 'Sync Community OS role inheritance') {
+  if (!member || member.user?.bot) return { added: [], failed: [] };
+  const botMember = member.guild.members.me;
+  const directRoleKeys = member.roles.cache
+    .map((role) => roleConfigForName(role.name))
+    .filter(Boolean)
+    .map((config) => config.key);
+  const inheritedRoleKeys = expandRoleKeys(directRoleKeys).filter((roleKey) => !directRoleKeys.includes(roleKey));
+  const added = [];
+  const failed = [];
+
+  for (const inheritedRoleKey of inheritedRoleKeys) {
+    const inheritedRole = findConfiguredRole(member.guild, inheritedRoleKey);
+    if (!inheritedRole || member.roles.cache.has(inheritedRole.id)) continue;
+    if (!canManageRole(botMember, inheritedRole)) {
+      failed.push(`${inheritedRole.name}: Bot 角色順位不足`);
+      continue;
+    }
+    try {
+      await member.roles.add(inheritedRole, reason);
+      added.push(inheritedRole.name);
+    } catch (error) {
+      failed.push(`${inheritedRole.name}: ${error.message}`);
+    }
+  }
+  return { added, failed };
+}
+
 async function updateMemberRoles(interaction) {
   const selected = new Set(interaction.values || []);
   const member = interaction.member;
@@ -244,13 +287,9 @@ async function updateMemberRoles(interaction) {
     }
   }
 
-  if (selected.size > 0) {
-    const memberRole = interaction.guild.roles.cache.find((role) => role.name === '👤 正式成員');
-    if (memberRole && canManageRole(botMember, memberRole) && !member.roles.cache.has(memberRole.id)) {
-      await member.roles.add(memberRole, 'Grant formal member after V3 role selection');
-      added.push(memberRole.name);
-    }
-  }
+  const inheritance = await syncMemberRoleInheritance(member, 'Grant inherited role after role selection');
+  added.push(...inheritance.added);
+  failed.push(...inheritance.failed);
 
   const hasFormalRoleAfterUpdate = SELF_ASSIGNABLE_ROLES.some((roleName) => {
     const role = interaction.guild.roles.cache.find((item) => item.name === roleName);
@@ -454,6 +493,7 @@ module.exports = {
   getGuestCleanupPlan,
   getUnlockedCategoriesForRoles,
   setupSelfAssignableRoles,
+  syncMemberRoleInheritance,
   saveGuestCleanupPlan,
   updateMemberRoles,
   updateRoleSettings

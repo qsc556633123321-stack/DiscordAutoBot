@@ -1,5 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
 const { ROLES } = require('../../config/communityArchitectureV3');
+const { directRoleKeysForProfile } = require('../../domain/community/permissionMatrix');
 
 const READ = [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.ReadMessageHistory];
 const USE = [...READ, PermissionFlagsBits.SendMessages, PermissionFlagsBits.Connect, PermissionFlagsBits.Speak];
@@ -70,17 +71,13 @@ function buildV3Overwrites(guild, permission = 'formal_member') {
       ...adminOverwrites(guild)
     ];
   }
-  if (permission === 'formal_member' || permission === 'formal_readonly') {
+  const roleKeys = directRoleKeysForProfile(permission);
+  if (roleKeys.length) {
     return [
       ...hiddenBase(guild),
-      ...roleAllows(guild, ['member'], permission === 'formal_readonly' ? READ : USE)
+      ...roleAllows(guild, roleKeys, permission === 'formal_readonly' ? READ : USE)
     ];
   }
-  if (permission === 'game') return [...hiddenBase(guild), ...roleAllows(guild, ['game'])];
-  if (permission === 'dev') return [...hiddenBase(guild), ...roleAllows(guild, ['dev'])];
-  if (permission === 'invest') return [...hiddenBase(guild), ...roleAllows(guild, ['invest'])];
-  if (permission === 'knowledge') return [...hiddenBase(guild), ...roleAllows(guild, ['dev', 'invest'])];
-  if (permission === 'night') return [...hiddenBase(guild), ...roleAllows(guild, ['night'])];
   if (permission === 'admin' || permission === 'archive') return hiddenBase(guild);
   return hiddenBase(guild);
 }

@@ -1,6 +1,8 @@
 const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const { COMMUNITY_LAYOUT } = require('../../config/communityLayout');
 const { VISIBILITY_TYPES } = require('../../config/channelVisibilityRules');
+const architecture = require('../../domain/community/communityArchitectureV3');
+const { directRoleKeysForCategory } = require('../../domain/community/permissionMatrix');
 const { normalizeChannelName } = require('../community/communityBootstrapSystem');
 const { isTempVoice } = require('../../systems/tempVoice');
 
@@ -12,6 +14,47 @@ const ROLE_CATEGORY_KEYS = new Map([
   ['invest', '📈 股票投資'],
   ['night_crew', '🌙 Night Crew']
 ]);
+
+function normalizedName(name = '') {
+  return String(name).normalize('NFKC').toLowerCase().replace(/[^\p{Letter}\p{Number}]+/gu, '');
+}
+
+function findV3CategoryKey(channel) {
+  const category = channel.type === ChannelType.GuildCategory ? channel : channel.parent;
+  if (!category) return null;
+  const normalized = normalizedName(category.name);
+  return architecture.categories.find((config) => (
+    [config.name, ...(config.aliases || [])].some((name) => normalizedName(name) === normalized)
+  ))?.key || null;
+}
+
+function roleNameForKey(roleKey) {
+  return architecture.roles.find((role) => role.key === roleKey)?.name || null;
+}
+
+function matrixRuleForCategoryKey(categoryKey) {
+  const allowed = directRoleKeysForCategory(categoryKey);
+  if (!allowed) return null;
+  if (allowed.includes('everyone')) return { visibilityType: VISIBILITY_TYPES.publicEntry, label: 'Permission Matrix public entry' };
+  if (allowed.includes('member')) return { visibilityType: VISIBILITY_TYPES.formalMemberVisible, label: 'Permission Matrix formal member' };
+  if (categoryKey === 'night_crew') {
+    const roleName = roleNameForKey('night');
+    return { visibilityType: VISIBILITY_TYPES.hiddenSpecial, roleName, specialRoleName: roleName, label: 'Permission Matrix Night Crew' };
+  }
+  if (categoryKey === 'admin' || categoryKey.endsWith('archive')) {
+    return {
+      visibilityType: categoryKey === 'admin' ? VISIBILITY_TYPES.privateAdmin : VISIBILITY_TYPES.archive,
+      label: `Permission Matrix ${categoryKey}`
+    };
+  }
+  const roleNames = allowed.map(roleNameForKey).filter(Boolean);
+  return {
+    visibilityType: VISIBILITY_TYPES.roleRestricted,
+    roleName: roleNames.length === 1 ? roleNames[0] : undefined,
+    roleNames,
+    label: `Permission Matrix ${categoryKey}`
+  };
+}
 
 function matchesConfig(channel, config) {
   const names = [config.key, config.name, ...(config.aliases || [])].map(normalizeChannelName);
@@ -55,6 +98,16 @@ function ruleForChannel(channel) {
   const record = findLayoutRecord(channel);
   const categoryKey = record?.category?.key;
   const channelKey = record?.kind === 'channel' ? record.spec.key : null;
+  const v3CategoryKey = findV3CategoryKey(channel);
+
+  if (['entry', 'support'].includes(v3CategoryKey)) {
+    const categoryConfig = architecture.categories.find((category) => category.key === v3CategoryKey);
+    const channelConfig = categoryConfig?.channels.find((spec) => normalizedName(spec.name) === normalizedName(channel.name));
+    if (channelConfig?.permission === 'public_readonly') {
+      return { visibilityType: VISIBILITY_TYPES.semiPublicReadonly, label: 'Permission Matrix public readonly' };
+    }
+    return matrixRuleForCategoryKey(v3CategoryKey);
+  }
 
   if (channelKey && PUBLIC_CHANNEL_KEYS.has(channelKey)) {
     return {
@@ -70,6 +123,8 @@ function ruleForChannel(channel) {
   if (record?.kind === 'channel' && PUBLIC_CATEGORY_KEYS.has(categoryKey)) {
     return { visibilityType: VISIBILITY_TYPES.formalMemberVisible, label: '非入口公開頻道，正式成員限定' };
   }
+  const v3Rule = matrixRuleForCategoryKey(v3CategoryKey);
+  if (v3Rule) return v3Rule;
   if (isGameCategory(channel) || (channel.parent && isGameCategory(channel.parent))) {
     return { visibilityType: VISIBILITY_TYPES.roleRestricted, roleName: '🎮 遊戲玩家', label: '遊戲身分組限定' };
   }

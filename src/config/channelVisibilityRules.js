@@ -1,4 +1,6 @@
 const { PermissionFlagsBits } = require('discord.js');
+const architecture = require('../domain/community/communityArchitectureV3');
+const { directRoleKeysForProfile } = require('../domain/community/permissionMatrix');
 
 const VISIBILITY_TYPES = {
   publicEntry: 'public_entry',
@@ -11,22 +13,15 @@ const VISIBILITY_TYPES = {
   archive: 'archive'
 };
 
-const ADMIN_ROLE_NAMES = ['站長', '管理員', '👑 站長', '🛡 管理員', '🔧 MOD'];
-const FORMAL_ROLE_NAMES = [
-  '✅ 已驗證成員',
-  '👤 正式成員',
-  '正式成員',
-  '成員',
-  '🎮 遊戲玩家',
-  '🧑‍🤝‍🧑 找隊友通知',
-  '📈 股票投資',
-  '🛠 開發/AI',
-  '🎨 設計創作',
-  '🍜 生活閒聊',
-  '📢 公告通知',
-  '🎉 活動通知'
-];
-const GUEST_ROLE_NAMES = ['👀 訪客', '👤 訪客', '訪客'];
+function namesForRoleKeys(roleKeys) {
+  return architecture.roles
+    .filter((role) => roleKeys.includes(role.key))
+    .flatMap((role) => [role.name, ...(role.aliases || [])]);
+}
+
+const ADMIN_ROLE_NAMES = namesForRoleKeys(['owner', 'admin', 'mod']);
+const FORMAL_ROLE_NAMES = namesForRoleKeys(directRoleKeysForProfile('formal_member'));
+const GUEST_ROLE_NAMES = namesForRoleKeys(['guest']);
 
 function roleByName(guild, roleName) {
   return guild.roles.cache.find((role) => role.name === roleName) || null;

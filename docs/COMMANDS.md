@@ -5,6 +5,7 @@
 ## Community
 
 `/analyze-server` `/auto-organize` `/bootstrap-community` `/check-guest-visibility`
+`/check-role-visibility` `/debug-permissions`
 `/check-onboarding-visibility` `/community-about` `/community-architect`
 `/community-roadmap` `/dedupe-layout` `/deep-cleanup` `/factory-reset-server`
 `/layout-doctor` `/plan-cleanup` `/polish-server-design` `/rebuild-community-layout`

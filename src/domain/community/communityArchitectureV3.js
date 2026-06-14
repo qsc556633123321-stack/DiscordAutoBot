@@ -62,8 +62,8 @@ const CATEGORIES = [
       ['game_ranking', '📈｜熱門遊戲排行', ChannelType.GuildText]
     ]
   },
-  { key: 'popular_games', name: '🔥｜熱門遊戲', aliases: ['熱門遊戲'], permission: 'formal_member', channels: [] },
-  { key: 'player_games', name: '🎲｜玩家遊戲區', aliases: ['其他遊戲', '玩家遊戲區'], permission: 'formal_member', channels: [] },
+  { key: 'popular_games', name: '🔥｜熱門遊戲', aliases: ['熱門遊戲'], permission: 'game', channels: [] },
+  { key: 'player_games', name: '🎲｜玩家遊戲區', aliases: ['其他遊戲', '玩家遊戲區'], permission: 'game', channels: [] },
   {
     key: 'interests', name: '🎨｜興趣交流', aliases: ['興趣交流'], permission: 'formal_member',
     channels: [
