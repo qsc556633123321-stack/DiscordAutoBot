@@ -72,6 +72,17 @@ function directRoleKeysForCategory(categoryKey) {
   return [...allowed];
 }
 
+function permissionProfileForCategory(categoryKey) {
+  if (['entry', 'support'].includes(categoryKey)) return 'public_entry';
+  if (['lobby', 'game_center', 'interests', 'events'].includes(categoryKey)) return 'formal_member';
+  if (['popular_games', 'player_games', 'dynamic_game'].includes(categoryKey)) return 'game';
+  if (categoryKey === 'knowledge') return 'knowledge';
+  if (categoryKey === 'night_crew') return 'night';
+  if (categoryKey === 'admin') return 'admin';
+  if (['game_archive', 'old_archive'].includes(categoryKey)) return 'archive';
+  return null;
+}
+
 module.exports = {
   CATEGORY_ACCESS,
   PERMISSION_PROFILE_ACCESS,
@@ -79,5 +90,6 @@ module.exports = {
   directRoleKeysForCategory,
   directRoleKeysForProfile,
   expandRoleKeys,
+  permissionProfileForCategory,
   roleCanAccessCategory
 };

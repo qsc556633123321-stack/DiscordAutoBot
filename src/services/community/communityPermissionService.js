@@ -1,9 +1,13 @@
 const { fromThrowable, ok } = require('../../core/result');
 const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const architecture = require('../../domain/community/communityArchitectureV3');
-const { directRoleKeysForCategory, expandRoleKeys, roleCanAccessCategory } = require('../../domain/community/permissionMatrix');
+const {
+  directRoleKeysForCategory,
+  expandRoleKeys,
+  permissionProfileForCategory,
+  roleCanAccessCategory
+} = require('../../domain/community/permissionMatrix');
 const { buildGuestGatePlan, checkGuestVisibility, checkNativeOnboardingReferences } = require('../../legacy/permissions/guestGate');
-const { buildLayoutRepairPlan } = require('../../systems/layoutDecisionEngine');
 const rolePermissions = require('../../legacy/permissions/rolePermissions');
 const communityBootstrap = require('../../legacy/community/communityBootstrapSystem');
 const permissionWriter = require('../../infrastructure/discord/discordPermissionWriter');
@@ -13,12 +17,87 @@ function buildRepairPlan(guild, options = {}) {
     const scope = options.scope || 'all';
     const plan = scope === 'guest_gate'
       ? buildGuestGatePlan(guild, options)
-      : buildLayoutRepairPlan(guild, { ...options, scope: scope === 'all' ? 'permissions' : scope });
-    plan.actions = plan.actions.filter((item) => ['sync_permission', 'sync_metadata', 'create_category', 'create_channel'].includes(item.action));
+      : buildMatrixPermissionRepairPlan(guild, options);
     return ok(plan);
   } catch (error) {
     return fromThrowable(error, 'PERMISSION_PLAN_FAILED');
   }
+}
+
+function permissionRuleForCategoryKey(categoryKey) {
+  const profile = permissionProfileForCategory(categoryKey);
+  if (!profile) return null;
+  const roleNames = directRoleKeysForCategory(categoryKey)
+    .filter((roleKey) => !['everyone', 'guest', 'owner', 'admin', 'mod'].includes(roleKey))
+    .map((roleKey) => architecture.roles.find((role) => role.key === roleKey)?.name)
+    .filter(Boolean);
+  const visibilityType = {
+    public_entry: 'public_entry',
+    formal_member: 'formal_member_visible',
+    game: 'role_restricted',
+    knowledge: 'role_restricted',
+    night: 'hidden_special',
+    admin: 'private_admin',
+    archive: 'archive'
+  }[profile];
+  return {
+    visibilityType,
+    roleName: roleNames.length === 1 ? roleNames[0] : undefined,
+    roleNames,
+    specialRoleName: profile === 'night' ? roleNames[0] : undefined
+  };
+}
+
+function buildMatrixPermissionRepairPlan(guild, options = {}) {
+  const scope = options.scope || 'all';
+  const actions = [];
+  const warnings = [];
+  for (const channel of guild.channels.cache.values()) {
+    const category = channel.type === ChannelType.GuildCategory ? channel : channel.parent;
+    const categoryKey = resolveCategoryKey(category);
+    if (!categoryKey) {
+      if (channel.type === ChannelType.GuildCategory) warnings.push(`${channel.name}: category key 不存在`);
+      continue;
+    }
+    if (scope === 'games' && !['game_center', 'popular_games', 'player_games', 'dynamic_game'].includes(categoryKey)) continue;
+    if (scope === 'admin' && categoryKey !== 'admin') continue;
+    if (scope === 'onboarding' && !['entry', 'support'].includes(categoryKey)) continue;
+    if (scope === 'restricted' && ['entry', 'support', 'lobby', 'game_center', 'interests', 'events'].includes(categoryKey)) continue;
+
+    const rule = permissionRuleForCategoryKey(categoryKey);
+    if (!rule?.visibilityType) {
+      warnings.push(`${channel.name}: ${categoryKey} 沒有 visibility profile`);
+      continue;
+    }
+    actions.push({
+      action: 'sync_permission',
+      type: 'sync_permission',
+      targetId: channel.id,
+      targetName: channel.name,
+      categoryKey,
+      visibilityType: rule.visibilityType,
+      roleName: rule.roleName,
+      roleNames: rule.roleNames,
+      specialRoleName: rule.specialRoleName,
+      reason: `Permission Matrix: ${categoryKey}`,
+      confidence: 100,
+      risk: 'medium',
+      requiresConfirmation: true
+    });
+  }
+  return {
+    id: options.id || `${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+    guildId: guild.id,
+    requestedById: options.requestedById,
+    scope,
+    optimizationMode: 'permissions_only',
+    mode: options.mode || 'preview',
+    communityRulesVersion: 'Permission Matrix',
+    aiUsed: false,
+    warnings,
+    createdAt: Date.now(),
+    actions
+  };
 }
 
 async function inspectGuestGate(guild) {

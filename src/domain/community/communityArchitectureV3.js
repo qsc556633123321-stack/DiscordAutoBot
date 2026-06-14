@@ -9,7 +9,7 @@ const ROLES = [
   { key: 'member', name: '👤 正式成員', aliases: ['正式成員', '✅ 已驗證成員', '成員'], color: 0x95a5a6 },
   { key: 'guest', name: '👀 訪客', aliases: ['訪客', '👤 訪客'], color: 0x7f8c8d },
   { key: 'game', name: '🎮 遊戲玩家', aliases: ['遊戲玩家'], color: 0x3498db },
-  { key: 'dev', name: '🧠 開發/AI', aliases: ['🛠 開發/AI', '開發/AI'], color: 0x9b59b6 },
+  { key: 'dev', name: '🧠 開發/AI', aliases: ['🛠 開發/AI', '開發/AI', '開發AI', '🧠 開發AI'], color: 0x9b59b6 },
   { key: 'invest', name: '📈 股票投資', aliases: ['股票投資'], color: 0x27ae60 },
   { key: 'creator', name: '🎨 創作者', aliases: ['🎨 設計創作', '創作者'], color: 0xe84393 },
   { key: 'night', name: '🌙 Night Crew', aliases: ['Night Crew'], color: 0x5b2c6f }
@@ -47,7 +47,6 @@ const CATEGORIES = [
     channels: [
       ['general', '💭｜一般聊天', ChannelType.GuildText],
       ['late_night', '🌙｜深夜聊天', ChannelType.GuildText],
-      ['casual_voice', '🎤｜閒聊語音', ChannelType.GuildVoice],
       ['life_share', '📷｜生活分享', ChannelType.GuildText],
       ['meme_share', '😂｜迷因分享', ChannelType.GuildText]
     ]
@@ -72,7 +71,8 @@ const CATEGORIES = [
       ['photography', '📷｜攝影', ChannelType.GuildText],
       ['food', '🍜｜美食', ChannelType.GuildText],
       ['vehicles', '🏍｜汽機車', ChannelType.GuildText],
-      ['travel', '✈️｜旅遊', ChannelType.GuildText]
+      ['travel', '✈️｜旅遊', ChannelType.GuildText],
+      ['casual_voice', '🎤｜閒聊語音', ChannelType.GuildVoice]
     ]
   },
   {

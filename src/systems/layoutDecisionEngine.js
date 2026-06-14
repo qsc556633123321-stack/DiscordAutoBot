@@ -1020,7 +1020,7 @@ function buildLayoutRepairEmbed(plan, title = '🛠️ Layout Repair Plan') {
     ].filter(Boolean).join('\n'))
     .addFields(
       { name: '將建立', value: lines(groups.create, (item) => `${item.targetName} - ${item.reason}`), inline: false },
-      { name: '將修權限', value: lines(groups.permissions, (item) => `${item.targetName} - ${item.visibilityType}`), inline: false },
+      { name: '將修權限', value: lines(groups.permissions, (item) => `${item.targetName || 'unknown'} - ${item.visibilityType || 'missing_visibility_type'}`), inline: false },
       { name: '將同步 metadata', value: lines(groups.metadata, (item) => `${item.targetName} - ${item.game}`), inline: false },
       { name: '將改名', value: lines(groups.rename, (item) => `${item.targetName} -> ${item.newName} (${item.renamePriority || 'normalize'})`), inline: false },
       { name: '將搬移', value: lines(groups.move, (item) => `${item.targetName} -> ${item.targetCategoryKey}`), inline: false },
@@ -1032,6 +1032,9 @@ function buildLayoutRepairEmbed(plan, title = '🛠️ Layout Repair Plan') {
     .setTimestamp();
   if (plan.aiNotes?.length) {
     embed.addFields({ name: 'AI 補充', value: plan.aiNotes.slice(0, 5).join('\n').slice(0, 1024), inline: false });
+  }
+  if (plan.warnings?.length) {
+    embed.addFields({ name: 'Permission data warnings', value: plan.warnings.slice(0, 12).join('\n').slice(0, 1024), inline: false });
   }
   return embed;
 }
