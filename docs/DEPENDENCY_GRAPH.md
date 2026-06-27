@@ -1,17 +1,17 @@
 # Dependency Graph
 
-Generated: 2026-06-27T13:25:11.389Z
+Generated: 2026-06-27T13:35:12.127Z
 
 ## Summary
 
-- JS files scanned: 197
-- Local dependency edges: 366
+- JS files scanned: 208
+- Local dependency edges: 372
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0
 - Active command direct Discord API usage: 0
 - Legacy command direct Discord API usage: 2
-- Architecture score: 84 / 100
+- Architecture score: 82 / 100
 
 ## Architecture Rules
 
@@ -46,6 +46,7 @@ None.
 
 ## Reverse Layer Dependencies
 
+- src/modules/layout/layoutPermissionPolicy.js (other) -> src/services/community/communityPermissionService.js (service)
 - src/services/community/communityService.js (service) -> src/legacy/commands/analyze_server.js (command)
 - src/services/community/communityService.js (service) -> src/legacy/commands/ai_reorganize_server.js (command)
 - src/services/community/communityService.js (service) -> src/legacy/commands/auto_organize.js (command)
@@ -57,7 +58,7 @@ None.
 
 ## Architecture Score
 
-Score: 84 / 100
+Score: 82 / 100
 
 Penalty model:
 
@@ -77,8 +78,8 @@ Penalty model:
 4. High dependency count: `src/services/community/communityService.js`
 5. High dependency count: `src/systems/communityV3Builder.js`
 6. High dependency count: `src/legacy/community/serverRebuilder.js`
-7. High dependency count: `src/services/community/communityPermissionService.js`
-8. High dependency count: `src/systems/layoutDecisionEngine.js`
+7. High dependency count: `src/legacy/layout/legacyLayoutDecisionEngine.js`
+8. High dependency count: `src/services/community/communityPermissionService.js`
 9. High dependency count: `src/legacy/community/communityBootstrapSystem.js`
 10. High dependency count: `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js`
 
@@ -88,8 +89,8 @@ Penalty model:
 2. `src/services/community/communityService.js` - 11 local deps, 35 lines
 3. `src/systems/communityV3Builder.js` - 10 local deps, 513 lines
 4. `src/legacy/community/serverRebuilder.js` - 8 local deps, 365 lines
-5. `src/services/community/communityPermissionService.js` - 8 local deps, 316 lines
-6. `src/systems/layoutDecisionEngine.js` - 8 local deps, 1058 lines
+5. `src/legacy/layout/legacyLayoutDecisionEngine.js` - 8 local deps, 1058 lines
+6. `src/services/community/communityPermissionService.js` - 8 local deps, 316 lines
 7. `src/legacy/community/communityBootstrapSystem.js` - 7 local deps, 814 lines
 8. `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js` - 7 local deps, 22 lines
 9. `src/systems/gameSuggestionSystem.js` - 7 local deps, 626 lines
@@ -122,8 +123,8 @@ Penalty model:
 - core: 3
 - domain: 6
 - event: 6
-- legacy: 15
-- other: 12
+- legacy: 16
+- other: 22
 - repository: 3
 - router: 3
 - service: 8

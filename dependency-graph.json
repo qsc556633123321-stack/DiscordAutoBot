@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-27T13:25:11.389Z",
+  "generatedAt": "2026-06-27T13:35:12.127Z",
   "summary": {
-    "fileCount": 197,
-    "dependencyCount": 366,
+    "fileCount": 208,
+    "dependencyCount": 372,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
-    "architectureScore": 84,
+    "architectureScore": 82,
     "activeCommandDiscordApiCount": 0,
     "legacyCommandDiscordApiCount": 2,
     "byType": {
@@ -14,11 +14,11 @@
       "command": 80,
       "config": 13,
       "core": 3,
-      "other": 12,
+      "other": 22,
       "domain": 6,
       "event": 6,
       "repository": 3,
-      "legacy": 15,
+      "legacy": 16,
       "router": 3,
       "service": 8,
       "system": 42,
@@ -1678,6 +1678,19 @@
       }
     },
     {
+      "file": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "type": "legacy",
+      "lines": 1058,
+      "dependencyCount": 11,
+      "localDependencyCount": 8,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/legacy/permissions/communityV3PermissionBuilder.js",
       "type": "legacy",
       "lines": 86,
@@ -1876,6 +1889,136 @@
       "file": "src/modules/interactions/slashInteractionHandler.js",
       "type": "other",
       "lines": 9,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutActionPlanner.js",
+      "type": "other",
+      "lines": 9,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutArchivePolicy.js",
+      "type": "other",
+      "lines": 12,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutChannelClassifier.js",
+      "type": "other",
+      "lines": 12,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutDecisionEngine.js",
+      "type": "other",
+      "lines": 21,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutDecisionTypes.js",
+      "type": "other",
+      "lines": 17,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutDuplicateDetector.js",
+      "type": "other",
+      "lines": 10,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutPermissionPolicy.js",
+      "type": "other",
+      "lines": 14,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutRenamePolicy.js",
+      "type": "other",
+      "lines": 10,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutRiskEvaluator.js",
+      "type": "other",
+      "lines": 10,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/layoutRuleRunner.js",
+      "type": "other",
+      "lines": 8,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2317,10 +2460,10 @@
     {
       "file": "src/systems/layoutDecisionEngine.js",
       "type": "system",
-      "lines": 1058,
-      "dependencyCount": 11,
-      "localDependencyCount": 8,
-      "externalDependencyCount": 3,
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -3575,6 +3718,46 @@
       "specifier": "../../adapters/legacy/legacyCommandAdapters"
     },
     {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/config/communityLayout.js",
+      "specifier": "../../config/communityLayout"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/config/channelVisibilityRules.js",
+      "specifier": "../../config/channelVisibilityRules"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/systems/communityBootstrapSystem.js",
+      "specifier": "../../systems/communityBootstrapSystem"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/config/communityRules.js",
+      "specifier": "../../config/communityRules"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../../domain/games/gameIdentityService"
+    },
+    {
       "from": "src/legacy/permissions/communityV3PermissionBuilder.js",
       "to": "src/config/communityArchitectureV3.js",
       "specifier": "../../config/communityArchitectureV3"
@@ -3713,6 +3896,31 @@
       "from": "src/modules/interactions/slashInteractionHandler.js",
       "to": "src/legacy/interactions/legacyInteractionDispatcher.js",
       "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
+    },
+    {
+      "from": "src/modules/layout/layoutActionPlanner.js",
+      "to": "src/modules/layout/layoutDecisionEngine.js",
+      "specifier": "./layoutDecisionEngine"
+    },
+    {
+      "from": "src/modules/layout/layoutChannelClassifier.js",
+      "to": "src/modules/layout/layoutDecisionEngine.js",
+      "specifier": "./layoutDecisionEngine"
+    },
+    {
+      "from": "src/modules/layout/layoutDecisionEngine.js",
+      "to": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "specifier": "../../legacy/layout/legacyLayoutDecisionEngine"
+    },
+    {
+      "from": "src/modules/layout/layoutPermissionPolicy.js",
+      "to": "src/services/community/communityPermissionService.js",
+      "specifier": "../../services/community/communityPermissionService"
+    },
+    {
+      "from": "src/modules/layout/layoutRuleRunner.js",
+      "to": "src/modules/layout/layoutDecisionEngine.js",
+      "specifier": "./layoutDecisionEngine"
     },
     {
       "from": "src/services/community/communityPermissionService.js",
@@ -4196,43 +4404,8 @@
     },
     {
       "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/config/communityLayout.js",
-      "specifier": "../config/communityLayout"
-    },
-    {
-      "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/config/channelVisibilityRules.js",
-      "specifier": "../config/channelVisibilityRules"
-    },
-    {
-      "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/systems/gameChannels.js",
-      "specifier": "./gameChannels"
-    },
-    {
-      "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/systems/tempVoice.js",
-      "specifier": "./tempVoice"
-    },
-    {
-      "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "./serverLogs"
-    },
-    {
-      "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/systems/communityBootstrapSystem.js",
-      "specifier": "./communityBootstrapSystem"
-    },
-    {
-      "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/config/communityRules.js",
-      "specifier": "../config/communityRules"
-    },
-    {
-      "from": "src/systems/layoutDecisionEngine.js",
-      "to": "src/domain/games/gameIdentityService.js",
-      "specifier": "../domain/games/gameIdentityService"
+      "to": "src/modules/layout/layoutDecisionEngine.js",
+      "specifier": "../modules/layout/layoutDecisionEngine"
     },
     {
       "from": "src/systems/lfgSystem.js",
@@ -4451,6 +4624,13 @@
     "domainInfrastructure": [],
     "reverseLayer": [
       {
+        "from": "src/modules/layout/layoutPermissionPolicy.js",
+        "to": "src/services/community/communityPermissionService.js",
+        "specifier": "../../services/community/communityPermissionService",
+        "fromType": "other",
+        "toType": "service"
+      },
+      {
         "from": "src/services/community/communityService.js",
         "to": "src/legacy/commands/analyze_server.js",
         "specifier": "../../legacy/commands/analyze_server",
@@ -4542,12 +4722,12 @@
       },
       {
         "reason": "High dependency count",
-        "target": "src/services/community/communityPermissionService.js",
+        "target": "src/legacy/layout/legacyLayoutDecisionEngine.js",
         "score": 40
       },
       {
         "reason": "High dependency count",
-        "target": "src/systems/layoutDecisionEngine.js",
+        "target": "src/services/community/communityPermissionService.js",
         "score": 40
       },
       {
@@ -4587,16 +4767,16 @@
         "lines": 365
       },
       {
+        "file": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+        "type": "legacy",
+        "dependencies": 8,
+        "lines": 1058
+      },
+      {
         "file": "src/services/community/communityPermissionService.js",
         "type": "service",
         "dependencies": 8,
         "lines": 316
-      },
-      {
-        "file": "src/systems/layoutDecisionEngine.js",
-        "type": "system",
-        "dependencies": 8,
-        "lines": 1058
       },
       {
         "file": "src/legacy/community/communityBootstrapSystem.js",
