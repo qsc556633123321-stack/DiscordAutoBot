@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-27T13:35:12.127Z",
+  "generatedAt": "2026-06-27T13:47:32.146Z",
   "summary": {
-    "fileCount": 208,
-    "dependencyCount": 372,
+    "fileCount": 220,
+    "dependencyCount": 390,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
-    "architectureScore": 82,
+    "architectureScore": 80,
     "activeCommandDiscordApiCount": 0,
     "legacyCommandDiscordApiCount": 2,
     "byType": {
@@ -14,11 +14,11 @@
       "command": 80,
       "config": 13,
       "core": 3,
-      "other": 22,
+      "other": 32,
       "domain": 6,
       "event": 6,
       "repository": 3,
-      "legacy": 16,
+      "legacy": 18,
       "router": 3,
       "service": 8,
       "system": 42,
@@ -1667,6 +1667,19 @@
     {
       "file": "src/legacy/interactions/legacyInteractionDispatcher.js",
       "type": "legacy",
+      "lines": 4,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/interactions/legacyInteractionRuntime.js",
+      "type": "legacy",
       "lines": 2066,
       "dependencyCount": 27,
       "localDependencyCount": 26,
@@ -1679,6 +1692,19 @@
     },
     {
       "file": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "type": "legacy",
+      "lines": 4,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/layout/legacyLayoutRuntime.js",
       "type": "legacy",
       "lines": 1058,
       "dependencyCount": 11,
@@ -1795,11 +1821,76 @@
       }
     },
     {
-      "file": "src/modules/interactions/buttonInteractionHandler.js",
+      "file": "src/modules/interactions/buttonHandlers/adminButtons.js",
       "type": "other",
-      "lines": 9,
+      "lines": 49,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/buttonHandlers/gameButtons.js",
+      "type": "other",
+      "lines": 18,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/buttonHandlers/panelButtons.js",
+      "type": "other",
+      "lines": 12,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/buttonHandlers/roleButtons.js",
+      "type": "other",
+      "lines": 19,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/buttonHandlers/voiceButtons.js",
+      "type": "other",
+      "lines": 14,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/buttonInteractionHandler.js",
+      "type": "other",
+      "lines": 24,
+      "dependencyCount": 6,
+      "localDependencyCount": 6,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -2018,9 +2109,74 @@
     {
       "file": "src/modules/layout/layoutRuleRunner.js",
       "type": "other",
-      "lines": 8,
+      "lines": 32,
+      "dependencyCount": 6,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/rules/deleteCandidateRule.js",
+      "type": "other",
+      "lines": 16,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/rules/duplicateGameRule.js",
+      "type": "other",
+      "lines": 21,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/rules/guestGateRule.js",
+      "type": "other",
+      "lines": 15,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/rules/orphanChannelRule.js",
+      "type": "other",
+      "lines": 14,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/layout/rules/renameNormalizeRule.js",
+      "type": "other",
+      "lines": 23,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -3589,171 +3745,181 @@
     },
     {
       "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/legacy/interactions/legacyInteractionRuntime.js",
+      "specifier": "./legacyInteractionRuntime"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/organizer.js",
       "specifier": "../../systems/organizer"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/deepCleanupPlanner.js",
       "specifier": "../../systems/deepCleanupPlanner"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/deepCleanupExecutor.js",
       "specifier": "../../systems/deepCleanupExecutor"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/tempVoice.js",
       "specifier": "../../systems/tempVoice"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/channelPanels.js",
       "specifier": "../../systems/channelPanels"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/memberGuard.js",
       "specifier": "../../systems/memberGuard"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/roleManager.js",
       "specifier": "../../systems/roleManager"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/serverRebuilder.js",
       "specifier": "../../systems/serverRebuilder"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/categoryCleaner.js",
       "specifier": "../../systems/categoryCleaner"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/rolePermissions.js",
       "specifier": "../../systems/rolePermissions"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/factoryReset.js",
       "specifier": "../../systems/factoryReset"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/aiServerReorganizer.js",
       "specifier": "../../systems/aiServerReorganizer"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/activeChannelProtector.js",
       "specifier": "../../systems/activeChannelProtector"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/serverLogs.js",
       "specifier": "../../systems/serverLogs"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/lfgSystem.js",
       "specifier": "../../systems/lfgSystem"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/utils/interactionReplies.js",
       "specifier": "../../utils/interactionReplies"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/serverPolisher.js",
       "specifier": "../../systems/serverPolisher"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/gameSuggestionSystem.js",
       "specifier": "../../systems/gameSuggestionSystem"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/communityConcierge.js",
       "specifier": "../../systems/communityConcierge"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/communityBootstrapSystem.js",
       "specifier": "../../systems/communityBootstrapSystem"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/layoutDecisionEngine.js",
       "specifier": "../../systems/layoutDecisionEngine"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/communityArchitect.js",
       "specifier": "../../systems/communityArchitect"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/gameChannels.js",
       "specifier": "../../systems/gameChannels"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/legacy/commands/game-registry-doctor.js",
       "specifier": "../../legacy/commands/game-registry-doctor"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/systems/communityV3Builder.js",
       "specifier": "../../systems/communityV3Builder"
     },
     {
-      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "from": "src/legacy/interactions/legacyInteractionRuntime.js",
       "to": "src/adapters/legacy/legacyCommandAdapters.js",
       "specifier": "../../adapters/legacy/legacyCommandAdapters"
     },
     {
       "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "to": "src/legacy/layout/legacyLayoutRuntime.js",
+      "specifier": "./legacyLayoutRuntime"
+    },
+    {
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/config/communityLayout.js",
       "specifier": "../../config/communityLayout"
     },
     {
-      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/config/channelVisibilityRules.js",
       "specifier": "../../config/channelVisibilityRules"
     },
     {
-      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/systems/gameChannels.js",
       "specifier": "../../systems/gameChannels"
     },
     {
-      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/systems/tempVoice.js",
       "specifier": "../../systems/tempVoice"
     },
     {
-      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/systems/serverLogs.js",
       "specifier": "../../systems/serverLogs"
     },
     {
-      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/systems/communityBootstrapSystem.js",
       "specifier": "../../systems/communityBootstrapSystem"
     },
     {
-      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/config/communityRules.js",
       "specifier": "../../config/communityRules"
     },
     {
-      "from": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+      "from": "src/legacy/layout/legacyLayoutRuntime.js",
       "to": "src/domain/games/gameIdentityService.js",
       "specifier": "../../domain/games/gameIdentityService"
     },
@@ -3843,6 +4009,56 @@
       "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
     },
     {
+      "from": "src/modules/interactions/buttonHandlers/adminButtons.js",
+      "to": "src/legacy/interactions/legacyInteractionRuntime.js",
+      "specifier": "../../../legacy/interactions/legacyInteractionRuntime"
+    },
+    {
+      "from": "src/modules/interactions/buttonHandlers/gameButtons.js",
+      "to": "src/legacy/interactions/legacyInteractionRuntime.js",
+      "specifier": "../../../legacy/interactions/legacyInteractionRuntime"
+    },
+    {
+      "from": "src/modules/interactions/buttonHandlers/panelButtons.js",
+      "to": "src/legacy/interactions/legacyInteractionRuntime.js",
+      "specifier": "../../../legacy/interactions/legacyInteractionRuntime"
+    },
+    {
+      "from": "src/modules/interactions/buttonHandlers/roleButtons.js",
+      "to": "src/legacy/interactions/legacyInteractionRuntime.js",
+      "specifier": "../../../legacy/interactions/legacyInteractionRuntime"
+    },
+    {
+      "from": "src/modules/interactions/buttonHandlers/voiceButtons.js",
+      "to": "src/legacy/interactions/legacyInteractionRuntime.js",
+      "specifier": "../../../legacy/interactions/legacyInteractionRuntime"
+    },
+    {
+      "from": "src/modules/interactions/buttonInteractionHandler.js",
+      "to": "src/modules/interactions/buttonHandlers/adminButtons.js",
+      "specifier": "./buttonHandlers/adminButtons"
+    },
+    {
+      "from": "src/modules/interactions/buttonInteractionHandler.js",
+      "to": "src/modules/interactions/buttonHandlers/gameButtons.js",
+      "specifier": "./buttonHandlers/gameButtons"
+    },
+    {
+      "from": "src/modules/interactions/buttonInteractionHandler.js",
+      "to": "src/modules/interactions/buttonHandlers/panelButtons.js",
+      "specifier": "./buttonHandlers/panelButtons"
+    },
+    {
+      "from": "src/modules/interactions/buttonInteractionHandler.js",
+      "to": "src/modules/interactions/buttonHandlers/roleButtons.js",
+      "specifier": "./buttonHandlers/roleButtons"
+    },
+    {
+      "from": "src/modules/interactions/buttonInteractionHandler.js",
+      "to": "src/modules/interactions/buttonHandlers/voiceButtons.js",
+      "specifier": "./buttonHandlers/voiceButtons"
+    },
+    {
       "from": "src/modules/interactions/buttonInteractionHandler.js",
       "to": "src/legacy/interactions/legacyInteractionDispatcher.js",
       "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
@@ -3921,6 +4137,36 @@
       "from": "src/modules/layout/layoutRuleRunner.js",
       "to": "src/modules/layout/layoutDecisionEngine.js",
       "specifier": "./layoutDecisionEngine"
+    },
+    {
+      "from": "src/modules/layout/layoutRuleRunner.js",
+      "to": "src/modules/layout/rules/deleteCandidateRule.js",
+      "specifier": "./rules/deleteCandidateRule"
+    },
+    {
+      "from": "src/modules/layout/layoutRuleRunner.js",
+      "to": "src/modules/layout/rules/duplicateGameRule.js",
+      "specifier": "./rules/duplicateGameRule"
+    },
+    {
+      "from": "src/modules/layout/layoutRuleRunner.js",
+      "to": "src/modules/layout/rules/guestGateRule.js",
+      "specifier": "./rules/guestGateRule"
+    },
+    {
+      "from": "src/modules/layout/layoutRuleRunner.js",
+      "to": "src/modules/layout/rules/orphanChannelRule.js",
+      "specifier": "./rules/orphanChannelRule"
+    },
+    {
+      "from": "src/modules/layout/layoutRuleRunner.js",
+      "to": "src/modules/layout/rules/renameNormalizeRule.js",
+      "specifier": "./rules/renameNormalizeRule"
+    },
+    {
+      "from": "src/modules/layout/rules/duplicateGameRule.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../../../domain/games/gameIdentityService"
     },
     {
       "from": "src/services/community/communityPermissionService.js",
@@ -4631,6 +4877,13 @@
         "toType": "service"
       },
       {
+        "from": "src/modules/layout/rules/duplicateGameRule.js",
+        "to": "src/domain/games/gameIdentityService.js",
+        "specifier": "../../../domain/games/gameIdentityService",
+        "fromType": "other",
+        "toType": "domain"
+      },
+      {
         "from": "src/services/community/communityService.js",
         "to": "src/legacy/commands/analyze_server.js",
         "specifier": "../../legacy/commands/analyze_server",
@@ -4702,7 +4955,7 @@
       },
       {
         "reason": "High dependency count",
-        "target": "src/legacy/interactions/legacyInteractionDispatcher.js",
+        "target": "src/legacy/interactions/legacyInteractionRuntime.js",
         "score": 70
       },
       {
@@ -4722,7 +4975,7 @@
       },
       {
         "reason": "High dependency count",
-        "target": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+        "target": "src/legacy/layout/legacyLayoutRuntime.js",
         "score": 40
       },
       {
@@ -4743,7 +4996,7 @@
     ],
     "dependencyTop10": [
       {
-        "file": "src/legacy/interactions/legacyInteractionDispatcher.js",
+        "file": "src/legacy/interactions/legacyInteractionRuntime.js",
         "type": "legacy",
         "dependencies": 26,
         "lines": 2066
@@ -4767,7 +5020,7 @@
         "lines": 365
       },
       {
-        "file": "src/legacy/layout/legacyLayoutDecisionEngine.js",
+        "file": "src/legacy/layout/legacyLayoutRuntime.js",
         "type": "legacy",
         "dependencies": 8,
         "lines": 1058
