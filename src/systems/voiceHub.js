@@ -2,6 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { ChannelType, EmbedBuilder } = require('discord.js');
 const { formatDuration, getRoomInfo } = require('./voiceActivitySystem');
+const eventBus = require('../core/eventBus');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const TEMP_VOICE_FILE = path.join(DATA_DIR, 'temp-voice.json');
@@ -227,6 +228,16 @@ async function restoreVoiceHubs(client) {
     await updateVoiceHub(guild, { force: true }).catch((error) => console.error('Voice Hub restore failed:', error));
   }
 }
+
+function handleVoiceRoomEvent(payload = {}) {
+  if (!payload.guild) return;
+  scheduleVoiceHubUpdate(payload.guild, { delayMs: payload.delayMs ?? 1000 });
+}
+
+eventBus.on('voice.room.created', handleVoiceRoomEvent);
+eventBus.on('voice.room.updated', handleVoiceRoomEvent);
+eventBus.on('voice.room.deleted', handleVoiceRoomEvent);
+eventBus.on('voice.activity.updated', handleVoiceRoomEvent);
 
 module.exports = {
   getVoiceHubConfig,

@@ -12,6 +12,7 @@ const {
   getWeekKey
 } = require('../utils/voiceStats');
 const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
+const eventBus = require('../core/eventBus');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const VOICE_ACTIVITY_FILE = path.join(DATA_DIR, 'voice-activity.json');
@@ -21,14 +22,22 @@ let cache = null;
 let dirty = false;
 let flushTimer = null;
 
-function getTempVoiceSystem() {
-  return require('./tempVoice');
-}
-
 function readVoiceActivity() {
   if (cache) return cache;
   cache = readJson(VOICE_ACTIVITY_FILE, {});
   return cache;
+}
+
+function readTempVoiceSnapshot() {
+  return readJson(path.join(DATA_DIR, 'temp-voice.json'), {});
+}
+
+function getTempVoiceRecord(guildId, channelId) {
+  return readTempVoiceSnapshot()[guildId]?.[channelId] || null;
+}
+
+function isTempVoice(guildId, channelId) {
+  return Boolean(getTempVoiceRecord(guildId, channelId));
 }
 
 function writeVoiceActivityNow() {
@@ -93,7 +102,6 @@ function nonBotMembers(channel) {
 
 function inferGame(channel) {
   if (!channel) return '一般語音';
-  const { getTempVoiceRecord } = getTempVoiceSystem();
   const tempRecord = getTempVoiceRecord(channel.guild.id, channel.id);
   if (tempRecord?.game) return tempRecord.game;
   const parentName = channel.parent?.name || '';
@@ -171,6 +179,7 @@ function trackVoiceStateUpdate(oldState, newState) {
     const newChannel = newState.guild.channels.cache.get(newState.channelId);
     if (newChannel) refreshChannelSessions(newChannel, now);
   }
+  eventBus.emit('voice.activity.updated', { guild: newState.guild || oldState.guild });
 }
 
 function recordTempVoiceCreated(guild, member, channel, game) {
@@ -226,7 +235,6 @@ function getLeaderboard(guildId, category = 'week') {
 
 function getRoomInfo(guild, channel) {
   if (!channel) return null;
-  const { getTempVoiceRecord, isTempVoice } = getTempVoiceSystem();
   const record = isTempVoice(guild.id, channel.id) ? getTempVoiceRecord(guild.id, channel.id) : null;
   const guildData = getGuildData(guild.id);
   const stored = guildData.rooms[channel.id] || {};
@@ -254,6 +262,10 @@ function getRoomInfo(guild, channel) {
     isHot: label.includes('熱門')
   };
 }
+
+eventBus.on('voice.room.created', ({ guild, member, channel, game } = {}) => {
+  recordTempVoiceCreated(guild, member, channel, game);
+});
 
 async function generateVoiceMoodText(kind, context = {}) {
   const fallback = context.fallback || getAiFallbackText(context.stats || {});

@@ -2,10 +2,13 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { PermissionFlagsBits } = require('discord.js');
 const { writeServerLog } = require('./serverLogs');
+const { findGuestRole } = require('./roleManager');
 const { SAFE_GAME_DOMAINS, isSafeGameDomain, isSteamLikeDomain } = require('../config/gameDomains');
+const { shouldUseStrictLinkGuardForMember } = require('../domain/security/securityPolicy');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SETTINGS_FILE = path.join(DATA_DIR, 'link-guard-settings.json');
+const MEMBER_GUARD_SETTINGS_FILE = path.join(DATA_DIR, 'member-guard-settings.json');
 const userLinkBuckets = new Map();
 
 const DEFAULT_WHITELIST = [
@@ -86,6 +89,20 @@ function readAllSettings() {
   } catch (error) {
     console.error('讀取 link-guard-settings.json 失敗:', error);
     return {};
+  }
+}
+
+function readMemberGuardSettings(guildId) {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(MEMBER_GUARD_SETTINGS_FILE, 'utf8') || '{}');
+    return {
+      enabled: true,
+      safeMode: false,
+      newAccountDays: 7,
+      ...((parsed && typeof parsed === 'object' && parsed[guildId]) || {})
+    };
+  } catch (error) {
+    return { enabled: true, safeMode: false, newAccountDays: 7 };
   }
 }
 
@@ -184,6 +201,11 @@ function isWhitelisted(message, settings) {
   }
 
   return settings.whitelistedRoleIds.some((roleId) => message.member.roles.cache.has(roleId));
+}
+
+function isGuestMember(member) {
+  const guestRole = member?.guild ? findGuestRole(member.guild) : null;
+  return Boolean(guestRole && member.roles.cache.has(guestRole.id));
 }
 
 function extractUrls(content) {
@@ -393,13 +415,13 @@ async function handleLinkGuardMessage(message) {
 
   const urls = extractUrls(message.content);
   if (!urls.length) return false;
-  let strictMode = false;
-  try {
-    const { shouldUseStrictLinkGuard } = require('./memberGuard');
-    strictMode = shouldUseStrictLinkGuard(message.member);
-  } catch (error) {
-    strictMode = false;
-  }
+  const memberGuardSettings = readMemberGuardSettings(message.guild.id);
+  const strictMode = shouldUseStrictLinkGuardForMember({
+    member: message.member,
+    settings: memberGuardSettings,
+    isGuest: isGuestMember(message.member),
+    isWhitelisted: isWhitelisted(message, settings)
+  });
 
   if (strictMode) {
     const blockedUrl = urls.find((url) => getInviteCode(url) || !isAllowedDomain(url.hostname, settings));

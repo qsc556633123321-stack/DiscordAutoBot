@@ -410,6 +410,9 @@ Full machine-readable graph: \`dependency-graph.json\`
   console.log(`Report written to ${rel(REPORT_FILE)}`);
   console.log(`Architecture score: ${architectureScore}/100`);
   console.log(`Circular dependencies: ${cycles.length}`);
+  if (cycles.length > 0) {
+    process.exitCode = 1;
+  }
 }
 
 main();

@@ -1,15 +1,15 @@
 # Dependency Graph
 
-Generated: 2026-06-27T08:47:55.418Z
+Generated: 2026-06-27T09:56:41.495Z
 
 ## Summary
 
-- JS files scanned: 184
-- Local dependency edges: 350
-- Circular dependencies: 2
-- Service chain max depth: 1
+- JS files scanned: 187
+- Local dependency edges: 353
+- Circular dependencies: 0
+- Service chain max depth: 2
 - Service chains over two layers: 0
-- Architecture score: 60 / 100
+- Architecture score: 76 / 100
 
 ## Architecture Rules
 
@@ -23,8 +23,7 @@ Reverse dependencies are flagged when a lower layer imports upward. Legacy relat
 
 ## Circular Dependencies
 
-- src/systems/tempVoice.js -> src/systems/voiceHub.js -> src/systems/voiceActivitySystem.js -> src/systems/tempVoice.js
-- src/systems/memberGuard.js -> src/systems/linkGuard.js -> src/systems/memberGuard.js
+None.
 
 ## Service Chains Over Two Layers
 
@@ -56,7 +55,7 @@ None.
 
 ## Architecture Score
 
-Score: 60 / 100
+Score: 76 / 100
 
 Penalty model:
 
@@ -69,16 +68,16 @@ Penalty model:
 
 ## Top 10 Refactor Candidates
 
-1. Circular dependency: `src/systems/tempVoice.js -> src/systems/voiceHub.js -> src/systems/voiceActivitySystem.js -> src/systems/tempVoice.js`
-2. Circular dependency: `src/systems/memberGuard.js -> src/systems/linkGuard.js -> src/systems/memberGuard.js`
-3. Command directly uses Discord API: `src/legacy/commands/setupServerLegacy.js`
-4. Command directly uses Discord API: `src/legacy/commands/setupTicketLegacy.js`
-5. High dependency count: `src/events/interactionCreate.js`
-6. High dependency count: `src/services/community/communityService.js`
-7. High dependency count: `src/systems/communityV3Builder.js`
-8. High dependency count: `src/legacy/community/serverRebuilder.js`
-9. High dependency count: `src/services/community/communityPermissionService.js`
-10. High dependency count: `src/systems/layoutDecisionEngine.js`
+1. Command directly uses Discord API: `src/legacy/commands/setupServerLegacy.js`
+2. Command directly uses Discord API: `src/legacy/commands/setupTicketLegacy.js`
+3. High dependency count: `src/events/interactionCreate.js`
+4. High dependency count: `src/services/community/communityService.js`
+5. High dependency count: `src/systems/communityV3Builder.js`
+6. High dependency count: `src/legacy/community/serverRebuilder.js`
+7. High dependency count: `src/services/community/communityPermissionService.js`
+8. High dependency count: `src/systems/layoutDecisionEngine.js`
+9. High dependency count: `src/legacy/community/communityBootstrapSystem.js`
+10. High dependency count: `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js`
 
 ## Top 10 Dependency Count
 
@@ -91,7 +90,7 @@ Penalty model:
 7. `src/legacy/community/communityBootstrapSystem.js` - 7 local deps, 814 lines
 8. `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js` - 7 local deps, 22 lines
 9. `src/systems/gameSuggestionSystem.js` - 7 local deps, 626 lines
-10. `src/systems/tempVoice.js` - 7 local deps, 932 lines
+10. `src/events/voiceStateUpdate.js` - 6 local deps, 155 lines
 
 ## Fattest Services
 
@@ -99,9 +98,10 @@ Penalty model:
 2. `src/services/community/communityRebuildService.js` - 74 lines, 5 local deps
 3. `src/services/games/gameCategoryService.js` - 38 lines, 4 local deps
 4. `src/services/community/communityService.js` - 35 lines, 11 local deps
-5. `src/services/security/linkGuardService.js` - 2 lines, 1 local deps
-6. `src/services/security/memberGuardService.js` - 2 lines, 1 local deps
-7. `src/services/voice/voiceHubService.js` - 2 lines, 1 local deps
+5. `src/services/security/securityDecisionService.js` - 10 lines, 1 local deps
+6. `src/services/security/linkGuardService.js` - 2 lines, 1 local deps
+7. `src/services/security/memberGuardService.js` - 2 lines, 1 local deps
+8. `src/services/voice/voiceHubService.js` - 2 lines, 1 local deps
 
 ## Largest Files By Role
 
@@ -116,14 +116,14 @@ Penalty model:
 - adapter: 3
 - command: 80
 - config: 13
-- core: 2
-- domain: 5
+- core: 3
+- domain: 6
 - event: 6
 - legacy: 14
 - other: 3
 - repository: 3
 - router: 3
-- service: 7
+- service: 8
 - system: 42
 - util: 3
 

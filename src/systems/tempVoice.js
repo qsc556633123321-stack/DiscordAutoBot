@@ -21,9 +21,8 @@ const {
   registerCreateEntryChannel
 } = require('./gameChannels');
 const { writeServerLog } = require('./serverLogs');
-const { scheduleVoiceHubUpdate } = require('./voiceHub');
 const { createOrUpdateLfgCard, deleteLfgCard, scheduleLfgUpdate } = require('./lfgSystem');
-const { recordTempVoiceCreated } = require('./voiceActivitySystem');
+const eventBus = require('../core/eventBus');
 const { resolveGameIdentity } = require('../domain/games/gameIdentityService');
 const { readJson, writeJsonAtomic } = require('../infrastructure/storage/jsonStore');
 
@@ -112,6 +111,10 @@ function removeTempVoice(guildId, channelId) {
   if (Object.keys(data[guildId]).length === 0) delete data[guildId];
   writeTempVoice(data);
   return true;
+}
+
+function emitVoiceRoomEvent(eventName, payload) {
+  eventBus.emit(eventName, payload);
 }
 
 function isTempVoice(guildId, channelId) {
@@ -363,7 +366,7 @@ async function finalizeTempVoice(guild, channelId, channelSnapshot = {}) {
     });
     await cleanupControlPanel(guild, channelId, snapshot);
     removeTempVoice(guild.id, channelId);
-    scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
+    emitVoiceRoomEvent('voice.room.deleted', { guild, channelId, snapshot, delayMs: 1000 });
     await deleteLfgCard(guild, channelId, snapshot);
     await writeServerLog(guild, {
       title: '🔊 Temp Voice 已結束',
@@ -491,7 +494,6 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
     voiceChannelName: channel.name,
     roomName: channel.name
   });
-  recordTempVoiceCreated(guild, member, channel, game);
   const record = getTempVoiceRecord(guild.id, channel.id);
   await sendActivityMessage({ guild, channel, member, record });
   await writeServerLog(guild, {
@@ -503,7 +505,7 @@ async function createTemporaryVoice({ guild, member, game, name, limit = 5, crea
       { name: '人數限制', value: String(userLimit || '無限制'), inline: true }
     ]
   });
-  scheduleVoiceHubUpdate(guild);
+  emitVoiceRoomEvent('voice.room.created', { guild, member, channel, game });
   await createOrUpdateLfgCard(guild, channel.id).catch((error) => console.error('建立 LFG 招募卡失敗:', error));
   return channel;
 }
@@ -570,7 +572,7 @@ async function transferTempVoiceOwner({ guild, channel, oldOwnerId, newOwner, in
       { name: '房間', value: channel.name, inline: false }
     ]
   });
-  scheduleVoiceHubUpdate(guild);
+  emitVoiceRoomEvent('voice.room.updated', { guild, channel, record: updatedRecord });
   scheduleLfgUpdate(guild, channel.id);
   return { record: updatedRecord, panel, transferredAt, reason };
 }
@@ -676,7 +678,7 @@ async function finishDisbandRoom(interaction, context, snapshot) {
     roomName: snapshot.name
   });
   removeTempVoice(context.guild.id, context.channel.id);
-  scheduleVoiceHubUpdate(context.guild, { delayMs: 1000 });
+  emitVoiceRoomEvent('voice.room.deleted', { guild: context.guild, channel: context.channel, snapshot, delayMs: 1000 });
   await deleteLfgCard(context.guild, context.channel.id, snapshot);
   await writeServerLog(context.guild, {
     title: '✅ Temp Voice 已解散',
@@ -696,6 +698,7 @@ async function handleTempVoiceButton(interaction) {
     if (!context) return;
     await context.channel.permissionOverwrites.edit(context.guild.roles.everyone.id, { Connect: false }, { reason: 'Temp voice locked by owner' });
     updateTempVoiceRecord(context.guild.id, context.channel.id, { locked: true });
+    emitVoiceRoomEvent('voice.room.updated', { guild: context.guild, channel: context.channel });
     scheduleLfgUpdate(context.guild, context.channel.id);
     await interaction.reply(privateReplyPayload(interaction, { content: '🔒 房間已鎖定。' }));
     return;
@@ -705,6 +708,7 @@ async function handleTempVoiceButton(interaction) {
     if (!context) return;
     await context.channel.permissionOverwrites.edit(context.guild.roles.everyone.id, { Connect: true }, { reason: 'Temp voice opened by owner' });
     updateTempVoiceRecord(context.guild.id, context.channel.id, { locked: false });
+    emitVoiceRoomEvent('voice.room.updated', { guild: context.guild, channel: context.channel });
     scheduleLfgUpdate(context.guild, context.channel.id);
     await interaction.reply(privateReplyPayload(interaction, { content: '🌐 房間已公開。' }));
     return;
@@ -798,7 +802,7 @@ async function handleTempVoiceSelect(interaction) {
     const limit = Number(interaction.values[0]);
     await context.channel.setUserLimit(limit, 'Temp voice user limit changed');
     updateTempVoiceRecord(context.guild.id, context.channel.id, { userLimit: limit || 0 });
-    scheduleVoiceHubUpdate(context.guild);
+    emitVoiceRoomEvent('voice.room.updated', { guild: context.guild, channel: context.channel });
     scheduleLfgUpdate(context.guild, context.channel.id);
     await interaction.reply(privateReplyPayload(interaction, { content: `👥 人數限制已更新為：${limit || '無限制'}` }));
     return true;
@@ -833,7 +837,7 @@ async function handleTempVoiceModal(interaction) {
   const newName = `🔊｜${name}`;
   await context.channel.setName(newName, 'Temp voice renamed by owner');
   updateTempVoiceRecord(context.guild.id, context.channel.id, { roomName: newName, voiceChannelName: newName });
-  scheduleVoiceHubUpdate(context.guild);
+  emitVoiceRoomEvent('voice.room.updated', { guild: context.guild, channel: context.channel });
   scheduleLfgUpdate(context.guild, context.channel.id);
   await interaction.reply(privateReplyPayload(interaction, { content: `✏️ 房間已改名為：${newName}` }));
   return true;
@@ -846,7 +850,7 @@ async function cleanupStaleClosingRoom(guild, channelId, record, channel = null)
   if (channel) await channel.delete('Stale closing temp voice cleanup').catch(() => null);
   await cleanupControlPanel(guild, channelId, snapshot);
   removeTempVoice(guild.id, channelId);
-  scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
+  emitVoiceRoomEvent('voice.room.deleted', { guild, channelId, snapshot, delayMs: 1000 });
   await deleteLfgCard(guild, channelId, snapshot);
   await writeServerLog(guild, {
     title: '⚠️ Temp Voice 解散逾時清理',
@@ -881,7 +885,7 @@ async function cleanupMissingTempVoices(client) {
           game: record.game,
           roomName: record.roomName || record.voiceChannelName || `voice-${channelId}`
         });
-        scheduleVoiceHubUpdate(guild, { delayMs: 1000 });
+        emitVoiceRoomEvent('voice.room.deleted', { guild, channelId, delayMs: 1000 });
         await deleteLfgCard(guild, channelId);
         delete records[channelId];
         removed += 1;
@@ -902,7 +906,7 @@ async function handleTempVoiceChannelDelete(channel) {
   if (!record) return false;
   if (record.status === 'closing' || record.status === 'ended') return false;
   await finalizeTempVoice(channel.guild, channel.id, { name: channel.name });
-  scheduleVoiceHubUpdate(channel.guild, { delayMs: 1000 });
+  emitVoiceRoomEvent('voice.room.deleted', { guild: channel.guild, channel, delayMs: 1000 });
   return true;
 }
 

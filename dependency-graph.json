@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-06-27T08:47:55.418Z",
+  "generatedAt": "2026-06-27T09:56:41.495Z",
   "summary": {
-    "fileCount": 184,
-    "dependencyCount": 350,
-    "circularCount": 2,
-    "serviceChainMaxDepth": 1,
+    "fileCount": 187,
+    "dependencyCount": 353,
+    "circularCount": 0,
+    "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
-    "architectureScore": 60,
+    "architectureScore": 76,
     "byType": {
       "adapter": 3,
       "command": 80,
       "config": 13,
-      "core": 2,
+      "core": 3,
       "other": 3,
-      "domain": 5,
+      "domain": 6,
       "event": 6,
       "repository": 3,
       "legacy": 14,
       "router": 3,
-      "service": 7,
+      "service": 8,
       "system": 42,
       "util": 3
     }
@@ -337,6 +337,19 @@
       }
     },
     {
+      "file": "src/core/eventBus.js",
+      "type": "core",
+      "lines": 7,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/core/result.js",
       "type": "core",
       "lines": 14,
@@ -418,6 +431,19 @@
       "file": "src/domain/games/gameRegistry.js",
       "type": "domain",
       "lines": 15,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/security/securityPolicy.js",
+      "type": "domain",
+      "lines": 17,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -1806,6 +1832,19 @@
       }
     },
     {
+      "file": "src/services/security/securityDecisionService.js",
+      "type": "service",
+      "lines": 10,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/services/voice/voiceHubService.js",
       "type": "service",
       "lines": 2,
@@ -2172,9 +2211,9 @@
     {
       "file": "src/systems/linkGuard.js",
       "type": "system",
-      "lines": 462,
-      "dependencyCount": 6,
-      "localDependencyCount": 3,
+      "lines": 484,
+      "dependencyCount": 7,
+      "localDependencyCount": 4,
       "externalDependencyCount": 3,
       "exports": {
         "moduleExports": 1,
@@ -2186,8 +2225,8 @@
       "file": "src/systems/memberGuard.js",
       "type": "system",
       "lines": 356,
-      "dependencyCount": 6,
-      "localDependencyCount": 3,
+      "dependencyCount": 7,
+      "localDependencyCount": 4,
       "externalDependencyCount": 3,
       "exports": {
         "moduleExports": 1,
@@ -2315,9 +2354,9 @@
     {
       "file": "src/systems/tempVoice.js",
       "type": "system",
-      "lines": 932,
-      "dependencyCount": 9,
-      "localDependencyCount": 7,
+      "lines": 936,
+      "dependencyCount": 8,
+      "localDependencyCount": 6,
       "externalDependencyCount": 2,
       "exports": {
         "moduleExports": 1,
@@ -2328,7 +2367,7 @@
     {
       "file": "src/systems/voiceActivitySystem.js",
       "type": "system",
-      "lines": 324,
+      "lines": 336,
       "dependencyCount": 5,
       "localDependencyCount": 3,
       "externalDependencyCount": 2,
@@ -2341,9 +2380,9 @@
     {
       "file": "src/systems/voiceHub.js",
       "type": "system",
-      "lines": 238,
-      "dependencyCount": 4,
-      "localDependencyCount": 1,
+      "lines": 249,
+      "dependencyCount": 5,
+      "localDependencyCount": 2,
       "externalDependencyCount": 3,
       "exports": {
         "moduleExports": 1,
@@ -3629,6 +3668,11 @@
       "specifier": "../../systems/memberGuard"
     },
     {
+      "from": "src/services/security/securityDecisionService.js",
+      "to": "src/services/security/linkGuardService.js",
+      "specifier": "./linkGuardService"
+    },
+    {
       "from": "src/services/voice/voiceHubService.js",
       "to": "src/systems/voiceHub.js",
       "specifier": "../../systems/voiceHub"
@@ -4015,13 +4059,18 @@
     },
     {
       "from": "src/systems/linkGuard.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "./roleManager"
+    },
+    {
+      "from": "src/systems/linkGuard.js",
       "to": "src/config/gameDomains.js",
       "specifier": "../config/gameDomains"
     },
     {
       "from": "src/systems/linkGuard.js",
-      "to": "src/systems/memberGuard.js",
-      "specifier": "./memberGuard"
+      "to": "src/domain/security/securityPolicy.js",
+      "specifier": "../domain/security/securityPolicy"
     },
     {
       "from": "src/systems/memberGuard.js",
@@ -4030,13 +4079,18 @@
     },
     {
       "from": "src/systems/memberGuard.js",
-      "to": "src/systems/linkGuard.js",
-      "specifier": "./linkGuard"
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
     },
     {
       "from": "src/systems/memberGuard.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "./serverLogs"
+      "to": "src/domain/security/securityPolicy.js",
+      "specifier": "../domain/security/securityPolicy"
+    },
+    {
+      "from": "src/systems/memberGuard.js",
+      "to": "src/services/security/securityDecisionService.js",
+      "specifier": "../services/security/securityDecisionService"
     },
     {
       "from": "src/systems/nightCrewSystem.js",
@@ -4115,18 +4169,13 @@
     },
     {
       "from": "src/systems/tempVoice.js",
-      "to": "src/systems/voiceHub.js",
-      "specifier": "./voiceHub"
-    },
-    {
-      "from": "src/systems/tempVoice.js",
       "to": "src/systems/lfgSystem.js",
       "specifier": "./lfgSystem"
     },
     {
       "from": "src/systems/tempVoice.js",
-      "to": "src/systems/voiceActivitySystem.js",
-      "specifier": "./voiceActivitySystem"
+      "to": "src/core/eventBus.js",
+      "specifier": "../core/eventBus"
     },
     {
       "from": "src/systems/tempVoice.js",
@@ -4150,13 +4199,18 @@
     },
     {
       "from": "src/systems/voiceActivitySystem.js",
-      "to": "src/systems/tempVoice.js",
-      "specifier": "./tempVoice"
+      "to": "src/core/eventBus.js",
+      "specifier": "../core/eventBus"
     },
     {
       "from": "src/systems/voiceHub.js",
       "to": "src/systems/voiceActivitySystem.js",
       "specifier": "./voiceActivitySystem"
+    },
+    {
+      "from": "src/systems/voiceHub.js",
+      "to": "src/core/eventBus.js",
+      "specifier": "../core/eventBus"
     },
     {
       "from": "src/systems/welcomeSystem.js",
@@ -4175,21 +4229,10 @@
     "node:fs": 19,
     "openai": 3,
     "dotenv": 2,
+    "node:events": 1,
     "../../../scripts/audit-commands": 1
   },
-  "circularDependencies": [
-    [
-      "src/systems/tempVoice.js",
-      "src/systems/voiceHub.js",
-      "src/systems/voiceActivitySystem.js",
-      "src/systems/tempVoice.js"
-    ],
-    [
-      "src/systems/memberGuard.js",
-      "src/systems/linkGuard.js",
-      "src/systems/memberGuard.js"
-    ]
-  ],
+  "circularDependencies": [],
   "serviceChains": [],
   "violations": {
     "commandDiscordApi": [
@@ -4271,16 +4314,6 @@
   "rankings": {
     "refactorTop10": [
       {
-        "reason": "Circular dependency",
-        "target": "src/systems/tempVoice.js -> src/systems/voiceHub.js -> src/systems/voiceActivitySystem.js -> src/systems/tempVoice.js",
-        "score": 100
-      },
-      {
-        "reason": "Circular dependency",
-        "target": "src/systems/memberGuard.js -> src/systems/linkGuard.js -> src/systems/memberGuard.js",
-        "score": 100
-      },
-      {
         "reason": "Command directly uses Discord API",
         "target": "src/legacy/commands/setupServerLegacy.js",
         "score": 85
@@ -4319,6 +4352,16 @@
         "reason": "High dependency count",
         "target": "src/systems/layoutDecisionEngine.js",
         "score": 40
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/legacy/community/communityBootstrapSystem.js",
+        "score": 35
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+        "score": 35
       }
     ],
     "dependencyTop10": [
@@ -4377,10 +4420,10 @@
         "lines": 626
       },
       {
-        "file": "src/systems/tempVoice.js",
-        "type": "system",
-        "dependencies": 7,
-        "lines": 932
+        "file": "src/events/voiceStateUpdate.js",
+        "type": "event",
+        "dependencies": 6,
+        "lines": 155
       }
     ],
     "servicesByLines": [
@@ -4403,6 +4446,11 @@
         "file": "src/services/community/communityService.js",
         "lines": 35,
         "dependencies": 11
+      },
+      {
+        "file": "src/services/security/securityDecisionService.js",
+        "lines": 10,
+        "dependencies": 1
       },
       {
         "file": "src/services/security/linkGuardService.js",

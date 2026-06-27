@@ -2,8 +2,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { PermissionFlagsBits } = require('discord.js');
 const { GUEST_ROLE_NAME, SELF_ASSIGNABLE_ROLES, findGuestRole } = require('./roleManager');
-const { updateLinkGuardSettings } = require('./linkGuard');
 const { writeServerLog } = require('./serverLogs');
+const { isNewAccount, shouldUseStrictLinkGuardForMember } = require('../domain/security/securityPolicy');
+const { enableLinkGuardForSafeMode } = require('../services/security/securityDecisionService');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const SETTINGS_FILE = path.join(DATA_DIR, 'member-guard-settings.json');
@@ -96,10 +97,6 @@ function isVerifiedMember(member) {
     const role = member.guild.roles.cache.find((item) => item.name === roleName);
     return role && member.roles.cache.has(role.id);
   });
-}
-
-function isNewAccount(member, days) {
-  return Date.now() - member.user.createdTimestamp < days * 24 * 60 * 60 * 1000;
 }
 
 function isWhitelisted(member, settings) {
@@ -262,7 +259,7 @@ async function handleMemberGuardJoin(member) {
 
   if (bucket.length > settings.joinBurstLimit && !settings.safeMode) {
     updateMemberGuardSettings(member.guild.id, { safeMode: true });
-    updateLinkGuardSettings(member.guild.id, { enabled: true });
+    enableLinkGuardForSafeMode(member.guild.id);
     await writeServerLog(member.guild, {
       title: '🚨 Join Burst Detection',
       color: 0xeb5757,
@@ -316,11 +313,14 @@ function isMemberRestricted(member) {
 }
 
 function shouldUseStrictLinkGuard(member) {
-  if (!member?.guild || member.user.bot) return false;
+  if (!member?.guild) return false;
   const settings = getMemberGuardSettings(member.guild.id);
-  if (!settings.enabled) return false;
-  if (isWhitelisted(member, settings)) return false;
-  return settings.safeMode || isGuestMember(member) || isNewAccount(member, settings.newAccountDays);
+  return shouldUseStrictLinkGuardForMember({
+    member,
+    settings,
+    isGuest: isGuestMember(member),
+    isWhitelisted: isWhitelisted(member, settings)
+  });
 }
 
 function getRestrictionMessage() {
