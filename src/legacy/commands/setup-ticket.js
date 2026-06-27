@@ -1,10 +1,2 @@
-const legacy = require('../../legacy/commands/setupTicketLegacy');
-const setupService = require('../../services/community/communityService');
-
-module.exports = {
-  data: legacy.data,
-  async execute(interaction) {
-    const result = await setupService.setupTicket(interaction);
-    if (!result.ok) console.error('[setup-ticket]', result.error);
-  }
-};
+﻿const legacy = require('../../legacy/commands/setupTicketLegacy');
+module.exports = { data: legacy.data, execute: (interaction) => legacy.execute(interaction) };

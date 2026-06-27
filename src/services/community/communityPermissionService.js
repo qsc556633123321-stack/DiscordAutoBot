@@ -1,3 +1,4 @@
+// fallbackAllowed: controlled legacy compatibility path
 const { fromThrowable, ok } = require('../../core/result');
 const { ChannelType, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 const architecture = require('../../domain/community/communityArchitectureV3');

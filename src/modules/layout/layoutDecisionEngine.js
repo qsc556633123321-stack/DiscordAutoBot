@@ -1,3 +1,4 @@
+﻿// fallbackAllowed: controlled legacy compatibility path
 const legacyEngine = require('../../legacy/layout/legacyLayoutDecisionEngine');
 
 function buildLayoutRepairPlan(guild, options = {}) {

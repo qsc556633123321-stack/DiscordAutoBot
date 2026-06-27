@@ -1,3 +1,3 @@
-const service = require('../../services/community/communityService');
+﻿const executor = require('../../adapters/legacy/legacyCommunityCommandExecutor');
 const handler = require('./auto_organize');
-module.exports = { data: handler.data, execute: (interaction) => service.executeLegacy('autoOrganize', interaction) };
+module.exports = { data: handler.data, execute: (interaction) => executor.executeLegacy('autoOrganize', interaction) };

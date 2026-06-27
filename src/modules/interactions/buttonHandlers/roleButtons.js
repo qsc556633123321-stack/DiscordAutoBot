@@ -1,3 +1,4 @@
+﻿// fallbackAllowed: controlled legacy compatibility path
 const runtime = require('../../../legacy/interactions/legacyInteractionRuntime');
 
 const ROLE_BUTTON_PREFIXES = [

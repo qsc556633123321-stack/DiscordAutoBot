@@ -1,4 +1,5 @@
-﻿const adminButtons = require('./buttonHandlers/adminButtons');
+﻿// fallbackAllowed: controlled legacy compatibility path
+const adminButtons = require('./buttonHandlers/adminButtons');
 const gameButtons = require('./buttonHandlers/gameButtons');
 const panelButtons = require('./buttonHandlers/panelButtons');
 const roleButtons = require('./buttonHandlers/roleButtons');

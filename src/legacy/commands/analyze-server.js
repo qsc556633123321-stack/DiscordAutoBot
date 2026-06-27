@@ -1,3 +1,3 @@
-const service = require('../../services/community/communityService');
+﻿const executor = require('../../adapters/legacy/legacyCommunityCommandExecutor');
 const handler = require('./analyze_server');
-module.exports = { data: handler.data, execute: (interaction) => service.executeLegacy('analyzeServer', interaction) };
+module.exports = { data: handler.data, execute: (interaction) => executor.executeLegacy('analyzeServer', interaction) };

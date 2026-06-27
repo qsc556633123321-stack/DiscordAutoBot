@@ -1,3 +1,4 @@
+﻿// fallbackAllowed: controlled legacy compatibility path
 const { fromThrowable, ok } = require('../../core/result');
 const legacyBuilder = require('../../systems/communityV3Builder');
 const bootstrap = require('../../legacy/community/communityBootstrapSystem');

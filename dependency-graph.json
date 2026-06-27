@@ -1,27 +1,34 @@
 {
-  "generatedAt": "2026-06-27T13:47:32.146Z",
+  "generatedAt": "2026-06-27T14:11:03.257Z",
   "summary": {
-    "fileCount": 220,
-    "dependencyCount": 390,
+    "fileCount": 231,
+    "dependencyCount": 397,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
-    "architectureScore": 80,
+    "architectureScore": 100,
     "activeCommandDiscordApiCount": 0,
     "legacyCommandDiscordApiCount": 2,
+    "activeLargeFileCount": 0,
+    "oversizedCommandCount": 0,
+    "oversizedEventCount": 0,
+    "serviceDiscordApiCount": 0,
+    "serviceEntrypointImportCount": 0,
+    "legacyImportWithoutFallbackCount": 0,
+    "hardFailureCount": 0,
     "byType": {
-      "adapter": 3,
+      "adapter": 4,
       "command": 80,
       "config": 13,
       "core": 3,
-      "other": 32,
+      "other": 3,
       "domain": 6,
-      "event": 6,
+      "event": 7,
       "repository": 3,
-      "legacy": 18,
-      "router": 3,
+      "legacy": 27,
+      "router": 17,
+      "system": 57,
       "service": 8,
-      "system": 42,
       "util": 3
     }
   },
@@ -30,8 +37,23 @@
       "file": "src/adapters/legacy/legacyCommandAdapters.js",
       "type": "adapter",
       "lines": 9,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "type": "adapter",
+      "lines": 24,
+      "fallbackAllowed": true,
+      "dependencyCount": 7,
+      "localDependencyCount": 7,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -43,6 +65,7 @@
       "file": "src/adapters/legacy/legacyConfigAdapter.js",
       "type": "adapter",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -56,6 +79,7 @@
       "file": "src/adapters/legacy/legacyDataAdapter.js",
       "type": "adapter",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -69,6 +93,7 @@
       "file": "src/commands/admin.js",
       "type": "command",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -82,6 +107,7 @@
       "file": "src/commands/community.js",
       "type": "command",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -95,6 +121,7 @@
       "file": "src/commands/dev.js",
       "type": "command",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -108,6 +135,7 @@
       "file": "src/commands/game.js",
       "type": "command",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -121,6 +149,7 @@
       "file": "src/commands/panel.js",
       "type": "command",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -134,6 +163,7 @@
       "file": "src/commands/security.js",
       "type": "command",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -147,6 +177,7 @@
       "file": "src/commands/voice.js",
       "type": "command",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -160,6 +191,7 @@
       "file": "src/config/channelDesign.js",
       "type": "config",
       "lines": 157,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -173,6 +205,7 @@
       "file": "src/config/channelVisibilityRules.js",
       "type": "config",
       "lines": 149,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -186,6 +219,7 @@
       "file": "src/config/communityArchitectureV3.js",
       "type": "config",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -199,6 +233,7 @@
       "file": "src/config/communityLayout.js",
       "type": "config",
       "lines": 214,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -212,6 +247,7 @@
       "file": "src/config/communityRules.js",
       "type": "config",
       "lines": 260,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -225,6 +261,7 @@
       "file": "src/config/communityStructure.js",
       "type": "config",
       "lines": 92,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -238,6 +275,7 @@
       "file": "src/config/gameDomains.js",
       "type": "config",
       "lines": 43,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -251,6 +289,7 @@
       "file": "src/config/permissionTemplates.js",
       "type": "config",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -264,6 +303,7 @@
       "file": "src/config/rebuildTemplates.js",
       "type": "config",
       "lines": 124,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -277,6 +317,7 @@
       "file": "src/config/roleChannelAccess.js",
       "type": "config",
       "lines": 42,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -290,6 +331,7 @@
       "file": "src/config/roleDesign.js",
       "type": "config",
       "lines": 21,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -303,6 +345,7 @@
       "file": "src/config/serverDesignThemes.js",
       "type": "config",
       "lines": 22,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -316,6 +359,7 @@
       "file": "src/config/templates.js",
       "type": "config",
       "lines": 153,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -329,6 +373,7 @@
       "file": "src/core/constants.js",
       "type": "core",
       "lines": 5,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -342,6 +387,7 @@
       "file": "src/core/eventBus.js",
       "type": "core",
       "lines": 7,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -355,6 +401,7 @@
       "file": "src/core/result.js",
       "type": "core",
       "lines": 14,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -368,6 +415,7 @@
       "file": "src/deploy-commands.js",
       "type": "other",
       "lines": 40,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 1,
       "externalDependencyCount": 2,
@@ -381,6 +429,7 @@
       "file": "src/domain/community/communityArchitectureV3.js",
       "type": "domain",
       "lines": 180,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -394,6 +443,7 @@
       "file": "src/domain/community/permissionMatrix.js",
       "type": "domain",
       "lines": 88,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -407,6 +457,7 @@
       "file": "src/domain/games/gameCategoryPolicy.js",
       "type": "domain",
       "lines": 16,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -420,6 +471,7 @@
       "file": "src/domain/games/gameIdentityService.js",
       "type": "domain",
       "lines": 104,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -433,6 +485,7 @@
       "file": "src/domain/games/gameRegistry.js",
       "type": "domain",
       "lines": 15,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -446,6 +499,7 @@
       "file": "src/domain/security/securityPolicy.js",
       "type": "domain",
       "lines": 17,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -459,6 +513,7 @@
       "file": "src/events/error.js",
       "type": "event",
       "lines": 9,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -472,6 +527,7 @@
       "file": "src/events/guildMemberAdd.js",
       "type": "event",
       "lines": 29,
+      "fallbackAllowed": false,
       "dependencyCount": 4,
       "localDependencyCount": 3,
       "externalDependencyCount": 1,
@@ -485,6 +541,7 @@
       "file": "src/events/interactionCreate.js",
       "type": "event",
       "lines": 8,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -498,6 +555,7 @@
       "file": "src/events/messageCreate.js",
       "type": "event",
       "lines": 31,
+      "fallbackAllowed": false,
       "dependencyCount": 4,
       "localDependencyCount": 3,
       "externalDependencyCount": 1,
@@ -511,6 +569,7 @@
       "file": "src/events/ready.js",
       "type": "event",
       "lines": 23,
+      "fallbackAllowed": false,
       "dependencyCount": 6,
       "localDependencyCount": 5,
       "externalDependencyCount": 1,
@@ -523,9 +582,10 @@
     {
       "file": "src/events/voiceStateUpdate.js",
       "type": "event",
-      "lines": 155,
-      "dependencyCount": 7,
-      "localDependencyCount": 6,
+      "lines": 8,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
       "externalDependencyCount": 1,
       "exports": {
         "moduleExports": 1,
@@ -537,6 +597,7 @@
       "file": "src/index.js",
       "type": "other",
       "lines": 59,
+      "fallbackAllowed": false,
       "dependencyCount": 5,
       "localDependencyCount": 1,
       "externalDependencyCount": 4,
@@ -550,6 +611,7 @@
       "file": "src/infrastructure/discord/discordChannelRepository.js",
       "type": "repository",
       "lines": 33,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -563,6 +625,7 @@
       "file": "src/infrastructure/discord/discordPermissionWriter.js",
       "type": "repository",
       "lines": 23,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -576,6 +639,7 @@
       "file": "src/infrastructure/storage/jsonStore.js",
       "type": "repository",
       "lines": 32,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 0,
       "externalDependencyCount": 2,
@@ -589,6 +653,7 @@
       "file": "src/legacy/commands/ai-layout-repair.js",
       "type": "command",
       "lines": 107,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -602,6 +667,7 @@
       "file": "src/legacy/commands/ai-reorganize-server.js",
       "type": "command",
       "lines": 4,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -615,6 +681,7 @@
       "file": "src/legacy/commands/ai_reorganize_server.js",
       "type": "command",
       "lines": 140,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -628,6 +695,7 @@
       "file": "src/legacy/commands/analyze-server.js",
       "type": "command",
       "lines": 4,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -641,6 +709,7 @@
       "file": "src/legacy/commands/analyze_server.js",
       "type": "command",
       "lines": 174,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -654,6 +723,7 @@
       "file": "src/legacy/commands/announce.js",
       "type": "command",
       "lines": 64,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -667,6 +737,7 @@
       "file": "src/legacy/commands/announcement-pin-settings.js",
       "type": "command",
       "lines": 51,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -680,6 +751,7 @@
       "file": "src/legacy/commands/apply-role-permissions.js",
       "type": "command",
       "lines": 68,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -693,6 +765,7 @@
       "file": "src/legacy/commands/archive-inactive-games.js",
       "type": "command",
       "lines": 35,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -706,6 +779,7 @@
       "file": "src/legacy/commands/auto-organize.js",
       "type": "command",
       "lines": 4,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -719,6 +793,7 @@
       "file": "src/legacy/commands/automod-settings.js",
       "type": "command",
       "lines": 94,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -732,6 +807,7 @@
       "file": "src/legacy/commands/auto_organize.js",
       "type": "command",
       "lines": 132,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -745,6 +821,7 @@
       "file": "src/legacy/commands/bootstrap-community.js",
       "type": "command",
       "lines": 35,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -758,6 +835,7 @@
       "file": "src/legacy/commands/check-guest-visibility.js",
       "type": "command",
       "lines": 31,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -771,6 +849,7 @@
       "file": "src/legacy/commands/check-onboarding-visibility.js",
       "type": "command",
       "lines": 20,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -784,6 +863,7 @@
       "file": "src/legacy/commands/check-role-visibility.js",
       "type": "command",
       "lines": 23,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -797,6 +877,7 @@
       "file": "src/legacy/commands/cleanup-empty-categories.js",
       "type": "command",
       "lines": 68,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -810,6 +891,7 @@
       "file": "src/legacy/commands/cleanup-guest-roles.js",
       "type": "command",
       "lines": 94,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -823,6 +905,7 @@
       "file": "src/legacy/commands/community-about.js",
       "type": "command",
       "lines": 13,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -836,6 +919,7 @@
       "file": "src/legacy/commands/community-architect.js",
       "type": "command",
       "lines": 117,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -849,6 +933,7 @@
       "file": "src/legacy/commands/community-roadmap.js",
       "type": "command",
       "lines": 13,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -862,6 +947,7 @@
       "file": "src/legacy/commands/create-party.js",
       "type": "command",
       "lines": 92,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -875,6 +961,7 @@
       "file": "src/legacy/commands/debug-permissions.js",
       "type": "command",
       "lines": 23,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -888,6 +975,7 @@
       "file": "src/legacy/commands/dedupe-layout.js",
       "type": "command",
       "lines": 69,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -901,6 +989,7 @@
       "file": "src/legacy/commands/deep-cleanup.js",
       "type": "command",
       "lines": 4,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -914,6 +1003,7 @@
       "file": "src/legacy/commands/deep_cleanup.js",
       "type": "command",
       "lines": 136,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -927,6 +1017,7 @@
       "file": "src/legacy/commands/dev-audit-commands.js",
       "type": "command",
       "lines": 30,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 0,
       "externalDependencyCount": 2,
@@ -940,6 +1031,7 @@
       "file": "src/legacy/commands/factory-reset-server.js",
       "type": "command",
       "lines": 112,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -953,6 +1045,7 @@
       "file": "src/legacy/commands/fix-game-category.js",
       "type": "command",
       "lines": 72,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -966,6 +1059,7 @@
       "file": "src/legacy/commands/forget-channel-rule.js",
       "type": "command",
       "lines": 51,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -979,6 +1073,7 @@
       "file": "src/legacy/commands/game-registry-doctor.js",
       "type": "command",
       "lines": 89,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -992,6 +1087,7 @@
       "file": "src/legacy/commands/help-me-start.js",
       "type": "command",
       "lines": 50,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1005,6 +1101,7 @@
       "file": "src/legacy/commands/layout-doctor.js",
       "type": "command",
       "lines": 43,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1018,6 +1115,7 @@
       "file": "src/legacy/commands/learn-channel.js",
       "type": "command",
       "lines": 72,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1031,6 +1129,7 @@
       "file": "src/legacy/commands/linkguard-settings.js",
       "type": "command",
       "lines": 84,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1044,6 +1143,7 @@
       "file": "src/legacy/commands/linkguard-whitelist.js",
       "type": "command",
       "lines": 83,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1057,6 +1157,7 @@
       "file": "src/legacy/commands/lock.js",
       "type": "command",
       "lines": 32,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1070,6 +1171,7 @@
       "file": "src/legacy/commands/memberguard-release.js",
       "type": "command",
       "lines": 40,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1083,6 +1185,7 @@
       "file": "src/legacy/commands/memberguard-settings.js",
       "type": "command",
       "lines": 82,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1096,6 +1199,7 @@
       "file": "src/legacy/commands/memberguard-status.js",
       "type": "command",
       "lines": 35,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1109,6 +1213,7 @@
       "file": "src/legacy/commands/memory-list.js",
       "type": "command",
       "lines": 50,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1122,6 +1227,7 @@
       "file": "src/legacy/commands/move-channel.js",
       "type": "command",
       "lines": 63,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1135,6 +1241,7 @@
       "file": "src/legacy/commands/plan-cleanup.js",
       "type": "command",
       "lines": 4,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -1148,6 +1255,7 @@
       "file": "src/legacy/commands/plan_cleanup.js",
       "type": "command",
       "lines": 136,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -1161,6 +1269,7 @@
       "file": "src/legacy/commands/polish-server-design.js",
       "type": "command",
       "lines": 115,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1174,6 +1283,7 @@
       "file": "src/legacy/commands/rebuild-community-layout.js",
       "type": "command",
       "lines": 35,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1187,6 +1297,7 @@
       "file": "src/legacy/commands/rebuild-community-v3.js",
       "type": "command",
       "lines": 63,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1200,6 +1311,7 @@
       "file": "src/legacy/commands/rebuild-server.js",
       "type": "command",
       "lines": 4,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -1213,6 +1325,7 @@
       "file": "src/legacy/commands/rebuild_server.js",
       "type": "command",
       "lines": 128,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1226,6 +1339,7 @@
       "file": "src/legacy/commands/refresh-community-guide.js",
       "type": "command",
       "lines": 21,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1239,6 +1353,7 @@
       "file": "src/legacy/commands/rename-channel.js",
       "type": "command",
       "lines": 69,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1252,6 +1367,7 @@
       "file": "src/legacy/commands/repair-channel-permissions.js",
       "type": "command",
       "lines": 85,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1265,6 +1381,7 @@
       "file": "src/legacy/commands/restore-active-channels.js",
       "type": "command",
       "lines": 92,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1278,6 +1395,7 @@
       "file": "src/legacy/commands/role-settings.js",
       "type": "command",
       "lines": 51,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1291,6 +1409,7 @@
       "file": "src/legacy/commands/setup-channel-panels.js",
       "type": "command",
       "lines": 104,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1304,6 +1423,7 @@
       "file": "src/legacy/commands/setup-community-guide.js",
       "type": "command",
       "lines": 31,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1317,6 +1437,7 @@
       "file": "src/legacy/commands/setup-game.js",
       "type": "command",
       "lines": 84,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1330,6 +1451,7 @@
       "file": "src/legacy/commands/setup-roles.js",
       "type": "command",
       "lines": 52,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1342,9 +1464,10 @@
     {
       "file": "src/legacy/commands/setup-server.js",
       "type": "command",
-      "lines": 11,
-      "dependencyCount": 2,
-      "localDependencyCount": 2,
+      "lines": 3,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -1355,9 +1478,10 @@
     {
       "file": "src/legacy/commands/setup-ticket.js",
       "type": "command",
-      "lines": 11,
-      "dependencyCount": 2,
-      "localDependencyCount": 2,
+      "lines": 3,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -1369,6 +1493,7 @@
       "file": "src/legacy/commands/setup-voicehub.js",
       "type": "command",
       "lines": 60,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1382,6 +1507,7 @@
       "file": "src/legacy/commands/setupServerLegacy.js",
       "type": "command",
       "lines": 300,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1395,6 +1521,7 @@
       "file": "src/legacy/commands/setupTicketLegacy.js",
       "type": "command",
       "lines": 173,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -1408,6 +1535,7 @@
       "file": "src/legacy/commands/suggest-game.js",
       "type": "command",
       "lines": 39,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1421,6 +1549,7 @@
       "file": "src/legacy/commands/tempvoice-doctor.js",
       "type": "command",
       "lines": 106,
+      "fallbackAllowed": false,
       "dependencyCount": 5,
       "localDependencyCount": 3,
       "externalDependencyCount": 2,
@@ -1434,6 +1563,7 @@
       "file": "src/legacy/commands/tempvoice-panel.js",
       "type": "command",
       "lines": 73,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1447,6 +1577,7 @@
       "file": "src/legacy/commands/tempvoice-settings.js",
       "type": "command",
       "lines": 90,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1460,6 +1591,7 @@
       "file": "src/legacy/commands/unlock.js",
       "type": "command",
       "lines": 32,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1473,6 +1605,7 @@
       "file": "src/legacy/commands/voice-leaderboard.js",
       "type": "command",
       "lines": 45,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1486,6 +1619,7 @@
       "file": "src/legacy/commands/voice-profile.js",
       "type": "command",
       "lines": 48,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1499,6 +1633,7 @@
       "file": "src/legacy/commands/voice-room-info.js",
       "type": "command",
       "lines": 49,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1512,6 +1647,7 @@
       "file": "src/legacy/commands/voice-status.js",
       "type": "command",
       "lines": 53,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1525,6 +1661,7 @@
       "file": "src/legacy/commands/welcome-settings.js",
       "type": "command",
       "lines": 64,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1538,6 +1675,7 @@
       "file": "src/legacy/community/communityBootstrapSystem.js",
       "type": "legacy",
       "lines": 814,
+      "fallbackAllowed": false,
       "dependencyCount": 10,
       "localDependencyCount": 7,
       "externalDependencyCount": 3,
@@ -1551,6 +1689,7 @@
       "file": "src/legacy/community/serverPolisher.js",
       "type": "legacy",
       "lines": 504,
+      "fallbackAllowed": false,
       "dependencyCount": 7,
       "localDependencyCount": 6,
       "externalDependencyCount": 1,
@@ -1564,6 +1703,7 @@
       "file": "src/legacy/community/serverRebuilder.js",
       "type": "legacy",
       "lines": 365,
+      "fallbackAllowed": false,
       "dependencyCount": 9,
       "localDependencyCount": 8,
       "externalDependencyCount": 1,
@@ -1577,6 +1717,7 @@
       "file": "src/legacy/deprecated/services/community/channelMutationService.js",
       "type": "legacy",
       "lines": 10,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1590,6 +1731,7 @@
       "file": "src/legacy/deprecated/services/community/channelPanelService.js",
       "type": "legacy",
       "lines": 13,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
       "externalDependencyCount": 0,
@@ -1603,6 +1745,7 @@
       "file": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
       "type": "legacy",
       "lines": 22,
+      "fallbackAllowed": false,
       "dependencyCount": 7,
       "localDependencyCount": 7,
       "externalDependencyCount": 0,
@@ -1616,6 +1759,7 @@
       "file": "src/legacy/deprecated/services/community/legacySetupService.js",
       "type": "legacy",
       "lines": 18,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 3,
       "externalDependencyCount": 0,
@@ -1629,6 +1773,7 @@
       "file": "src/legacy/events/channelDelete.js",
       "type": "legacy",
       "lines": 14,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1642,6 +1787,7 @@
       "file": "src/legacy/events/guildMemberUpdate.js",
       "type": "legacy",
       "lines": 17,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1655,6 +1801,7 @@
       "file": "src/legacy/games/gameChannels.js",
       "type": "legacy",
       "lines": 775,
+      "fallbackAllowed": false,
       "dependencyCount": 4,
       "localDependencyCount": 2,
       "externalDependencyCount": 2,
@@ -1667,7 +1814,8 @@
     {
       "file": "src/legacy/interactions/legacyInteractionDispatcher.js",
       "type": "legacy",
-      "lines": 4,
+      "lines": 10,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1681,6 +1829,7 @@
       "file": "src/legacy/interactions/legacyInteractionRuntime.js",
       "type": "legacy",
       "lines": 2066,
+      "fallbackAllowed": false,
       "dependencyCount": 27,
       "localDependencyCount": 26,
       "externalDependencyCount": 1,
@@ -1693,7 +1842,8 @@
     {
       "file": "src/legacy/layout/legacyLayoutDecisionEngine.js",
       "type": "legacy",
-      "lines": 4,
+      "lines": 22,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1707,6 +1857,7 @@
       "file": "src/legacy/layout/legacyLayoutRuntime.js",
       "type": "legacy",
       "lines": 1058,
+      "fallbackAllowed": false,
       "dependencyCount": 11,
       "localDependencyCount": 8,
       "externalDependencyCount": 3,
@@ -1720,6 +1871,7 @@
       "file": "src/legacy/permissions/communityV3PermissionBuilder.js",
       "type": "legacy",
       "lines": 86,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1733,6 +1885,7 @@
       "file": "src/legacy/permissions/guestGate.js",
       "type": "legacy",
       "lines": 290,
+      "fallbackAllowed": false,
       "dependencyCount": 7,
       "localDependencyCount": 6,
       "externalDependencyCount": 1,
@@ -1746,6 +1899,7 @@
       "file": "src/legacy/permissions/permissionTemplates.js",
       "type": "legacy",
       "lines": 69,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -1759,6 +1913,7 @@
       "file": "src/legacy/permissions/rolePermissions.js",
       "type": "legacy",
       "lines": 312,
+      "fallbackAllowed": false,
       "dependencyCount": 5,
       "localDependencyCount": 4,
       "externalDependencyCount": 1,
@@ -1769,9 +1924,136 @@
       }
     },
     {
+      "file": "src/legacy/systemRuntimes/aiServerReorganizerRuntime.js",
+      "type": "legacy",
+      "lines": 711,
+      "fallbackAllowed": false,
+      "dependencyCount": 7,
+      "localDependencyCount": 5,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/channelPanelsRuntime.js",
+      "type": "legacy",
+      "lines": 421,
+      "fallbackAllowed": false,
+      "dependencyCount": 4,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "type": "legacy",
+      "lines": 513,
+      "fallbackAllowed": false,
+      "dependencyCount": 12,
+      "localDependencyCount": 10,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "type": "legacy",
+      "lines": 466,
+      "fallbackAllowed": false,
+      "dependencyCount": 9,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "type": "legacy",
+      "lines": 626,
+      "fallbackAllowed": false,
+      "dependencyCount": 10,
+      "localDependencyCount": 7,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/linkGuardRuntime.js",
+      "type": "legacy",
+      "lines": 484,
+      "fallbackAllowed": false,
+      "dependencyCount": 7,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/organizerRuntime.js",
+      "type": "legacy",
+      "lines": 446,
+      "fallbackAllowed": false,
+      "dependencyCount": 4,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/roleManagerRuntime.js",
+      "type": "legacy",
+      "lines": 501,
+      "fallbackAllowed": false,
+      "dependencyCount": 6,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "type": "legacy",
+      "lines": 936,
+      "fallbackAllowed": false,
+      "dependencyCount": 8,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/modules/commands/aliasRegistry.js",
       "type": "router",
       "lines": 17,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 0,
       "externalDependencyCount": 2,
@@ -1785,6 +2067,7 @@
       "file": "src/modules/commands/commandRegistry.js",
       "type": "router",
       "lines": 59,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -1798,6 +2081,7 @@
       "file": "src/modules/commands/commandRouter.js",
       "type": "router",
       "lines": 82,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1808,9 +2092,24 @@
       }
     },
     {
+      "file": "src/modules/events/voiceStateUpdateGateway.js",
+      "type": "event",
+      "lines": 155,
+      "fallbackAllowed": false,
+      "dependencyCount": 7,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/modules/interactions/autocompleteInteractionHandler.js",
-      "type": "other",
+      "type": "router",
       "lines": 9,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1822,8 +2121,9 @@
     },
     {
       "file": "src/modules/interactions/buttonHandlers/adminButtons.js",
-      "type": "other",
-      "lines": 49,
+      "type": "router",
+      "lines": 50,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1835,8 +2135,9 @@
     },
     {
       "file": "src/modules/interactions/buttonHandlers/gameButtons.js",
-      "type": "other",
-      "lines": 18,
+      "type": "router",
+      "lines": 19,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1848,8 +2149,9 @@
     },
     {
       "file": "src/modules/interactions/buttonHandlers/panelButtons.js",
-      "type": "other",
-      "lines": 12,
+      "type": "router",
+      "lines": 13,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1861,8 +2163,9 @@
     },
     {
       "file": "src/modules/interactions/buttonHandlers/roleButtons.js",
-      "type": "other",
-      "lines": 19,
+      "type": "router",
+      "lines": 20,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1874,8 +2177,9 @@
     },
     {
       "file": "src/modules/interactions/buttonHandlers/voiceButtons.js",
-      "type": "other",
-      "lines": 14,
+      "type": "router",
+      "lines": 15,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1887,8 +2191,9 @@
     },
     {
       "file": "src/modules/interactions/buttonInteractionHandler.js",
-      "type": "other",
-      "lines": 24,
+      "type": "router",
+      "lines": 25,
+      "fallbackAllowed": true,
       "dependencyCount": 6,
       "localDependencyCount": 6,
       "externalDependencyCount": 0,
@@ -1900,8 +2205,9 @@
     },
     {
       "file": "src/modules/interactions/interactionErrorHandler.js",
-      "type": "other",
+      "type": "router",
       "lines": 16,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1913,8 +2219,9 @@
     },
     {
       "file": "src/modules/interactions/interactionGateway.js",
-      "type": "other",
+      "type": "router",
       "lines": 22,
+      "fallbackAllowed": false,
       "dependencyCount": 6,
       "localDependencyCount": 6,
       "externalDependencyCount": 0,
@@ -1926,8 +2233,9 @@
     },
     {
       "file": "src/modules/interactions/interactionResponder.js",
-      "type": "other",
+      "type": "router",
       "lines": 44,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -1939,8 +2247,9 @@
     },
     {
       "file": "src/modules/interactions/modalInteractionHandler.js",
-      "type": "other",
+      "type": "router",
       "lines": 9,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1952,8 +2261,9 @@
     },
     {
       "file": "src/modules/interactions/permissionGuard.js",
-      "type": "other",
+      "type": "router",
       "lines": 22,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -1965,8 +2275,9 @@
     },
     {
       "file": "src/modules/interactions/selectMenuInteractionHandler.js",
-      "type": "other",
+      "type": "router",
       "lines": 9,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1978,8 +2289,9 @@
     },
     {
       "file": "src/modules/interactions/slashInteractionHandler.js",
-      "type": "other",
+      "type": "router",
       "lines": 9,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -1991,8 +2303,9 @@
     },
     {
       "file": "src/modules/layout/layoutActionPlanner.js",
-      "type": "other",
+      "type": "system",
       "lines": 9,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2004,8 +2317,9 @@
     },
     {
       "file": "src/modules/layout/layoutArchivePolicy.js",
-      "type": "other",
+      "type": "system",
       "lines": 12,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2017,8 +2331,9 @@
     },
     {
       "file": "src/modules/layout/layoutChannelClassifier.js",
-      "type": "other",
+      "type": "system",
       "lines": 12,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2030,8 +2345,9 @@
     },
     {
       "file": "src/modules/layout/layoutDecisionEngine.js",
-      "type": "other",
-      "lines": 21,
+      "type": "system",
+      "lines": 22,
+      "fallbackAllowed": true,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2043,8 +2359,9 @@
     },
     {
       "file": "src/modules/layout/layoutDecisionTypes.js",
-      "type": "other",
+      "type": "system",
       "lines": 17,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2056,8 +2373,9 @@
     },
     {
       "file": "src/modules/layout/layoutDuplicateDetector.js",
-      "type": "other",
+      "type": "system",
       "lines": 10,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2069,8 +2387,9 @@
     },
     {
       "file": "src/modules/layout/layoutPermissionPolicy.js",
-      "type": "other",
+      "type": "system",
       "lines": 14,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2082,8 +2401,9 @@
     },
     {
       "file": "src/modules/layout/layoutRenamePolicy.js",
-      "type": "other",
+      "type": "system",
       "lines": 10,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2095,8 +2415,9 @@
     },
     {
       "file": "src/modules/layout/layoutRiskEvaluator.js",
-      "type": "other",
+      "type": "system",
       "lines": 10,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2108,8 +2429,9 @@
     },
     {
       "file": "src/modules/layout/layoutRuleRunner.js",
-      "type": "other",
+      "type": "system",
       "lines": 32,
+      "fallbackAllowed": false,
       "dependencyCount": 6,
       "localDependencyCount": 6,
       "externalDependencyCount": 0,
@@ -2121,8 +2443,9 @@
     },
     {
       "file": "src/modules/layout/rules/deleteCandidateRule.js",
-      "type": "other",
+      "type": "system",
       "lines": 16,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2134,8 +2457,9 @@
     },
     {
       "file": "src/modules/layout/rules/duplicateGameRule.js",
-      "type": "other",
+      "type": "system",
       "lines": 21,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2147,8 +2471,9 @@
     },
     {
       "file": "src/modules/layout/rules/guestGateRule.js",
-      "type": "other",
+      "type": "system",
       "lines": 15,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2160,8 +2485,9 @@
     },
     {
       "file": "src/modules/layout/rules/orphanChannelRule.js",
-      "type": "other",
+      "type": "system",
       "lines": 14,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2173,8 +2499,9 @@
     },
     {
       "file": "src/modules/layout/rules/renameNormalizeRule.js",
-      "type": "other",
+      "type": "system",
       "lines": 23,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2187,7 +2514,8 @@
     {
       "file": "src/services/community/communityPermissionService.js",
       "type": "service",
-      "lines": 316,
+      "lines": 317,
+      "fallbackAllowed": true,
       "dependencyCount": 9,
       "localDependencyCount": 8,
       "externalDependencyCount": 1,
@@ -2200,7 +2528,8 @@
     {
       "file": "src/services/community/communityRebuildService.js",
       "type": "service",
-      "lines": 74,
+      "lines": 75,
+      "fallbackAllowed": true,
       "dependencyCount": 5,
       "localDependencyCount": 5,
       "externalDependencyCount": 0,
@@ -2213,9 +2542,10 @@
     {
       "file": "src/services/community/communityService.js",
       "type": "service",
-      "lines": 35,
-      "dependencyCount": 11,
-      "localDependencyCount": 11,
+      "lines": 21,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 3,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -2226,7 +2556,8 @@
     {
       "file": "src/services/games/gameCategoryService.js",
       "type": "service",
-      "lines": 38,
+      "lines": 39,
+      "fallbackAllowed": true,
       "dependencyCount": 4,
       "localDependencyCount": 4,
       "externalDependencyCount": 0,
@@ -2240,6 +2571,7 @@
       "file": "src/services/security/linkGuardService.js",
       "type": "service",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2253,6 +2585,7 @@
       "file": "src/services/security/memberGuardService.js",
       "type": "service",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2266,6 +2599,7 @@
       "file": "src/services/security/securityDecisionService.js",
       "type": "service",
       "lines": 10,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2279,6 +2613,7 @@
       "file": "src/services/voice/voiceHubService.js",
       "type": "service",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2292,6 +2627,7 @@
       "file": "src/systems/activeChannelProtector.js",
       "type": "system",
       "lines": 246,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -2305,6 +2641,7 @@
       "file": "src/systems/aiLayoutPlanner.js",
       "type": "system",
       "lines": 96,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -2318,6 +2655,7 @@
       "file": "src/systems/aiOrganizer.js",
       "type": "system",
       "lines": 89,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -2330,10 +2668,11 @@
     {
       "file": "src/systems/aiServerReorganizer.js",
       "type": "system",
-      "lines": 711,
-      "dependencyCount": 7,
-      "localDependencyCount": 5,
-      "externalDependencyCount": 2,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2344,6 +2683,7 @@
       "file": "src/systems/announcementPin.js",
       "type": "system",
       "lines": 108,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 0,
       "externalDependencyCount": 2,
@@ -2357,6 +2697,7 @@
       "file": "src/systems/autoMod.js",
       "type": "system",
       "lines": 275,
+      "fallbackAllowed": false,
       "dependencyCount": 4,
       "localDependencyCount": 1,
       "externalDependencyCount": 3,
@@ -2370,6 +2711,7 @@
       "file": "src/systems/categoryCleaner.js",
       "type": "system",
       "lines": 234,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -2382,10 +2724,11 @@
     {
       "file": "src/systems/channelPanels.js",
       "type": "system",
-      "lines": 421,
-      "dependencyCount": 4,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 3,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2396,6 +2739,7 @@
       "file": "src/systems/communityArchitect.js",
       "type": "system",
       "lines": 90,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -2409,6 +2753,7 @@
       "file": "src/systems/communityArchitectExecutor.js",
       "type": "system",
       "lines": 250,
+      "fallbackAllowed": false,
       "dependencyCount": 5,
       "localDependencyCount": 4,
       "externalDependencyCount": 1,
@@ -2422,6 +2767,7 @@
       "file": "src/systems/communityArchitectPlanner.js",
       "type": "system",
       "lines": 342,
+      "fallbackAllowed": false,
       "dependencyCount": 8,
       "localDependencyCount": 6,
       "externalDependencyCount": 2,
@@ -2435,6 +2781,7 @@
       "file": "src/systems/communityBootstrapSystem.js",
       "type": "system",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2448,6 +2795,7 @@
       "file": "src/systems/communityConcierge.js",
       "type": "system",
       "lines": 388,
+      "fallbackAllowed": false,
       "dependencyCount": 4,
       "localDependencyCount": 1,
       "externalDependencyCount": 3,
@@ -2461,6 +2809,7 @@
       "file": "src/systems/communityHealthScorer.js",
       "type": "system",
       "lines": 124,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -2474,6 +2823,7 @@
       "file": "src/systems/communityStructureManager.js",
       "type": "system",
       "lines": 219,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -2486,10 +2836,11 @@
     {
       "file": "src/systems/communityV3Builder.js",
       "type": "system",
-      "lines": 513,
-      "dependencyCount": 12,
-      "localDependencyCount": 10,
-      "externalDependencyCount": 2,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2500,6 +2851,7 @@
       "file": "src/systems/communityV3PermissionBuilder.js",
       "type": "system",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2513,6 +2865,7 @@
       "file": "src/systems/communityV3Validator.js",
       "type": "system",
       "lines": 46,
+      "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
       "externalDependencyCount": 1,
@@ -2526,6 +2879,7 @@
       "file": "src/systems/deepCleanupExecutor.js",
       "type": "system",
       "lines": 214,
+      "fallbackAllowed": false,
       "dependencyCount": 5,
       "localDependencyCount": 4,
       "externalDependencyCount": 1,
@@ -2539,6 +2893,7 @@
       "file": "src/systems/deepCleanupPlanner.js",
       "type": "system",
       "lines": 295,
+      "fallbackAllowed": false,
       "dependencyCount": 4,
       "localDependencyCount": 3,
       "externalDependencyCount": 1,
@@ -2551,10 +2906,11 @@
     {
       "file": "src/systems/factoryReset.js",
       "type": "system",
-      "lines": 466,
-      "dependencyCount": 9,
-      "localDependencyCount": 6,
-      "externalDependencyCount": 3,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2565,6 +2921,7 @@
       "file": "src/systems/gameChannels.js",
       "type": "system",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2577,10 +2934,11 @@
     {
       "file": "src/systems/gameSuggestionSystem.js",
       "type": "system",
-      "lines": 626,
-      "dependencyCount": 10,
-      "localDependencyCount": 7,
-      "externalDependencyCount": 3,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2591,6 +2949,7 @@
       "file": "src/systems/guestGate.js",
       "type": "system",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2604,6 +2963,7 @@
       "file": "src/systems/interactiveGuideSystem.js",
       "type": "system",
       "lines": 81,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
       "externalDependencyCount": 1,
@@ -2617,6 +2977,7 @@
       "file": "src/systems/layoutDecisionEngine.js",
       "type": "system",
       "lines": 2,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2630,6 +2991,7 @@
       "file": "src/systems/lfgSystem.js",
       "type": "system",
       "lines": 342,
+      "fallbackAllowed": false,
       "dependencyCount": 6,
       "localDependencyCount": 3,
       "externalDependencyCount": 3,
@@ -2642,10 +3004,11 @@
     {
       "file": "src/systems/linkGuard.js",
       "type": "system",
-      "lines": 484,
-      "dependencyCount": 7,
-      "localDependencyCount": 4,
-      "externalDependencyCount": 3,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2656,6 +3019,7 @@
       "file": "src/systems/memberGuard.js",
       "type": "system",
       "lines": 356,
+      "fallbackAllowed": false,
       "dependencyCount": 7,
       "localDependencyCount": 4,
       "externalDependencyCount": 3,
@@ -2669,6 +3033,7 @@
       "file": "src/systems/nightCrewSystem.js",
       "type": "system",
       "lines": 84,
+      "fallbackAllowed": false,
       "dependencyCount": 7,
       "localDependencyCount": 4,
       "externalDependencyCount": 3,
@@ -2681,10 +3046,11 @@
     {
       "file": "src/systems/organizer.js",
       "type": "system",
-      "lines": 446,
-      "dependencyCount": 4,
-      "localDependencyCount": 3,
-      "externalDependencyCount": 1,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2695,6 +3061,7 @@
       "file": "src/systems/personaMessageSystem.js",
       "type": "system",
       "lines": 98,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -2707,10 +3074,11 @@
     {
       "file": "src/systems/roleManager.js",
       "type": "system",
-      "lines": 501,
-      "dependencyCount": 6,
-      "localDependencyCount": 3,
-      "externalDependencyCount": 3,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2721,6 +3089,7 @@
       "file": "src/systems/rolePermissions.js",
       "type": "system",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2734,6 +3103,7 @@
       "file": "src/systems/serverLogs.js",
       "type": "system",
       "lines": 97,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
@@ -2747,6 +3117,7 @@
       "file": "src/systems/serverMemory.js",
       "type": "system",
       "lines": 119,
+      "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 0,
       "externalDependencyCount": 2,
@@ -2760,6 +3131,7 @@
       "file": "src/systems/serverPolisher.js",
       "type": "system",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2773,6 +3145,7 @@
       "file": "src/systems/serverRebuilder.js",
       "type": "system",
       "lines": 3,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2785,10 +3158,11 @@
     {
       "file": "src/systems/tempVoice.js",
       "type": "system",
-      "lines": 936,
-      "dependencyCount": 8,
-      "localDependencyCount": 6,
-      "externalDependencyCount": 2,
+      "lines": 3,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2799,6 +3173,7 @@
       "file": "src/systems/voiceActivitySystem.js",
       "type": "system",
       "lines": 336,
+      "fallbackAllowed": false,
       "dependencyCount": 5,
       "localDependencyCount": 3,
       "externalDependencyCount": 2,
@@ -2812,6 +3187,7 @@
       "file": "src/systems/voiceHub.js",
       "type": "system",
       "lines": 249,
+      "fallbackAllowed": false,
       "dependencyCount": 5,
       "localDependencyCount": 2,
       "externalDependencyCount": 3,
@@ -2825,6 +3201,7 @@
       "file": "src/systems/welcomeSystem.js",
       "type": "system",
       "lines": 303,
+      "fallbackAllowed": false,
       "dependencyCount": 4,
       "localDependencyCount": 1,
       "externalDependencyCount": 3,
@@ -2838,6 +3215,7 @@
       "file": "src/tests/fixtures/serviceFacade.js",
       "type": "other",
       "lines": 20,
+      "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2851,6 +3229,7 @@
       "file": "src/utils/gameEmojis.js",
       "type": "util",
       "lines": 14,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2864,6 +3243,7 @@
       "file": "src/utils/interactionReplies.js",
       "type": "util",
       "lines": 53,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2877,6 +3257,7 @@
       "file": "src/utils/voiceStats.js",
       "type": "util",
       "lines": 106,
+      "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
@@ -2897,6 +3278,41 @@
       "from": "src/adapters/legacy/legacyCommandAdapters.js",
       "to": "src/services/community/communityRebuildService.js",
       "specifier": "../../services/community/communityRebuildService"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "to": "src/legacy/commands/analyze_server.js",
+      "specifier": "../../legacy/commands/analyze_server"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "to": "src/legacy/commands/ai_reorganize_server.js",
+      "specifier": "../../legacy/commands/ai_reorganize_server"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "to": "src/legacy/commands/auto_organize.js",
+      "specifier": "../../legacy/commands/auto_organize"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "to": "src/legacy/commands/deep_cleanup.js",
+      "specifier": "../../legacy/commands/deep_cleanup"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "to": "src/legacy/commands/plan_cleanup.js",
+      "specifier": "../../legacy/commands/plan_cleanup"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "to": "src/legacy/commands/rebuild_server.js",
+      "specifier": "../../legacy/commands/rebuild_server"
     },
     {
       "from": "src/adapters/legacy/legacyConfigAdapter.js",
@@ -3055,33 +3471,8 @@
     },
     {
       "from": "src/events/voiceStateUpdate.js",
-      "to": "src/systems/tempVoice.js",
-      "specifier": "../systems/tempVoice"
-    },
-    {
-      "from": "src/events/voiceStateUpdate.js",
-      "to": "src/services/voice/voiceHubService.js",
-      "specifier": "../services/voice/voiceHubService"
-    },
-    {
-      "from": "src/events/voiceStateUpdate.js",
-      "to": "src/systems/lfgSystem.js",
-      "specifier": "../systems/lfgSystem"
-    },
-    {
-      "from": "src/events/voiceStateUpdate.js",
-      "to": "src/services/security/memberGuardService.js",
-      "specifier": "../services/security/memberGuardService"
-    },
-    {
-      "from": "src/events/voiceStateUpdate.js",
-      "to": "src/systems/voiceActivitySystem.js",
-      "specifier": "../systems/voiceActivitySystem"
-    },
-    {
-      "from": "src/events/voiceStateUpdate.js",
-      "to": "src/systems/nightCrewSystem.js",
-      "specifier": "../systems/nightCrewSystem"
+      "to": "src/modules/events/voiceStateUpdateGateway.js",
+      "specifier": "../modules/events/voiceStateUpdateGateway"
     },
     {
       "from": "src/index.js",
@@ -3120,8 +3511,8 @@
     },
     {
       "from": "src/legacy/commands/ai-reorganize-server.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
+      "to": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "specifier": "../../adapters/legacy/legacyCommunityCommandExecutor"
     },
     {
       "from": "src/legacy/commands/ai-reorganize-server.js",
@@ -3135,8 +3526,8 @@
     },
     {
       "from": "src/legacy/commands/analyze-server.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
+      "to": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "specifier": "../../adapters/legacy/legacyCommunityCommandExecutor"
     },
     {
       "from": "src/legacy/commands/analyze-server.js",
@@ -3160,8 +3551,8 @@
     },
     {
       "from": "src/legacy/commands/auto-organize.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
+      "to": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "specifier": "../../adapters/legacy/legacyCommunityCommandExecutor"
     },
     {
       "from": "src/legacy/commands/auto-organize.js",
@@ -3255,8 +3646,8 @@
     },
     {
       "from": "src/legacy/commands/deep-cleanup.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
+      "to": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "specifier": "../../adapters/legacy/legacyCommunityCommandExecutor"
     },
     {
       "from": "src/legacy/commands/deep-cleanup.js",
@@ -3360,8 +3751,8 @@
     },
     {
       "from": "src/legacy/commands/plan-cleanup.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
+      "to": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "specifier": "../../adapters/legacy/legacyCommunityCommandExecutor"
     },
     {
       "from": "src/legacy/commands/plan-cleanup.js",
@@ -3390,8 +3781,8 @@
     },
     {
       "from": "src/legacy/commands/rebuild-server.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
+      "to": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+      "specifier": "../../adapters/legacy/legacyCommunityCommandExecutor"
     },
     {
       "from": "src/legacy/commands/rebuild-server.js",
@@ -3459,19 +3850,9 @@
       "specifier": "../../legacy/commands/setupServerLegacy"
     },
     {
-      "from": "src/legacy/commands/setup-server.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
-    },
-    {
       "from": "src/legacy/commands/setup-ticket.js",
       "to": "src/legacy/commands/setupTicketLegacy.js",
       "specifier": "../../legacy/commands/setupTicketLegacy"
-    },
-    {
-      "from": "src/legacy/commands/setup-ticket.js",
-      "to": "src/services/community/communityService.js",
-      "specifier": "../../services/community/communityService"
     },
     {
       "from": "src/legacy/commands/setup-voicehub.js",
@@ -3989,6 +4370,231 @@
       "specifier": "../community/communityBootstrapSystem"
     },
     {
+      "from": "src/legacy/systemRuntimes/aiServerReorganizerRuntime.js",
+      "to": "src/config/roleChannelAccess.js",
+      "specifier": "../../config/roleChannelAccess"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/aiServerReorganizerRuntime.js",
+      "to": "src/systems/categoryCleaner.js",
+      "specifier": "../../systems/categoryCleaner"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/aiServerReorganizerRuntime.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/aiServerReorganizerRuntime.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/aiServerReorganizerRuntime.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "../../systems/activeChannelProtector"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/channelPanelsRuntime.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/config/communityArchitectureV3.js",
+      "specifier": "../../config/communityArchitectureV3"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/systems/communityV3PermissionBuilder.js",
+      "specifier": "../../systems/communityV3PermissionBuilder"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../systems/channelPanels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/systems/communityV3Validator.js",
+      "specifier": "../../systems/communityV3Validator"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "to": "src/systems/serverRebuilder.js",
+      "specifier": "../../systems/serverRebuilder"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../systems/channelPanels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "to": "src/systems/rolePermissions.js",
+      "specifier": "../../systems/rolePermissions"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "to": "src/services/community/communityPermissionService.js",
+      "specifier": "../../services/community/communityPermissionService"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "../../systems/activeChannelProtector"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "to": "src/systems/communityStructureManager.js",
+      "specifier": "../../systems/communityStructureManager"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "to": "src/systems/voiceHub.js",
+      "specifier": "../../systems/voiceHub"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../systems/channelPanels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "to": "src/systems/personaMessageSystem.js",
+      "specifier": "../../systems/personaMessageSystem"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/linkGuardRuntime.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/linkGuardRuntime.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/linkGuardRuntime.js",
+      "to": "src/config/gameDomains.js",
+      "specifier": "../../config/gameDomains"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/linkGuardRuntime.js",
+      "to": "src/domain/security/securityPolicy.js",
+      "specifier": "../../domain/security/securityPolicy"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/organizerRuntime.js",
+      "to": "src/systems/serverMemory.js",
+      "specifier": "../../systems/serverMemory"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/organizerRuntime.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/organizerRuntime.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/roleManagerRuntime.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/roleManagerRuntime.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/roleManagerRuntime.js",
+      "to": "src/domain/community/permissionMatrix.js",
+      "specifier": "../../domain/community/permissionMatrix"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "to": "src/systems/lfgSystem.js",
+      "specifier": "../../systems/lfgSystem"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "to": "src/core/eventBus.js",
+      "specifier": "../../core/eventBus"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../../infrastructure/storage/jsonStore"
+    },
+    {
       "from": "src/modules/commands/commandRegistry.js",
       "to": "src/modules/commands/aliasRegistry.js",
       "specifier": "./aliasRegistry"
@@ -4002,6 +4608,36 @@
       "from": "src/modules/commands/commandRouter.js",
       "to": "src/modules/commands/aliasRegistry.js",
       "specifier": "./aliasRegistry"
+    },
+    {
+      "from": "src/modules/events/voiceStateUpdateGateway.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/modules/events/voiceStateUpdateGateway.js",
+      "to": "src/services/voice/voiceHubService.js",
+      "specifier": "../../services/voice/voiceHubService"
+    },
+    {
+      "from": "src/modules/events/voiceStateUpdateGateway.js",
+      "to": "src/systems/lfgSystem.js",
+      "specifier": "../../systems/lfgSystem"
+    },
+    {
+      "from": "src/modules/events/voiceStateUpdateGateway.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../../services/security/memberGuardService"
+    },
+    {
+      "from": "src/modules/events/voiceStateUpdateGateway.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "../../systems/voiceActivitySystem"
+    },
+    {
+      "from": "src/modules/events/voiceStateUpdateGateway.js",
+      "to": "src/systems/nightCrewSystem.js",
+      "specifier": "../../systems/nightCrewSystem"
     },
     {
       "from": "src/modules/interactions/autocompleteInteractionHandler.js",
@@ -4249,46 +4885,6 @@
       "specifier": "../../systems/channelPanels"
     },
     {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/analyze_server.js",
-      "specifier": "../../legacy/commands/analyze_server"
-    },
-    {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/ai_reorganize_server.js",
-      "specifier": "../../legacy/commands/ai_reorganize_server"
-    },
-    {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/auto_organize.js",
-      "specifier": "../../legacy/commands/auto_organize"
-    },
-    {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/deep_cleanup.js",
-      "specifier": "../../legacy/commands/deep_cleanup"
-    },
-    {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/plan_cleanup.js",
-      "specifier": "../../legacy/commands/plan_cleanup"
-    },
-    {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/rebuild_server.js",
-      "specifier": "../../legacy/commands/rebuild_server"
-    },
-    {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/setupServerLegacy.js",
-      "specifier": "../../legacy/commands/setupServerLegacy"
-    },
-    {
-      "from": "src/services/community/communityService.js",
-      "to": "src/legacy/commands/setupTicketLegacy.js",
-      "specifier": "../../legacy/commands/setupTicketLegacy"
-    },
-    {
       "from": "src/services/games/gameCategoryService.js",
       "to": "src/core/result.js",
       "specifier": "../../core/result"
@@ -4340,28 +4936,8 @@
     },
     {
       "from": "src/systems/aiServerReorganizer.js",
-      "to": "src/config/roleChannelAccess.js",
-      "specifier": "../config/roleChannelAccess"
-    },
-    {
-      "from": "src/systems/aiServerReorganizer.js",
-      "to": "src/systems/categoryCleaner.js",
-      "specifier": "./categoryCleaner"
-    },
-    {
-      "from": "src/systems/aiServerReorganizer.js",
-      "to": "src/systems/gameChannels.js",
-      "specifier": "./gameChannels"
-    },
-    {
-      "from": "src/systems/aiServerReorganizer.js",
-      "to": "src/systems/tempVoice.js",
-      "specifier": "./tempVoice"
-    },
-    {
-      "from": "src/systems/aiServerReorganizer.js",
-      "to": "src/systems/activeChannelProtector.js",
-      "specifier": "./activeChannelProtector"
+      "to": "src/legacy/systemRuntimes/aiServerReorganizerRuntime.js",
+      "specifier": "../legacy/systemRuntimes/aiServerReorganizerRuntime"
     },
     {
       "from": "src/systems/autoMod.js",
@@ -4380,8 +4956,8 @@
     },
     {
       "from": "src/systems/channelPanels.js",
-      "to": "src/systems/roleManager.js",
-      "specifier": "./roleManager"
+      "to": "src/legacy/systemRuntimes/channelPanelsRuntime.js",
+      "specifier": "../legacy/systemRuntimes/channelPanelsRuntime"
     },
     {
       "from": "src/systems/communityArchitect.js",
@@ -4470,53 +5046,8 @@
     },
     {
       "from": "src/systems/communityV3Builder.js",
-      "to": "src/config/communityArchitectureV3.js",
-      "specifier": "../config/communityArchitectureV3"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/systems/communityV3PermissionBuilder.js",
-      "specifier": "./communityV3PermissionBuilder"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/domain/games/gameIdentityService.js",
-      "specifier": "../domain/games/gameIdentityService"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/systems/gameChannels.js",
-      "specifier": "./gameChannels"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/systems/tempVoice.js",
-      "specifier": "./tempVoice"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/systems/channelPanels.js",
-      "specifier": "./channelPanels"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/systems/communityConcierge.js",
-      "specifier": "./communityConcierge"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "./serverLogs"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/systems/communityV3Validator.js",
-      "specifier": "./communityV3Validator"
-    },
-    {
-      "from": "src/systems/communityV3Builder.js",
-      "to": "src/infrastructure/storage/jsonStore.js",
-      "specifier": "../infrastructure/storage/jsonStore"
+      "to": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+      "specifier": "../legacy/systemRuntimes/communityV3BuilderRuntime"
     },
     {
       "from": "src/systems/communityV3PermissionBuilder.js",
@@ -4570,33 +5101,8 @@
     },
     {
       "from": "src/systems/factoryReset.js",
-      "to": "src/systems/serverRebuilder.js",
-      "specifier": "./serverRebuilder"
-    },
-    {
-      "from": "src/systems/factoryReset.js",
-      "to": "src/systems/channelPanels.js",
-      "specifier": "./channelPanels"
-    },
-    {
-      "from": "src/systems/factoryReset.js",
-      "to": "src/systems/roleManager.js",
-      "specifier": "./roleManager"
-    },
-    {
-      "from": "src/systems/factoryReset.js",
-      "to": "src/systems/rolePermissions.js",
-      "specifier": "./rolePermissions"
-    },
-    {
-      "from": "src/systems/factoryReset.js",
-      "to": "src/services/community/communityPermissionService.js",
-      "specifier": "../services/community/communityPermissionService"
-    },
-    {
-      "from": "src/systems/factoryReset.js",
-      "to": "src/systems/activeChannelProtector.js",
-      "specifier": "./activeChannelProtector"
+      "to": "src/legacy/systemRuntimes/factoryResetRuntime.js",
+      "specifier": "../legacy/systemRuntimes/factoryResetRuntime"
     },
     {
       "from": "src/systems/gameChannels.js",
@@ -4605,38 +5111,8 @@
     },
     {
       "from": "src/systems/gameSuggestionSystem.js",
-      "to": "src/systems/communityStructureManager.js",
-      "specifier": "./communityStructureManager"
-    },
-    {
-      "from": "src/systems/gameSuggestionSystem.js",
-      "to": "src/systems/gameChannels.js",
-      "specifier": "./gameChannels"
-    },
-    {
-      "from": "src/systems/gameSuggestionSystem.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "./serverLogs"
-    },
-    {
-      "from": "src/systems/gameSuggestionSystem.js",
-      "to": "src/systems/voiceHub.js",
-      "specifier": "./voiceHub"
-    },
-    {
-      "from": "src/systems/gameSuggestionSystem.js",
-      "to": "src/systems/channelPanels.js",
-      "specifier": "./channelPanels"
-    },
-    {
-      "from": "src/systems/gameSuggestionSystem.js",
-      "to": "src/domain/games/gameIdentityService.js",
-      "specifier": "../domain/games/gameIdentityService"
-    },
-    {
-      "from": "src/systems/gameSuggestionSystem.js",
-      "to": "src/systems/personaMessageSystem.js",
-      "specifier": "./personaMessageSystem"
+      "to": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+      "specifier": "../legacy/systemRuntimes/gameSuggestionSystemRuntime"
     },
     {
       "from": "src/systems/guestGate.js",
@@ -4670,23 +5146,8 @@
     },
     {
       "from": "src/systems/linkGuard.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "./serverLogs"
-    },
-    {
-      "from": "src/systems/linkGuard.js",
-      "to": "src/systems/roleManager.js",
-      "specifier": "./roleManager"
-    },
-    {
-      "from": "src/systems/linkGuard.js",
-      "to": "src/config/gameDomains.js",
-      "specifier": "../config/gameDomains"
-    },
-    {
-      "from": "src/systems/linkGuard.js",
-      "to": "src/domain/security/securityPolicy.js",
-      "specifier": "../domain/security/securityPolicy"
+      "to": "src/legacy/systemRuntimes/linkGuardRuntime.js",
+      "specifier": "../legacy/systemRuntimes/linkGuardRuntime"
     },
     {
       "from": "src/systems/memberGuard.js",
@@ -4730,33 +5191,13 @@
     },
     {
       "from": "src/systems/organizer.js",
-      "to": "src/systems/serverMemory.js",
-      "specifier": "./serverMemory"
-    },
-    {
-      "from": "src/systems/organizer.js",
-      "to": "src/systems/gameChannels.js",
-      "specifier": "./gameChannels"
-    },
-    {
-      "from": "src/systems/organizer.js",
-      "to": "src/systems/tempVoice.js",
-      "specifier": "./tempVoice"
+      "to": "src/legacy/systemRuntimes/organizerRuntime.js",
+      "specifier": "../legacy/systemRuntimes/organizerRuntime"
     },
     {
       "from": "src/systems/roleManager.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "./serverLogs"
-    },
-    {
-      "from": "src/systems/roleManager.js",
-      "to": "src/domain/community/communityArchitectureV3.js",
-      "specifier": "../domain/community/communityArchitectureV3"
-    },
-    {
-      "from": "src/systems/roleManager.js",
-      "to": "src/domain/community/permissionMatrix.js",
-      "specifier": "../domain/community/permissionMatrix"
+      "to": "src/legacy/systemRuntimes/roleManagerRuntime.js",
+      "specifier": "../legacy/systemRuntimes/roleManagerRuntime"
     },
     {
       "from": "src/systems/rolePermissions.js",
@@ -4775,33 +5216,8 @@
     },
     {
       "from": "src/systems/tempVoice.js",
-      "to": "src/systems/gameChannels.js",
-      "specifier": "./gameChannels"
-    },
-    {
-      "from": "src/systems/tempVoice.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "./serverLogs"
-    },
-    {
-      "from": "src/systems/tempVoice.js",
-      "to": "src/systems/lfgSystem.js",
-      "specifier": "./lfgSystem"
-    },
-    {
-      "from": "src/systems/tempVoice.js",
-      "to": "src/core/eventBus.js",
-      "specifier": "../core/eventBus"
-    },
-    {
-      "from": "src/systems/tempVoice.js",
-      "to": "src/domain/games/gameIdentityService.js",
-      "specifier": "../domain/games/gameIdentityService"
-    },
-    {
-      "from": "src/systems/tempVoice.js",
-      "to": "src/infrastructure/storage/jsonStore.js",
-      "specifier": "../infrastructure/storage/jsonStore"
+      "to": "src/legacy/systemRuntimes/tempVoiceRuntime.js",
+      "specifier": "../legacy/systemRuntimes/tempVoiceRuntime"
     },
     {
       "from": "src/systems/voiceActivitySystem.js",
@@ -4840,7 +5256,7 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 122,
+    "discord.js": 123,
     "node:path": 25,
     "node:fs": 19,
     "openai": 3,
@@ -4868,79 +5284,9 @@
     ],
     "serviceJson": [],
     "domainInfrastructure": [],
-    "reverseLayer": [
-      {
-        "from": "src/modules/layout/layoutPermissionPolicy.js",
-        "to": "src/services/community/communityPermissionService.js",
-        "specifier": "../../services/community/communityPermissionService",
-        "fromType": "other",
-        "toType": "service"
-      },
-      {
-        "from": "src/modules/layout/rules/duplicateGameRule.js",
-        "to": "src/domain/games/gameIdentityService.js",
-        "specifier": "../../../domain/games/gameIdentityService",
-        "fromType": "other",
-        "toType": "domain"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/analyze_server.js",
-        "specifier": "../../legacy/commands/analyze_server",
-        "fromType": "service",
-        "toType": "command"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/ai_reorganize_server.js",
-        "specifier": "../../legacy/commands/ai_reorganize_server",
-        "fromType": "service",
-        "toType": "command"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/auto_organize.js",
-        "specifier": "../../legacy/commands/auto_organize",
-        "fromType": "service",
-        "toType": "command"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/deep_cleanup.js",
-        "specifier": "../../legacy/commands/deep_cleanup",
-        "fromType": "service",
-        "toType": "command"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/plan_cleanup.js",
-        "specifier": "../../legacy/commands/plan_cleanup",
-        "fromType": "service",
-        "toType": "command"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/rebuild_server.js",
-        "specifier": "../../legacy/commands/rebuild_server",
-        "fromType": "service",
-        "toType": "command"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/setupServerLegacy.js",
-        "specifier": "../../legacy/commands/setupServerLegacy",
-        "fromType": "service",
-        "toType": "command"
-      },
-      {
-        "from": "src/services/community/communityService.js",
-        "to": "src/legacy/commands/setupTicketLegacy.js",
-        "specifier": "../../legacy/commands/setupTicketLegacy",
-        "fromType": "service",
-        "toType": "command"
-      }
-    ]
+    "reverseLayer": []
   },
+  "hardFailures": [],
   "rankings": {
     "refactorTop10": [
       {
@@ -4960,12 +5306,7 @@
       },
       {
         "reason": "High dependency count",
-        "target": "src/services/community/communityService.js",
-        "score": 55
-      },
-      {
-        "reason": "High dependency count",
-        "target": "src/systems/communityV3Builder.js",
+        "target": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
         "score": 50
       },
       {
@@ -4982,6 +5323,11 @@
         "reason": "High dependency count",
         "target": "src/services/community/communityPermissionService.js",
         "score": 40
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+        "score": 35
       },
       {
         "reason": "High dependency count",
@@ -5002,14 +5348,8 @@
         "lines": 2066
       },
       {
-        "file": "src/services/community/communityService.js",
-        "type": "service",
-        "dependencies": 11,
-        "lines": 35
-      },
-      {
-        "file": "src/systems/communityV3Builder.js",
-        "type": "system",
+        "file": "src/legacy/systemRuntimes/communityV3BuilderRuntime.js",
+        "type": "legacy",
         "dependencies": 10,
         "lines": 513
       },
@@ -5029,7 +5369,13 @@
         "file": "src/services/community/communityPermissionService.js",
         "type": "service",
         "dependencies": 8,
-        "lines": 316
+        "lines": 317
+      },
+      {
+        "file": "src/adapters/legacy/legacyCommunityCommandExecutor.js",
+        "type": "adapter",
+        "dependencies": 7,
+        "lines": 24
       },
       {
         "file": "src/legacy/community/communityBootstrapSystem.js",
@@ -5044,38 +5390,38 @@
         "lines": 22
       },
       {
-        "file": "src/systems/gameSuggestionSystem.js",
-        "type": "system",
+        "file": "src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js",
+        "type": "legacy",
         "dependencies": 7,
         "lines": 626
       },
       {
-        "file": "src/events/voiceStateUpdate.js",
-        "type": "event",
+        "file": "src/legacy/community/serverPolisher.js",
+        "type": "legacy",
         "dependencies": 6,
-        "lines": 155
+        "lines": 504
       }
     ],
     "servicesByLines": [
       {
         "file": "src/services/community/communityPermissionService.js",
-        "lines": 316,
+        "lines": 317,
         "dependencies": 8
       },
       {
         "file": "src/services/community/communityRebuildService.js",
-        "lines": 74,
+        "lines": 75,
         "dependencies": 5
       },
       {
         "file": "src/services/games/gameCategoryService.js",
-        "lines": 38,
+        "lines": 39,
         "dependencies": 4
       },
       {
         "file": "src/services/community/communityService.js",
-        "lines": 35,
-        "dependencies": 11
+        "lines": 21,
+        "dependencies": 3
       },
       {
         "file": "src/services/security/securityDecisionService.js",
@@ -5102,7 +5448,8 @@
       "service": {
         "file": "src/services/community/communityPermissionService.js",
         "type": "service",
-        "lines": 316,
+        "lines": 317,
+        "fallbackAllowed": true,
         "dependencyCount": 9,
         "localDependencyCount": 8,
         "externalDependencyCount": 1,
@@ -5116,6 +5463,7 @@
         "file": "src/legacy/commands/setupServerLegacy.js",
         "type": "command",
         "lines": 300,
+        "fallbackAllowed": false,
         "dependencyCount": 2,
         "localDependencyCount": 1,
         "externalDependencyCount": 1,
@@ -5126,9 +5474,10 @@
         }
       },
       "event": {
-        "file": "src/events/voiceStateUpdate.js",
+        "file": "src/modules/events/voiceStateUpdateGateway.js",
         "type": "event",
         "lines": 155,
+        "fallbackAllowed": false,
         "dependencyCount": 7,
         "localDependencyCount": 6,
         "externalDependencyCount": 1,
@@ -5142,6 +5491,7 @@
         "file": "src/modules/commands/commandRouter.js",
         "type": "router",
         "lines": 82,
+        "fallbackAllowed": false,
         "dependencyCount": 1,
         "localDependencyCount": 1,
         "externalDependencyCount": 0,
@@ -5155,6 +5505,7 @@
         "file": "src/utils/voiceStats.js",
         "type": "util",
         "lines": 106,
+        "fallbackAllowed": false,
         "dependencyCount": 0,
         "localDependencyCount": 0,
         "externalDependencyCount": 0,

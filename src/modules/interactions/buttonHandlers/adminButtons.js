@@ -1,3 +1,4 @@
+﻿// fallbackAllowed: controlled legacy compatibility path
 const runtime = require('../../../legacy/interactions/legacyInteractionRuntime');
 
 const ADMIN_BUTTON_PREFIXES = [

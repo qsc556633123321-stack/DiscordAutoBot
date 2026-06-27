@@ -1,10 +1,2 @@
-const legacy = require('../../legacy/commands/setupServerLegacy');
-const setupService = require('../../services/community/communityService');
-
-module.exports = {
-  data: legacy.data,
-  async execute(interaction) {
-    const result = await setupService.setupServer(interaction);
-    if (!result.ok) console.error('[setup-server]', result.error);
-  }
-};
+﻿const legacy = require('../../legacy/commands/setupServerLegacy');
+module.exports = { data: legacy.data, execute: (interaction) => legacy.execute(interaction) };

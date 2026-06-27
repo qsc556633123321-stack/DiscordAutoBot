@@ -1,3 +1,4 @@
+﻿// fallbackAllowed: controlled legacy compatibility path
 const { fromThrowable, ok } = require('../../core/result');
 const legacy = require('../../legacy/games/gameChannels');
 const suggestions = require('../../systems/gameSuggestionSystem');

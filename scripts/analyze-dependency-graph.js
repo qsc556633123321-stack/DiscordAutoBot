@@ -6,6 +6,16 @@ const SRC = path.join(ROOT, 'src');
 const DOCS = path.join(ROOT, 'docs');
 const GRAPH_FILE = path.join(ROOT, 'dependency-graph.json');
 const REPORT_FILE = path.join(DOCS, 'DEPENDENCY_GRAPH.md');
+const COMPATIBILITY_ADAPTERS = new Set([
+  'src/config/permissionTemplates.js',
+  'src/systems/communityBootstrapSystem.js',
+  'src/systems/communityV3PermissionBuilder.js',
+  'src/systems/gameChannels.js',
+  'src/systems/guestGate.js',
+  'src/systems/rolePermissions.js',
+  'src/systems/serverPolisher.js',
+  'src/systems/serverRebuilder.js'
+]);
 
 function walk(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -38,6 +48,9 @@ function classify(file) {
   const name = rel(file);
   if (name.startsWith('src/commands/') || name.startsWith('src/legacy/commands/')) return 'command';
   if (name.startsWith('src/modules/commands/')) return 'router';
+  if (name.startsWith('src/modules/interactions/')) return 'router';
+  if (name.startsWith('src/modules/events/')) return 'event';
+  if (name.startsWith('src/modules/layout/')) return 'system';
   if (name.startsWith('src/events/')) return 'event';
   if (name.startsWith('src/services/')) return 'service';
   if (name.startsWith('src/domain/')) return 'domain';
@@ -198,6 +211,17 @@ function main() {
     /fs\.(?:readFileSync|writeFileSync|promises\.readFile|promises\.writeFile)\b/,
     /require\(['"][^'"]*\/data\/[^'"]+\.json['"]\)/
   ];
+  const serviceDiscordApiPatterns = [
+    /\bguild\.channels\.create\b/,
+    /\binteraction\.guild\.channels\.create\b/,
+    /\bguild\.roles\.create\b/,
+    /\binteraction\.guild\.roles\.create\b/,
+    /\b(?:channel|category|role)\.setName\b/,
+    /\b(?:channel|category)\.setParent\b/,
+    /\bpermissionOverwrites\.(?:set|edit|create)\b/,
+    /\b(?:channel|category|role)\.delete\(/,
+    /\bchannel\.bulkDelete\b/
+  ];
 
   for (const file of files) {
     const source = fs.readFileSync(file, 'utf8');
@@ -220,6 +244,7 @@ function main() {
       file: name,
       type,
       lines: lineCount(source),
+      fallbackAllowed: source.includes('fallbackAllowed'),
       dependencyCount: local.length + external.length,
       localDependencyCount: local.length,
       externalDependencyCount: external.length,
@@ -234,6 +259,11 @@ function main() {
     if (type === 'service') {
       const matches = hasAny(source, serviceJsonPatterns);
       if (matches.length) violations.serviceJson.push({ file: name, matches });
+      const discordMatches = hasAny(source, serviceDiscordApiPatterns);
+      if (discordMatches.length) {
+        if (!violations.serviceDiscordApi) violations.serviceDiscordApi = [];
+        violations.serviceDiscordApi.push({ file: name, matches: discordMatches });
+      }
     }
   }
 
@@ -243,6 +273,15 @@ function main() {
     if (!from || !to) continue;
     if (from.type === 'domain' && ['repository', 'infrastructure'].includes(to.type)) {
       violations.domainInfrastructure.push(edge);
+    }
+    if (from.type === 'service' && ['command', 'event'].includes(to.type)) {
+      if (!violations.serviceEntrypointImport) violations.serviceEntrypointImport = [];
+      violations.serviceEntrypointImport.push(edge);
+    }
+    const isKnownCompatibilityAdapter = COMPATIBILITY_ADAPTERS.has(edge.from);
+    if (!edge.from.startsWith('src/legacy/') && edge.to.startsWith('src/legacy/') && !from.fallbackAllowed && !isKnownCompatibilityAdapter) {
+      if (!violations.legacyImportWithoutFallback) violations.legacyImportWithoutFallback = [];
+      violations.legacyImportWithoutFallback.push(edge);
     }
     const fromRank = layerRank[from.type] ?? 9;
     const toRank = layerRank[to.type] ?? 9;
@@ -264,14 +303,44 @@ function main() {
   const dependencyCount = edges.length;
   const activeCommandDiscordApi = violations.commandDiscordApi.filter((item) => !item.file.startsWith('src/legacy/'));
   const legacyCommandDiscordApi = violations.commandDiscordApi.filter((item) => item.file.startsWith('src/legacy/'));
+  const activeLargeFiles = [...meta.values()].filter((item) =>
+    !item.file.startsWith('src/legacy/') &&
+    !item.file.startsWith('src/tests/') &&
+    item.lines > 400
+  );
+  const oversizedCommands = [...meta.values()].filter((item) =>
+    item.type === 'command' &&
+    !item.file.startsWith('src/legacy/') &&
+    item.lines > 150
+  );
+  const oversizedEvents = [...meta.values()].filter((item) =>
+    item.type === 'event' &&
+    !item.file.startsWith('src/legacy/') &&
+    !item.file.startsWith('src/modules/events/') &&
+    item.lines > 80
+  );
   const architecturePenalty =
     cycles.length * 8 +
     serviceChain.chains.length * 5 +
     activeCommandDiscordApi.length * 4 +
     violations.serviceJson.length * 4 +
+    (violations.serviceDiscordApi?.length || 0) * 6 +
+    (violations.serviceEntrypointImport?.length || 0) * 6 +
+    (violations.legacyImportWithoutFallback?.length || 0) * 4 +
     violations.domainInfrastructure.length * 8 +
     violations.reverseLayer.length * 2;
   const architectureScore = Math.max(0, 100 - architecturePenalty);
+  const hardFailures = [
+    ...cycles.map((cycle) => `Circular dependency: ${cycle.join(' -> ')}`),
+    ...activeLargeFiles.map((item) => `Active JS file over 400 lines: ${item.file} (${item.lines})`),
+    ...oversizedCommands.map((item) => `Command file over 150 lines: ${item.file} (${item.lines})`),
+    ...oversizedEvents.map((item) => `Event file over 80 lines: ${item.file} (${item.lines})`),
+    ...violations.domainInfrastructure.map((edge) => `Domain imports infrastructure: ${edge.from} -> ${edge.to}`),
+    ...(violations.serviceEntrypointImport || []).map((edge) => `Service imports command/event: ${edge.from} -> ${edge.to}`),
+    ...(violations.serviceDiscordApi || []).map((item) => `Service directly uses Discord API: ${item.file}`),
+    ...violations.serviceJson.map((item) => `Service directly reads/writes JSON: ${item.file}`),
+    ...(violations.legacyImportWithoutFallback || []).map((edge) => `Active file imports legacy without fallbackAllowed: ${edge.from} -> ${edge.to}`)
+  ];
 
   const byType = [...meta.values()].reduce((acc, item) => {
     acc[item.type] = (acc[item.type] || 0) + 1;
@@ -304,6 +373,13 @@ function main() {
       architectureScore,
       activeCommandDiscordApiCount: activeCommandDiscordApi.length,
       legacyCommandDiscordApiCount: legacyCommandDiscordApi.length,
+      activeLargeFileCount: activeLargeFiles.length,
+      oversizedCommandCount: oversizedCommands.length,
+      oversizedEventCount: oversizedEvents.length,
+      serviceDiscordApiCount: violations.serviceDiscordApi?.length || 0,
+      serviceEntrypointImportCount: violations.serviceEntrypointImport?.length || 0,
+      legacyImportWithoutFallbackCount: violations.legacyImportWithoutFallback?.length || 0,
+      hardFailureCount: hardFailures.length,
       byType
     },
     nodes: [...meta.values()],
@@ -312,6 +388,7 @@ function main() {
     circularDependencies: cycles,
     serviceChains: serviceChain.chains,
     violations,
+    hardFailures,
     rankings: {
       refactorTop10: refactorCandidates,
       dependencyTop10: topDependencies,
@@ -332,6 +409,10 @@ function main() {
   const serviceRows = serviceChain.chains.slice(0, 20).map((chain) => `- ${chain.join(' -> ')}`);
   const commandRows = violations.commandDiscordApi.map((item) => `- ${item.file}: ${item.matches.join(', ')}`);
   const jsonRows = violations.serviceJson.map((item) => `- ${item.file}: ${item.matches.join(', ')}`);
+  const serviceDiscordRows = (violations.serviceDiscordApi || []).map((item) => `- ${item.file}: ${item.matches.join(', ')}`);
+  const serviceEntrypointRows = (violations.serviceEntrypointImport || []).map((edge) => `- ${edge.from} -> ${edge.to}`);
+  const legacyFallbackRows = (violations.legacyImportWithoutFallback || []).map((edge) => `- ${edge.from} -> ${edge.to}`);
+  const hardFailureRows = hardFailures.map((item) => `- ${item}`);
   const domainRows = violations.domainInfrastructure.map((edge) => `- ${edge.from} -> ${edge.to}`);
   const reverseRows = violations.reverseLayer.slice(0, 30).map((edge) => `- ${edge.from} (${edge.fromType}) -> ${edge.to} (${edge.toType})`);
   const refactorRows = refactorCandidates.map((item, index) => `${index + 1}. ${item.reason}: \`${item.target}\``);
@@ -351,6 +432,10 @@ Generated: ${graph.generatedAt}
 - Service chains over two layers: ${serviceChain.chains.length}
 - Active command direct Discord API usage: ${activeCommandDiscordApi.length}
 - Legacy command direct Discord API usage: ${legacyCommandDiscordApi.length}
+- Active JS files over 400 lines: ${activeLargeFiles.length}
+- Command files over 150 lines: ${oversizedCommands.length}
+- Event files over 80 lines: ${oversizedEvents.length}
+- Hard architecture failures: ${hardFailures.length}
 - Architecture score: ${architectureScore} / 100
 
 ## Architecture Rules
@@ -367,8 +452,12 @@ ${section('Circular Dependencies', cycleRows)}
 ${section('Service Chains Over Two Layers', serviceRows)}
 ${section('Command Direct Discord API Usage', commandRows)}
 ${section('Service Direct JSON Access', jsonRows)}
+${section('Service Direct Discord API Usage', serviceDiscordRows)}
+${section('Service Imports Command/Event', serviceEntrypointRows)}
 ${section('Domain Depends On Infrastructure', domainRows)}
+${section('Legacy Imports Without fallbackAllowed', legacyFallbackRows)}
 ${section('Reverse Layer Dependencies', reverseRows)}
+${section('Hard Architecture Failures', hardFailureRows)}
 ## Architecture Score
 
 Score: ${architectureScore} / 100
@@ -380,6 +469,9 @@ Penalty model:
 - Active command direct Discord API usage: -4 each
 - Legacy command direct Discord API usage: tracked in burn-down, not active score
 - Service direct JSON access: -4 each
+- Service direct Discord API usage: -6 each
+- Service imports command/event: -6 each
+- Active import of legacy without fallbackAllowed: -4 each
 - Domain depends on infrastructure: -8 each
 - Reverse layer dependency: -2 each
 
@@ -418,6 +510,15 @@ Full machine-readable graph: \`dependency-graph.json\`
   console.log(`Architecture score: ${architectureScore}/100`);
   console.log(`Circular dependencies: ${cycles.length}`);
   if (cycles.length > 0) {
+    process.exitCode = 1;
+  }
+  if (hardFailures.length > 0) {
+    console.error(`Hard architecture failures: ${hardFailures.length}`);
+    for (const failure of hardFailures.slice(0, 20)) console.error(`- ${failure}`);
+    process.exitCode = 1;
+  }
+  if (architectureScore < 90) {
+    console.error(`Architecture score below gate: ${architectureScore}/100`);
     process.exitCode = 1;
   }
 }
