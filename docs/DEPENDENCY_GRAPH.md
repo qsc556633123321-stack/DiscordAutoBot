@@ -1,11 +1,11 @@
 # Dependency Graph
 
-Generated: 2026-06-27T10:08:52.676Z
+Generated: 2026-06-27T13:25:11.389Z
 
 ## Summary
 
-- JS files scanned: 187
-- Local dependency edges: 353
+- JS files scanned: 197
+- Local dependency edges: 366
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0
@@ -73,7 +73,7 @@ Penalty model:
 
 1. Command directly uses Discord API: `src/legacy/commands/setupServerLegacy.js`
 2. Command directly uses Discord API: `src/legacy/commands/setupTicketLegacy.js`
-3. High dependency count: `src/events/interactionCreate.js`
+3. High dependency count: `src/legacy/interactions/legacyInteractionDispatcher.js`
 4. High dependency count: `src/services/community/communityService.js`
 5. High dependency count: `src/systems/communityV3Builder.js`
 6. High dependency count: `src/legacy/community/serverRebuilder.js`
@@ -84,7 +84,7 @@ Penalty model:
 
 ## Top 10 Dependency Count
 
-1. `src/events/interactionCreate.js` - 26 local deps, 2066 lines
+1. `src/legacy/interactions/legacyInteractionDispatcher.js` - 26 local deps, 2066 lines
 2. `src/services/community/communityService.js` - 11 local deps, 35 lines
 3. `src/systems/communityV3Builder.js` - 10 local deps, 513 lines
 4. `src/legacy/community/serverRebuilder.js` - 8 local deps, 365 lines
@@ -110,7 +110,7 @@ Penalty model:
 
 - Service: `src/services/community/communityPermissionService.js` (316 lines)
 - Command: `src/legacy/commands/setupServerLegacy.js` (300 lines)
-- Event: `src/events/interactionCreate.js` (2066 lines)
+- Event: `src/events/voiceStateUpdate.js` (155 lines)
 - Router: `src/modules/commands/commandRouter.js` (82 lines)
 - Util: `src/utils/voiceStats.js` (106 lines)
 
@@ -122,8 +122,8 @@ Penalty model:
 - core: 3
 - domain: 6
 - event: 6
-- legacy: 14
-- other: 3
+- legacy: 15
+- other: 12
 - repository: 3
 - router: 3
 - service: 8

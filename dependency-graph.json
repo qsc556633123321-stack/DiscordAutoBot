@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-06-27T10:08:52.676Z",
+  "generatedAt": "2026-06-27T13:25:11.389Z",
   "summary": {
-    "fileCount": 187,
-    "dependencyCount": 353,
+    "fileCount": 197,
+    "dependencyCount": 366,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -14,11 +14,11 @@
       "command": 80,
       "config": 13,
       "core": 3,
-      "other": 3,
+      "other": 12,
       "domain": 6,
       "event": 6,
       "repository": 3,
-      "legacy": 14,
+      "legacy": 15,
       "router": 3,
       "service": 8,
       "system": 42,
@@ -484,9 +484,9 @@
     {
       "file": "src/events/interactionCreate.js",
       "type": "event",
-      "lines": 2066,
-      "dependencyCount": 27,
-      "localDependencyCount": 26,
+      "lines": 8,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
       "externalDependencyCount": 1,
       "exports": {
         "moduleExports": 1,
@@ -1665,6 +1665,19 @@
       }
     },
     {
+      "file": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "type": "legacy",
+      "lines": 2066,
+      "dependencyCount": 27,
+      "localDependencyCount": 26,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/legacy/permissions/communityV3PermissionBuilder.js",
       "type": "legacy",
       "lines": 86,
@@ -1746,6 +1759,123 @@
       "file": "src/modules/commands/commandRouter.js",
       "type": "router",
       "lines": 82,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/autocompleteInteractionHandler.js",
+      "type": "other",
+      "lines": 9,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/buttonInteractionHandler.js",
+      "type": "other",
+      "lines": 9,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/interactionErrorHandler.js",
+      "type": "other",
+      "lines": 16,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/interactionGateway.js",
+      "type": "other",
+      "lines": 22,
+      "dependencyCount": 6,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/interactionResponder.js",
+      "type": "other",
+      "lines": 44,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/modalInteractionHandler.js",
+      "type": "other",
+      "lines": 9,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/permissionGuard.js",
+      "type": "other",
+      "lines": 22,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/selectMenuInteractionHandler.js",
+      "type": "other",
+      "lines": 9,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/interactions/slashInteractionHandler.js",
+      "type": "other",
+      "lines": 9,
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
@@ -2581,133 +2711,8 @@
     },
     {
       "from": "src/events/interactionCreate.js",
-      "to": "src/systems/organizer.js",
-      "specifier": "../systems/organizer"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/deepCleanupPlanner.js",
-      "specifier": "../systems/deepCleanupPlanner"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/deepCleanupExecutor.js",
-      "specifier": "../systems/deepCleanupExecutor"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/tempVoice.js",
-      "specifier": "../systems/tempVoice"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/channelPanels.js",
-      "specifier": "../systems/channelPanels"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/memberGuard.js",
-      "specifier": "../systems/memberGuard"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/roleManager.js",
-      "specifier": "../systems/roleManager"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/serverRebuilder.js",
-      "specifier": "../systems/serverRebuilder"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/categoryCleaner.js",
-      "specifier": "../systems/categoryCleaner"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/rolePermissions.js",
-      "specifier": "../systems/rolePermissions"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/factoryReset.js",
-      "specifier": "../systems/factoryReset"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/aiServerReorganizer.js",
-      "specifier": "../systems/aiServerReorganizer"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/activeChannelProtector.js",
-      "specifier": "../systems/activeChannelProtector"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/serverLogs.js",
-      "specifier": "../systems/serverLogs"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/lfgSystem.js",
-      "specifier": "../systems/lfgSystem"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/utils/interactionReplies.js",
-      "specifier": "../utils/interactionReplies"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/serverPolisher.js",
-      "specifier": "../systems/serverPolisher"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/gameSuggestionSystem.js",
-      "specifier": "../systems/gameSuggestionSystem"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/communityConcierge.js",
-      "specifier": "../systems/communityConcierge"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/communityBootstrapSystem.js",
-      "specifier": "../systems/communityBootstrapSystem"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/layoutDecisionEngine.js",
-      "specifier": "../systems/layoutDecisionEngine"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/communityArchitect.js",
-      "specifier": "../systems/communityArchitect"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/gameChannels.js",
-      "specifier": "../systems/gameChannels"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/legacy/commands/game-registry-doctor.js",
-      "specifier": "../legacy/commands/game-registry-doctor"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/systems/communityV3Builder.js",
-      "specifier": "../systems/communityV3Builder"
-    },
-    {
-      "from": "src/events/interactionCreate.js",
-      "to": "src/adapters/legacy/legacyCommandAdapters.js",
-      "specifier": "../adapters/legacy/legacyCommandAdapters"
+      "to": "src/modules/interactions/interactionGateway.js",
+      "specifier": "../modules/interactions/interactionGateway"
     },
     {
       "from": "src/events/messageCreate.js",
@@ -3440,6 +3445,136 @@
       "specifier": "../../infrastructure/storage/jsonStore"
     },
     {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/organizer.js",
+      "specifier": "../../systems/organizer"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/deepCleanupPlanner.js",
+      "specifier": "../../systems/deepCleanupPlanner"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/deepCleanupExecutor.js",
+      "specifier": "../../systems/deepCleanupExecutor"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../systems/channelPanels"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/memberGuard.js",
+      "specifier": "../../systems/memberGuard"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/serverRebuilder.js",
+      "specifier": "../../systems/serverRebuilder"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/categoryCleaner.js",
+      "specifier": "../../systems/categoryCleaner"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/rolePermissions.js",
+      "specifier": "../../systems/rolePermissions"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/factoryReset.js",
+      "specifier": "../../systems/factoryReset"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/aiServerReorganizer.js",
+      "specifier": "../../systems/aiServerReorganizer"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "../../systems/activeChannelProtector"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/lfgSystem.js",
+      "specifier": "../../systems/lfgSystem"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../../utils/interactionReplies"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/serverPolisher.js",
+      "specifier": "../../systems/serverPolisher"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/gameSuggestionSystem.js",
+      "specifier": "../../systems/gameSuggestionSystem"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/communityBootstrapSystem.js",
+      "specifier": "../../systems/communityBootstrapSystem"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/layoutDecisionEngine.js",
+      "specifier": "../../systems/layoutDecisionEngine"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/communityArchitect.js",
+      "specifier": "../../systems/communityArchitect"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/legacy/commands/game-registry-doctor.js",
+      "specifier": "../../legacy/commands/game-registry-doctor"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/systems/communityV3Builder.js",
+      "specifier": "../../systems/communityV3Builder"
+    },
+    {
+      "from": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
       "from": "src/legacy/permissions/communityV3PermissionBuilder.js",
       "to": "src/config/communityArchitectureV3.js",
       "specifier": "../../config/communityArchitectureV3"
@@ -3518,6 +3653,66 @@
       "from": "src/modules/commands/commandRouter.js",
       "to": "src/modules/commands/aliasRegistry.js",
       "specifier": "./aliasRegistry"
+    },
+    {
+      "from": "src/modules/interactions/autocompleteInteractionHandler.js",
+      "to": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
+    },
+    {
+      "from": "src/modules/interactions/buttonInteractionHandler.js",
+      "to": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
+    },
+    {
+      "from": "src/modules/interactions/interactionErrorHandler.js",
+      "to": "src/modules/interactions/interactionResponder.js",
+      "specifier": "./interactionResponder"
+    },
+    {
+      "from": "src/modules/interactions/interactionGateway.js",
+      "to": "src/modules/interactions/autocompleteInteractionHandler.js",
+      "specifier": "./autocompleteInteractionHandler"
+    },
+    {
+      "from": "src/modules/interactions/interactionGateway.js",
+      "to": "src/modules/interactions/buttonInteractionHandler.js",
+      "specifier": "./buttonInteractionHandler"
+    },
+    {
+      "from": "src/modules/interactions/interactionGateway.js",
+      "to": "src/modules/interactions/interactionErrorHandler.js",
+      "specifier": "./interactionErrorHandler"
+    },
+    {
+      "from": "src/modules/interactions/interactionGateway.js",
+      "to": "src/modules/interactions/modalInteractionHandler.js",
+      "specifier": "./modalInteractionHandler"
+    },
+    {
+      "from": "src/modules/interactions/interactionGateway.js",
+      "to": "src/modules/interactions/selectMenuInteractionHandler.js",
+      "specifier": "./selectMenuInteractionHandler"
+    },
+    {
+      "from": "src/modules/interactions/interactionGateway.js",
+      "to": "src/modules/interactions/slashInteractionHandler.js",
+      "specifier": "./slashInteractionHandler"
+    },
+    {
+      "from": "src/modules/interactions/modalInteractionHandler.js",
+      "to": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
+    },
+    {
+      "from": "src/modules/interactions/selectMenuInteractionHandler.js",
+      "to": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
+    },
+    {
+      "from": "src/modules/interactions/slashInteractionHandler.js",
+      "to": "src/legacy/interactions/legacyInteractionDispatcher.js",
+      "specifier": "../../legacy/interactions/legacyInteractionDispatcher"
     },
     {
       "from": "src/services/community/communityPermissionService.js",
@@ -4226,7 +4421,7 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 121,
+    "discord.js": 122,
     "node:path": 25,
     "node:fs": 19,
     "openai": 3,
@@ -4327,7 +4522,7 @@
       },
       {
         "reason": "High dependency count",
-        "target": "src/events/interactionCreate.js",
+        "target": "src/legacy/interactions/legacyInteractionDispatcher.js",
         "score": 70
       },
       {
@@ -4368,8 +4563,8 @@
     ],
     "dependencyTop10": [
       {
-        "file": "src/events/interactionCreate.js",
-        "type": "event",
+        "file": "src/legacy/interactions/legacyInteractionDispatcher.js",
+        "type": "legacy",
         "dependencies": 26,
         "lines": 2066
       },
@@ -4498,11 +4693,11 @@
         }
       },
       "event": {
-        "file": "src/events/interactionCreate.js",
+        "file": "src/events/voiceStateUpdate.js",
         "type": "event",
-        "lines": 2066,
-        "dependencyCount": 27,
-        "localDependencyCount": 26,
+        "lines": 155,
+        "dependencyCount": 7,
+        "localDependencyCount": 6,
         "externalDependencyCount": 1,
         "exports": {
           "moduleExports": 1,
