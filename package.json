@@ -17,7 +17,8 @@
     "test:permissions": "node scripts/test-permissions.js",
     "audit:commands": "node scripts/audit-commands.js",
     "audit:dead-code": "node scripts/audit-dead-code.js",
-    "report:commands": "node scripts/report-command-count.js"
+    "report:commands": "node scripts/report-command-count.js",
+    "analyze:dependencies": "node scripts/analyze-dependency-graph.js"
   },
   "keywords": [
     "discord",

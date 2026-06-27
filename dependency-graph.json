@@ -1,0 +1,4491 @@
+{
+  "generatedAt": "2026-06-27T08:47:55.418Z",
+  "summary": {
+    "fileCount": 184,
+    "dependencyCount": 350,
+    "circularCount": 2,
+    "serviceChainMaxDepth": 1,
+    "serviceChainOverTwoCount": 0,
+    "architectureScore": 60,
+    "byType": {
+      "adapter": 3,
+      "command": 80,
+      "config": 13,
+      "core": 2,
+      "other": 3,
+      "domain": 5,
+      "event": 6,
+      "repository": 3,
+      "legacy": 14,
+      "router": 3,
+      "service": 7,
+      "system": 42,
+      "util": 3
+    }
+  },
+  "nodes": [
+    {
+      "file": "src/adapters/legacy/legacyCommandAdapters.js",
+      "type": "adapter",
+      "lines": 9,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/adapters/legacy/legacyConfigAdapter.js",
+      "type": "adapter",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/adapters/legacy/legacyDataAdapter.js",
+      "type": "adapter",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/commands/admin.js",
+      "type": "command",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/commands/community.js",
+      "type": "command",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/commands/dev.js",
+      "type": "command",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/commands/game.js",
+      "type": "command",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/commands/panel.js",
+      "type": "command",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/commands/security.js",
+      "type": "command",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/commands/voice.js",
+      "type": "command",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/channelDesign.js",
+      "type": "config",
+      "lines": 157,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/channelVisibilityRules.js",
+      "type": "config",
+      "lines": 149,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/communityArchitectureV3.js",
+      "type": "config",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/communityLayout.js",
+      "type": "config",
+      "lines": 214,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/communityRules.js",
+      "type": "config",
+      "lines": 260,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/communityStructure.js",
+      "type": "config",
+      "lines": 92,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/gameDomains.js",
+      "type": "config",
+      "lines": 43,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/permissionTemplates.js",
+      "type": "config",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/rebuildTemplates.js",
+      "type": "config",
+      "lines": 124,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/roleChannelAccess.js",
+      "type": "config",
+      "lines": 42,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/roleDesign.js",
+      "type": "config",
+      "lines": 21,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/serverDesignThemes.js",
+      "type": "config",
+      "lines": 22,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/config/templates.js",
+      "type": "config",
+      "lines": 153,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/core/constants.js",
+      "type": "core",
+      "lines": 5,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/core/result.js",
+      "type": "core",
+      "lines": 14,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/deploy-commands.js",
+      "type": "other",
+      "lines": 40,
+      "dependencyCount": 3,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 0,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/community/communityArchitectureV3.js",
+      "type": "domain",
+      "lines": 180,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/community/permissionMatrix.js",
+      "type": "domain",
+      "lines": 88,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/games/gameCategoryPolicy.js",
+      "type": "domain",
+      "lines": 16,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/games/gameIdentityService.js",
+      "type": "domain",
+      "lines": 104,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/games/gameRegistry.js",
+      "type": "domain",
+      "lines": 15,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/events/error.js",
+      "type": "event",
+      "lines": 9,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/events/guildMemberAdd.js",
+      "type": "event",
+      "lines": 29,
+      "dependencyCount": 4,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/events/interactionCreate.js",
+      "type": "event",
+      "lines": 2066,
+      "dependencyCount": 27,
+      "localDependencyCount": 26,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/events/messageCreate.js",
+      "type": "event",
+      "lines": 31,
+      "dependencyCount": 4,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/events/ready.js",
+      "type": "event",
+      "lines": 23,
+      "dependencyCount": 6,
+      "localDependencyCount": 5,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/events/voiceStateUpdate.js",
+      "type": "event",
+      "lines": 155,
+      "dependencyCount": 7,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/index.js",
+      "type": "other",
+      "lines": 59,
+      "dependencyCount": 5,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 4,
+      "exports": {
+        "moduleExports": 0,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/discord/discordChannelRepository.js",
+      "type": "repository",
+      "lines": 33,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/discord/discordPermissionWriter.js",
+      "type": "repository",
+      "lines": 23,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/storage/jsonStore.js",
+      "type": "repository",
+      "lines": 32,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/ai-layout-repair.js",
+      "type": "command",
+      "lines": 107,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/ai-reorganize-server.js",
+      "type": "command",
+      "lines": 4,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/ai_reorganize_server.js",
+      "type": "command",
+      "lines": 140,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/analyze-server.js",
+      "type": "command",
+      "lines": 4,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/analyze_server.js",
+      "type": "command",
+      "lines": 174,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/announce.js",
+      "type": "command",
+      "lines": 64,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/announcement-pin-settings.js",
+      "type": "command",
+      "lines": 51,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/apply-role-permissions.js",
+      "type": "command",
+      "lines": 68,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/archive-inactive-games.js",
+      "type": "command",
+      "lines": 35,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/auto-organize.js",
+      "type": "command",
+      "lines": 4,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/automod-settings.js",
+      "type": "command",
+      "lines": 94,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/auto_organize.js",
+      "type": "command",
+      "lines": 132,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/bootstrap-community.js",
+      "type": "command",
+      "lines": 35,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/check-guest-visibility.js",
+      "type": "command",
+      "lines": 31,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/check-onboarding-visibility.js",
+      "type": "command",
+      "lines": 20,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/check-role-visibility.js",
+      "type": "command",
+      "lines": 23,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/cleanup-empty-categories.js",
+      "type": "command",
+      "lines": 68,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/cleanup-guest-roles.js",
+      "type": "command",
+      "lines": 94,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/community-about.js",
+      "type": "command",
+      "lines": 13,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/community-architect.js",
+      "type": "command",
+      "lines": 117,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/community-roadmap.js",
+      "type": "command",
+      "lines": 13,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/create-party.js",
+      "type": "command",
+      "lines": 92,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/debug-permissions.js",
+      "type": "command",
+      "lines": 23,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/dedupe-layout.js",
+      "type": "command",
+      "lines": 69,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/deep-cleanup.js",
+      "type": "command",
+      "lines": 4,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/deep_cleanup.js",
+      "type": "command",
+      "lines": 136,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/dev-audit-commands.js",
+      "type": "command",
+      "lines": 30,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/factory-reset-server.js",
+      "type": "command",
+      "lines": 112,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/fix-game-category.js",
+      "type": "command",
+      "lines": 72,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/forget-channel-rule.js",
+      "type": "command",
+      "lines": 51,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/game-registry-doctor.js",
+      "type": "command",
+      "lines": 89,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/help-me-start.js",
+      "type": "command",
+      "lines": 50,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/layout-doctor.js",
+      "type": "command",
+      "lines": 43,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/learn-channel.js",
+      "type": "command",
+      "lines": 72,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/linkguard-settings.js",
+      "type": "command",
+      "lines": 84,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/linkguard-whitelist.js",
+      "type": "command",
+      "lines": 83,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/lock.js",
+      "type": "command",
+      "lines": 32,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/memberguard-release.js",
+      "type": "command",
+      "lines": 40,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/memberguard-settings.js",
+      "type": "command",
+      "lines": 82,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/memberguard-status.js",
+      "type": "command",
+      "lines": 35,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/memory-list.js",
+      "type": "command",
+      "lines": 50,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/move-channel.js",
+      "type": "command",
+      "lines": 63,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/plan-cleanup.js",
+      "type": "command",
+      "lines": 4,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/plan_cleanup.js",
+      "type": "command",
+      "lines": 136,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/polish-server-design.js",
+      "type": "command",
+      "lines": 115,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/rebuild-community-layout.js",
+      "type": "command",
+      "lines": 35,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/rebuild-community-v3.js",
+      "type": "command",
+      "lines": 63,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/rebuild-server.js",
+      "type": "command",
+      "lines": 4,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/rebuild_server.js",
+      "type": "command",
+      "lines": 128,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/refresh-community-guide.js",
+      "type": "command",
+      "lines": 21,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/rename-channel.js",
+      "type": "command",
+      "lines": 69,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/repair-channel-permissions.js",
+      "type": "command",
+      "lines": 85,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/restore-active-channels.js",
+      "type": "command",
+      "lines": 92,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/role-settings.js",
+      "type": "command",
+      "lines": 51,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setup-channel-panels.js",
+      "type": "command",
+      "lines": 104,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setup-community-guide.js",
+      "type": "command",
+      "lines": 31,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setup-game.js",
+      "type": "command",
+      "lines": 84,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setup-roles.js",
+      "type": "command",
+      "lines": 52,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setup-server.js",
+      "type": "command",
+      "lines": 11,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setup-ticket.js",
+      "type": "command",
+      "lines": 11,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setup-voicehub.js",
+      "type": "command",
+      "lines": 60,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setupServerLegacy.js",
+      "type": "command",
+      "lines": 300,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/setupTicketLegacy.js",
+      "type": "command",
+      "lines": 173,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/suggest-game.js",
+      "type": "command",
+      "lines": 39,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/tempvoice-doctor.js",
+      "type": "command",
+      "lines": 106,
+      "dependencyCount": 5,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/tempvoice-panel.js",
+      "type": "command",
+      "lines": 73,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/tempvoice-settings.js",
+      "type": "command",
+      "lines": 90,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/unlock.js",
+      "type": "command",
+      "lines": 32,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/voice-leaderboard.js",
+      "type": "command",
+      "lines": 45,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/voice-profile.js",
+      "type": "command",
+      "lines": 48,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/voice-room-info.js",
+      "type": "command",
+      "lines": 49,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/voice-status.js",
+      "type": "command",
+      "lines": 53,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/commands/welcome-settings.js",
+      "type": "command",
+      "lines": 64,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/community/communityBootstrapSystem.js",
+      "type": "legacy",
+      "lines": 814,
+      "dependencyCount": 10,
+      "localDependencyCount": 7,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/community/serverPolisher.js",
+      "type": "legacy",
+      "lines": 504,
+      "dependencyCount": 7,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/community/serverRebuilder.js",
+      "type": "legacy",
+      "lines": 365,
+      "dependencyCount": 9,
+      "localDependencyCount": 8,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/deprecated/services/community/channelMutationService.js",
+      "type": "legacy",
+      "lines": 10,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/deprecated/services/community/channelPanelService.js",
+      "type": "legacy",
+      "lines": 13,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "type": "legacy",
+      "lines": 22,
+      "dependencyCount": 7,
+      "localDependencyCount": 7,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/deprecated/services/community/legacySetupService.js",
+      "type": "legacy",
+      "lines": 18,
+      "dependencyCount": 3,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/events/channelDelete.js",
+      "type": "legacy",
+      "lines": 14,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/events/guildMemberUpdate.js",
+      "type": "legacy",
+      "lines": 17,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/games/gameChannels.js",
+      "type": "legacy",
+      "lines": 775,
+      "dependencyCount": 4,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/permissions/communityV3PermissionBuilder.js",
+      "type": "legacy",
+      "lines": 86,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/permissions/guestGate.js",
+      "type": "legacy",
+      "lines": 290,
+      "dependencyCount": 7,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/permissions/permissionTemplates.js",
+      "type": "legacy",
+      "lines": 69,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/legacy/permissions/rolePermissions.js",
+      "type": "legacy",
+      "lines": 312,
+      "dependencyCount": 5,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/commands/aliasRegistry.js",
+      "type": "router",
+      "lines": 17,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/commands/commandRegistry.js",
+      "type": "router",
+      "lines": 59,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/commands/commandRouter.js",
+      "type": "router",
+      "lines": 82,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/services/community/communityPermissionService.js",
+      "type": "service",
+      "lines": 316,
+      "dependencyCount": 9,
+      "localDependencyCount": 8,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/services/community/communityRebuildService.js",
+      "type": "service",
+      "lines": 74,
+      "dependencyCount": 5,
+      "localDependencyCount": 5,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/services/community/communityService.js",
+      "type": "service",
+      "lines": 35,
+      "dependencyCount": 11,
+      "localDependencyCount": 11,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/services/games/gameCategoryService.js",
+      "type": "service",
+      "lines": 38,
+      "dependencyCount": 4,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/services/security/linkGuardService.js",
+      "type": "service",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/services/security/memberGuardService.js",
+      "type": "service",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/services/voice/voiceHubService.js",
+      "type": "service",
+      "lines": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/activeChannelProtector.js",
+      "type": "system",
+      "lines": 246,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/aiLayoutPlanner.js",
+      "type": "system",
+      "lines": 96,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/aiOrganizer.js",
+      "type": "system",
+      "lines": 89,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/aiServerReorganizer.js",
+      "type": "system",
+      "lines": 711,
+      "dependencyCount": 7,
+      "localDependencyCount": 5,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/announcementPin.js",
+      "type": "system",
+      "lines": 108,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/autoMod.js",
+      "type": "system",
+      "lines": 275,
+      "dependencyCount": 4,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/categoryCleaner.js",
+      "type": "system",
+      "lines": 234,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/channelPanels.js",
+      "type": "system",
+      "lines": 421,
+      "dependencyCount": 4,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityArchitect.js",
+      "type": "system",
+      "lines": 90,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityArchitectExecutor.js",
+      "type": "system",
+      "lines": 250,
+      "dependencyCount": 5,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityArchitectPlanner.js",
+      "type": "system",
+      "lines": 342,
+      "dependencyCount": 8,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityBootstrapSystem.js",
+      "type": "system",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityConcierge.js",
+      "type": "system",
+      "lines": 388,
+      "dependencyCount": 4,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityHealthScorer.js",
+      "type": "system",
+      "lines": 124,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityStructureManager.js",
+      "type": "system",
+      "lines": 219,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityV3Builder.js",
+      "type": "system",
+      "lines": 513,
+      "dependencyCount": 12,
+      "localDependencyCount": 10,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityV3PermissionBuilder.js",
+      "type": "system",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/communityV3Validator.js",
+      "type": "system",
+      "lines": 46,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/deepCleanupExecutor.js",
+      "type": "system",
+      "lines": 214,
+      "dependencyCount": 5,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/deepCleanupPlanner.js",
+      "type": "system",
+      "lines": 295,
+      "dependencyCount": 4,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/factoryReset.js",
+      "type": "system",
+      "lines": 466,
+      "dependencyCount": 9,
+      "localDependencyCount": 6,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/gameChannels.js",
+      "type": "system",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/gameSuggestionSystem.js",
+      "type": "system",
+      "lines": 626,
+      "dependencyCount": 10,
+      "localDependencyCount": 7,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/guestGate.js",
+      "type": "system",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/interactiveGuideSystem.js",
+      "type": "system",
+      "lines": 81,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/layoutDecisionEngine.js",
+      "type": "system",
+      "lines": 1058,
+      "dependencyCount": 11,
+      "localDependencyCount": 8,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/lfgSystem.js",
+      "type": "system",
+      "lines": 342,
+      "dependencyCount": 6,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/linkGuard.js",
+      "type": "system",
+      "lines": 462,
+      "dependencyCount": 6,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/memberGuard.js",
+      "type": "system",
+      "lines": 356,
+      "dependencyCount": 6,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/nightCrewSystem.js",
+      "type": "system",
+      "lines": 84,
+      "dependencyCount": 7,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/organizer.js",
+      "type": "system",
+      "lines": 446,
+      "dependencyCount": 4,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/personaMessageSystem.js",
+      "type": "system",
+      "lines": 98,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/roleManager.js",
+      "type": "system",
+      "lines": 501,
+      "dependencyCount": 6,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/rolePermissions.js",
+      "type": "system",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/serverLogs.js",
+      "type": "system",
+      "lines": 97,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/serverMemory.js",
+      "type": "system",
+      "lines": 119,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/serverPolisher.js",
+      "type": "system",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/serverRebuilder.js",
+      "type": "system",
+      "lines": 3,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/tempVoice.js",
+      "type": "system",
+      "lines": 932,
+      "dependencyCount": 9,
+      "localDependencyCount": 7,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/voiceActivitySystem.js",
+      "type": "system",
+      "lines": 324,
+      "dependencyCount": 5,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/voiceHub.js",
+      "type": "system",
+      "lines": 238,
+      "dependencyCount": 4,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/systems/welcomeSystem.js",
+      "type": "system",
+      "lines": 303,
+      "dependencyCount": 4,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 3,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/tests/fixtures/serviceFacade.js",
+      "type": "other",
+      "lines": 20,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/utils/gameEmojis.js",
+      "type": "util",
+      "lines": 14,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/utils/interactionReplies.js",
+      "type": "util",
+      "lines": 53,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/utils/voiceStats.js",
+      "type": "util",
+      "lines": 106,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "src/adapters/legacy/legacyCommandAdapters.js",
+      "to": "src/services/community/communityPermissionService.js",
+      "specifier": "../../services/community/communityPermissionService"
+    },
+    {
+      "from": "src/adapters/legacy/legacyCommandAdapters.js",
+      "to": "src/services/community/communityRebuildService.js",
+      "specifier": "../../services/community/communityRebuildService"
+    },
+    {
+      "from": "src/adapters/legacy/legacyConfigAdapter.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/adapters/legacy/legacyDataAdapter.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/commands/admin.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/commands/community.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/commands/dev.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/commands/game.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/commands/panel.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/commands/security.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/commands/voice.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/config/channelVisibilityRules.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/config/channelVisibilityRules.js",
+      "to": "src/domain/community/permissionMatrix.js",
+      "specifier": "../domain/community/permissionMatrix"
+    },
+    {
+      "from": "src/config/communityArchitectureV3.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/config/communityLayout.js",
+      "to": "src/config/permissionTemplates.js",
+      "specifier": "./permissionTemplates"
+    },
+    {
+      "from": "src/config/communityLayout.js",
+      "to": "src/config/channelVisibilityRules.js",
+      "specifier": "./channelVisibilityRules"
+    },
+    {
+      "from": "src/config/permissionTemplates.js",
+      "to": "src/legacy/permissions/permissionTemplates.js",
+      "specifier": "../legacy/permissions/permissionTemplates"
+    },
+    {
+      "from": "src/deploy-commands.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "./modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/domain/games/gameCategoryPolicy.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../community/communityArchitectureV3"
+    },
+    {
+      "from": "src/domain/games/gameCategoryPolicy.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "./gameIdentityService"
+    },
+    {
+      "from": "src/domain/games/gameIdentityService.js",
+      "to": "src/domain/games/gameRegistry.js",
+      "specifier": "./gameRegistry"
+    },
+    {
+      "from": "src/events/guildMemberAdd.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../services/security/memberGuardService"
+    },
+    {
+      "from": "src/events/guildMemberAdd.js",
+      "to": "src/systems/welcomeSystem.js",
+      "specifier": "../systems/welcomeSystem"
+    },
+    {
+      "from": "src/events/guildMemberAdd.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../systems/communityConcierge"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/organizer.js",
+      "specifier": "../systems/organizer"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/deepCleanupPlanner.js",
+      "specifier": "../systems/deepCleanupPlanner"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/deepCleanupExecutor.js",
+      "specifier": "../systems/deepCleanupExecutor"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../systems/tempVoice"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../systems/channelPanels"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/memberGuard.js",
+      "specifier": "../systems/memberGuard"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../systems/roleManager"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/serverRebuilder.js",
+      "specifier": "../systems/serverRebuilder"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/categoryCleaner.js",
+      "specifier": "../systems/categoryCleaner"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/rolePermissions.js",
+      "specifier": "../systems/rolePermissions"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/factoryReset.js",
+      "specifier": "../systems/factoryReset"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/aiServerReorganizer.js",
+      "specifier": "../systems/aiServerReorganizer"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "../systems/activeChannelProtector"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../systems/serverLogs"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/lfgSystem.js",
+      "specifier": "../systems/lfgSystem"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../utils/interactionReplies"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/serverPolisher.js",
+      "specifier": "../systems/serverPolisher"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/gameSuggestionSystem.js",
+      "specifier": "../systems/gameSuggestionSystem"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../systems/communityConcierge"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/communityBootstrapSystem.js",
+      "specifier": "../systems/communityBootstrapSystem"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/layoutDecisionEngine.js",
+      "specifier": "../systems/layoutDecisionEngine"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/communityArchitect.js",
+      "specifier": "../systems/communityArchitect"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../systems/gameChannels"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/legacy/commands/game-registry-doctor.js",
+      "specifier": "../legacy/commands/game-registry-doctor"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/systems/communityV3Builder.js",
+      "specifier": "../systems/communityV3Builder"
+    },
+    {
+      "from": "src/events/interactionCreate.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/events/messageCreate.js",
+      "to": "src/systems/announcementPin.js",
+      "specifier": "../systems/announcementPin"
+    },
+    {
+      "from": "src/events/messageCreate.js",
+      "to": "src/systems/autoMod.js",
+      "specifier": "../systems/autoMod"
+    },
+    {
+      "from": "src/events/messageCreate.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../services/security/memberGuardService"
+    },
+    {
+      "from": "src/events/ready.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../systems/tempVoice"
+    },
+    {
+      "from": "src/events/ready.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../systems/gameChannels"
+    },
+    {
+      "from": "src/events/ready.js",
+      "to": "src/services/voice/voiceHubService.js",
+      "specifier": "../services/voice/voiceHubService"
+    },
+    {
+      "from": "src/events/ready.js",
+      "to": "src/systems/lfgSystem.js",
+      "specifier": "../systems/lfgSystem"
+    },
+    {
+      "from": "src/events/ready.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "../systems/voiceActivitySystem"
+    },
+    {
+      "from": "src/events/voiceStateUpdate.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../systems/tempVoice"
+    },
+    {
+      "from": "src/events/voiceStateUpdate.js",
+      "to": "src/services/voice/voiceHubService.js",
+      "specifier": "../services/voice/voiceHubService"
+    },
+    {
+      "from": "src/events/voiceStateUpdate.js",
+      "to": "src/systems/lfgSystem.js",
+      "specifier": "../systems/lfgSystem"
+    },
+    {
+      "from": "src/events/voiceStateUpdate.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../services/security/memberGuardService"
+    },
+    {
+      "from": "src/events/voiceStateUpdate.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "../systems/voiceActivitySystem"
+    },
+    {
+      "from": "src/events/voiceStateUpdate.js",
+      "to": "src/systems/nightCrewSystem.js",
+      "specifier": "../systems/nightCrewSystem"
+    },
+    {
+      "from": "src/index.js",
+      "to": "src/modules/commands/commandRegistry.js",
+      "specifier": "./modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/infrastructure/discord/discordChannelRepository.js",
+      "to": "src/core/constants.js",
+      "specifier": "../../core/constants"
+    },
+    {
+      "from": "src/infrastructure/discord/discordChannelRepository.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/infrastructure/discord/discordPermissionWriter.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/infrastructure/discord/discordPermissionWriter.js",
+      "to": "src/infrastructure/discord/discordChannelRepository.js",
+      "specifier": "./discordChannelRepository"
+    },
+    {
+      "from": "src/legacy/commands/ai-layout-repair.js",
+      "to": "src/systems/aiLayoutPlanner.js",
+      "specifier": "../../systems/aiLayoutPlanner"
+    },
+    {
+      "from": "src/legacy/commands/ai-layout-repair.js",
+      "to": "src/systems/layoutDecisionEngine.js",
+      "specifier": "../../systems/layoutDecisionEngine"
+    },
+    {
+      "from": "src/legacy/commands/ai-reorganize-server.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/ai-reorganize-server.js",
+      "to": "src/legacy/commands/ai_reorganize_server.js",
+      "specifier": "./ai_reorganize_server"
+    },
+    {
+      "from": "src/legacy/commands/ai_reorganize_server.js",
+      "to": "src/systems/aiServerReorganizer.js",
+      "specifier": "../../systems/aiServerReorganizer"
+    },
+    {
+      "from": "src/legacy/commands/analyze-server.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/analyze-server.js",
+      "to": "src/legacy/commands/analyze_server.js",
+      "specifier": "./analyze_server"
+    },
+    {
+      "from": "src/legacy/commands/announcement-pin-settings.js",
+      "to": "src/systems/announcementPin.js",
+      "specifier": "../../systems/announcementPin"
+    },
+    {
+      "from": "src/legacy/commands/apply-role-permissions.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/archive-inactive-games.js",
+      "to": "src/services/games/gameCategoryService.js",
+      "specifier": "../../services/games/gameCategoryService"
+    },
+    {
+      "from": "src/legacy/commands/auto-organize.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/auto-organize.js",
+      "to": "src/legacy/commands/auto_organize.js",
+      "specifier": "./auto_organize"
+    },
+    {
+      "from": "src/legacy/commands/automod-settings.js",
+      "to": "src/systems/autoMod.js",
+      "specifier": "../../systems/autoMod"
+    },
+    {
+      "from": "src/legacy/commands/auto_organize.js",
+      "to": "src/systems/organizer.js",
+      "specifier": "../../systems/organizer"
+    },
+    {
+      "from": "src/legacy/commands/auto_organize.js",
+      "to": "src/systems/aiOrganizer.js",
+      "specifier": "../../systems/aiOrganizer"
+    },
+    {
+      "from": "src/legacy/commands/bootstrap-community.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/check-guest-visibility.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/check-onboarding-visibility.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/check-role-visibility.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/cleanup-empty-categories.js",
+      "to": "src/systems/categoryCleaner.js",
+      "specifier": "../../systems/categoryCleaner"
+    },
+    {
+      "from": "src/legacy/commands/cleanup-guest-roles.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/commands/cleanup-guest-roles.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../../utils/interactionReplies"
+    },
+    {
+      "from": "src/legacy/commands/community-about.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
+      "from": "src/legacy/commands/community-architect.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/community-roadmap.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
+      "from": "src/legacy/commands/create-party.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../../services/security/memberGuardService"
+    },
+    {
+      "from": "src/legacy/commands/create-party.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/commands/debug-permissions.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/dedupe-layout.js",
+      "to": "src/systems/communityBootstrapSystem.js",
+      "specifier": "../../systems/communityBootstrapSystem"
+    },
+    {
+      "from": "src/legacy/commands/deep-cleanup.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/deep-cleanup.js",
+      "to": "src/legacy/commands/deep_cleanup.js",
+      "specifier": "./deep_cleanup"
+    },
+    {
+      "from": "src/legacy/commands/deep_cleanup.js",
+      "to": "src/systems/deepCleanupPlanner.js",
+      "specifier": "../../systems/deepCleanupPlanner"
+    },
+    {
+      "from": "src/legacy/commands/factory-reset-server.js",
+      "to": "src/systems/factoryReset.js",
+      "specifier": "../../systems/factoryReset"
+    },
+    {
+      "from": "src/legacy/commands/fix-game-category.js",
+      "to": "src/services/games/gameCategoryService.js",
+      "specifier": "../../services/games/gameCategoryService"
+    },
+    {
+      "from": "src/legacy/commands/forget-channel-rule.js",
+      "to": "src/systems/serverMemory.js",
+      "specifier": "../../systems/serverMemory"
+    },
+    {
+      "from": "src/legacy/commands/game-registry-doctor.js",
+      "to": "src/services/games/gameCategoryService.js",
+      "specifier": "../../services/games/gameCategoryService"
+    },
+    {
+      "from": "src/legacy/commands/help-me-start.js",
+      "to": "src/systems/interactiveGuideSystem.js",
+      "specifier": "../../systems/interactiveGuideSystem"
+    },
+    {
+      "from": "src/legacy/commands/layout-doctor.js",
+      "to": "src/systems/layoutDecisionEngine.js",
+      "specifier": "../../systems/layoutDecisionEngine"
+    },
+    {
+      "from": "src/legacy/commands/learn-channel.js",
+      "to": "src/systems/serverMemory.js",
+      "specifier": "../../systems/serverMemory"
+    },
+    {
+      "from": "src/legacy/commands/linkguard-settings.js",
+      "to": "src/services/security/linkGuardService.js",
+      "specifier": "../../services/security/linkGuardService"
+    },
+    {
+      "from": "src/legacy/commands/linkguard-whitelist.js",
+      "to": "src/services/security/linkGuardService.js",
+      "specifier": "../../services/security/linkGuardService"
+    },
+    {
+      "from": "src/legacy/commands/lock.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/memberguard-release.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../../services/security/memberGuardService"
+    },
+    {
+      "from": "src/legacy/commands/memberguard-release.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../../utils/interactionReplies"
+    },
+    {
+      "from": "src/legacy/commands/memberguard-settings.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../../services/security/memberGuardService"
+    },
+    {
+      "from": "src/legacy/commands/memberguard-settings.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../../utils/interactionReplies"
+    },
+    {
+      "from": "src/legacy/commands/memberguard-status.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../../services/security/memberGuardService"
+    },
+    {
+      "from": "src/legacy/commands/memberguard-status.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../../utils/interactionReplies"
+    },
+    {
+      "from": "src/legacy/commands/memory-list.js",
+      "to": "src/systems/serverMemory.js",
+      "specifier": "../../systems/serverMemory"
+    },
+    {
+      "from": "src/legacy/commands/move-channel.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/plan-cleanup.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/plan-cleanup.js",
+      "to": "src/legacy/commands/plan_cleanup.js",
+      "specifier": "./plan_cleanup"
+    },
+    {
+      "from": "src/legacy/commands/polish-server-design.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/polish-server-design.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../../utils/interactionReplies"
+    },
+    {
+      "from": "src/legacy/commands/rebuild-community-layout.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/rebuild-community-v3.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/rebuild-server.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/rebuild-server.js",
+      "to": "src/legacy/commands/rebuild_server.js",
+      "specifier": "./rebuild_server"
+    },
+    {
+      "from": "src/legacy/commands/rebuild_server.js",
+      "to": "src/systems/serverRebuilder.js",
+      "specifier": "../../systems/serverRebuilder"
+    },
+    {
+      "from": "src/legacy/commands/refresh-community-guide.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
+      "from": "src/legacy/commands/rename-channel.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/repair-channel-permissions.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/restore-active-channels.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "../../systems/activeChannelProtector"
+    },
+    {
+      "from": "src/legacy/commands/role-settings.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/commands/setup-channel-panels.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/setup-community-guide.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
+      "from": "src/legacy/commands/setup-game.js",
+      "to": "src/services/games/gameCategoryService.js",
+      "specifier": "../../services/games/gameCategoryService"
+    },
+    {
+      "from": "src/legacy/commands/setup-roles.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../systems/channelPanels"
+    },
+    {
+      "from": "src/legacy/commands/setup-roles.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/commands/setup-server.js",
+      "to": "src/legacy/commands/setupServerLegacy.js",
+      "specifier": "../../legacy/commands/setupServerLegacy"
+    },
+    {
+      "from": "src/legacy/commands/setup-server.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/setup-ticket.js",
+      "to": "src/legacy/commands/setupTicketLegacy.js",
+      "specifier": "../../legacy/commands/setupTicketLegacy"
+    },
+    {
+      "from": "src/legacy/commands/setup-ticket.js",
+      "to": "src/services/community/communityService.js",
+      "specifier": "../../services/community/communityService"
+    },
+    {
+      "from": "src/legacy/commands/setup-voicehub.js",
+      "to": "src/services/voice/voiceHubService.js",
+      "specifier": "../../services/voice/voiceHubService"
+    },
+    {
+      "from": "src/legacy/commands/setupServerLegacy.js",
+      "to": "src/config/templates.js",
+      "specifier": "../../config/templates"
+    },
+    {
+      "from": "src/legacy/commands/suggest-game.js",
+      "to": "src/services/games/gameCategoryService.js",
+      "specifier": "../../services/games/gameCategoryService"
+    },
+    {
+      "from": "src/legacy/commands/tempvoice-doctor.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../../systems/gameChannels"
+    },
+    {
+      "from": "src/legacy/commands/tempvoice-doctor.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/commands/tempvoice-doctor.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/legacy/commands/tempvoice-panel.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/commands/tempvoice-settings.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/commands/unlock.js",
+      "to": "src/adapters/legacy/legacyCommandAdapters.js",
+      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+    },
+    {
+      "from": "src/legacy/commands/voice-leaderboard.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "../../systems/voiceActivitySystem"
+    },
+    {
+      "from": "src/legacy/commands/voice-leaderboard.js",
+      "to": "src/utils/voiceStats.js",
+      "specifier": "../../utils/voiceStats"
+    },
+    {
+      "from": "src/legacy/commands/voice-profile.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "../../systems/voiceActivitySystem"
+    },
+    {
+      "from": "src/legacy/commands/voice-profile.js",
+      "to": "src/utils/voiceStats.js",
+      "specifier": "../../utils/voiceStats"
+    },
+    {
+      "from": "src/legacy/commands/voice-room-info.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "../../systems/voiceActivitySystem"
+    },
+    {
+      "from": "src/legacy/commands/voice-status.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "../../systems/voiceActivitySystem"
+    },
+    {
+      "from": "src/legacy/commands/welcome-settings.js",
+      "to": "src/systems/welcomeSystem.js",
+      "specifier": "../../systems/welcomeSystem"
+    },
+    {
+      "from": "src/legacy/community/communityBootstrapSystem.js",
+      "to": "src/config/communityLayout.js",
+      "specifier": "../../config/communityLayout"
+    },
+    {
+      "from": "src/legacy/community/communityBootstrapSystem.js",
+      "to": "src/legacy/permissions/permissionTemplates.js",
+      "specifier": "../permissions/permissionTemplates"
+    },
+    {
+      "from": "src/legacy/community/communityBootstrapSystem.js",
+      "to": "src/config/channelVisibilityRules.js",
+      "specifier": "../../config/channelVisibilityRules"
+    },
+    {
+      "from": "src/legacy/community/communityBootstrapSystem.js",
+      "to": "src/legacy/games/gameChannels.js",
+      "specifier": "../games/gameChannels"
+    },
+    {
+      "from": "src/legacy/community/communityBootstrapSystem.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/community/communityBootstrapSystem.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
+      "from": "src/legacy/community/communityBootstrapSystem.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/community/serverPolisher.js",
+      "to": "src/config/channelDesign.js",
+      "specifier": "../../config/channelDesign"
+    },
+    {
+      "from": "src/legacy/community/serverPolisher.js",
+      "to": "src/config/roleDesign.js",
+      "specifier": "../../config/roleDesign"
+    },
+    {
+      "from": "src/legacy/community/serverPolisher.js",
+      "to": "src/config/serverDesignThemes.js",
+      "specifier": "../../config/serverDesignThemes"
+    },
+    {
+      "from": "src/legacy/community/serverPolisher.js",
+      "to": "src/config/communityStructure.js",
+      "specifier": "../../config/communityStructure"
+    },
+    {
+      "from": "src/legacy/community/serverPolisher.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "./communityBootstrapSystem"
+    },
+    {
+      "from": "src/legacy/community/serverPolisher.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/config/rebuildTemplates.js",
+      "specifier": "../../config/rebuildTemplates"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/legacy/games/gameChannels.js",
+      "specifier": "../games/gameChannels"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../systems/channelPanels"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/systems/categoryCleaner.js",
+      "specifier": "../../systems/categoryCleaner"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "../../systems/activeChannelProtector"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/config/communityStructure.js",
+      "specifier": "../../config/communityStructure"
+    },
+    {
+      "from": "src/legacy/community/serverRebuilder.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "./communityBootstrapSystem"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/channelMutationService.js",
+      "to": "src/infrastructure/discord/discordChannelRepository.js",
+      "specifier": "../../../../infrastructure/discord/discordChannelRepository"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/channelPanelService.js",
+      "to": "src/core/result.js",
+      "specifier": "../../../../core/result"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/channelPanelService.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../../../systems/channelPanels"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "to": "src/core/result.js",
+      "specifier": "../../../../core/result"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "to": "src/legacy/commands/analyze_server.js",
+      "specifier": "../../../commands/analyze_server"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "to": "src/legacy/commands/ai_reorganize_server.js",
+      "specifier": "../../../commands/ai_reorganize_server"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "to": "src/legacy/commands/auto_organize.js",
+      "specifier": "../../../commands/auto_organize"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "to": "src/legacy/commands/deep_cleanup.js",
+      "specifier": "../../../commands/deep_cleanup"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "to": "src/legacy/commands/plan_cleanup.js",
+      "specifier": "../../../commands/plan_cleanup"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+      "to": "src/legacy/commands/rebuild_server.js",
+      "specifier": "../../../commands/rebuild_server"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacySetupService.js",
+      "to": "src/core/result.js",
+      "specifier": "../../../../core/result"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacySetupService.js",
+      "to": "src/legacy/commands/setupServerLegacy.js",
+      "specifier": "../../../commands/setupServerLegacy"
+    },
+    {
+      "from": "src/legacy/deprecated/services/community/legacySetupService.js",
+      "to": "src/legacy/commands/setupTicketLegacy.js",
+      "specifier": "../../../commands/setupTicketLegacy"
+    },
+    {
+      "from": "src/legacy/events/channelDelete.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/events/guildMemberUpdate.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "../../systems/roleManager"
+    },
+    {
+      "from": "src/legacy/games/gameChannels.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/legacy/games/gameChannels.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/legacy/permissions/communityV3PermissionBuilder.js",
+      "to": "src/config/communityArchitectureV3.js",
+      "specifier": "../../config/communityArchitectureV3"
+    },
+    {
+      "from": "src/legacy/permissions/communityV3PermissionBuilder.js",
+      "to": "src/domain/community/permissionMatrix.js",
+      "specifier": "../../domain/community/permissionMatrix"
+    },
+    {
+      "from": "src/legacy/permissions/guestGate.js",
+      "to": "src/config/communityLayout.js",
+      "specifier": "../../config/communityLayout"
+    },
+    {
+      "from": "src/legacy/permissions/guestGate.js",
+      "to": "src/config/channelVisibilityRules.js",
+      "specifier": "../../config/channelVisibilityRules"
+    },
+    {
+      "from": "src/legacy/permissions/guestGate.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/legacy/permissions/guestGate.js",
+      "to": "src/domain/community/permissionMatrix.js",
+      "specifier": "../../domain/community/permissionMatrix"
+    },
+    {
+      "from": "src/legacy/permissions/guestGate.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "../community/communityBootstrapSystem"
+    },
+    {
+      "from": "src/legacy/permissions/guestGate.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/permissions/permissionTemplates.js",
+      "to": "src/config/channelVisibilityRules.js",
+      "specifier": "../../config/channelVisibilityRules"
+    },
+    {
+      "from": "src/legacy/permissions/rolePermissions.js",
+      "to": "src/config/roleChannelAccess.js",
+      "specifier": "../../config/roleChannelAccess"
+    },
+    {
+      "from": "src/legacy/permissions/rolePermissions.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../../systems/tempVoice"
+    },
+    {
+      "from": "src/legacy/permissions/rolePermissions.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
+      "from": "src/legacy/permissions/rolePermissions.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "../community/communityBootstrapSystem"
+    },
+    {
+      "from": "src/modules/commands/commandRegistry.js",
+      "to": "src/modules/commands/aliasRegistry.js",
+      "specifier": "./aliasRegistry"
+    },
+    {
+      "from": "src/modules/commands/commandRegistry.js",
+      "to": "src/modules/commands/commandRouter.js",
+      "specifier": "./commandRouter"
+    },
+    {
+      "from": "src/modules/commands/commandRouter.js",
+      "to": "src/modules/commands/aliasRegistry.js",
+      "specifier": "./aliasRegistry"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/domain/community/permissionMatrix.js",
+      "specifier": "../../domain/community/permissionMatrix"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/legacy/permissions/guestGate.js",
+      "specifier": "../../legacy/permissions/guestGate"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/legacy/permissions/rolePermissions.js",
+      "specifier": "../../legacy/permissions/rolePermissions"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "../../legacy/community/communityBootstrapSystem"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/infrastructure/discord/discordPermissionWriter.js",
+      "specifier": "../../infrastructure/discord/discordPermissionWriter"
+    },
+    {
+      "from": "src/services/community/communityPermissionService.js",
+      "to": "src/systems/layoutDecisionEngine.js",
+      "specifier": "../../systems/layoutDecisionEngine"
+    },
+    {
+      "from": "src/services/community/communityRebuildService.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/services/community/communityRebuildService.js",
+      "to": "src/systems/communityV3Builder.js",
+      "specifier": "../../systems/communityV3Builder"
+    },
+    {
+      "from": "src/services/community/communityRebuildService.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "../../legacy/community/communityBootstrapSystem"
+    },
+    {
+      "from": "src/services/community/communityRebuildService.js",
+      "to": "src/legacy/community/serverPolisher.js",
+      "specifier": "../../legacy/community/serverPolisher"
+    },
+    {
+      "from": "src/services/community/communityRebuildService.js",
+      "to": "src/systems/communityArchitect.js",
+      "specifier": "../../systems/communityArchitect"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/infrastructure/discord/discordChannelRepository.js",
+      "specifier": "../../infrastructure/discord/discordChannelRepository"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "../../systems/channelPanels"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/analyze_server.js",
+      "specifier": "../../legacy/commands/analyze_server"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/ai_reorganize_server.js",
+      "specifier": "../../legacy/commands/ai_reorganize_server"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/auto_organize.js",
+      "specifier": "../../legacy/commands/auto_organize"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/deep_cleanup.js",
+      "specifier": "../../legacy/commands/deep_cleanup"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/plan_cleanup.js",
+      "specifier": "../../legacy/commands/plan_cleanup"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/rebuild_server.js",
+      "specifier": "../../legacy/commands/rebuild_server"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/setupServerLegacy.js",
+      "specifier": "../../legacy/commands/setupServerLegacy"
+    },
+    {
+      "from": "src/services/community/communityService.js",
+      "to": "src/legacy/commands/setupTicketLegacy.js",
+      "specifier": "../../legacy/commands/setupTicketLegacy"
+    },
+    {
+      "from": "src/services/games/gameCategoryService.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/services/games/gameCategoryService.js",
+      "to": "src/legacy/games/gameChannels.js",
+      "specifier": "../../legacy/games/gameChannels"
+    },
+    {
+      "from": "src/services/games/gameCategoryService.js",
+      "to": "src/systems/gameSuggestionSystem.js",
+      "specifier": "../../systems/gameSuggestionSystem"
+    },
+    {
+      "from": "src/services/games/gameCategoryService.js",
+      "to": "src/domain/games/gameCategoryPolicy.js",
+      "specifier": "../../domain/games/gameCategoryPolicy"
+    },
+    {
+      "from": "src/services/security/linkGuardService.js",
+      "to": "src/systems/linkGuard.js",
+      "specifier": "../../systems/linkGuard"
+    },
+    {
+      "from": "src/services/security/memberGuardService.js",
+      "to": "src/systems/memberGuard.js",
+      "specifier": "../../systems/memberGuard"
+    },
+    {
+      "from": "src/services/voice/voiceHubService.js",
+      "to": "src/systems/voiceHub.js",
+      "specifier": "../../systems/voiceHub"
+    },
+    {
+      "from": "src/systems/aiLayoutPlanner.js",
+      "to": "src/systems/layoutDecisionEngine.js",
+      "specifier": "./layoutDecisionEngine"
+    },
+    {
+      "from": "src/systems/aiLayoutPlanner.js",
+      "to": "src/config/communityRules.js",
+      "specifier": "../config/communityRules"
+    },
+    {
+      "from": "src/systems/aiServerReorganizer.js",
+      "to": "src/config/roleChannelAccess.js",
+      "specifier": "../config/roleChannelAccess"
+    },
+    {
+      "from": "src/systems/aiServerReorganizer.js",
+      "to": "src/systems/categoryCleaner.js",
+      "specifier": "./categoryCleaner"
+    },
+    {
+      "from": "src/systems/aiServerReorganizer.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/aiServerReorganizer.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "./tempVoice"
+    },
+    {
+      "from": "src/systems/aiServerReorganizer.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "./activeChannelProtector"
+    },
+    {
+      "from": "src/systems/autoMod.js",
+      "to": "src/systems/linkGuard.js",
+      "specifier": "./linkGuard"
+    },
+    {
+      "from": "src/systems/categoryCleaner.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/systems/categoryCleaner.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/channelPanels.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "./roleManager"
+    },
+    {
+      "from": "src/systems/communityArchitect.js",
+      "to": "src/systems/communityArchitectPlanner.js",
+      "specifier": "./communityArchitectPlanner"
+    },
+    {
+      "from": "src/systems/communityArchitect.js",
+      "to": "src/systems/communityArchitectExecutor.js",
+      "specifier": "./communityArchitectExecutor"
+    },
+    {
+      "from": "src/systems/communityArchitectExecutor.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/communityArchitectExecutor.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/communityArchitectExecutor.js",
+      "to": "src/config/channelVisibilityRules.js",
+      "specifier": "../config/channelVisibilityRules"
+    },
+    {
+      "from": "src/systems/communityArchitectExecutor.js",
+      "to": "src/systems/guestGate.js",
+      "specifier": "./guestGate"
+    },
+    {
+      "from": "src/systems/communityArchitectPlanner.js",
+      "to": "src/config/communityRules.js",
+      "specifier": "../config/communityRules"
+    },
+    {
+      "from": "src/systems/communityArchitectPlanner.js",
+      "to": "src/systems/aiLayoutPlanner.js",
+      "specifier": "./aiLayoutPlanner"
+    },
+    {
+      "from": "src/systems/communityArchitectPlanner.js",
+      "to": "src/systems/communityHealthScorer.js",
+      "specifier": "./communityHealthScorer"
+    },
+    {
+      "from": "src/systems/communityArchitectPlanner.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/communityArchitectPlanner.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/communityArchitectPlanner.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/systems/communityBootstrapSystem.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "../legacy/community/communityBootstrapSystem"
+    },
+    {
+      "from": "src/systems/communityConcierge.js",
+      "to": "src/config/permissionTemplates.js",
+      "specifier": "../config/permissionTemplates"
+    },
+    {
+      "from": "src/systems/communityHealthScorer.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/communityHealthScorer.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/communityStructureManager.js",
+      "to": "src/config/communityStructure.js",
+      "specifier": "../config/communityStructure"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/config/communityArchitectureV3.js",
+      "specifier": "../config/communityArchitectureV3"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/systems/communityV3PermissionBuilder.js",
+      "specifier": "./communityV3PermissionBuilder"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "./tempVoice"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "./channelPanels"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "./communityConcierge"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/systems/communityV3Validator.js",
+      "specifier": "./communityV3Validator"
+    },
+    {
+      "from": "src/systems/communityV3Builder.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/systems/communityV3PermissionBuilder.js",
+      "to": "src/legacy/permissions/communityV3PermissionBuilder.js",
+      "specifier": "../legacy/permissions/communityV3PermissionBuilder"
+    },
+    {
+      "from": "src/systems/communityV3Validator.js",
+      "to": "src/config/communityArchitectureV3.js",
+      "specifier": "../config/communityArchitectureV3"
+    },
+    {
+      "from": "src/systems/communityV3Validator.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/deepCleanupExecutor.js",
+      "to": "src/systems/deepCleanupPlanner.js",
+      "specifier": "./deepCleanupPlanner"
+    },
+    {
+      "from": "src/systems/deepCleanupExecutor.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/deepCleanupExecutor.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "./tempVoice"
+    },
+    {
+      "from": "src/systems/deepCleanupExecutor.js",
+      "to": "src/systems/categoryCleaner.js",
+      "specifier": "./categoryCleaner"
+    },
+    {
+      "from": "src/systems/deepCleanupPlanner.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/deepCleanupPlanner.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "./tempVoice"
+    },
+    {
+      "from": "src/systems/deepCleanupPlanner.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "./activeChannelProtector"
+    },
+    {
+      "from": "src/systems/factoryReset.js",
+      "to": "src/systems/serverRebuilder.js",
+      "specifier": "./serverRebuilder"
+    },
+    {
+      "from": "src/systems/factoryReset.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "./channelPanels"
+    },
+    {
+      "from": "src/systems/factoryReset.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "./roleManager"
+    },
+    {
+      "from": "src/systems/factoryReset.js",
+      "to": "src/systems/rolePermissions.js",
+      "specifier": "./rolePermissions"
+    },
+    {
+      "from": "src/systems/factoryReset.js",
+      "to": "src/services/community/communityPermissionService.js",
+      "specifier": "../services/community/communityPermissionService"
+    },
+    {
+      "from": "src/systems/factoryReset.js",
+      "to": "src/systems/activeChannelProtector.js",
+      "specifier": "./activeChannelProtector"
+    },
+    {
+      "from": "src/systems/gameChannels.js",
+      "to": "src/legacy/games/gameChannels.js",
+      "specifier": "../legacy/games/gameChannels"
+    },
+    {
+      "from": "src/systems/gameSuggestionSystem.js",
+      "to": "src/systems/communityStructureManager.js",
+      "specifier": "./communityStructureManager"
+    },
+    {
+      "from": "src/systems/gameSuggestionSystem.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/gameSuggestionSystem.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/gameSuggestionSystem.js",
+      "to": "src/systems/voiceHub.js",
+      "specifier": "./voiceHub"
+    },
+    {
+      "from": "src/systems/gameSuggestionSystem.js",
+      "to": "src/systems/channelPanels.js",
+      "specifier": "./channelPanels"
+    },
+    {
+      "from": "src/systems/gameSuggestionSystem.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/gameSuggestionSystem.js",
+      "to": "src/systems/personaMessageSystem.js",
+      "specifier": "./personaMessageSystem"
+    },
+    {
+      "from": "src/systems/guestGate.js",
+      "to": "src/legacy/permissions/guestGate.js",
+      "specifier": "../legacy/permissions/guestGate"
+    },
+    {
+      "from": "src/systems/interactiveGuideSystem.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "./communityConcierge"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/config/communityLayout.js",
+      "specifier": "../config/communityLayout"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/config/channelVisibilityRules.js",
+      "specifier": "../config/channelVisibilityRules"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "./tempVoice"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/systems/communityBootstrapSystem.js",
+      "specifier": "./communityBootstrapSystem"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/config/communityRules.js",
+      "specifier": "../config/communityRules"
+    },
+    {
+      "from": "src/systems/layoutDecisionEngine.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/lfgSystem.js",
+      "to": "src/utils/gameEmojis.js",
+      "specifier": "../utils/gameEmojis"
+    },
+    {
+      "from": "src/systems/lfgSystem.js",
+      "to": "src/systems/memberGuard.js",
+      "specifier": "./memberGuard"
+    },
+    {
+      "from": "src/systems/lfgSystem.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/linkGuard.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/linkGuard.js",
+      "to": "src/config/gameDomains.js",
+      "specifier": "../config/gameDomains"
+    },
+    {
+      "from": "src/systems/linkGuard.js",
+      "to": "src/systems/memberGuard.js",
+      "specifier": "./memberGuard"
+    },
+    {
+      "from": "src/systems/memberGuard.js",
+      "to": "src/systems/roleManager.js",
+      "specifier": "./roleManager"
+    },
+    {
+      "from": "src/systems/memberGuard.js",
+      "to": "src/systems/linkGuard.js",
+      "specifier": "./linkGuard"
+    },
+    {
+      "from": "src/systems/memberGuard.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/nightCrewSystem.js",
+      "to": "src/config/communityStructure.js",
+      "specifier": "../config/communityStructure"
+    },
+    {
+      "from": "src/systems/nightCrewSystem.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "./voiceActivitySystem"
+    },
+    {
+      "from": "src/systems/nightCrewSystem.js",
+      "to": "src/systems/communityStructureManager.js",
+      "specifier": "./communityStructureManager"
+    },
+    {
+      "from": "src/systems/nightCrewSystem.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/organizer.js",
+      "to": "src/systems/serverMemory.js",
+      "specifier": "./serverMemory"
+    },
+    {
+      "from": "src/systems/organizer.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/organizer.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "./tempVoice"
+    },
+    {
+      "from": "src/systems/roleManager.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/roleManager.js",
+      "to": "src/domain/community/communityArchitectureV3.js",
+      "specifier": "../domain/community/communityArchitectureV3"
+    },
+    {
+      "from": "src/systems/roleManager.js",
+      "to": "src/domain/community/permissionMatrix.js",
+      "specifier": "../domain/community/permissionMatrix"
+    },
+    {
+      "from": "src/systems/rolePermissions.js",
+      "to": "src/legacy/permissions/rolePermissions.js",
+      "specifier": "../legacy/permissions/rolePermissions"
+    },
+    {
+      "from": "src/systems/serverPolisher.js",
+      "to": "src/legacy/community/serverPolisher.js",
+      "specifier": "../legacy/community/serverPolisher"
+    },
+    {
+      "from": "src/systems/serverRebuilder.js",
+      "to": "src/legacy/community/serverRebuilder.js",
+      "specifier": "../legacy/community/serverRebuilder"
+    },
+    {
+      "from": "src/systems/tempVoice.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "./gameChannels"
+    },
+    {
+      "from": "src/systems/tempVoice.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/systems/tempVoice.js",
+      "to": "src/systems/voiceHub.js",
+      "specifier": "./voiceHub"
+    },
+    {
+      "from": "src/systems/tempVoice.js",
+      "to": "src/systems/lfgSystem.js",
+      "specifier": "./lfgSystem"
+    },
+    {
+      "from": "src/systems/tempVoice.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "./voiceActivitySystem"
+    },
+    {
+      "from": "src/systems/tempVoice.js",
+      "to": "src/domain/games/gameIdentityService.js",
+      "specifier": "../domain/games/gameIdentityService"
+    },
+    {
+      "from": "src/systems/tempVoice.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/systems/voiceActivitySystem.js",
+      "to": "src/utils/voiceStats.js",
+      "specifier": "../utils/voiceStats"
+    },
+    {
+      "from": "src/systems/voiceActivitySystem.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "../infrastructure/storage/jsonStore"
+    },
+    {
+      "from": "src/systems/voiceActivitySystem.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "./tempVoice"
+    },
+    {
+      "from": "src/systems/voiceHub.js",
+      "to": "src/systems/voiceActivitySystem.js",
+      "specifier": "./voiceActivitySystem"
+    },
+    {
+      "from": "src/systems/welcomeSystem.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "./serverLogs"
+    },
+    {
+      "from": "src/tests/fixtures/serviceFacade.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    }
+  ],
+  "externalDependencies": {
+    "discord.js": 121,
+    "node:path": 25,
+    "node:fs": 19,
+    "openai": 3,
+    "dotenv": 2,
+    "../../../scripts/audit-commands": 1
+  },
+  "circularDependencies": [
+    [
+      "src/systems/tempVoice.js",
+      "src/systems/voiceHub.js",
+      "src/systems/voiceActivitySystem.js",
+      "src/systems/tempVoice.js"
+    ],
+    [
+      "src/systems/memberGuard.js",
+      "src/systems/linkGuard.js",
+      "src/systems/memberGuard.js"
+    ]
+  ],
+  "serviceChains": [],
+  "violations": {
+    "commandDiscordApi": [
+      {
+        "file": "src/legacy/commands/setupServerLegacy.js",
+        "matches": [
+          "\\bguild\\.channels\\.create\\b",
+          "\\bguild\\.roles\\.create\\b"
+        ]
+      },
+      {
+        "file": "src/legacy/commands/setupTicketLegacy.js",
+        "matches": [
+          "\\bguild\\.channels\\.create\\b"
+        ]
+      }
+    ],
+    "serviceJson": [],
+    "domainInfrastructure": [],
+    "reverseLayer": [
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/analyze_server.js",
+        "specifier": "../../legacy/commands/analyze_server",
+        "fromType": "service",
+        "toType": "command"
+      },
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/ai_reorganize_server.js",
+        "specifier": "../../legacy/commands/ai_reorganize_server",
+        "fromType": "service",
+        "toType": "command"
+      },
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/auto_organize.js",
+        "specifier": "../../legacy/commands/auto_organize",
+        "fromType": "service",
+        "toType": "command"
+      },
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/deep_cleanup.js",
+        "specifier": "../../legacy/commands/deep_cleanup",
+        "fromType": "service",
+        "toType": "command"
+      },
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/plan_cleanup.js",
+        "specifier": "../../legacy/commands/plan_cleanup",
+        "fromType": "service",
+        "toType": "command"
+      },
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/rebuild_server.js",
+        "specifier": "../../legacy/commands/rebuild_server",
+        "fromType": "service",
+        "toType": "command"
+      },
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/setupServerLegacy.js",
+        "specifier": "../../legacy/commands/setupServerLegacy",
+        "fromType": "service",
+        "toType": "command"
+      },
+      {
+        "from": "src/services/community/communityService.js",
+        "to": "src/legacy/commands/setupTicketLegacy.js",
+        "specifier": "../../legacy/commands/setupTicketLegacy",
+        "fromType": "service",
+        "toType": "command"
+      }
+    ]
+  },
+  "rankings": {
+    "refactorTop10": [
+      {
+        "reason": "Circular dependency",
+        "target": "src/systems/tempVoice.js -> src/systems/voiceHub.js -> src/systems/voiceActivitySystem.js -> src/systems/tempVoice.js",
+        "score": 100
+      },
+      {
+        "reason": "Circular dependency",
+        "target": "src/systems/memberGuard.js -> src/systems/linkGuard.js -> src/systems/memberGuard.js",
+        "score": 100
+      },
+      {
+        "reason": "Command directly uses Discord API",
+        "target": "src/legacy/commands/setupServerLegacy.js",
+        "score": 85
+      },
+      {
+        "reason": "Command directly uses Discord API",
+        "target": "src/legacy/commands/setupTicketLegacy.js",
+        "score": 85
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/events/interactionCreate.js",
+        "score": 70
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/services/community/communityService.js",
+        "score": 55
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/systems/communityV3Builder.js",
+        "score": 50
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/legacy/community/serverRebuilder.js",
+        "score": 40
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/services/community/communityPermissionService.js",
+        "score": 40
+      },
+      {
+        "reason": "High dependency count",
+        "target": "src/systems/layoutDecisionEngine.js",
+        "score": 40
+      }
+    ],
+    "dependencyTop10": [
+      {
+        "file": "src/events/interactionCreate.js",
+        "type": "event",
+        "dependencies": 26,
+        "lines": 2066
+      },
+      {
+        "file": "src/services/community/communityService.js",
+        "type": "service",
+        "dependencies": 11,
+        "lines": 35
+      },
+      {
+        "file": "src/systems/communityV3Builder.js",
+        "type": "system",
+        "dependencies": 10,
+        "lines": 513
+      },
+      {
+        "file": "src/legacy/community/serverRebuilder.js",
+        "type": "legacy",
+        "dependencies": 8,
+        "lines": 365
+      },
+      {
+        "file": "src/services/community/communityPermissionService.js",
+        "type": "service",
+        "dependencies": 8,
+        "lines": 316
+      },
+      {
+        "file": "src/systems/layoutDecisionEngine.js",
+        "type": "system",
+        "dependencies": 8,
+        "lines": 1058
+      },
+      {
+        "file": "src/legacy/community/communityBootstrapSystem.js",
+        "type": "legacy",
+        "dependencies": 7,
+        "lines": 814
+      },
+      {
+        "file": "src/legacy/deprecated/services/community/legacyAnalysisCommandService.js",
+        "type": "legacy",
+        "dependencies": 7,
+        "lines": 22
+      },
+      {
+        "file": "src/systems/gameSuggestionSystem.js",
+        "type": "system",
+        "dependencies": 7,
+        "lines": 626
+      },
+      {
+        "file": "src/systems/tempVoice.js",
+        "type": "system",
+        "dependencies": 7,
+        "lines": 932
+      }
+    ],
+    "servicesByLines": [
+      {
+        "file": "src/services/community/communityPermissionService.js",
+        "lines": 316,
+        "dependencies": 8
+      },
+      {
+        "file": "src/services/community/communityRebuildService.js",
+        "lines": 74,
+        "dependencies": 5
+      },
+      {
+        "file": "src/services/games/gameCategoryService.js",
+        "lines": 38,
+        "dependencies": 4
+      },
+      {
+        "file": "src/services/community/communityService.js",
+        "lines": 35,
+        "dependencies": 11
+      },
+      {
+        "file": "src/services/security/linkGuardService.js",
+        "lines": 2,
+        "dependencies": 1
+      },
+      {
+        "file": "src/services/security/memberGuardService.js",
+        "lines": 2,
+        "dependencies": 1
+      },
+      {
+        "file": "src/services/voice/voiceHubService.js",
+        "lines": 2,
+        "dependencies": 1
+      }
+    ],
+    "largest": {
+      "service": {
+        "file": "src/services/community/communityPermissionService.js",
+        "type": "service",
+        "lines": 316,
+        "dependencyCount": 9,
+        "localDependencyCount": 8,
+        "externalDependencyCount": 1,
+        "exports": {
+          "moduleExports": 1,
+          "exportsDot": 0,
+          "esExports": 0
+        }
+      },
+      "command": {
+        "file": "src/legacy/commands/setupServerLegacy.js",
+        "type": "command",
+        "lines": 300,
+        "dependencyCount": 2,
+        "localDependencyCount": 1,
+        "externalDependencyCount": 1,
+        "exports": {
+          "moduleExports": 1,
+          "exportsDot": 0,
+          "esExports": 0
+        }
+      },
+      "event": {
+        "file": "src/events/interactionCreate.js",
+        "type": "event",
+        "lines": 2066,
+        "dependencyCount": 27,
+        "localDependencyCount": 26,
+        "externalDependencyCount": 1,
+        "exports": {
+          "moduleExports": 1,
+          "exportsDot": 0,
+          "esExports": 0
+        }
+      },
+      "router": {
+        "file": "src/modules/commands/commandRouter.js",
+        "type": "router",
+        "lines": 82,
+        "dependencyCount": 1,
+        "localDependencyCount": 1,
+        "externalDependencyCount": 0,
+        "exports": {
+          "moduleExports": 1,
+          "exportsDot": 0,
+          "esExports": 0
+        }
+      },
+      "util": {
+        "file": "src/utils/voiceStats.js",
+        "type": "util",
+        "lines": 106,
+        "dependencyCount": 0,
+        "localDependencyCount": 0,
+        "externalDependencyCount": 0,
+        "exports": {
+          "moduleExports": 1,
+          "exportsDot": 0,
+          "esExports": 0
+        }
+      }
+    }
+  }
+}

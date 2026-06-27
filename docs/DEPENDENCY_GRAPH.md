@@ -1,0 +1,132 @@
+# Dependency Graph
+
+Generated: 2026-06-27T08:47:55.418Z
+
+## Summary
+
+- JS files scanned: 184
+- Local dependency edges: 350
+- Circular dependencies: 2
+- Service chain max depth: 1
+- Service chains over two layers: 0
+- Architecture score: 60 / 100
+
+## Architecture Rules
+
+Allowed direction:
+
+```
+Command -> Service -> Domain -> Repository -> Infrastructure
+```
+
+Reverse dependencies are flagged when a lower layer imports upward. Legacy relationships are included when they still affect the active compatibility path.
+
+## Circular Dependencies
+
+- src/systems/tempVoice.js -> src/systems/voiceHub.js -> src/systems/voiceActivitySystem.js -> src/systems/tempVoice.js
+- src/systems/memberGuard.js -> src/systems/linkGuard.js -> src/systems/memberGuard.js
+
+## Service Chains Over Two Layers
+
+None.
+
+## Command Direct Discord API Usage
+
+- src/legacy/commands/setupServerLegacy.js: \bguild\.channels\.create\b, \bguild\.roles\.create\b
+- src/legacy/commands/setupTicketLegacy.js: \bguild\.channels\.create\b
+
+## Service Direct JSON Access
+
+None.
+
+## Domain Depends On Infrastructure
+
+None.
+
+## Reverse Layer Dependencies
+
+- src/services/community/communityService.js (service) -> src/legacy/commands/analyze_server.js (command)
+- src/services/community/communityService.js (service) -> src/legacy/commands/ai_reorganize_server.js (command)
+- src/services/community/communityService.js (service) -> src/legacy/commands/auto_organize.js (command)
+- src/services/community/communityService.js (service) -> src/legacy/commands/deep_cleanup.js (command)
+- src/services/community/communityService.js (service) -> src/legacy/commands/plan_cleanup.js (command)
+- src/services/community/communityService.js (service) -> src/legacy/commands/rebuild_server.js (command)
+- src/services/community/communityService.js (service) -> src/legacy/commands/setupServerLegacy.js (command)
+- src/services/community/communityService.js (service) -> src/legacy/commands/setupTicketLegacy.js (command)
+
+## Architecture Score
+
+Score: 60 / 100
+
+Penalty model:
+
+- Circular dependency: -8 each
+- Service chain over two layers: -5 each
+- Command direct Discord API usage: -4 each
+- Service direct JSON access: -4 each
+- Domain depends on infrastructure: -8 each
+- Reverse layer dependency: -2 each
+
+## Top 10 Refactor Candidates
+
+1. Circular dependency: `src/systems/tempVoice.js -> src/systems/voiceHub.js -> src/systems/voiceActivitySystem.js -> src/systems/tempVoice.js`
+2. Circular dependency: `src/systems/memberGuard.js -> src/systems/linkGuard.js -> src/systems/memberGuard.js`
+3. Command directly uses Discord API: `src/legacy/commands/setupServerLegacy.js`
+4. Command directly uses Discord API: `src/legacy/commands/setupTicketLegacy.js`
+5. High dependency count: `src/events/interactionCreate.js`
+6. High dependency count: `src/services/community/communityService.js`
+7. High dependency count: `src/systems/communityV3Builder.js`
+8. High dependency count: `src/legacy/community/serverRebuilder.js`
+9. High dependency count: `src/services/community/communityPermissionService.js`
+10. High dependency count: `src/systems/layoutDecisionEngine.js`
+
+## Top 10 Dependency Count
+
+1. `src/events/interactionCreate.js` - 26 local deps, 2066 lines
+2. `src/services/community/communityService.js` - 11 local deps, 35 lines
+3. `src/systems/communityV3Builder.js` - 10 local deps, 513 lines
+4. `src/legacy/community/serverRebuilder.js` - 8 local deps, 365 lines
+5. `src/services/community/communityPermissionService.js` - 8 local deps, 316 lines
+6. `src/systems/layoutDecisionEngine.js` - 8 local deps, 1058 lines
+7. `src/legacy/community/communityBootstrapSystem.js` - 7 local deps, 814 lines
+8. `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js` - 7 local deps, 22 lines
+9. `src/systems/gameSuggestionSystem.js` - 7 local deps, 626 lines
+10. `src/systems/tempVoice.js` - 7 local deps, 932 lines
+
+## Fattest Services
+
+1. `src/services/community/communityPermissionService.js` - 316 lines, 8 local deps
+2. `src/services/community/communityRebuildService.js` - 74 lines, 5 local deps
+3. `src/services/games/gameCategoryService.js` - 38 lines, 4 local deps
+4. `src/services/community/communityService.js` - 35 lines, 11 local deps
+5. `src/services/security/linkGuardService.js` - 2 lines, 1 local deps
+6. `src/services/security/memberGuardService.js` - 2 lines, 1 local deps
+7. `src/services/voice/voiceHubService.js` - 2 lines, 1 local deps
+
+## Largest Files By Role
+
+- Service: `src/services/community/communityPermissionService.js` (316 lines)
+- Command: `src/legacy/commands/setupServerLegacy.js` (300 lines)
+- Event: `src/events/interactionCreate.js` (2066 lines)
+- Router: `src/modules/commands/commandRouter.js` (82 lines)
+- Util: `src/utils/voiceStats.js` (106 lines)
+
+## Type Counts
+
+- adapter: 3
+- command: 80
+- config: 13
+- core: 2
+- domain: 5
+- event: 6
+- legacy: 14
+- other: 3
+- repository: 3
+- router: 3
+- service: 7
+- system: 42
+- util: 3
+
+## Graph Artifact
+
+Full machine-readable graph: `dependency-graph.json`
