@@ -1,12 +1,14 @@
 {
-  "generatedAt": "2026-06-27T09:56:41.495Z",
+  "generatedAt": "2026-06-27T10:08:52.676Z",
   "summary": {
     "fileCount": 187,
     "dependencyCount": 353,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
-    "architectureScore": 76,
+    "architectureScore": 84,
+    "activeCommandDiscordApiCount": 0,
+    "legacyCommandDiscordApiCount": 2,
     "byType": {
       "adapter": 3,
       "command": 80,

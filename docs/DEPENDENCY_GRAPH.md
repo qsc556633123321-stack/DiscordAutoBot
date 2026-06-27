@@ -1,6 +1,6 @@
 # Dependency Graph
 
-Generated: 2026-06-27T09:56:41.495Z
+Generated: 2026-06-27T10:08:52.676Z
 
 ## Summary
 
@@ -9,7 +9,9 @@ Generated: 2026-06-27T09:56:41.495Z
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0
-- Architecture score: 76 / 100
+- Active command direct Discord API usage: 0
+- Legacy command direct Discord API usage: 2
+- Architecture score: 84 / 100
 
 ## Architecture Rules
 
@@ -55,13 +57,14 @@ None.
 
 ## Architecture Score
 
-Score: 76 / 100
+Score: 84 / 100
 
 Penalty model:
 
 - Circular dependency: -8 each
 - Service chain over two layers: -5 each
-- Command direct Discord API usage: -4 each
+- Active command direct Discord API usage: -4 each
+- Legacy command direct Discord API usage: tracked in burn-down, not active score
 - Service direct JSON access: -4 each
 - Domain depends on infrastructure: -8 each
 - Reverse layer dependency: -2 each

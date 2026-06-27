@@ -262,10 +262,12 @@ function main() {
   const cycles = findCycles([...meta.keys()], adjacency);
   const serviceChain = serviceChains([...meta.keys()], adjacency, meta);
   const dependencyCount = edges.length;
+  const activeCommandDiscordApi = violations.commandDiscordApi.filter((item) => !item.file.startsWith('src/legacy/'));
+  const legacyCommandDiscordApi = violations.commandDiscordApi.filter((item) => item.file.startsWith('src/legacy/'));
   const architecturePenalty =
     cycles.length * 8 +
     serviceChain.chains.length * 5 +
-    violations.commandDiscordApi.length * 4 +
+    activeCommandDiscordApi.length * 4 +
     violations.serviceJson.length * 4 +
     violations.domainInfrastructure.length * 8 +
     violations.reverseLayer.length * 2;
@@ -300,6 +302,8 @@ function main() {
       serviceChainMaxDepth: serviceChain.maxDepth,
       serviceChainOverTwoCount: serviceChain.chains.length,
       architectureScore,
+      activeCommandDiscordApiCount: activeCommandDiscordApi.length,
+      legacyCommandDiscordApiCount: legacyCommandDiscordApi.length,
       byType
     },
     nodes: [...meta.values()],
@@ -345,6 +349,8 @@ Generated: ${graph.generatedAt}
 - Circular dependencies: ${cycles.length}
 - Service chain max depth: ${serviceChain.maxDepth}
 - Service chains over two layers: ${serviceChain.chains.length}
+- Active command direct Discord API usage: ${activeCommandDiscordApi.length}
+- Legacy command direct Discord API usage: ${legacyCommandDiscordApi.length}
 - Architecture score: ${architectureScore} / 100
 
 ## Architecture Rules
@@ -371,7 +377,8 @@ Penalty model:
 
 - Circular dependency: -8 each
 - Service chain over two layers: -5 each
-- Command direct Discord API usage: -4 each
+- Active command direct Discord API usage: -4 each
+- Legacy command direct Discord API usage: tracked in burn-down, not active score
 - Service direct JSON access: -4 each
 - Domain depends on infrastructure: -8 each
 - Reverse layer dependency: -2 each

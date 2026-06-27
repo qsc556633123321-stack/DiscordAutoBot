@@ -1,16 +1,23 @@
 # Discord Community OS Bot
 
-Discord.js v14 社群管理 Bot，為「科幻基地」提供 Community Architecture V3、遊戲找隊友、Temp Voice、社群安全、互動導覽與管理工具。
+Discord.js v14 community management bot for the 科幻基地 Discord server.
 
-Project Architecture V2 採漸進式重構：新功能依照 `core -> domain -> services -> infrastructure` 分層，既有功能透過 legacy adapters 保持相容。
+The project is now on **Project Architecture V2**:
 
-## 安裝
+- Command Router is complete.
+- Main command surface is consolidated to 7 command groups plus 65 legacy aliases.
+- Circular dependencies are currently 0.
+- Active Architecture Score is 84 / 100.
+- Previous baseline before legacy-score separation was 76 / 100.
+- Legacy code is still present and tracked through a staged burn-down plan.
+
+## Install
 
 ```bash
 npm install
 ```
 
-建立 `.env`：
+Create `.env`:
 
 ```env
 DISCORD_TOKEN=
@@ -19,33 +26,47 @@ GUILD_ID=
 OPENAI_API_KEY=
 ```
 
-## 快速啟動
+## Run
 
 ```bash
 npm run deploy
 npm start
 ```
 
-Dashboard：
+Dashboard:
 
 ```bash
 npm run api:dev
 npm run dashboard:dev
 ```
 
-## 常用指令
+## Main Commands
 
-- `/rebuild-community-v3`：預覽或執行 Community Architecture V3。
-- `/repair-channel-permissions`：修復 Guest Gate 與分類權限。
-- `/check-guest-visibility`：檢查新人視角是否外漏。
-- `/community-architect`：診斷社群結構。
-- `/setup-channel-panels`：建立或刷新頻道面板。
-- `/setup-game`：建立遊戲分類。
-- `/dev-audit-commands`：檢查文件與 slash commands 是否一致。
+- `/community`
+- `/game`
+- `/voice`
+- `/security`
+- `/panel`
+- `/admin`
+- `/dev`
 
-## 架構與操作文件
+Legacy slash commands remain deployed as aliases while the codebase is burned down behind the new router.
+
+## Architecture Checks
+
+```bash
+npm run analyze:dependencies
+npm run report:complexity
+npm run test:architecture
+npm run audit:dead-code
+npm run report:commands
+```
+
+## Docs
 
 - [Project Architecture V2](docs/ARCHITECTURE.md)
+- [Dependency Graph](docs/DEPENDENCY_GRAPH.md)
+- [Legacy Burn Down](docs/LEGACY_BURN_DOWN.md)
 - [Commands](docs/COMMANDS.md)
 - [Community Architecture V3](docs/COMMUNITY_V3.md)
 - [Permissions](docs/PERMISSIONS.md)
@@ -54,10 +75,3 @@ npm run dashboard:dev
 - [Voice System](docs/VOICE_SYSTEM.md)
 - [Operations](docs/OPERATIONS.md)
 - [Refactor Audit](docs/REFACTOR_AUDIT.md)
-
-## 驗證
-
-```bash
-npm run test:architecture
-npm run audit:commands
-```

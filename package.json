@@ -18,7 +18,8 @@
     "audit:commands": "node scripts/audit-commands.js",
     "audit:dead-code": "node scripts/audit-dead-code.js",
     "report:commands": "node scripts/report-command-count.js",
-    "analyze:dependencies": "node scripts/analyze-dependency-graph.js"
+    "analyze:dependencies": "node scripts/analyze-dependency-graph.js",
+    "report:complexity": "node scripts/report-complexity.js"
   },
   "keywords": [
     "discord",
