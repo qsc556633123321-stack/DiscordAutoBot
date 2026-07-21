@@ -1,7 +1,42 @@
-node_modules
+node_modules/
+
+# Environment and secrets
 .env
-.next*
-apps/web/.next*
-dist
-coverage
+.env.*
+!.env.example
+
+# Next.js / frontend build output
+.next/
+.next-*/
+apps/web/.next/
+apps/web/.next-*/
+
+# Build and coverage output
+dist/
+build/
+coverage/
+reports/
+
+# Logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Tool caches
+.turbo/
+.eslintcache
+.cache/
+cache/
+tmp/
+temp/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+desktop.ini
