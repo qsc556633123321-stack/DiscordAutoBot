@@ -1,14 +1,19 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-22T12:55:38.227Z
+Generated: 2026-07-22T13:07:52.571Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
+
+## Completed Migrations: Wrapper Remaining
+
+| Module | Status | Replacement path | Release-window action |
+| --- | --- | --- | --- |
+| src/legacy/commands/check-onboarding-visibility.js | Migrated; wrapper remaining | src/services/community/communityPermissionService.js (explicit adapter path) | keep wrapper and monitor before legacy deletion review |
 
 ## Wave 1: low-risk, clear boundary
 
 | Module | Preconditions | Required tests | Done definition | Rollback | Impact |
 | --- | --- | --- | --- | --- | --- |
-| src/legacy/commands/check-onboarding-visibility.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/deprecated/services/community/channelMutationService.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | low after release-window verification |
 | src/legacy/deprecated/services/community/channelPanelService.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | low after release-window verification |
 | src/legacy/deprecated/services/community/legacyAnalysisCommandService.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | low after release-window verification |

@@ -1,11 +1,11 @@
 # Dependency Graph
 
-Generated: 2026-07-22T12:55:39.387Z
+Generated: 2026-07-22T13:07:10.988Z
 
 ## Summary
 
-- JS files scanned: 231
-- Local dependency edges: 397
+- JS files scanned: 235
+- Local dependency edges: 402
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0
@@ -15,7 +15,7 @@ Generated: 2026-07-22T12:55:39.387Z
 - Command files over 150 lines: 0
 - Event files over 80 lines: 0
 - Hard architecture failures: 0
-- Architecture score: 100 / 100
+- Architecture score: 96 / 100
 
 ## Architecture Rules
 
@@ -62,7 +62,8 @@ None.
 
 ## Reverse Layer Dependencies
 
-None.
+- src/application/community/checkOnboardingVisibilityUseCase.js (other) -> src/domain/community/onboardingVisibilityPolicy.js (domain)
+- src/application/community/checkOnboardingVisibilityUseCase.js (other) -> src/services/community/communityPermissionService.js (service)
 
 ## Hard Architecture Failures
 
@@ -70,7 +71,7 @@ None.
 
 ## Architecture Score
 
-Score: 100 / 100
+Score: 96 / 100
 
 Penalty model:
 
@@ -136,10 +137,11 @@ Penalty model:
 - command: 80
 - config: 13
 - core: 3
-- domain: 6
+- domain: 7
 - event: 7
+- infrastructure: 1
 - legacy: 27
-- other: 3
+- other: 5
 - repository: 3
 - router: 17
 - service: 8

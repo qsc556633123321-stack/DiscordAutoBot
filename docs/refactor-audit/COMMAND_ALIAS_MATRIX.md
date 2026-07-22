@@ -1,6 +1,6 @@
 # Command Alias Matrix
 
-Generated: 2026-07-22T12:55:38.226Z
+Generated: 2026-07-22T13:07:52.569Z
 
 The registry dynamically requires all 73 files from `src/legacy/commands` and exposes 65 final alias names after duplicate-name overwrites. No alias is removed or redeployed in this phase.
 
@@ -17,7 +17,7 @@ The registry dynamically requires all 73 files from `src/legacy/commands` and ex
 | /automod-settings | /security automod | src/legacy/commands/automod-settings.js | no | yes or unverified | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /bootstrap-community | - | src/legacy/commands/bootstrap-community.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /check-guest-visibility | /community check-guest | src/legacy/commands/check-guest-visibility.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
-| /check-onboarding-visibility | - | src/legacy/commands/check-onboarding-visibility.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
+| /check-onboarding-visibility | - | src/legacy/commands/check-onboarding-visibility.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /check-role-visibility | /community check-role | src/legacy/commands/check-role-visibility.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /cleanup-empty-categories | - | src/legacy/commands/cleanup-empty-categories.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /cleanup-guest-roles | - | src/legacy/commands/cleanup-guest-roles.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |

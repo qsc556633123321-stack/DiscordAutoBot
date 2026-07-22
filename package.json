@@ -15,6 +15,7 @@
     "dashboard:start": "node apps/api/start-production.js",
     "test:architecture": "node scripts/test-architecture.js",
     "test:permissions": "node scripts/test-permissions.js",
+    "test:migration": "node tests/migration/check-onboarding-visibility.test.js",
     "audit:commands": "node scripts/audit-commands.js",
     "audit:dead-code": "node scripts/audit-dead-code.js",
     "audit:legacy": "node scripts/generate-legacy-audit.js",

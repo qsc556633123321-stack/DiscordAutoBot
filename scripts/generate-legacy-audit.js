@@ -112,6 +112,7 @@ function purposeFor(name) {
 }
 
 function suggestedWave(name, tags) {
+  if (name.endsWith('commands/check-onboarding-visibility.js')) return 'Migrated / monitor';
   if (name.includes('/deprecated/') || name.endsWith('commands/check-onboarding-visibility.js')) return 'Wave 1';
   if (tags.includes('COMPATIBILITY_WRAPPER') && tags.includes('REPLACEMENT_EXISTS')) return 'Wave 2';
   if (tags.includes('ALIAS_REQUIRED') || name.includes('/interactions/')) return 'Wave 3';
@@ -128,6 +129,13 @@ function usageFlags(row) {
     service: row.refs.some((ref) => ref.startsWith('src/services/')) ? 'yes' : 'no',
     wrapper: row.tags.includes('COMPATIBILITY_WRAPPER') ? 'yes' : 'no'
   };
+}
+
+function migrationStatus(name, source) {
+  if (name.endsWith('commands/check-onboarding-visibility.js') && source.includes('presentation/commands/checkOnboardingVisibilityCommand')) {
+    return 'Migrated; wrapper remaining';
+  }
+  return 'Not migrated';
 }
 
 function escapeCell(value) {
@@ -192,6 +200,7 @@ function makeInventory() {
     const row = { name, refs, dynamic, tags: sortedTags, exports: moduleExports(file, source), replacement,
       purpose: purposeFor(name), difficulty: difficultyFor(sortedTags, name), risk: riskFor(sortedTags, name) };
     row.flags = usageFlags(row);
+    row.migrationStatus = migrationStatus(name, source);
     row.wave = suggestedWave(name, sortedTags);
     rows.push(row);
   }
@@ -212,10 +221,10 @@ function inventoryReport(rows) {
     '## Classification Counts', '',
     '| Tag | Files |', '| --- | ---: |', ...Object.entries(counts).map(([tag, count]) => `| ${tag} | ${count} |`), '',
     '## File Inventory', '',
-    '| File | Purpose / exports | Direct runtime evidence | Dynamic/registry evidence | Alias | Event | Interaction fallback | Service fallback | System wrapper | Tags | Non-legacy replacement | Difficulty | Removal risk | Suggested order |',
-    '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- |'
+    '| File | Purpose / exports | Direct runtime evidence | Dynamic/registry evidence | Alias | Event | Interaction fallback | Service fallback | System wrapper | Tags | Non-legacy replacement | Migration status | Difficulty | Removal risk | Suggested order |',
+    '| --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- | --- | --- |'
   ];
-  for (const row of rows) lines.push(`| ${escapeCell(row.name)} | ${escapeCell(`${row.purpose}; exports: ${row.exports}`)} | ${escapeCell(row.refs.join(', ') || '-')} | ${escapeCell(row.dynamic.join('; ') || '-')} | ${row.flags.alias} | ${row.flags.event} | ${row.flags.interaction} | ${row.flags.service} | ${row.flags.wrapper} | ${escapeCell(row.tags.join(', '))} | ${escapeCell(row.replacement.value)} | ${row.difficulty} | ${row.risk} | ${row.wave} |`);
+  for (const row of rows) lines.push(`| ${escapeCell(row.name)} | ${escapeCell(`${row.purpose}; exports: ${row.exports}`)} | ${escapeCell(row.refs.join(', ') || '-')} | ${escapeCell(row.dynamic.join('; ') || '-')} | ${row.flags.alias} | ${row.flags.event} | ${row.flags.interaction} | ${row.flags.service} | ${row.flags.wrapper} | ${escapeCell(row.tags.join(', '))} | ${escapeCell(row.replacement.value)} | ${row.migrationStatus} | ${row.difficulty} | ${row.risk} | ${row.wave} |`);
   lines.push('', '## Evidence Rules', '', '- Static references are resolved only for local literal `require()` calls.', '- `src/modules/commands/aliasRegistry.js` and `src/index.js` use directory scanning; these paths supersede a missing static reference.', '- Fallback handlers are classified as runtime-required until custom-id coverage is demonstrated by tests or telemetry.', '- Unknown dynamic references remain unknown; the audit never calls them dead.');
   return lines.join('\n');
 }
@@ -281,12 +290,14 @@ function candidateReport(rows) {
     { row: lookup('events/channelDelete.js'), score: 68, reason: 'Small file and clear lifecycle behavior, but it is dynamically boot-loaded and calls temp voice compatibility code.' },
     { row: lookup('deprecated/services/community/legacyAnalysisCommandService.js'), score: 54, reason: 'Very small, but it aggregates six historical commands; replacement ownership is unclear and it may be an adapter boundary rather than an isolated behavior.' }
   ];
-  const lines = ['# First Migration Candidate', '', `Generated: ${new Date().toISOString()}`, '', 'This is a plan only. No module is moved or replaced in this phase.', '', '| Candidate | Direct refs | Runtime classification | Existing replacement | Risk | Testability | Migration cost | Score |', '| --- | ---: | --- | --- | --- | --- | --- | ---: |'];
+  const firstCandidate = candidates[0].row;
+  const firstStatus = firstCandidate?.migrationStatus || 'Not migrated';
+  const lines = ['# First Migration Candidate', '', `Generated: ${new Date().toISOString()}`, '', `Status: ${firstStatus}. The underlying legacy runtime remains retained; this report records selection and follow-up order.`, '', '| Candidate | Direct refs | Runtime classification | Existing replacement | Risk | Testability | Migration cost | Score |', '| --- | ---: | --- | --- | --- | --- | --- | ---: |'];
   for (const candidate of candidates) {
     const row = candidate.row;
     lines.push(`| ${row?.name || 'not found'} | ${row?.refs.length || 0} | ${row?.tags.join(', ') || '-'} | ${row?.replacement.value || '-'} | ${row?.risk || '-'} | ${candidate.reason.includes('Single alias') ? 'high: mock guild + permission result' : candidate.reason.includes('Small file') ? 'medium: event fixture needed' : 'medium-low: six command behavior fixtures'} | ${row?.difficulty || '-'} | ${candidate.score} |`);
   }
-  lines.push('', '## Recommended First Target', '', '### `src/legacy/commands/check-onboarding-visibility.js`', '', '- It has one public command contract and no channel mutation or permission overwrite writes.', '- Its implementation already delegates to `legacyCommandAdapters.permissions.inspectOnboarding()` and `buildOnboardingEmbed()`; the active `communityPermissionService` exposes matching inspection/build functions.', '- It is an alias-only migration: preserve `/check-onboarding-visibility`, replace only its internal handler with a thin adapter, and verify the embed/result against a mocked guild.', '- It does not touch community rebuild, deletion, game setup, or high-fan-out interaction fallbacks.', '', '## Why Not the Other Candidates First', '', '- `channelDelete.js` is only 13 lines, but `src/index.js` dynamically boot-loads it and it reaches temp-voice lifecycle code, where a regression can leave stale voice metadata.', '- `legacyAnalysisCommandService.js` is small but dispatches six broad community commands; moving it first risks turning a small file into an accidental behavior migration.', '', '## Proposed Next-Phase Acceptance Criteria', '', '1. Keep the existing slash command name and deployment entry unchanged.', '2. Create a thin command adapter that calls `communityPermissionService.inspectOnboarding()` and the current embed builder.', '3. Add fixture tests for manager-permission rejection, successful inspection, and failed inspection.', '4. Keep the legacy command as a fallback for one release window; record fallback use before removing it.', '5. Run `npm run quality:gate` and `npm run dashboard:build`; rollback is a one-file handler reversion.');
+  lines.push('', '## First Target: `src/legacy/commands/check-onboarding-visibility.js`', '', '- It has one public command contract and no channel mutation or permission overwrite writes.', '- The command is now migrated to a presentation/application/domain/infrastructure path while its legacy file remains a thin wrapper.', '- Regression coverage compares denied, successful, and failed-inspection replies against the captured legacy baseline.', '- Keep the wrapper through a release-window review; rollback is a one-file reversion.', '', '## Next Recommended Target (Do Not Start in This Phase)', '', '### `src/legacy/events/channelDelete.js`', '', '- It remains the next smallest bounded runtime candidate, but it is dynamically boot-loaded and touches Temp Voice cleanup.', '- Before migration, add lifecycle fixtures for channel deletion, absent room metadata, and cleanup failure. Do not combine it with voice feature work.', '', '## Why Not `legacyAnalysisCommandService.js` Yet', '', '- It is small but dispatches six broad community commands; moving it first risks turning a small file into an accidental multi-command behavior migration.');
   return lines.join('\n');
 }
 
@@ -299,6 +310,11 @@ function burnDownReport(rows) {
     'Wave 5: legacy events and final removal': rows.filter((row) => row.wave === 'Wave 5')
   };
   const lines = ['# Legacy Burn-down Plan', '', `Generated: ${new Date().toISOString()}`, '', 'The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.'];
+  const migrated = rows.filter((row) => row.migrationStatus !== 'Not migrated');
+  if (migrated.length) {
+    lines.push('', '## Completed Migrations: Wrapper Remaining', '', '| Module | Status | Replacement path | Release-window action |', '| --- | --- | --- | --- |');
+    for (const row of migrated) lines.push(`| ${row.name} | ${row.migrationStatus} | ${row.replacement.value} | keep wrapper and monitor before legacy deletion review |`);
+  }
   for (const [wave, entries] of Object.entries(groups)) {
     lines.push('', `## ${wave}`, '', '| Module | Preconditions | Required tests | Done definition | Rollback | Impact |', '| --- | --- | --- | --- | --- | --- |');
     for (const row of entries) lines.push(`| ${row.name} | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | ${row.risk} |`);

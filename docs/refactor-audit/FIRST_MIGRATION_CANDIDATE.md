@@ -1,8 +1,8 @@
 # First Migration Candidate
 
-Generated: 2026-07-22T12:55:38.227Z
+Generated: 2026-07-22T13:07:52.570Z
 
-This is a plan only. No module is moved or replaced in this phase.
+Status: Migrated; wrapper remaining. The underlying legacy runtime remains retained; this report records selection and follow-up order.
 
 | Candidate | Direct refs | Runtime classification | Existing replacement | Risk | Testability | Migration cost | Score |
 | --- | ---: | --- | --- | --- | --- | --- | ---: |
@@ -10,24 +10,20 @@ This is a plan only. No module is moved or replaced in this phase.
 | src/legacy/events/channelDelete.js | 0 | BOOT_REQUIRED, EVENT_REQUIRED, RUNTIME_REQUIRED | main event architecture exists; behavior replacement not confirmed | high | medium: event fixture needed | medium-high | 68 |
 | src/legacy/deprecated/services/community/legacyAnalysisCommandService.js | 0 | REMOVAL_CANDIDATE | communityRebuildService is intended destination; direct replacement not confirmed | low after release-window verification | medium-low: six command behavior fixtures | high | 54 |
 
-## Recommended First Target
-
-### `src/legacy/commands/check-onboarding-visibility.js`
+## First Target: `src/legacy/commands/check-onboarding-visibility.js`
 
 - It has one public command contract and no channel mutation or permission overwrite writes.
-- Its implementation already delegates to `legacyCommandAdapters.permissions.inspectOnboarding()` and `buildOnboardingEmbed()`; the active `communityPermissionService` exposes matching inspection/build functions.
-- It is an alias-only migration: preserve `/check-onboarding-visibility`, replace only its internal handler with a thin adapter, and verify the embed/result against a mocked guild.
-- It does not touch community rebuild, deletion, game setup, or high-fan-out interaction fallbacks.
+- The command is now migrated to a presentation/application/domain/infrastructure path while its legacy file remains a thin wrapper.
+- Regression coverage compares denied, successful, and failed-inspection replies against the captured legacy baseline.
+- Keep the wrapper through a release-window review; rollback is a one-file reversion.
 
-## Why Not the Other Candidates First
+## Next Recommended Target (Do Not Start in This Phase)
 
-- `channelDelete.js` is only 13 lines, but `src/index.js` dynamically boot-loads it and it reaches temp-voice lifecycle code, where a regression can leave stale voice metadata.
-- `legacyAnalysisCommandService.js` is small but dispatches six broad community commands; moving it first risks turning a small file into an accidental behavior migration.
+### `src/legacy/events/channelDelete.js`
 
-## Proposed Next-Phase Acceptance Criteria
+- It remains the next smallest bounded runtime candidate, but it is dynamically boot-loaded and touches Temp Voice cleanup.
+- Before migration, add lifecycle fixtures for channel deletion, absent room metadata, and cleanup failure. Do not combine it with voice feature work.
 
-1. Keep the existing slash command name and deployment entry unchanged.
-2. Create a thin command adapter that calls `communityPermissionService.inspectOnboarding()` and the current embed builder.
-3. Add fixture tests for manager-permission rejection, successful inspection, and failed inspection.
-4. Keep the legacy command as a fallback for one release window; record fallback use before removing it.
-5. Run `npm run quality:gate` and `npm run dashboard:build`; rollback is a one-file handler reversion.
+## Why Not `legacyAnalysisCommandService.js` Yet
+
+- It is small but dispatches six broad community commands; moving it first risks turning a small file into an accidental multi-command behavior migration.

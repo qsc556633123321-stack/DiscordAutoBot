@@ -10,7 +10,7 @@ const {
 } = require('../../domain/community/permissionMatrix');
 const { buildGuestGatePlan, checkGuestVisibility, checkNativeOnboardingReferences } = require('../../legacy/permissions/guestGate');
 const rolePermissions = require('../../legacy/permissions/rolePermissions');
-const communityBootstrap = require('../../legacy/community/communityBootstrapSystem');
+const onboardingVisibilityGateway = require('../../infrastructure/discord/onboardingVisibilityGateway');
 const permissionWriter = require('../../infrastructure/discord/discordPermissionWriter');
 
 function buildRepairPlan(guild, options = {}) {
@@ -122,7 +122,7 @@ function buildRolePlan(guild, requestedById) {
 
 function inspectOnboarding(guild) {
   try {
-    return ok(communityBootstrap.checkOnboardingVisibility(guild));
+    return ok(onboardingVisibilityGateway.inspect(guild));
   } catch (error) {
     return fromThrowable(error, 'ONBOARDING_INSPECTION_FAILED');
   }
@@ -298,7 +298,7 @@ function buildDebugPermissionsEmbed(report) {
 
 module.exports = {
   buildGuestVisibilityEmbed: require('../../legacy/permissions/guestGate').buildGuestVisibilityEmbed,
-  buildOnboardingEmbed: communityBootstrap.buildOnboardingCheckEmbed,
+  buildOnboardingEmbed: onboardingVisibilityGateway.buildEmbed,
   buildRepairPlan,
   buildRepairEmbed: require('../../systems/layoutDecisionEngine').buildLayoutRepairEmbed,
   buildRolePlan,

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-22T12:55:39.387Z",
+  "generatedAt": "2026-07-22T13:07:10.988Z",
   "summary": {
-    "fileCount": 231,
-    "dependencyCount": 397,
+    "fileCount": 235,
+    "dependencyCount": 402,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
-    "architectureScore": 100,
+    "architectureScore": 96,
     "activeCommandDiscordApiCount": 0,
     "legacyCommandDiscordApiCount": 2,
     "activeLargeFileCount": 0,
@@ -18,13 +18,14 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 4,
+      "other": 5,
       "command": 80,
       "config": 13,
       "core": 3,
-      "other": 3,
-      "domain": 6,
+      "domain": 7,
       "event": 7,
       "repository": 3,
+      "infrastructure": 1,
       "legacy": 27,
       "router": 17,
       "system": 57,
@@ -82,6 +83,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/checkOnboardingVisibilityUseCase.js",
+      "type": "other",
+      "lines": 19,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -440,6 +455,20 @@
       }
     },
     {
+      "file": "src/domain/community/onboardingVisibilityPolicy.js",
+      "type": "domain",
+      "lines": 10,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/domain/community/permissionMatrix.js",
       "type": "domain",
       "lines": 88,
@@ -628,6 +657,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/discord/onboardingVisibilityGateway.js",
+      "type": "infrastructure",
+      "lines": 15,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -848,11 +891,11 @@
     {
       "file": "src/legacy/commands/check-onboarding-visibility.js",
       "type": "command",
-      "lines": 20,
+      "lines": 5,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2512,6 +2555,20 @@
       }
     },
     {
+      "file": "src/presentation/commands/checkOnboardingVisibilityCommand.js",
+      "type": "other",
+      "lines": 34,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/services/community/communityPermissionService.js",
       "type": "service",
       "lines": 317,
@@ -3325,6 +3382,16 @@
       "specifier": "../../infrastructure/storage/jsonStore"
     },
     {
+      "from": "src/application/community/checkOnboardingVisibilityUseCase.js",
+      "to": "src/domain/community/onboardingVisibilityPolicy.js",
+      "specifier": "../../domain/community/onboardingVisibilityPolicy"
+    },
+    {
+      "from": "src/application/community/checkOnboardingVisibilityUseCase.js",
+      "to": "src/services/community/communityPermissionService.js",
+      "specifier": "../../services/community/communityPermissionService"
+    },
+    {
       "from": "src/commands/admin.js",
       "to": "src/modules/commands/commandRegistry.js",
       "specifier": "../modules/commands/commandRegistry"
@@ -3393,6 +3460,11 @@
       "from": "src/deploy-commands.js",
       "to": "src/modules/commands/commandRegistry.js",
       "specifier": "./modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/domain/community/onboardingVisibilityPolicy.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
     },
     {
       "from": "src/domain/games/gameCategoryPolicy.js",
@@ -3500,6 +3572,11 @@
       "specifier": "./discordChannelRepository"
     },
     {
+      "from": "src/infrastructure/discord/onboardingVisibilityGateway.js",
+      "to": "src/legacy/community/communityBootstrapSystem.js",
+      "specifier": "../../legacy/community/communityBootstrapSystem"
+    },
+    {
       "from": "src/legacy/commands/ai-layout-repair.js",
       "to": "src/systems/aiLayoutPlanner.js",
       "specifier": "../../systems/aiLayoutPlanner"
@@ -3586,8 +3663,8 @@
     },
     {
       "from": "src/legacy/commands/check-onboarding-visibility.js",
-      "to": "src/adapters/legacy/legacyCommandAdapters.js",
-      "specifier": "../../adapters/legacy/legacyCommandAdapters"
+      "to": "src/presentation/commands/checkOnboardingVisibilityCommand.js",
+      "specifier": "../../presentation/commands/checkOnboardingVisibilityCommand"
     },
     {
       "from": "src/legacy/commands/check-role-visibility.js",
@@ -4805,6 +4882,11 @@
       "specifier": "../../../domain/games/gameIdentityService"
     },
     {
+      "from": "src/presentation/commands/checkOnboardingVisibilityCommand.js",
+      "to": "src/application/community/checkOnboardingVisibilityUseCase.js",
+      "specifier": "../../application/community/checkOnboardingVisibilityUseCase"
+    },
+    {
       "from": "src/services/community/communityPermissionService.js",
       "to": "src/core/result.js",
       "specifier": "../../core/result"
@@ -4831,8 +4913,8 @@
     },
     {
       "from": "src/services/community/communityPermissionService.js",
-      "to": "src/legacy/community/communityBootstrapSystem.js",
-      "specifier": "../../legacy/community/communityBootstrapSystem"
+      "to": "src/infrastructure/discord/onboardingVisibilityGateway.js",
+      "specifier": "../../infrastructure/discord/onboardingVisibilityGateway"
     },
     {
       "from": "src/services/community/communityPermissionService.js",
@@ -5284,7 +5366,22 @@
     ],
     "serviceJson": [],
     "domainInfrastructure": [],
-    "reverseLayer": []
+    "reverseLayer": [
+      {
+        "from": "src/application/community/checkOnboardingVisibilityUseCase.js",
+        "to": "src/domain/community/onboardingVisibilityPolicy.js",
+        "specifier": "../../domain/community/onboardingVisibilityPolicy",
+        "fromType": "other",
+        "toType": "domain"
+      },
+      {
+        "from": "src/application/community/checkOnboardingVisibilityUseCase.js",
+        "to": "src/services/community/communityPermissionService.js",
+        "specifier": "../../services/community/communityPermissionService",
+        "fromType": "other",
+        "toType": "service"
+      }
+    ]
   },
   "hardFailures": [],
   "rankings": {
