@@ -38,8 +38,8 @@ const MIGRATED_COMMANDS = Object.freeze({
   },
   'memberguard-status': {
     presentation: 'src/presentation/commands/memberGuardStatusCommand.js',
-    application: 'src/application/security/getMemberGuardStatusUseCase.js',
-    infrastructure: 'existing memberGuardService read API',
+    application: 'src/application/memberGuard/getMemberGuardStatusUseCase.js',
+    infrastructure: 'src/infrastructure/storage/jsonMemberGuardRepository.js',
     test: 'tests/migration/memberguard-status.test.js'
   }
 });

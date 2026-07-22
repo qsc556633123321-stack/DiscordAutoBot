@@ -15,9 +15,10 @@
     "dashboard:start": "node apps/api/start-production.js",
     "test:architecture": "node scripts/test-architecture.js",
     "test:permissions": "node scripts/test-permissions.js",
-    "test:migration": "node tests/migration/check-onboarding-visibility.test.js && node tests/migration/dev-audit-commands.test.js && node tests/migration/memory-list.test.js && node tests/migration/learn-channel.test.js && node tests/migration/forget-channel-rule.test.js && node tests/migration/organizer-memory-consumer.test.js && node tests/migration/memberguard-status.test.js",
+    "test:migration": "node tests/migration/check-onboarding-visibility.test.js && node tests/migration/dev-audit-commands.test.js && node tests/migration/memory-list.test.js && node tests/migration/learn-channel.test.js && node tests/migration/forget-channel-rule.test.js && node tests/migration/organizer-memory-consumer.test.js && node tests/migration/memberguard-status.test.js && node tests/migration/memberguard-feature.test.js",
     "test:memory": "node tests/domain/memory/channelRulePolicy.test.js && node tests/application/memory/channelRuleUseCases.test.js && node tests/infrastructure/storage/jsonChannelRuleRepository.test.js && node tests/composition/memoryFeature.test.js",
     "test:organizer": "node tests/application/organizer/organizerPlanningUseCase.test.js && node tests/integration/organizer/organizerMemoryComposition.test.js && node tests/migration/organizer-memory-consumer.test.js",
+    "test:memberguard": "node tests/domain/memberGuard/memberGuardPolicy.test.js && node tests/application/memberGuard/memberGuardUseCases.test.js && node tests/infrastructure/memberGuard/jsonMemberGuardRepository.test.js && node tests/composition/memberGuard/memberGuardFeature.test.js && node tests/integration/memberGuard/memberGuardRuntimeAdapter.test.js && node tests/migration/memberguard-status.test.js && node tests/migration/memberguard-feature.test.js",
     "audit:commands": "node scripts/audit-commands.js",
     "audit:dead-code": "node scripts/audit-dead-code.js",
     "audit:legacy": "node scripts/generate-legacy-audit.js",
@@ -26,7 +27,7 @@
     "report:commands": "node scripts/report-command-count.js",
     "analyze:dependencies": "node scripts/analyze-dependency-graph.js",
     "report:complexity": "node scripts/report-complexity.js",
-    "quality:gate": "npm run analyze:dependencies && npm run test:architecture && npm run test:permissions && npm run test:legacy-boundaries && npm run test:memory && npm run test:organizer && npm run audit:dead-code && npm run report:commands && npm run report:complexity"
+    "quality:gate": "npm run analyze:dependencies && npm run test:architecture && npm run test:permissions && npm run test:legacy-boundaries && npm run test:memory && npm run test:organizer && npm run test:memberguard && npm run audit:dead-code && npm run report:commands && npm run report:complexity"
   },
   "keywords": [
     "discord",

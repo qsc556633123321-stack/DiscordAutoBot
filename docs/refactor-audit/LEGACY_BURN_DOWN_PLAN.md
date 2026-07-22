@@ -1,6 +1,6 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-22T14:59:17.965Z
+Generated: 2026-07-22T15:39:01.135Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
 

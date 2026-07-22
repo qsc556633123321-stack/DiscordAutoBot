@@ -1,11 +1,11 @@
 # Dependency Graph
 
-Generated: 2026-07-22T14:59:10.284Z
+Generated: 2026-07-22T15:38:42.679Z
 
 ## Summary
 
-- JS files scanned: 258
-- Local dependency edges: 429
+- JS files scanned: 266
+- Local dependency edges: 439
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0
@@ -109,7 +109,7 @@ Penalty model:
 7. `src/legacy/community/communityBootstrapSystem.js` - 7 local deps, 814 lines
 8. `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js` - 7 local deps, 22 lines
 9. `src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js` - 7 local deps, 626 lines
-10. `src/legacy/community/serverPolisher.js` - 6 local deps, 504 lines
+10. `src/composition/memberGuardFeature.js` - 6 local deps, 26 lines
 
 ## Fattest Services
 
@@ -118,8 +118,8 @@ Penalty model:
 3. `src/services/games/gameCategoryService.js` - 39 lines, 4 local deps
 4. `src/services/community/communityService.js` - 21 lines, 3 local deps
 5. `src/services/security/securityDecisionService.js` - 10 lines, 1 local deps
-6. `src/services/security/linkGuardService.js` - 2 lines, 1 local deps
-7. `src/services/security/memberGuardService.js` - 2 lines, 1 local deps
+6. `src/services/security/memberGuardService.js` - 5 lines, 1 local deps
+7. `src/services/security/linkGuardService.js` - 2 lines, 1 local deps
 8. `src/services/voice/voiceHubService.js` - 2 lines, 1 local deps
 
 ## Largest Files By Role
@@ -132,19 +132,19 @@ Penalty model:
 
 ## Type Counts
 
-- adapter: 4
-- application: 11
+- adapter: 5
+- application: 14
 - command: 80
-- composition: 2
+- composition: 3
 - config: 14
 - core: 3
-- domain: 10
+- domain: 11
 - event: 7
-- infrastructure: 2
+- infrastructure: 3
 - legacy: 27
 - other: 3
 - presentation: 6
-- repository: 4
+- repository: 5
 - router: 17
 - service: 8
 - system: 57

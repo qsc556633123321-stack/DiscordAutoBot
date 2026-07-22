@@ -27,6 +27,16 @@ This guard prevents unreviewed dependencies from active code into `src/legacy` w
 - `src/systems/organizer.js` is the active compatibility facade. It must not import the legacy organizer runtime or `serverMemory.js` directly.
 - The legacy organizer runtime remains source-retained for rollback only. It is not part of the active organizer consumer path.
 
+## MemberGuard Vertical Slice Rules
+
+- `src/domain/memberGuard/**` is deterministic and must not import Discord.js, storage, application, presentation, composition, systems, or legacy modules.
+- `src/application/memberGuard/**` depends only on ports and domain policy. It must not import Discord.js, filesystem, path, environment variables, infrastructure, presentation, systems, or legacy modules.
+- `src/infrastructure/storage/jsonMemberGuardRepository.js` is the guild-scoped settings adapter and uses `jsonStore`; it does not return Discord objects.
+- `src/composition/memberGuardFeature.js` is the sole active wiring point for repository, use cases, runtime adapter, logging gateway, and Link Guard safe-mode hook.
+- `src/services/security/memberGuardService.js` is an active facade over composition and must not import `src/systems/memberGuard.js` or `src/legacy/**`.
+- Discord message/member side effects are confined to `src/adapters/memberGuard/memberGuardRuntimeAdapter.js`.
+- `src/legacy/commands/memberguard-status.js` remains an alias-compatible thin wrapper. The retained system source is rollback-only for this migrated active path.
+
 ## Compatibility Gateways
 
 Existing behavior sometimes remains legacy-owned during a migration. Those temporary edges are recorded in `src/config/legacyBoundaryAllowlist.js` with an exact source, target, and reason. The list is deliberately narrow: a newly added legacy import fails `npm run test:legacy-boundaries` unless it has an explicit, reviewed migration reason.

@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { createGetMemberGuardStatusUseCase } = require('../../application/security/getMemberGuardStatusUseCase');
+const { createMemberGuardFeature } = require('../../composition/memberGuardFeature');
 const interactionReplies = require('../../utils/interactionReplies');
 
 const data = new SlashCommandBuilder()
@@ -8,7 +8,7 @@ const data = new SlashCommandBuilder()
   .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild);
 
 function createMemberGuardStatusCommand({
-  useCase = createGetMemberGuardStatusUseCase(),
+  useCase = createMemberGuardFeature().getStatus,
   responder = interactionReplies,
   logger = console
 } = {}) {

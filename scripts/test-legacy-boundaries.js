@@ -108,6 +108,38 @@ for (const file of files) {
     }
   }
 
+  if (from.startsWith('src/application/memberGuard/')) {
+    const forbidden = [
+      [/require\(['"]discord\.js['"]\)/, 'discord.js'],
+      [/require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, 'filesystem'],
+      [/require\(['"]node:path['"]\)|require\(['"]path['"]\)/, 'path'],
+      [/process\.env/, 'process.env'],
+      [/require\(['"][^'"]*infrastructure\//, 'infrastructure'],
+      [/require\(['"][^'"]*presentation\//, 'presentation'],
+      [/require\(['"][^'"]*legacy\//, 'legacy'],
+      [/require\(['"][^'"]*systems\//, 'systems']
+    ];
+    for (const [pattern, label] of forbidden) {
+      if (pattern.test(source)) violations.push(`MemberGuard application boundary violation (${label}): ${from}`);
+    }
+  }
+
+  if (from.startsWith('src/domain/memberGuard/')) {
+    const forbidden = [
+      [/require\(['"]discord\.js['"]\)/, 'discord.js'],
+      [/require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, 'filesystem'],
+      [/require\(['"][^'"]*application\//, 'application'],
+      [/require\(['"][^'"]*infrastructure\//, 'infrastructure'],
+      [/require\(['"][^'"]*presentation\//, 'presentation'],
+      [/require\(['"][^'"]*composition\//, 'composition'],
+      [/require\(['"][^'"]*legacy\//, 'legacy'],
+      [/require\(['"][^'"]*systems\//, 'systems']
+    ];
+    for (const [pattern, label] of forbidden) {
+      if (pattern.test(source)) violations.push(`MemberGuard domain boundary violation (${label}): ${from}`);
+    }
+  }
+
   if (isRestricted && from.startsWith('src/presentation/') && /require\(['"][^'"]*legacy\//.test(source)) {
     violations.push(`Presentation must not import legacy directly: ${from}`);
   }

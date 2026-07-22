@@ -1,6 +1,6 @@
 # Interaction Fallback Matrix
 
-Generated: 2026-07-22T14:59:17.964Z
+Generated: 2026-07-22T15:39:01.134Z
 
 | Interaction family | Known custom ID family | New handler | Legacy fallback | Coverage conclusion |
 | --- | --- | --- | --- | --- |

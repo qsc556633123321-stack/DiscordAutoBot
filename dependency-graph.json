@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T14:59:10.284Z",
+  "generatedAt": "2026-07-22T15:38:42.679Z",
   "summary": {
-    "fileCount": 258,
-    "dependencyCount": 429,
+    "fileCount": 266,
+    "dependencyCount": 439,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -17,17 +17,17 @@
     "legacyImportWithoutFallbackCount": 0,
     "hardFailureCount": 0,
     "byType": {
-      "adapter": 4,
-      "application": 11,
+      "adapter": 5,
+      "application": 14,
       "command": 80,
-      "composition": 2,
+      "composition": 3,
       "config": 14,
       "core": 3,
       "other": 3,
-      "domain": 10,
+      "domain": 11,
       "event": 7,
-      "repository": 4,
-      "infrastructure": 2,
+      "repository": 5,
+      "infrastructure": 3,
       "legacy": 27,
       "router": 17,
       "system": 57,
@@ -94,6 +94,20 @@
       }
     },
     {
+      "file": "src/adapters/memberGuard/memberGuardRuntimeAdapter.js",
+      "type": "adapter",
+      "lines": 103,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/application/community/checkOnboardingVisibilityUseCase.js",
       "type": "application",
       "lines": 19,
@@ -114,6 +128,48 @@
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/memberGuard/evaluateMemberGuardUseCase.js",
+      "type": "application",
+      "lines": 15,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/memberGuard/getMemberGuardStatusUseCase.js",
+      "type": "application",
+      "lines": 20,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/memberGuard/ports/memberGuardRepository.js",
+      "type": "application",
+      "lines": 6,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -236,7 +292,7 @@
     {
       "file": "src/application/security/getMemberGuardStatusUseCase.js",
       "type": "application",
-      "lines": 19,
+      "lines": 16,
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
@@ -338,6 +394,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/composition/memberGuardFeature.js",
+      "type": "composition",
+      "lines": 26,
+      "fallbackAllowed": false,
+      "dependencyCount": 6,
+      "localDependencyCount": 6,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -710,6 +780,20 @@
       }
     },
     {
+      "file": "src/domain/memberGuard/memberGuardPolicy.js",
+      "type": "domain",
+      "lines": 90,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/domain/memory/channelRule.js",
       "type": "domain",
       "lines": 19,
@@ -906,6 +990,20 @@
       }
     },
     {
+      "file": "src/infrastructure/discord/serverLogGateway.js",
+      "type": "infrastructure",
+      "lines": 6,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/infrastructure/project/commandAuditGateway.js",
       "type": "infrastructure",
       "lines": 8,
@@ -923,6 +1021,20 @@
       "file": "src/infrastructure/storage/jsonChannelRuleRepository.js",
       "type": "repository",
       "lines": 70,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/storage/jsonMemberGuardRepository.js",
+      "type": "repository",
+      "lines": 47,
       "fallbackAllowed": false,
       "dependencyCount": 3,
       "localDependencyCount": 2,
@@ -2966,7 +3078,7 @@
     {
       "file": "src/services/security/memberGuardService.js",
       "type": "service",
-      "lines": 2,
+      "lines": 5,
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
@@ -3722,6 +3834,11 @@
       "specifier": "../../infrastructure/project/commandAuditGateway"
     },
     {
+      "from": "src/application/memberGuard/evaluateMemberGuardUseCase.js",
+      "to": "src/domain/memberGuard/memberGuardPolicy.js",
+      "specifier": "../../domain/memberGuard/memberGuardPolicy"
+    },
+    {
       "from": "src/application/memory/deleteChannelRuleUseCase.js",
       "to": "src/core/result.js",
       "specifier": "../../core/result"
@@ -3743,8 +3860,8 @@
     },
     {
       "from": "src/application/security/getMemberGuardStatusUseCase.js",
-      "to": "src/services/security/memberGuardService.js",
-      "specifier": "../../services/security/memberGuardService"
+      "to": "src/application/memberGuard/getMemberGuardStatusUseCase.js",
+      "specifier": "../memberGuard/getMemberGuardStatusUseCase"
     },
     {
       "from": "src/commands/admin.js",
@@ -3780,6 +3897,36 @@
       "from": "src/commands/voice.js",
       "to": "src/modules/commands/commandRegistry.js",
       "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/composition/memberGuardFeature.js",
+      "to": "src/application/memberGuard/evaluateMemberGuardUseCase.js",
+      "specifier": "../application/memberGuard/evaluateMemberGuardUseCase"
+    },
+    {
+      "from": "src/composition/memberGuardFeature.js",
+      "to": "src/application/memberGuard/getMemberGuardStatusUseCase.js",
+      "specifier": "../application/memberGuard/getMemberGuardStatusUseCase"
+    },
+    {
+      "from": "src/composition/memberGuardFeature.js",
+      "to": "src/adapters/memberGuard/memberGuardRuntimeAdapter.js",
+      "specifier": "../adapters/memberGuard/memberGuardRuntimeAdapter"
+    },
+    {
+      "from": "src/composition/memberGuardFeature.js",
+      "to": "src/infrastructure/discord/serverLogGateway.js",
+      "specifier": "../infrastructure/discord/serverLogGateway"
+    },
+    {
+      "from": "src/composition/memberGuardFeature.js",
+      "to": "src/infrastructure/storage/jsonMemberGuardRepository.js",
+      "specifier": "../infrastructure/storage/jsonMemberGuardRepository"
+    },
+    {
+      "from": "src/composition/memberGuardFeature.js",
+      "to": "src/services/security/securityDecisionService.js",
+      "specifier": "../services/security/securityDecisionService"
     },
     {
       "from": "src/composition/memoryFeature.js",
@@ -3992,6 +4139,11 @@
       "specifier": "../../legacy/community/communityBootstrapSystem"
     },
     {
+      "from": "src/infrastructure/discord/serverLogGateway.js",
+      "to": "src/systems/serverLogs.js",
+      "specifier": "../../systems/serverLogs"
+    },
+    {
       "from": "src/infrastructure/storage/jsonChannelRuleRepository.js",
       "to": "src/domain/memory/channelRule.js",
       "specifier": "../../domain/memory/channelRule"
@@ -4000,6 +4152,16 @@
       "from": "src/infrastructure/storage/jsonChannelRuleRepository.js",
       "to": "src/infrastructure/storage/jsonStore.js",
       "specifier": "./jsonStore"
+    },
+    {
+      "from": "src/infrastructure/storage/jsonMemberGuardRepository.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "./jsonStore"
+    },
+    {
+      "from": "src/infrastructure/storage/jsonMemberGuardRepository.js",
+      "to": "src/domain/memberGuard/memberGuardPolicy.js",
+      "specifier": "../../domain/memberGuard/memberGuardPolicy"
     },
     {
       "from": "src/legacy/commands/ai-layout-repair.js",
@@ -5328,8 +5490,8 @@
     },
     {
       "from": "src/presentation/commands/memberGuardStatusCommand.js",
-      "to": "src/application/security/getMemberGuardStatusUseCase.js",
-      "specifier": "../../application/security/getMemberGuardStatusUseCase"
+      "to": "src/composition/memberGuardFeature.js",
+      "specifier": "../../composition/memberGuardFeature"
     },
     {
       "from": "src/presentation/commands/memberGuardStatusCommand.js",
@@ -5448,8 +5610,8 @@
     },
     {
       "from": "src/services/security/memberGuardService.js",
-      "to": "src/systems/memberGuard.js",
-      "specifier": "../../systems/memberGuard"
+      "to": "src/composition/memberGuardFeature.js",
+      "specifier": "../../composition/memberGuardFeature"
     },
     {
       "from": "src/services/security/securityDecisionService.js",
@@ -5798,8 +5960,8 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 123,
-    "node:path": 26,
+    "discord.js": 124,
+    "node:path": 27,
     "node:fs": 19,
     "openai": 3,
     "dotenv": 2,
@@ -5938,10 +6100,10 @@
         "lines": 626
       },
       {
-        "file": "src/legacy/community/serverPolisher.js",
-        "type": "legacy",
+        "file": "src/composition/memberGuardFeature.js",
+        "type": "composition",
         "dependencies": 6,
-        "lines": 504
+        "lines": 26
       }
     ],
     "servicesByLines": [
@@ -5971,12 +6133,12 @@
         "dependencies": 1
       },
       {
-        "file": "src/services/security/linkGuardService.js",
-        "lines": 2,
+        "file": "src/services/security/memberGuardService.js",
+        "lines": 5,
         "dependencies": 1
       },
       {
-        "file": "src/services/security/memberGuardService.js",
+        "file": "src/services/security/linkGuardService.js",
         "lines": 2,
         "dependencies": 1
       },
