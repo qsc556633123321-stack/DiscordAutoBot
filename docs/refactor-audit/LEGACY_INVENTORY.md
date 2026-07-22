@@ -1,6 +1,6 @@
 # Legacy Inventory
 
-Generated: 2026-07-22T13:54:50.860Z
+Generated: 2026-07-22T14:22:59.956Z
 
 This inventory is conservative: dynamic command/event directory loading is treated as a runtime reference. `REMOVAL_CANDIDATE` means no known runtime, registry, loader, or static reference was found; it is not deletion approval.
 
@@ -14,7 +14,7 @@ This inventory is conservative: dynamic command/event directory loading is treat
 | ALIAS_REQUIRED | 65 |
 | EVENT_REQUIRED | 2 |
 | COMPATIBILITY_WRAPPER | 22 |
-| REPLACEMENT_EXISTS | 33 |
+| REPLACEMENT_EXISTS | 35 |
 | REFERENCE_ONLY | 0 |
 | REMOVAL_CANDIDATE | 4 |
 | UNKNOWN_DYNAMIC_REFERENCE | 3 |
@@ -52,11 +52,11 @@ This inventory is conservative: dynamic command/event directory loading is treat
 | src/legacy/commands/dev-audit-commands.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | src/presentation/commands/devAuditCommandsCommand.js | Migrated; wrapper remaining | medium-high | high | Migrated / monitor |
 | src/legacy/commands/factory-reset-server.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, RUNTIME_REQUIRED | group command router exists; it currently dispatches to this legacy command | Not migrated | medium-high | high | Wave 3 |
 | src/legacy/commands/fix-game-category.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | non-legacy service/adapter is explicitly imported by this module | Not migrated | medium-high | high | Wave 3 |
-| src/legacy/commands/forget-channel-rule.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, RUNTIME_REQUIRED | group command router exists; it currently dispatches to this legacy command | Not migrated | medium-high | high | Wave 3 |
+| src/legacy/commands/forget-channel-rule.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | src/presentation/commands/forgetChannelRuleCommand.js | Migrated; wrapper remaining | medium-high | high | Migrated / monitor |
 | src/legacy/commands/game-registry-doctor.js | legacy slash-command alias handler; exports: data, execute, buildEmbed | src/legacy/interactions/legacyInteractionRuntime.js | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | non-legacy service/adapter is explicitly imported by this module | Not migrated | medium-high | high | Wave 3 |
 | src/legacy/commands/help-me-start.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, RUNTIME_REQUIRED | group command router exists; it currently dispatches to this legacy command | Not migrated | medium-high | high | Wave 3 |
 | src/legacy/commands/layout-doctor.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, RUNTIME_REQUIRED | group command router exists; it currently dispatches to this legacy command | Not migrated | medium-high | high | Wave 3 |
-| src/legacy/commands/learn-channel.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, RUNTIME_REQUIRED | group command router exists; it currently dispatches to this legacy command | Not migrated | medium-high | high | Wave 3 |
+| src/legacy/commands/learn-channel.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | src/presentation/commands/learnChannelCommand.js | Migrated; wrapper remaining | medium-high | high | Migrated / monitor |
 | src/legacy/commands/linkguard-settings.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | non-legacy service/adapter is explicitly imported by this module | Not migrated | medium-high | high | Wave 3 |
 | src/legacy/commands/linkguard-whitelist.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | non-legacy service/adapter is explicitly imported by this module | Not migrated | medium-high | high | Wave 3 |
 | src/legacy/commands/lock.js | legacy slash-command alias handler; exports: data, execute | - | src/modules/commands/aliasRegistry.js scans src/legacy/commands/*.js and requires every file | yes | no | no | no | no | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | non-legacy service/adapter is explicitly imported by this module | Not migrated | medium-high | high | Wave 3 |

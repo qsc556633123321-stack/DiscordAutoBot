@@ -14,6 +14,11 @@ function readJson(filePath, defaultValue = {}) {
   }
 }
 
+function readJsonStrict(filePath, defaultValue = {}) {
+  if (!fs.existsSync(filePath)) return structuredClone(defaultValue);
+  return JSON.parse(fs.readFileSync(filePath, 'utf8') || JSON.stringify(defaultValue));
+}
+
 function writeJsonAtomic(filePath, data) {
   ensureDirectory(filePath);
   const temporaryPath = `${filePath}.${process.pid}.${Date.now()}.tmp`;
@@ -28,4 +33,4 @@ function updateJson(filePath, updater, defaultValue = {}) {
   return writeJsonAtomic(filePath, next);
 }
 
-module.exports = { readJson, updateJson, writeJsonAtomic };
+module.exports = { readJson, readJsonStrict, updateJson, writeJsonAtomic };

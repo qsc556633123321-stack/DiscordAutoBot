@@ -1,6 +1,6 @@
 # Command Alias Matrix
 
-Generated: 2026-07-22T13:54:50.887Z
+Generated: 2026-07-22T14:22:59.973Z
 
 The registry dynamically requires all 73 files from `src/legacy/commands` and exposes 65 final alias names after duplicate-name overwrites. No alias is removed or redeployed in this phase.
 
@@ -17,7 +17,7 @@ The registry dynamically requires all 73 files from `src/legacy/commands` and ex
 | /automod-settings | /security automod | src/legacy/commands/automod-settings.js | no | yes or unverified | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /bootstrap-community | - | src/legacy/commands/bootstrap-community.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /check-guest-visibility | /community check-guest | src/legacy/commands/check-guest-visibility.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
-| /check-onboarding-visibility | - | src/legacy/commands/check-onboarding-visibility.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
+| /check-onboarding-visibility | - | src/legacy/commands/check-onboarding-visibility.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /check-role-visibility | /community check-role | src/legacy/commands/check-role-visibility.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /cleanup-empty-categories | - | src/legacy/commands/cleanup-empty-categories.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /cleanup-guest-roles | - | src/legacy/commands/cleanup-guest-roles.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
@@ -28,21 +28,21 @@ The registry dynamically requires all 73 files from `src/legacy/commands` and ex
 | /debug-permissions | /dev debug-permissions | src/legacy/commands/debug-permissions.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /dedupe-layout | - | src/legacy/commands/dedupe-layout.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /deep-cleanup | - | src/legacy/commands/deep_cleanup.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
-| /dev-audit-commands | /dev report | src/legacy/commands/dev-audit-commands.js | no | yes or unverified | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
+| /dev-audit-commands | /dev report | src/legacy/commands/dev-audit-commands.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /factory-reset-server | - | src/legacy/commands/factory-reset-server.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /fix-game-category | /game fix | src/legacy/commands/fix-game-category.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
-| /forget-channel-rule | - | src/legacy/commands/forget-channel-rule.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
+| /forget-channel-rule | - | src/legacy/commands/forget-channel-rule.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /game-registry-doctor | /game doctor | src/legacy/commands/game-registry-doctor.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /help-me-start | - | src/legacy/commands/help-me-start.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /layout-doctor | - | src/legacy/commands/layout-doctor.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
-| /learn-channel | - | src/legacy/commands/learn-channel.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
+| /learn-channel | - | src/legacy/commands/learn-channel.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /linkguard-settings | /security linkguard | src/legacy/commands/linkguard-settings.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /linkguard-whitelist | - | src/legacy/commands/linkguard-whitelist.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /lock | /admin lock | src/legacy/commands/lock.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /memberguard-release | - | src/legacy/commands/memberguard-release.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /memberguard-settings | /security memberguard | src/legacy/commands/memberguard-settings.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
-| /memberguard-status | /security status | src/legacy/commands/memberguard-status.js | no | yes or unverified | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
-| /memory-list | - | src/legacy/commands/memory-list.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
+| /memberguard-status | /security status | src/legacy/commands/memberguard-status.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
+| /memory-list | - | src/legacy/commands/memory-list.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /move-channel | - | src/legacy/commands/move-channel.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /plan-cleanup | - | src/legacy/commands/plan_cleanup.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /polish-server-design | - | src/legacy/commands/polish-server-design.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |

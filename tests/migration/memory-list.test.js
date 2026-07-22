@@ -1,4 +1,6 @@
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const { PermissionFlagsBits } = require('discord.js');
 const legacy = require('../../src/legacy/commands/memory-list');
 const presentation = require('../../src/presentation/commands/memoryListCommand');
@@ -18,6 +20,9 @@ function embedPayload(call) {
 }
 
 async function main() {
+  const useCaseSource = fs.readFileSync(path.join(__dirname, '..', '..', 'src', 'application', 'memory', 'listChannelRulesUseCase.js'), 'utf8');
+  assert.equal(useCaseSource.includes('serverMemoryReadGateway'), false);
+  assert.equal(useCaseSource.includes('systems/serverMemory'), false);
   const rules = [{ keyword: 'game', category: 'games', weight: 5 }];
   const command = presentation.createMemoryListCommand({
     useCase: { execute: () => rules },

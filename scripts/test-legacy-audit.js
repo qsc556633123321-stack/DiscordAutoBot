@@ -22,7 +22,7 @@ if (!aliasText.includes('exposes 65 final alias names')) {
   throw new Error('Alias audit did not preserve the expected 65 final aliases.');
 }
 
-for (const command of ['check-onboarding-visibility.js', 'dev-audit-commands.js', 'memory-list.js', 'memberguard-status.js']) {
+for (const command of ['check-onboarding-visibility.js', 'dev-audit-commands.js', 'memory-list.js', 'learn-channel.js', 'forget-channel-rule.js', 'memberguard-status.js']) {
   const row = inventoryText.split('\n').find((line) => line.startsWith(`| src/legacy/commands/${command} |`));
   if (!row?.includes('Migrated; wrapper remaining')) {
     throw new Error(`Legacy inventory did not record migrated wrapper status for ${command}`);

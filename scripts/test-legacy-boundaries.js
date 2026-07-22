@@ -56,6 +56,8 @@ for (const file of files) {
       [/process\.env/, 'process.env'],
       [/require\(['"][^'"]*infrastructure\//, 'infrastructure'],
       [/require\(['"][^'"]*presentation\//, 'presentation'],
+      [/require\(['"][^'"]*application\//, 'application'],
+      [/require\(['"][^'"]*systems\//, 'systems'],
       [/require\(['"][^'"]*legacy\//, 'legacy']
     ];
     for (const [pattern, label] of forbidden) {
@@ -66,9 +68,12 @@ for (const file of files) {
   if (isRestricted && from.startsWith('src/application/')) {
     const forbidden = [
       [/require\(['"]discord\.js['"]\)/, 'discord.js'],
+      [/require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, 'filesystem'],
+      [/require\(['"]node:path['"]\)|require\(['"]path['"]\)/, 'path'],
       [/process\.env/, 'process.env'],
       [/require\(['"][^'"]*presentation\//, 'presentation'],
       [/require\(['"][^'"]*legacy\//, 'legacy'],
+      [/require\(['"][^'"]*systems\/serverMemory/, 'systems/serverMemory'],
       [/\.setName\(|\.setParent\(|\.delete\(|permissionOverwrites\./, 'Discord mutation']
     ];
     for (const [pattern, label] of forbidden) {
@@ -78,6 +83,16 @@ for (const file of files) {
 
   if (isRestricted && from.startsWith('src/presentation/') && /require\(['"][^'"]*legacy\//.test(source)) {
     violations.push(`Presentation must not import legacy directly: ${from}`);
+  }
+  if (isRestricted && from.startsWith('src/presentation/')) {
+    const forbidden = [
+      [/require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, 'filesystem'],
+      [/require\(['"]node:path['"]\)|require\(['"]path['"]\)/, 'path'],
+      [/require\(['"][^'"]*systems\/serverMemory/, 'systems/serverMemory']
+    ];
+    for (const [pattern, label] of forbidden) {
+      if (pattern.test(source)) violations.push(`Presentation boundary violation (${label}): ${from}`);
+    }
   }
 }
 

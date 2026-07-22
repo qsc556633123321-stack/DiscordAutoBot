@@ -1,9 +1,9 @@
-const serverMemoryReadGateway = require('../../infrastructure/storage/serverMemoryReadGateway');
+const { createJsonChannelRuleRepository } = require('../../infrastructure/storage/jsonChannelRuleRepository');
 
-function createListChannelRulesUseCase({ gateway = serverMemoryReadGateway } = {}) {
+function createListChannelRulesUseCase({ repository = createJsonChannelRuleRepository() } = {}) {
   return {
     execute({ guildId }) {
-      return gateway.listRules(guildId).slice(0, 25);
+      return repository.listByGuild(guildId).slice(0, 25);
     }
   };
 }

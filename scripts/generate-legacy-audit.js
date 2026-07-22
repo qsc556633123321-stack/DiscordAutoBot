@@ -21,8 +21,20 @@ const MIGRATED_COMMANDS = Object.freeze({
   'memory-list': {
     presentation: 'src/presentation/commands/memoryListCommand.js',
     application: 'src/application/memory/listChannelRulesUseCase.js',
-    infrastructure: 'src/infrastructure/storage/serverMemoryReadGateway.js',
+    infrastructure: 'src/infrastructure/storage/jsonChannelRuleRepository.js',
     test: 'tests/migration/memory-list.test.js'
+  },
+  'learn-channel': {
+    presentation: 'src/presentation/commands/learnChannelCommand.js',
+    application: 'src/application/memory/upsertChannelRuleUseCase.js',
+    infrastructure: 'src/infrastructure/storage/jsonChannelRuleRepository.js',
+    test: 'tests/migration/learn-channel.test.js'
+  },
+  'forget-channel-rule': {
+    presentation: 'src/presentation/commands/forgetChannelRuleCommand.js',
+    application: 'src/application/memory/deleteChannelRuleUseCase.js',
+    infrastructure: 'src/infrastructure/storage/jsonChannelRuleRepository.js',
+    test: 'tests/migration/forget-channel-rule.test.js'
   },
   'memberguard-status': {
     presentation: 'src/presentation/commands/memberGuardStatusCommand.js',
@@ -185,7 +197,7 @@ function aliasData() {
   return [...aliases.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([name, command]) => {
     const file = activeFiles.get(name);
     const source = sourceOf(file);
-    const thin = /legacyCommandAdapters|commandRouter|Service/.test(source) && source.split('\n').length < 130;
+    const thin = /legacyCommandAdapters|commandRouter|Service|presentation\/commands/.test(source) && source.split('\n').length < 130;
     return { name, main: mainByTarget.get(name) || '-', thin, file: relative(file) };
   });
 }

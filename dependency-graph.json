@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T13:55:42.246Z",
+  "generatedAt": "2026-07-22T14:22:51.256Z",
   "summary": {
-    "fileCount": 244,
-    "dependencyCount": 411,
+    "fileCount": 251,
+    "dependencyCount": 421,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -18,19 +18,19 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 4,
-      "application": 4,
+      "application": 7,
       "command": 80,
       "config": 14,
       "core": 3,
       "other": 3,
-      "domain": 7,
+      "domain": 9,
       "event": 7,
-      "repository": 3,
-      "infrastructure": 3,
+      "repository": 4,
+      "infrastructure": 2,
       "legacy": 27,
       "router": 17,
       "system": 57,
-      "presentation": 4,
+      "presentation": 6,
       "service": 8,
       "util": 3
     }
@@ -121,12 +121,54 @@
       }
     },
     {
+      "file": "src/application/memory/deleteChannelRuleUseCase.js",
+      "type": "application",
+      "lines": 16,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/application/memory/listChannelRulesUseCase.js",
       "type": "application",
       "lines": 12,
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/memory/ports/channelRuleRepository.js",
+      "type": "application",
+      "lines": 10,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/memory/upsertChannelRuleUseCase.js",
+      "type": "application",
+      "lines": 22,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -583,6 +625,34 @@
       }
     },
     {
+      "file": "src/domain/memory/channelRule.js",
+      "type": "domain",
+      "lines": 19,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/memory/channelRulePolicy.js",
+      "type": "domain",
+      "lines": 32,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/domain/security/securityPolicy.js",
       "type": "domain",
       "lines": 17,
@@ -751,13 +821,13 @@
       }
     },
     {
-      "file": "src/infrastructure/storage/jsonStore.js",
+      "file": "src/infrastructure/storage/jsonChannelRuleRepository.js",
       "type": "repository",
-      "lines": 32,
+      "lines": 70,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
-      "localDependencyCount": 0,
-      "externalDependencyCount": 2,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -765,13 +835,13 @@
       }
     },
     {
-      "file": "src/infrastructure/storage/serverMemoryReadGateway.js",
-      "type": "infrastructure",
-      "lines": 9,
-      "fallbackAllowed": true,
-      "dependencyCount": 1,
-      "localDependencyCount": 1,
-      "externalDependencyCount": 0,
+      "file": "src/infrastructure/storage/jsonStore.js",
+      "type": "repository",
+      "lines": 37,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1187,11 +1257,11 @@
     {
       "file": "src/legacy/commands/forget-channel-rule.js",
       "type": "command",
-      "lines": 51,
+      "lines": 5,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1243,11 +1313,11 @@
     {
       "file": "src/legacy/commands/learn-channel.js",
       "type": "command",
-      "lines": 72,
+      "lines": 5,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2669,6 +2739,34 @@
       }
     },
     {
+      "file": "src/presentation/commands/forgetChannelRuleCommand.js",
+      "type": "presentation",
+      "lines": 48,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/presentation/commands/learnChannelCommand.js",
+      "type": "presentation",
+      "lines": 60,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/presentation/commands/memberGuardStatusCommand.js",
       "type": "presentation",
       "lines": 44,
@@ -3525,9 +3623,34 @@
       "specifier": "../../infrastructure/project/commandAuditGateway"
     },
     {
+      "from": "src/application/memory/deleteChannelRuleUseCase.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/application/memory/deleteChannelRuleUseCase.js",
+      "to": "src/domain/memory/channelRule.js",
+      "specifier": "../../domain/memory/channelRule"
+    },
+    {
+      "from": "src/application/memory/deleteChannelRuleUseCase.js",
+      "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
+      "specifier": "../../infrastructure/storage/jsonChannelRuleRepository"
+    },
+    {
       "from": "src/application/memory/listChannelRulesUseCase.js",
-      "to": "src/infrastructure/storage/serverMemoryReadGateway.js",
-      "specifier": "../../infrastructure/storage/serverMemoryReadGateway"
+      "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
+      "specifier": "../../infrastructure/storage/jsonChannelRuleRepository"
+    },
+    {
+      "from": "src/application/memory/upsertChannelRuleUseCase.js",
+      "to": "src/domain/memory/channelRulePolicy.js",
+      "specifier": "../../domain/memory/channelRulePolicy"
+    },
+    {
+      "from": "src/application/memory/upsertChannelRuleUseCase.js",
+      "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
+      "specifier": "../../infrastructure/storage/jsonChannelRuleRepository"
     },
     {
       "from": "src/application/security/getMemberGuardStatusUseCase.js",
@@ -3630,6 +3753,16 @@
       "specifier": "./gameRegistry"
     },
     {
+      "from": "src/domain/memory/channelRulePolicy.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/domain/memory/channelRulePolicy.js",
+      "to": "src/domain/memory/channelRule.js",
+      "specifier": "./channelRule"
+    },
+    {
       "from": "src/events/guildMemberAdd.js",
       "to": "src/services/security/memberGuardService.js",
       "specifier": "../services/security/memberGuardService"
@@ -3725,9 +3858,14 @@
       "specifier": "../../legacy/community/communityBootstrapSystem"
     },
     {
-      "from": "src/infrastructure/storage/serverMemoryReadGateway.js",
-      "to": "src/systems/serverMemory.js",
-      "specifier": "../../systems/serverMemory"
+      "from": "src/infrastructure/storage/jsonChannelRuleRepository.js",
+      "to": "src/domain/memory/channelRule.js",
+      "specifier": "../../domain/memory/channelRule"
+    },
+    {
+      "from": "src/infrastructure/storage/jsonChannelRuleRepository.js",
+      "to": "src/infrastructure/storage/jsonStore.js",
+      "specifier": "./jsonStore"
     },
     {
       "from": "src/legacy/commands/ai-layout-repair.js",
@@ -3906,8 +4044,8 @@
     },
     {
       "from": "src/legacy/commands/forget-channel-rule.js",
-      "to": "src/systems/serverMemory.js",
-      "specifier": "../../systems/serverMemory"
+      "to": "src/presentation/commands/forgetChannelRuleCommand.js",
+      "specifier": "../../presentation/commands/forgetChannelRuleCommand"
     },
     {
       "from": "src/legacy/commands/game-registry-doctor.js",
@@ -3926,8 +4064,8 @@
     },
     {
       "from": "src/legacy/commands/learn-channel.js",
-      "to": "src/systems/serverMemory.js",
-      "specifier": "../../systems/serverMemory"
+      "to": "src/presentation/commands/learnChannelCommand.js",
+      "specifier": "../../presentation/commands/learnChannelCommand"
     },
     {
       "from": "src/legacy/commands/linkguard-settings.js",
@@ -5045,6 +5183,16 @@
       "specifier": "../../application/development/auditCommandsUseCase"
     },
     {
+      "from": "src/presentation/commands/forgetChannelRuleCommand.js",
+      "to": "src/application/memory/deleteChannelRuleUseCase.js",
+      "specifier": "../../application/memory/deleteChannelRuleUseCase"
+    },
+    {
+      "from": "src/presentation/commands/learnChannelCommand.js",
+      "to": "src/application/memory/upsertChannelRuleUseCase.js",
+      "specifier": "../../application/memory/upsertChannelRuleUseCase"
+    },
+    {
       "from": "src/presentation/commands/memberGuardStatusCommand.js",
       "to": "src/application/security/getMemberGuardStatusUseCase.js",
       "specifier": "../../application/security/getMemberGuardStatusUseCase"
@@ -5512,7 +5660,7 @@
   ],
   "externalDependencies": {
     "discord.js": 122,
-    "node:path": 25,
+    "node:path": 26,
     "node:fs": 19,
     "openai": 3,
     "dotenv": 2,

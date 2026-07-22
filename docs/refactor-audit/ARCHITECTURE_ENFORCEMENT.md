@@ -11,6 +11,13 @@ This guard prevents unreviewed dependencies from active code into `src/legacy` w
 - `src/presentation/**` must not import legacy modules directly; it dispatches to application use cases.
 - Active code under application, domain, infrastructure, presentation, modules, services, and systems may only import a legacy module through an exact allowlist entry.
 
+## Memory Slice Rules
+
+- Memory domain modules must remain pure: no Discord.js, filesystem, application, infrastructure, presentation, systems, or legacy imports.
+- Memory application modules must not import Discord.js, filesystem, path, `systems/serverMemory`, or legacy modules.
+- Memory presentation modules must not import filesystem, path, `systems/serverMemory`, or legacy modules.
+- The JSON channel-rule repository is the only migrated command storage adapter. It uses `jsonStore`; command tests use temporary files and never the project `server-memory.json` data file.
+
 ## Compatibility Gateways
 
 Existing behavior sometimes remains legacy-owned during a migration. Those temporary edges are recorded in `src/config/legacyBoundaryAllowlist.js` with an exact source, target, and reason. The list is deliberately narrow: a newly added legacy import fails `npm run test:legacy-boundaries` unless it has an explicit, reviewed migration reason.
