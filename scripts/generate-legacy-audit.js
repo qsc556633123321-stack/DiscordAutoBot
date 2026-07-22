@@ -55,8 +55,6 @@ const MIGRATED_COMMANDS = Object.freeze({
     test: 'tests/migration/memberguard-mutations.test.js'
   }
 });
-const ACTIVE_REGISTRY_MIGRATIONS = new Set(['memberguard-settings', 'memberguard-release']);
-
 function filesIn(directory) {
   if (!fs.existsSync(directory)) return [];
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
@@ -121,9 +119,6 @@ function classifySource(ref) {
 
 function replacementFor(name, source) {
   const commandName = path.basename(name, '.js');
-  if (ACTIVE_REGISTRY_MIGRATIONS.has(commandName)) {
-    return { value: MIGRATED_COMMANDS[commandName].presentation, confirmed: true };
-  }
   if (MIGRATED_COMMANDS[commandName] && source.includes('presentation/commands/')) {
     return { value: MIGRATED_COMMANDS[commandName].presentation, confirmed: true };
   }
@@ -194,9 +189,6 @@ function usageFlags(row) {
 function migrationStatus(name, source) {
   const commandName = path.basename(name, '.js');
   const migration = MIGRATED_COMMANDS[commandName];
-  if (migration && ACTIVE_REGISTRY_MIGRATIONS.has(commandName)) {
-    return 'Migrated; active registry replacement, legacy source retained';
-  }
   const presentationRequest = migration?.presentation.replace(/^src\//, '').replace(/\.js$/, '');
   if (migration && source.includes(presentationRequest)) {
     return 'Migrated; wrapper remaining';

@@ -1,6 +1,6 @@
 # First Migration Candidate
 
-Generated: 2026-07-22T16:24:36.059Z
+Generated: 2026-07-22T16:42:02.251Z
 
 Status: Migrated; wrapper remaining. The underlying legacy runtime remains retained; this report records selection and follow-up order.
 

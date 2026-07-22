@@ -5,6 +5,10 @@ const { entries, getLegacyBoundaryAllowance } = require('../src/config/legacyBou
 
 const ROOT = path.join(__dirname, '..');
 const RESTRICTED_ROOTS = ['src/application', 'src/domain', 'src/infrastructure', 'src/presentation', 'src/modules', 'src/services', 'src/systems'];
+const THIN_MEMBERGUARD_WRAPPERS = Object.freeze({
+  'src/legacy/commands/memberguard-settings.js': "module.exports = require('../../presentation/commands/memberguardSettingsCommand');",
+  'src/legacy/commands/memberguard-release.js': "module.exports = require('../../presentation/commands/memberguardReleaseCommand');"
+});
 
 function walk(directory) {
   if (!fs.existsSync(directory)) return [];
@@ -35,6 +39,16 @@ function localDependencies(file, source) {
 const files = walk(path.join(ROOT, 'src'));
 const seenAllowances = new Set();
 const violations = [];
+
+for (const [relativePath, expectedSource] of Object.entries(THIN_MEMBERGUARD_WRAPPERS)) {
+  const source = fs.readFileSync(path.join(ROOT, relativePath), 'utf8').trim();
+  const forbidden = [/discord\.js/, /memberGuardService/, /systems\/memberGuard/, /SlashCommandBuilder/, /interaction\.options/, /permissionOverwrites/, /roles\.(add|remove)/, /\.(reply|editReply|deferReply)\(/];
+  if (source !== expectedSource) violations.push(`MemberGuard legacy wrapper is not a direct presentation re-export: ${relativePath}`);
+  if (source.split(/\r?\n/).length > 5) violations.push(`MemberGuard legacy wrapper exceeds five lines: ${relativePath}`);
+  for (const pattern of forbidden) {
+    if (pattern.test(source)) violations.push(`MemberGuard legacy wrapper contains forbidden runtime logic (${pattern}): ${relativePath}`);
+  }
+}
 
 for (const file of files) {
   const source = fs.readFileSync(file, 'utf8');

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T16:24:09.434Z",
+  "generatedAt": "2026-07-22T16:41:49.820Z",
   "summary": {
     "fileCount": 274,
-    "dependencyCount": 449,
+    "dependencyCount": 447,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -1664,11 +1664,11 @@
     {
       "file": "src/legacy/commands/memberguard-release.js",
       "type": "command",
-      "lines": 40,
+      "lines": 2,
       "fallbackAllowed": false,
-      "dependencyCount": 3,
-      "localDependencyCount": 2,
-      "externalDependencyCount": 1,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1678,11 +1678,11 @@
     {
       "file": "src/legacy/commands/memberguard-settings.js",
       "type": "command",
-      "lines": 82,
+      "lines": 2,
       "fallbackAllowed": false,
-      "dependencyCount": 3,
-      "localDependencyCount": 2,
-      "externalDependencyCount": 1,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -4512,23 +4512,13 @@
     },
     {
       "from": "src/legacy/commands/memberguard-release.js",
-      "to": "src/services/security/memberGuardService.js",
-      "specifier": "../../services/security/memberGuardService"
-    },
-    {
-      "from": "src/legacy/commands/memberguard-release.js",
-      "to": "src/utils/interactionReplies.js",
-      "specifier": "../../utils/interactionReplies"
+      "to": "src/presentation/commands/memberguardReleaseCommand.js",
+      "specifier": "../../presentation/commands/memberguardReleaseCommand"
     },
     {
       "from": "src/legacy/commands/memberguard-settings.js",
-      "to": "src/services/security/memberGuardService.js",
-      "specifier": "../../services/security/memberGuardService"
-    },
-    {
-      "from": "src/legacy/commands/memberguard-settings.js",
-      "to": "src/utils/interactionReplies.js",
-      "specifier": "../../utils/interactionReplies"
+      "to": "src/presentation/commands/memberguardSettingsCommand.js",
+      "specifier": "../../presentation/commands/memberguardSettingsCommand"
     },
     {
       "from": "src/legacy/commands/memberguard-status.js",
@@ -6122,7 +6112,7 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 127,
+    "discord.js": 125,
     "node:path": 27,
     "node:fs": 19,
     "openai": 3,

@@ -1,11 +1,11 @@
 # Dependency Graph
 
-Generated: 2026-07-22T16:24:09.434Z
+Generated: 2026-07-22T16:41:49.820Z
 
 ## Summary
 
 - JS files scanned: 274
-- Local dependency edges: 449
+- Local dependency edges: 447
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0

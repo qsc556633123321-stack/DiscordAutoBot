@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const { loadAliases } = require('../../src/modules/commands/aliasRegistry');
+const { getCommandRegistry } = require('../../src/modules/commands/commandRegistry');
 const legacySettings = require('../../src/legacy/commands/memberguard-settings');
 const legacyRelease = require('../../src/legacy/commands/memberguard-release');
 const settings = require('../../src/presentation/commands/memberguardSettingsCommand');
@@ -10,8 +11,13 @@ function options(values) { return { getBoolean: (name) => values[name] ?? null, 
 async function main() {
   assert.deepEqual(settings.data.toJSON(), legacySettings.data.toJSON());
   assert.deepEqual(release.data.toJSON(), legacyRelease.data.toJSON());
+  assert.equal(legacySettings, settings);
+  assert.equal(legacyRelease, release);
   assert.equal(loadAliases().get('memberguard-settings').execute, settings.execute);
   assert.equal(loadAliases().get('memberguard-release').execute, release.execute);
+  const registry = getCommandRegistry();
+  assert.deepEqual(registry.get('memberguard-settings').data.toJSON(), settings.data.toJSON());
+  assert.deepEqual(registry.get('memberguard-release').data.toJSON(), release.data.toJSON());
   const settingCalls = [];
   const settingsCommand = settings.createMemberguardSettingsCommand({ feature: { updateSettings: { execute: () => ({ settings: { enabled: false, guestLockdown: false, newAccountDays: 7, newAccountTimeoutMinutes: 10, blockEveryoneMentions: true, blockRoleMentions: true, joinBurstLimit: 10, joinBurstWindowSeconds: 60, safeMode: false }, permissionPlan: null }) }, createMutationGateways: () => ({}) }, responder: responder(settingCalls), logger: { error: () => {} } });
   await settingsCommand.execute({ guild: { id: 'g1', roles: { cache: { find: () => null } } }, user: { id: 'actor' }, memberPermissions: { has: () => true }, options: options({ enabled: false }) });

@@ -1,6 +1,6 @@
 # Command Alias Matrix
 
-Generated: 2026-07-22T16:24:36.057Z
+Generated: 2026-07-22T16:42:02.250Z
 
 The registry dynamically requires all 73 files from `src/legacy/commands` and exposes 65 final alias names after duplicate-name overwrites. No alias is removed or redeployed in this phase.
 
