@@ -5,6 +5,32 @@ const ROOT = path.join(__dirname, '..');
 const SRC = path.join(ROOT, 'src');
 const LEGACY = path.join(SRC, 'legacy');
 const OUTPUT = path.join(ROOT, 'docs', 'refactor-audit');
+const MIGRATED_COMMANDS = Object.freeze({
+  'check-onboarding-visibility': {
+    presentation: 'src/presentation/commands/checkOnboardingVisibilityCommand.js',
+    application: 'src/application/community/checkOnboardingVisibilityUseCase.js',
+    infrastructure: 'src/infrastructure/discord/onboardingVisibilityGateway.js',
+    test: 'tests/migration/check-onboarding-visibility.test.js'
+  },
+  'dev-audit-commands': {
+    presentation: 'src/presentation/commands/devAuditCommandsCommand.js',
+    application: 'src/application/development/auditCommandsUseCase.js',
+    infrastructure: 'src/infrastructure/project/commandAuditGateway.js',
+    test: 'tests/migration/dev-audit-commands.test.js'
+  },
+  'memory-list': {
+    presentation: 'src/presentation/commands/memoryListCommand.js',
+    application: 'src/application/memory/listChannelRulesUseCase.js',
+    infrastructure: 'src/infrastructure/storage/serverMemoryReadGateway.js',
+    test: 'tests/migration/memory-list.test.js'
+  },
+  'memberguard-status': {
+    presentation: 'src/presentation/commands/memberGuardStatusCommand.js',
+    application: 'src/application/security/getMemberGuardStatusUseCase.js',
+    infrastructure: 'existing memberGuardService read API',
+    test: 'tests/migration/memberguard-status.test.js'
+  }
+});
 
 function filesIn(directory) {
   if (!fs.existsSync(directory)) return [];
@@ -69,7 +95,10 @@ function classifySource(ref) {
 }
 
 function replacementFor(name, source) {
-  if (name.endsWith('commands/check-onboarding-visibility.js')) return { value: 'src/services/community/communityPermissionService.js (explicit adapter path)', confirmed: true };
+  const commandName = path.basename(name, '.js');
+  if (MIGRATED_COMMANDS[commandName] && source.includes('presentation/commands/')) {
+    return { value: MIGRATED_COMMANDS[commandName].presentation, confirmed: true };
+  }
   if (name.endsWith('layout/legacyLayoutDecisionEngine.js')) return { value: 'src/modules/layout/layoutDecisionEngine.js (partial; still falls back)', confirmed: true };
   if (source.includes('legacyCommandAdapters') || source.includes('/services/')) return { value: 'non-legacy service/adapter is explicitly imported by this module', confirmed: true };
   if (name.includes('/interactions/')) return { value: 'new interaction family routing exists, but behavior is still legacy-owned', confirmed: false };
@@ -112,7 +141,7 @@ function purposeFor(name) {
 }
 
 function suggestedWave(name, tags) {
-  if (name.endsWith('commands/check-onboarding-visibility.js')) return 'Migrated / monitor';
+  if (MIGRATED_COMMANDS[path.basename(name, '.js')]) return 'Migrated / monitor';
   if (name.includes('/deprecated/') || name.endsWith('commands/check-onboarding-visibility.js')) return 'Wave 1';
   if (tags.includes('COMPATIBILITY_WRAPPER') && tags.includes('REPLACEMENT_EXISTS')) return 'Wave 2';
   if (tags.includes('ALIAS_REQUIRED') || name.includes('/interactions/')) return 'Wave 3';
@@ -132,7 +161,10 @@ function usageFlags(row) {
 }
 
 function migrationStatus(name, source) {
-  if (name.endsWith('commands/check-onboarding-visibility.js') && source.includes('presentation/commands/checkOnboardingVisibilityCommand')) {
+  const commandName = path.basename(name, '.js');
+  const migration = MIGRATED_COMMANDS[commandName];
+  const presentationRequest = migration?.presentation.replace(/^src\//, '').replace(/\.js$/, '');
+  if (migration && source.includes(presentationRequest)) {
     return 'Migrated; wrapper remaining';
   }
   return 'Not migrated';

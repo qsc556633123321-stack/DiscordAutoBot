@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-07-22T13:07:10.988Z",
+  "generatedAt": "2026-07-22T13:55:42.246Z",
   "summary": {
-    "fileCount": 235,
-    "dependencyCount": 402,
+    "fileCount": 244,
+    "dependencyCount": 411,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
-    "architectureScore": 96,
+    "architectureScore": 100,
     "activeCommandDiscordApiCount": 0,
     "legacyCommandDiscordApiCount": 2,
     "activeLargeFileCount": 0,
@@ -18,17 +18,19 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 4,
-      "other": 5,
+      "application": 4,
       "command": 80,
-      "config": 13,
+      "config": 14,
       "core": 3,
+      "other": 3,
       "domain": 7,
       "event": 7,
       "repository": 3,
-      "infrastructure": 1,
+      "infrastructure": 3,
       "legacy": 27,
       "router": 17,
       "system": 57,
+      "presentation": 4,
       "service": 8,
       "util": 3
     }
@@ -92,11 +94,53 @@
     },
     {
       "file": "src/application/community/checkOnboardingVisibilityUseCase.js",
-      "type": "other",
+      "type": "application",
       "lines": 19,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/development/auditCommandsUseCase.js",
+      "type": "application",
+      "lines": 12,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/memory/listChannelRulesUseCase.js",
+      "type": "application",
+      "lines": 12,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/security/getMemberGuardStatusUseCase.js",
+      "type": "application",
+      "lines": 19,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -301,6 +345,20 @@
       }
     },
     {
+      "file": "src/config/legacyBoundaryAllowlist.js",
+      "type": "config",
+      "lines": 53,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/config/permissionTemplates.js",
       "type": "config",
       "lines": 3,
@@ -387,7 +445,7 @@
     {
       "file": "src/core/constants.js",
       "type": "core",
-      "lines": 5,
+      "lines": 8,
       "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
@@ -446,8 +504,8 @@
       "lines": 180,
       "fallbackAllowed": false,
       "dependencyCount": 1,
-      "localDependencyCount": 0,
-      "externalDependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -679,6 +737,20 @@
       }
     },
     {
+      "file": "src/infrastructure/project/commandAuditGateway.js",
+      "type": "infrastructure",
+      "lines": 8,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/infrastructure/storage/jsonStore.js",
       "type": "repository",
       "lines": 32,
@@ -686,6 +758,20 @@
       "dependencyCount": 2,
       "localDependencyCount": 0,
       "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/storage/serverMemoryReadGateway.js",
+      "type": "infrastructure",
+      "lines": 9,
+      "fallbackAllowed": true,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1059,11 +1145,11 @@
     {
       "file": "src/legacy/commands/dev-audit-commands.js",
       "type": "command",
-      "lines": 30,
+      "lines": 5,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
-      "localDependencyCount": 0,
-      "externalDependencyCount": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1241,11 +1327,11 @@
     {
       "file": "src/legacy/commands/memberguard-status.js",
       "type": "command",
-      "lines": 35,
+      "lines": 5,
       "fallbackAllowed": false,
-      "dependencyCount": 3,
-      "localDependencyCount": 2,
-      "externalDependencyCount": 1,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1255,11 +1341,11 @@
     {
       "file": "src/legacy/commands/memory-list.js",
       "type": "command",
-      "lines": 50,
+      "lines": 5,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2556,8 +2642,50 @@
     },
     {
       "file": "src/presentation/commands/checkOnboardingVisibilityCommand.js",
-      "type": "other",
+      "type": "presentation",
       "lines": 34,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/presentation/commands/devAuditCommandsCommand.js",
+      "type": "presentation",
+      "lines": 37,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/presentation/commands/memberGuardStatusCommand.js",
+      "type": "presentation",
+      "lines": 44,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/presentation/commands/memoryListCommand.js",
+      "type": "presentation",
+      "lines": 44,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
@@ -3392,6 +3520,21 @@
       "specifier": "../../services/community/communityPermissionService"
     },
     {
+      "from": "src/application/development/auditCommandsUseCase.js",
+      "to": "src/infrastructure/project/commandAuditGateway.js",
+      "specifier": "../../infrastructure/project/commandAuditGateway"
+    },
+    {
+      "from": "src/application/memory/listChannelRulesUseCase.js",
+      "to": "src/infrastructure/storage/serverMemoryReadGateway.js",
+      "specifier": "../../infrastructure/storage/serverMemoryReadGateway"
+    },
+    {
+      "from": "src/application/security/getMemberGuardStatusUseCase.js",
+      "to": "src/services/security/memberGuardService.js",
+      "specifier": "../../services/security/memberGuardService"
+    },
+    {
       "from": "src/commands/admin.js",
       "to": "src/modules/commands/commandRegistry.js",
       "specifier": "../modules/commands/commandRegistry"
@@ -3460,6 +3603,11 @@
       "from": "src/deploy-commands.js",
       "to": "src/modules/commands/commandRegistry.js",
       "specifier": "./modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/domain/community/communityArchitectureV3.js",
+      "to": "src/core/constants.js",
+      "specifier": "../../core/constants"
     },
     {
       "from": "src/domain/community/onboardingVisibilityPolicy.js",
@@ -3575,6 +3723,11 @@
       "from": "src/infrastructure/discord/onboardingVisibilityGateway.js",
       "to": "src/legacy/community/communityBootstrapSystem.js",
       "specifier": "../../legacy/community/communityBootstrapSystem"
+    },
+    {
+      "from": "src/infrastructure/storage/serverMemoryReadGateway.js",
+      "to": "src/systems/serverMemory.js",
+      "specifier": "../../systems/serverMemory"
     },
     {
       "from": "src/legacy/commands/ai-layout-repair.js",
@@ -3737,6 +3890,11 @@
       "specifier": "../../systems/deepCleanupPlanner"
     },
     {
+      "from": "src/legacy/commands/dev-audit-commands.js",
+      "to": "src/presentation/commands/devAuditCommandsCommand.js",
+      "specifier": "../../presentation/commands/devAuditCommandsCommand"
+    },
+    {
       "from": "src/legacy/commands/factory-reset-server.js",
       "to": "src/systems/factoryReset.js",
       "specifier": "../../systems/factoryReset"
@@ -3808,18 +3966,13 @@
     },
     {
       "from": "src/legacy/commands/memberguard-status.js",
-      "to": "src/services/security/memberGuardService.js",
-      "specifier": "../../services/security/memberGuardService"
-    },
-    {
-      "from": "src/legacy/commands/memberguard-status.js",
-      "to": "src/utils/interactionReplies.js",
-      "specifier": "../../utils/interactionReplies"
+      "to": "src/presentation/commands/memberGuardStatusCommand.js",
+      "specifier": "../../presentation/commands/memberGuardStatusCommand"
     },
     {
       "from": "src/legacy/commands/memory-list.js",
-      "to": "src/systems/serverMemory.js",
-      "specifier": "../../systems/serverMemory"
+      "to": "src/presentation/commands/memoryListCommand.js",
+      "specifier": "../../presentation/commands/memoryListCommand"
     },
     {
       "from": "src/legacy/commands/move-channel.js",
@@ -4887,6 +5040,26 @@
       "specifier": "../../application/community/checkOnboardingVisibilityUseCase"
     },
     {
+      "from": "src/presentation/commands/devAuditCommandsCommand.js",
+      "to": "src/application/development/auditCommandsUseCase.js",
+      "specifier": "../../application/development/auditCommandsUseCase"
+    },
+    {
+      "from": "src/presentation/commands/memberGuardStatusCommand.js",
+      "to": "src/application/security/getMemberGuardStatusUseCase.js",
+      "specifier": "../../application/security/getMemberGuardStatusUseCase"
+    },
+    {
+      "from": "src/presentation/commands/memberGuardStatusCommand.js",
+      "to": "src/utils/interactionReplies.js",
+      "specifier": "../../utils/interactionReplies"
+    },
+    {
+      "from": "src/presentation/commands/memoryListCommand.js",
+      "to": "src/application/memory/listChannelRulesUseCase.js",
+      "specifier": "../../application/memory/listChannelRulesUseCase"
+    },
+    {
       "from": "src/services/community/communityPermissionService.js",
       "to": "src/core/result.js",
       "specifier": "../../core/result"
@@ -5338,7 +5511,7 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 123,
+    "discord.js": 122,
     "node:path": 25,
     "node:fs": 19,
     "openai": 3,
@@ -5366,22 +5539,7 @@
     ],
     "serviceJson": [],
     "domainInfrastructure": [],
-    "reverseLayer": [
-      {
-        "from": "src/application/community/checkOnboardingVisibilityUseCase.js",
-        "to": "src/domain/community/onboardingVisibilityPolicy.js",
-        "specifier": "../../domain/community/onboardingVisibilityPolicy",
-        "fromType": "other",
-        "toType": "domain"
-      },
-      {
-        "from": "src/application/community/checkOnboardingVisibilityUseCase.js",
-        "to": "src/services/community/communityPermissionService.js",
-        "specifier": "../../services/community/communityPermissionService",
-        "fromType": "other",
-        "toType": "service"
-      }
-    ]
+    "reverseLayer": []
   },
   "hardFailures": [],
   "rankings": {

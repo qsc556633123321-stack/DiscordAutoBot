@@ -6,16 +6,7 @@ const SRC = path.join(ROOT, 'src');
 const DOCS = path.join(ROOT, 'docs');
 const GRAPH_FILE = path.join(ROOT, 'dependency-graph.json');
 const REPORT_FILE = path.join(DOCS, 'DEPENDENCY_GRAPH.md');
-const COMPATIBILITY_ADAPTERS = new Set([
-  'src/config/permissionTemplates.js',
-  'src/systems/communityBootstrapSystem.js',
-  'src/systems/communityV3PermissionBuilder.js',
-  'src/systems/gameChannels.js',
-  'src/systems/guestGate.js',
-  'src/systems/rolePermissions.js',
-  'src/systems/serverPolisher.js',
-  'src/systems/serverRebuilder.js'
-]);
+const { getLegacyBoundaryAllowance } = require('../src/config/legacyBoundaryAllowlist');
 
 function walk(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -52,6 +43,8 @@ function classify(file) {
   if (name.startsWith('src/modules/events/')) return 'event';
   if (name.startsWith('src/modules/layout/')) return 'system';
   if (name.startsWith('src/events/')) return 'event';
+  if (name.startsWith('src/presentation/')) return 'presentation';
+  if (name.startsWith('src/application/')) return 'application';
   if (name.startsWith('src/services/')) return 'service';
   if (name.startsWith('src/domain/')) return 'domain';
   if (name.includes('Repository.js') || name.includes('Writer.js') || name.includes('Store.js') || name.endsWith('/jsonStore.js')) return 'repository';
@@ -69,7 +62,9 @@ const layerRank = {
   command: 0,
   router: 0,
   event: 0,
+  presentation: 0,
   adapter: 0,
+  application: 1,
   service: 1,
   system: 1,
   domain: 2,
@@ -278,8 +273,8 @@ function main() {
       if (!violations.serviceEntrypointImport) violations.serviceEntrypointImport = [];
       violations.serviceEntrypointImport.push(edge);
     }
-    const isKnownCompatibilityAdapter = COMPATIBILITY_ADAPTERS.has(edge.from);
-    if (!edge.from.startsWith('src/legacy/') && edge.to.startsWith('src/legacy/') && !from.fallbackAllowed && !isKnownCompatibilityAdapter) {
+    const legacyAllowance = getLegacyBoundaryAllowance(edge.from, edge.to);
+    if (!edge.from.startsWith('src/legacy/') && edge.to.startsWith('src/legacy/') && !legacyAllowance) {
       if (!violations.legacyImportWithoutFallback) violations.legacyImportWithoutFallback = [];
       violations.legacyImportWithoutFallback.push(edge);
     }
@@ -289,7 +284,8 @@ function main() {
     const isTestFixture = edge.from.startsWith('src/tests/');
     const isCoreDependency = to.type === 'core';
     const isLegacyContext = from.type === 'legacy' || to.type === 'legacy';
-    if (fromRank > toRank && !isEntrypoint && !isTestFixture && !isCoreDependency && !isLegacyContext) {
+    const isControlledInfrastructureBridge = from.type === 'infrastructure' && to.type === 'system' && from.fallbackAllowed;
+    if (fromRank > toRank && !isEntrypoint && !isTestFixture && !isCoreDependency && !isLegacyContext && !isControlledInfrastructureBridge) {
       violations.reverseLayer.push({
         ...edge,
         fromType: from.type,

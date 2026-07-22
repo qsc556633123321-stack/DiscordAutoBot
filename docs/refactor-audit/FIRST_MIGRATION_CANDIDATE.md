@@ -1,12 +1,12 @@
 # First Migration Candidate
 
-Generated: 2026-07-22T13:07:52.570Z
+Generated: 2026-07-22T13:54:50.889Z
 
 Status: Migrated; wrapper remaining. The underlying legacy runtime remains retained; this report records selection and follow-up order.
 
 | Candidate | Direct refs | Runtime classification | Existing replacement | Risk | Testability | Migration cost | Score |
 | --- | ---: | --- | --- | --- | --- | --- | ---: |
-| src/legacy/commands/check-onboarding-visibility.js | 0 | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | src/services/community/communityPermissionService.js (explicit adapter path) | high | high: mock guild + permission result | medium-high | 86 |
+| src/legacy/commands/check-onboarding-visibility.js | 0 | ALIAS_REQUIRED, BOOT_REQUIRED, REPLACEMENT_EXISTS, RUNTIME_REQUIRED | src/presentation/commands/checkOnboardingVisibilityCommand.js | high | high: mock guild + permission result | medium-high | 86 |
 | src/legacy/events/channelDelete.js | 0 | BOOT_REQUIRED, EVENT_REQUIRED, RUNTIME_REQUIRED | main event architecture exists; behavior replacement not confirmed | high | medium: event fixture needed | medium-high | 68 |
 | src/legacy/deprecated/services/community/legacyAnalysisCommandService.js | 0 | REMOVAL_CANDIDATE | communityRebuildService is intended destination; direct replacement not confirmed | low after release-window verification | medium-low: six command behavior fixtures | high | 54 |
 

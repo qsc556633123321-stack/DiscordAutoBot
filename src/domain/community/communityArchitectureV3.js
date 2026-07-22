@@ -1,4 +1,4 @@
-const { ChannelType } = require('discord.js');
+const { CHANNEL_TYPES } = require('../../core/constants');
 
 const V3_VERSION = '4.0.0-lite';
 
@@ -30,32 +30,32 @@ const CATEGORIES = [
   {
     key: 'entry', name: '📌｜社群入口', aliases: ['社群入口'], permission: 'public_entry',
     channels: [
-      ['welcome', '👋｜新人報到', ChannelType.GuildText],
-      ['rules', '📜｜社群規則', ChannelType.GuildText],
-      ['announcement', '📢｜公告', ChannelType.GuildText, 'public_readonly'],
-      ['guide', '🧭｜伺服器導覽', ChannelType.GuildText, 'public_readonly'],
-      ['roles', '✅｜身分組領取', ChannelType.GuildText],
-      ['open_ticket', '🎫｜開啟客服單', ChannelType.GuildText]
+      ['welcome', '👋｜新人報到', CHANNEL_TYPES.TEXT],
+      ['rules', '📜｜社群規則', CHANNEL_TYPES.TEXT],
+      ['announcement', '📢｜公告', CHANNEL_TYPES.TEXT, 'public_readonly'],
+      ['guide', '🧭｜伺服器導覽', CHANNEL_TYPES.TEXT, 'public_readonly'],
+      ['roles', '✅｜身分組領取', CHANNEL_TYPES.TEXT],
+      ['open_ticket', '🎫｜開啟客服單', CHANNEL_TYPES.TEXT]
     ]
   },
   {
     key: 'lobby', name: '💬｜社群大廳', aliases: ['公開大廳', '日常交流', '社群大廳'], permission: 'formal_member',
     channels: [
-      ['general', '💭｜一般聊天', ChannelType.GuildText],
-      ['late_night', '🌙｜深夜聊天', ChannelType.GuildText],
-      ['life_share', '📷｜生活分享', ChannelType.GuildText],
-      ['meme_share', '😂｜迷因分享', ChannelType.GuildText],
-      ['night_lounge', '🎧｜掛機休息室', ChannelType.GuildVoice]
+      ['general', '💭｜一般聊天', CHANNEL_TYPES.TEXT],
+      ['late_night', '🌙｜深夜聊天', CHANNEL_TYPES.TEXT],
+      ['life_share', '📷｜生活分享', CHANNEL_TYPES.TEXT],
+      ['meme_share', '😂｜迷因分享', CHANNEL_TYPES.TEXT],
+      ['night_lounge', '🎧｜掛機休息室', CHANNEL_TYPES.VOICE]
     ]
   },
   {
     key: 'game_center', name: '🎮｜遊戲中心', aliases: ['遊戲中心', '遊戲大廳'], permission: 'formal_member',
     channels: [
-      ['lfg', '📢｜組隊招募', ChannelType.GuildText],
-      ['voice_hub', '🎮｜目前語音房', ChannelType.GuildText, 'formal_readonly'],
-      ['game_suggestions', '📋｜遊戲提議', ChannelType.GuildText],
-      ['game_database', '🗃｜遊戲資料庫', ChannelType.GuildText],
-      ['game_ranking', '📈｜熱門遊戲排行', ChannelType.GuildText]
+      ['lfg', '📢｜組隊招募', CHANNEL_TYPES.TEXT],
+      ['voice_hub', '🎮｜目前語音房', CHANNEL_TYPES.TEXT, 'formal_readonly'],
+      ['game_suggestions', '📋｜遊戲提議', CHANNEL_TYPES.TEXT],
+      ['game_database', '🗃｜遊戲資料庫', CHANNEL_TYPES.TEXT],
+      ['game_ranking', '📈｜熱門遊戲排行', CHANNEL_TYPES.TEXT]
     ]
   },
   { key: 'popular_games', name: '🔥｜熱門遊戲', aliases: ['熱門遊戲'], permission: 'game', channels: [] },
@@ -63,36 +63,36 @@ const CATEGORIES = [
   {
     key: 'interests', name: '🎨｜興趣交流', aliases: ['興趣交流'], permission: 'formal_member',
     channels: [
-      ['music', '🎵｜音樂', ChannelType.GuildText],
-      ['anime', '🎬｜動漫影劇', ChannelType.GuildText],
-      ['photography', '📷｜攝影', ChannelType.GuildText],
-      ['food', '🍜｜美食', ChannelType.GuildText],
-      ['vehicles', '🏍｜汽機車', ChannelType.GuildText],
-      ['travel', '✈️｜旅遊', ChannelType.GuildText],
-      ['casual_voice', '🎤｜閒聊語音', ChannelType.GuildVoice],
-      ['ai_tools', '🤖｜AI工具', ChannelType.GuildText, 'dev'],
-      ['programming', '💻｜程式開發', ChannelType.GuildText, 'dev'],
-      ['stocks', '📈｜股票投資', ChannelType.GuildText, 'invest'],
-      ['finance', '💰｜理財交流', ChannelType.GuildText, 'invest']
+      ['music', '🎵｜音樂', CHANNEL_TYPES.TEXT],
+      ['anime', '🎬｜動漫影劇', CHANNEL_TYPES.TEXT],
+      ['photography', '📷｜攝影', CHANNEL_TYPES.TEXT],
+      ['food', '🍜｜美食', CHANNEL_TYPES.TEXT],
+      ['vehicles', '🏍｜汽機車', CHANNEL_TYPES.TEXT],
+      ['travel', '✈️｜旅遊', CHANNEL_TYPES.TEXT],
+      ['casual_voice', '🎤｜閒聊語音', CHANNEL_TYPES.VOICE],
+      ['ai_tools', '🤖｜AI工具', CHANNEL_TYPES.TEXT, 'dev'],
+      ['programming', '💻｜程式開發', CHANNEL_TYPES.TEXT, 'dev'],
+      ['stocks', '📈｜股票投資', CHANNEL_TYPES.TEXT, 'invest'],
+      ['finance', '💰｜理財交流', CHANNEL_TYPES.TEXT, 'invest']
     ]
   },
   {
     key: 'events', name: '🎉｜活動專區', aliases: ['活動專區'], permission: 'formal_member',
     channels: [
-      ['giveaway', '🎁｜抽獎活動', ChannelType.GuildText],
-      ['polls', '🗳｜投票區', ChannelType.GuildText],
-      ['competition', '🏆｜比賽排行', ChannelType.GuildText],
-      ['event_announcement', '📅｜活動公告', ChannelType.GuildText]
+      ['giveaway', '🎁｜抽獎活動', CHANNEL_TYPES.TEXT],
+      ['polls', '🗳｜投票區', CHANNEL_TYPES.TEXT],
+      ['competition', '🏆｜比賽排行', CHANNEL_TYPES.TEXT],
+      ['event_announcement', '📅｜活動公告', CHANNEL_TYPES.TEXT]
     ]
   },
   {
     key: 'admin', name: '🔒｜管理員後台', aliases: ['管理員後台'], permission: 'admin',
     channels: [
-      ['server_logs', 'server-logs', ChannelType.GuildText],
-      ['ticket_logs', 'ticket-logs', ChannelType.GuildText],
-      ['bot_control', 'bot-control', ChannelType.GuildText],
-      ['voice_control', '語音控制台', ChannelType.GuildText],
-      ['organize_logs', '整理紀錄', ChannelType.GuildText]
+      ['server_logs', 'server-logs', CHANNEL_TYPES.TEXT],
+      ['ticket_logs', 'ticket-logs', CHANNEL_TYPES.TEXT],
+      ['bot_control', 'bot-control', CHANNEL_TYPES.TEXT],
+      ['voice_control', '語音控制台', CHANNEL_TYPES.TEXT],
+      ['organize_logs', '整理紀錄', CHANNEL_TYPES.TEXT]
     ]
   }
 ].map((category) => ({
@@ -106,10 +106,10 @@ const CATEGORIES = [
 }));
 
 const GAME_CHANNELS = [
-  { key: 'chat', name: '💬｜聊天', type: ChannelType.GuildText },
-  { key: 'lfg', name: '🧑‍🤝‍🧑｜找隊友', type: ChannelType.GuildText },
-  { key: 'info', name: '📌｜資訊', type: ChannelType.GuildText },
-  { key: 'voice_create', name: '🔊｜➕｜建立語音', type: ChannelType.GuildVoice, userLimit: 1 }
+  { key: 'chat', name: '💬｜聊天', type: CHANNEL_TYPES.TEXT },
+  { key: 'lfg', name: '🧑‍🤝‍🧑｜找隊友', type: CHANNEL_TYPES.TEXT },
+  { key: 'info', name: '📌｜資訊', type: CHANNEL_TYPES.TEXT },
+  { key: 'voice_create', name: '🔊｜➕｜建立語音', type: CHANNEL_TYPES.VOICE, userLimit: 1 }
 ];
 
 const GAMES = [

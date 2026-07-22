@@ -1,6 +1,6 @@
 # Command Alias Matrix
 
-Generated: 2026-07-22T13:07:52.569Z
+Generated: 2026-07-22T13:54:50.887Z
 
 The registry dynamically requires all 73 files from `src/legacy/commands` and exposes 65 final alias names after duplicate-name overwrites. No alias is removed or redeployed in this phase.
 
@@ -41,7 +41,7 @@ The registry dynamically requires all 73 files from `src/legacy/commands` and ex
 | /lock | /admin lock | src/legacy/commands/lock.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /memberguard-release | - | src/legacy/commands/memberguard-release.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /memberguard-settings | /security memberguard | src/legacy/commands/memberguard-settings.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
-| /memberguard-status | /security status | src/legacy/commands/memberguard-status.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
+| /memberguard-status | /security status | src/legacy/commands/memberguard-status.js | no | yes or unverified | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /memory-list | - | src/legacy/commands/memory-list.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /move-channel | - | src/legacy/commands/move-channel.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /plan-cleanup | - | src/legacy/commands/plan_cleanup.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |

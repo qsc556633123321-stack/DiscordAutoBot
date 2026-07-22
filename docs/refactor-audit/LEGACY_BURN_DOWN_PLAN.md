@@ -1,6 +1,6 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-22T13:07:52.571Z
+Generated: 2026-07-22T13:54:50.891Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
 
@@ -8,7 +8,10 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 
 | Module | Status | Replacement path | Release-window action |
 | --- | --- | --- | --- |
-| src/legacy/commands/check-onboarding-visibility.js | Migrated; wrapper remaining | src/services/community/communityPermissionService.js (explicit adapter path) | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/check-onboarding-visibility.js | Migrated; wrapper remaining | src/presentation/commands/checkOnboardingVisibilityCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/dev-audit-commands.js | Migrated; wrapper remaining | src/presentation/commands/devAuditCommandsCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/memberguard-status.js | Migrated; wrapper remaining | src/presentation/commands/memberGuardStatusCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/memory-list.js | Migrated; wrapper remaining | src/presentation/commands/memoryListCommand.js | keep wrapper and monitor before legacy deletion review |
 
 ## Wave 1: low-risk, clear boundary
 
@@ -50,7 +53,6 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/debug-permissions.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/dedupe-layout.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/deep_cleanup.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
-| src/legacy/commands/dev-audit-commands.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/factory-reset-server.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/fix-game-category.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/forget-channel-rule.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
@@ -63,8 +65,6 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/lock.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/memberguard-release.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/memberguard-settings.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
-| src/legacy/commands/memberguard-status.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
-| src/legacy/commands/memory-list.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/move-channel.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/plan_cleanup.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/polish-server-design.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
