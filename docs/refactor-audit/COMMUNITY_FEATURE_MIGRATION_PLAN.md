@@ -20,7 +20,7 @@ Community owns server structure intent, onboarding/guide experience, community r
 
 ```text
 Discovery complete
-  -> Slice 1: Community About query
+  -> Slice 1: Community About query (complete; thin wrapper retained)
   -> Slice 2: Community Roadmap query
   -> Slice 3: Community onboarding/guide read query
   -> role access policy + self-role mutation
@@ -42,7 +42,7 @@ Discovery complete
 
 ### Recommendation: Slice 1, Community About
 
-It is active, complete from slash input to ephemeral embed output, has a narrow boundary, has no persistence or mutation, needs no event changes, and does not touch Voice, Layout, or Permission Repair. It is therefore the best proof that Community composition can follow the same migration pattern as Memory, MemberGuard, and Audit.
+It is active, complete from slash input to ephemeral embed output, has a narrow boundary, has no persistence or mutation, needs no event changes, and does not touch Voice, Layout, or Permission Repair. It is therefore the best proof that Community composition can follow the same migration pattern as Memory, MemberGuard, and Audit. **Completed in Community Slice 1; the legacy wrapper remains intentionally.**
 
 Estimated files: one legacy command wrapper, one presentation command, one application query, one pure domain profile module, one small guild-name/read port/gateway, one composition root, and migration tests. No existing runtime file moves/deletes are required.
 

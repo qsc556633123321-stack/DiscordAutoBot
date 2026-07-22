@@ -12,6 +12,9 @@ const THIN_MEMBERGUARD_WRAPPERS = Object.freeze({
 const THIN_AUDIT_WRAPPERS = Object.freeze({
   'src/legacy/commands/dev-audit-commands.js': "module.exports = require('../../presentation/commands/devAuditCommandsCommand');"
 });
+const THIN_COMMUNITY_WRAPPERS = Object.freeze({
+  'src/legacy/commands/community-about.js': "module.exports = require('../../presentation/commands/communityAboutCommand');"
+});
 
 function walk(directory) {
   if (!fs.existsSync(directory)) return [];
@@ -43,7 +46,7 @@ const files = walk(path.join(ROOT, 'src'));
 const seenAllowances = new Set();
 const violations = [];
 
-for (const [relativePath, expectedSource] of Object.entries({ ...THIN_MEMBERGUARD_WRAPPERS, ...THIN_AUDIT_WRAPPERS })) {
+for (const [relativePath, expectedSource] of Object.entries({ ...THIN_MEMBERGUARD_WRAPPERS, ...THIN_AUDIT_WRAPPERS, ...THIN_COMMUNITY_WRAPPERS })) {
   const source = fs.readFileSync(path.join(ROOT, relativePath), 'utf8').trim();
   const forbidden = [/discord\.js/, /memberGuardService/, /systems\/memberGuard/, /SlashCommandBuilder/, /interaction\.options/, /permissionOverwrites/, /roles\.(add|remove)/, /\.(reply|editReply|deferReply)\(/];
   if (source !== expectedSource) violations.push(`Legacy wrapper is not a direct presentation re-export: ${relativePath}`);
@@ -144,6 +147,21 @@ for (const file of files) {
   if (from.startsWith('src/application/audit/')) {
     const forbidden = [/require\(['"]discord\.js['"]\)/, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/, /process\.env/, /require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*presentation\//, /require\(['"][^'"]*composition\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//];
     for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Audit application boundary violation (${pattern}): ${from}`);
+  }
+
+  if (from.startsWith('src/application/community/')) {
+    const forbidden = [/require\(['"]discord\.js['"]\)/, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/, /process\.env/, /require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*presentation\//, /require\(['"][^'"]*composition\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Community application boundary violation (${pattern}): ${from}`);
+  }
+
+  if (from.startsWith('src/domain/community/communityAbout')) {
+    const forbidden = [/require\(['"]discord\.js['"]\)/, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/, /process\.env/, /require\(['"][^'"]*application\//, /require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*presentation\//, /require\(['"][^'"]*composition\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Community About domain boundary violation (${pattern}): ${from}`);
+  }
+
+  if (from.startsWith('src/presentation/commands/communityAbout')) {
+    const forbidden = [/require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Community About presentation boundary violation (${pattern}): ${from}`);
   }
 
   if (from.startsWith('src/domain/audit/')) {

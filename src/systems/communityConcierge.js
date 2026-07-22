@@ -9,6 +9,7 @@ const {
   PermissionFlagsBits
 } = require('discord.js');
 const permissionTemplates = require('../config/permissionTemplates');
+const { createCommunityAboutModel } = require('../domain/community/communityAbout');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
@@ -201,18 +202,7 @@ function buildRoadmapEmbed() {
 }
 
 function buildAboutEmbed(guild) {
-  return new EmbedBuilder()
-    .setColor(0x57f287)
-    .setTitle('🌙 KU Community 是什麼？')
-    .setDescription(
-      '這是一個偏向深夜遊戲、語音陪伴、AI 工具與社群實驗的 Discord Community OS。\n\n' +
-      '我們重視的是有人感：有人開房、有人聊天、有人一起玩，慢慢變成熟面孔。'
-    )
-    .addFields(
-      { name: '你可以從哪裡開始', value: '`/help-me-start`、領身分組、看看目前語音房、或直接按導覽面板。', inline: false },
-      { name: '目前伺服器', value: guild.name, inline: true },
-      { name: '核心方向', value: '遊戲、語音、深夜聊天室、AI 社群工具', inline: true }
-    )
+  return new EmbedBuilder(createCommunityAboutModel({ guildName: guild.name }).embed)
     .setTimestamp();
 }
 

@@ -1,6 +1,6 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-22T17:01:00.833Z
+Generated: 2026-07-22T17:36:36.567Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
 
@@ -146,3 +146,9 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 - Preserve aliases until deploy metadata is intentionally changed in a dedicated release.
 - Dynamic directory loaders require explicit registry updates before any removal.
 - High-risk community, layout, permission, and interaction runtime migration needs behavior fixtures before redirecting the active path.
+
+## Completed Migration: Community About
+
+| Module | Status | Replacement | Verification | Rollback |
+| --- | --- | --- | --- | --- |
+| `src/legacy/commands/community-about.js` | Migrated / Thin Wrapper Complete | `src/presentation/commands/communityAboutCommand.js` through Community About composition | `npm run test:community`, migration regression, registry/deploy payload checks, quality gate | Revert the alias override and restore the former command body from Git; no data migration exists. |

@@ -1,6 +1,6 @@
 # Command Alias Matrix
 
-Generated: 2026-07-22T17:01:00.831Z
+Generated: 2026-07-22T17:36:36.565Z
 
 The registry dynamically requires all 73 files from `src/legacy/commands` and exposes 65 final alias names after duplicate-name overwrites. No alias is removed or redeployed in this phase.
 
@@ -21,7 +21,7 @@ The registry dynamically requires all 73 files from `src/legacy/commands` and ex
 | /check-role-visibility | /community check-role | src/legacy/commands/check-role-visibility.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /cleanup-empty-categories | - | src/legacy/commands/cleanup-empty-categories.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /cleanup-guest-roles | - | src/legacy/commands/cleanup-guest-roles.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
-| /community-about | - | src/legacy/commands/community-about.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
+| /community-about | - | src/legacy/commands/community-about.js | likely | unlikely; inspect before migration | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /community-architect | /community audit | src/legacy/commands/community-architect.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |
 | /community-roadmap | - | src/legacy/commands/community-roadmap.js | no | yes or unverified | yes; add route first | no | yes; deployed alias registration changes | high: no grouped route currently maps it |
 | /create-party | /voice create | src/legacy/commands/create-party.js | likely | unlikely; inspect before migration | yes; route exists | no | yes; deployed alias registration changes | medium: preserves existing alias contract |

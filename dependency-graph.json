@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T17:00:42.790Z",
+  "generatedAt": "2026-07-22T17:36:37.237Z",
   "summary": {
-    "fileCount": 278,
-    "dependencyCount": 450,
+    "fileCount": 284,
+    "dependencyCount": 457,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -18,20 +18,20 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 5,
-      "application": 20,
+      "application": 22,
       "command": 80,
-      "composition": 4,
+      "composition": 5,
       "config": 14,
       "core": 3,
       "other": 3,
-      "domain": 12,
+      "domain": 13,
       "event": 7,
+      "infrastructure": 6,
       "repository": 5,
-      "infrastructure": 5,
       "legacy": 27,
       "router": 17,
       "system": 57,
-      "presentation": 8,
+      "presentation": 9,
       "service": 8,
       "util": 3
     }
@@ -142,6 +142,34 @@
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/getCommunityAboutUseCase.js",
+      "type": "application",
+      "lines": 20,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/ports/communityAboutGateway.js",
+      "type": "application",
+      "lines": 9,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -500,6 +528,20 @@
       }
     },
     {
+      "file": "src/composition/communityAboutFeature.js",
+      "type": "composition",
+      "lines": 11,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/composition/memberGuardFeature.js",
       "type": "composition",
       "lines": 38,
@@ -808,6 +850,20 @@
       }
     },
     {
+      "file": "src/domain/community/communityAbout.js",
+      "type": "domain",
+      "lines": 31,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/domain/community/communityArchitectureV3.js",
       "type": "domain",
       "lines": 180,
@@ -1055,6 +1111,20 @@
       "externalDependencyCount": 4,
       "exports": {
         "moduleExports": 0,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/community/communityAboutGateway.js",
+      "type": "infrastructure",
+      "lines": 12,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
         "exportsDot": 0,
         "esExports": 0
       }
@@ -1454,11 +1524,11 @@
     {
       "file": "src/legacy/commands/community-about.js",
       "type": "command",
-      "lines": 13,
+      "lines": 2,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2602,7 +2672,7 @@
     {
       "file": "src/modules/commands/aliasRegistry.js",
       "type": "router",
-      "lines": 25,
+      "lines": 26,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 0,
@@ -3076,6 +3146,20 @@
       }
     },
     {
+      "file": "src/presentation/commands/communityAboutCommand.js",
+      "type": "presentation",
+      "lines": 25,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/presentation/commands/devAuditCommandsCommand.js",
       "type": "presentation",
       "lines": 37,
@@ -3456,10 +3540,10 @@
     {
       "file": "src/systems/communityConcierge.js",
       "type": "system",
-      "lines": 388,
+      "lines": 378,
       "fallbackAllowed": false,
-      "dependencyCount": 4,
-      "localDependencyCount": 1,
+      "dependencyCount": 5,
+      "localDependencyCount": 2,
       "externalDependencyCount": 3,
       "exports": {
         "moduleExports": 1,
@@ -4002,6 +4086,21 @@
       "specifier": "../../services/community/communityPermissionService"
     },
     {
+      "from": "src/application/community/getCommunityAboutUseCase.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/application/community/getCommunityAboutUseCase.js",
+      "to": "src/domain/community/communityAbout.js",
+      "specifier": "../../domain/community/communityAbout"
+    },
+    {
+      "from": "src/application/community/getCommunityAboutUseCase.js",
+      "to": "src/application/community/ports/communityAboutGateway.js",
+      "specifier": "./ports/communityAboutGateway"
+    },
+    {
       "from": "src/application/development/auditCommandsUseCase.js",
       "to": "src/infrastructure/project/commandAuditGateway.js",
       "specifier": "../../infrastructure/project/commandAuditGateway"
@@ -4080,6 +4179,16 @@
       "from": "src/composition/auditFeature.js",
       "to": "src/infrastructure/project/commandAuditGateway.js",
       "specifier": "../infrastructure/project/commandAuditGateway"
+    },
+    {
+      "from": "src/composition/communityAboutFeature.js",
+      "to": "src/application/community/getCommunityAboutUseCase.js",
+      "specifier": "../application/community/getCommunityAboutUseCase"
+    },
+    {
+      "from": "src/composition/communityAboutFeature.js",
+      "to": "src/infrastructure/community/communityAboutGateway.js",
+      "specifier": "../infrastructure/community/communityAboutGateway"
     },
     {
       "from": "src/composition/memberGuardFeature.js",
@@ -4478,8 +4587,8 @@
     },
     {
       "from": "src/legacy/commands/community-about.js",
-      "to": "src/systems/communityConcierge.js",
-      "specifier": "../../systems/communityConcierge"
+      "to": "src/presentation/commands/communityAboutCommand.js",
+      "specifier": "../../presentation/commands/communityAboutCommand"
     },
     {
       "from": "src/legacy/commands/community-architect.js",
@@ -5667,6 +5776,11 @@
       "specifier": "../../application/community/checkOnboardingVisibilityUseCase"
     },
     {
+      "from": "src/presentation/commands/communityAboutCommand.js",
+      "to": "src/composition/communityAboutFeature.js",
+      "specifier": "../../composition/communityAboutFeature"
+    },
+    {
       "from": "src/presentation/commands/devAuditCommandsCommand.js",
       "to": "src/composition/auditFeature.js",
       "specifier": "../../composition/auditFeature"
@@ -5950,6 +6064,11 @@
       "from": "src/systems/communityConcierge.js",
       "to": "src/config/permissionTemplates.js",
       "specifier": "../config/permissionTemplates"
+    },
+    {
+      "from": "src/systems/communityConcierge.js",
+      "to": "src/domain/community/communityAbout.js",
+      "specifier": "../domain/community/communityAbout"
     },
     {
       "from": "src/systems/communityHealthScorer.js",

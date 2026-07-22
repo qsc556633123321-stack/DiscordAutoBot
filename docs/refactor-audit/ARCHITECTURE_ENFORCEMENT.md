@@ -50,6 +50,15 @@ This guard prevents unreviewed dependencies from active code into `src/legacy` w
 - `src/legacy/commands/dev-audit-commands.js` is a direct presentation re-export. It must not contain Discord imports, command construction, option parsing, persistence, replies, or business logic.
 - The current feature has no Audit entry persistence, Discord delivery gateway, or event producer. Do not create one as part of command-audit maintenance.
 
+## Community About Slice Rules
+
+- `src/domain/community/communityAbout.js` is a pure immutable facts normalizer. It must not import Discord.js, filesystem, path, environment variables, application, infrastructure, presentation, composition, legacy, or systems modules.
+- `src/application/community/getCommunityAboutUseCase.js` depends only on the Community About gateway port, the pure domain model, and core Result helpers. It must not import Discord.js, infrastructure implementations, presentation, composition, legacy, systems, filesystem, path, or environment variables.
+- `src/domain/community/communityAbout.js` is the single source of static About facts. `src/infrastructure/community/communityAboutGateway.js` maps the supplied guild-name fact and never replies to Discord.
+- `src/composition/communityAboutFeature.js` is the only Community About wiring point and supports gateway injection for tests.
+- `src/presentation/commands/communityAboutCommand.js` preserves the slash definition and reply renderer. It may use Discord.js builders and composition, but may not import storage, infrastructure, legacy, Community systems, filesystem, or path.
+- `src/legacy/commands/community-about.js` is a direct presentation re-export. It must not contain Discord command construction, interaction logic, storage, rendering, or Community facts.
+
 ## Compatibility Gateways
 
 Existing behavior sometimes remains legacy-owned during a migration. Those temporary edges are recorded in `src/config/legacyBoundaryAllowlist.js` with an exact source, target, and reason. The list is deliberately narrow: a newly added legacy import fails `npm run test:legacy-boundaries` unless it has an explicit, reviewed migration reason.
