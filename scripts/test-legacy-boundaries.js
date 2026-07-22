@@ -9,6 +9,9 @@ const THIN_MEMBERGUARD_WRAPPERS = Object.freeze({
   'src/legacy/commands/memberguard-settings.js': "module.exports = require('../../presentation/commands/memberguardSettingsCommand');",
   'src/legacy/commands/memberguard-release.js': "module.exports = require('../../presentation/commands/memberguardReleaseCommand');"
 });
+const THIN_AUDIT_WRAPPERS = Object.freeze({
+  'src/legacy/commands/dev-audit-commands.js': "module.exports = require('../../presentation/commands/devAuditCommandsCommand');"
+});
 
 function walk(directory) {
   if (!fs.existsSync(directory)) return [];
@@ -40,13 +43,13 @@ const files = walk(path.join(ROOT, 'src'));
 const seenAllowances = new Set();
 const violations = [];
 
-for (const [relativePath, expectedSource] of Object.entries(THIN_MEMBERGUARD_WRAPPERS)) {
+for (const [relativePath, expectedSource] of Object.entries({ ...THIN_MEMBERGUARD_WRAPPERS, ...THIN_AUDIT_WRAPPERS })) {
   const source = fs.readFileSync(path.join(ROOT, relativePath), 'utf8').trim();
   const forbidden = [/discord\.js/, /memberGuardService/, /systems\/memberGuard/, /SlashCommandBuilder/, /interaction\.options/, /permissionOverwrites/, /roles\.(add|remove)/, /\.(reply|editReply|deferReply)\(/];
-  if (source !== expectedSource) violations.push(`MemberGuard legacy wrapper is not a direct presentation re-export: ${relativePath}`);
-  if (source.split(/\r?\n/).length > 5) violations.push(`MemberGuard legacy wrapper exceeds five lines: ${relativePath}`);
+  if (source !== expectedSource) violations.push(`Legacy wrapper is not a direct presentation re-export: ${relativePath}`);
+  if (source.split(/\r?\n/).length > 5) violations.push(`Legacy wrapper exceeds five lines: ${relativePath}`);
   for (const pattern of forbidden) {
-    if (pattern.test(source)) violations.push(`MemberGuard legacy wrapper contains forbidden runtime logic (${pattern}): ${relativePath}`);
+    if (pattern.test(source)) violations.push(`Legacy wrapper contains forbidden runtime logic (${pattern}): ${relativePath}`);
   }
 }
 
@@ -136,6 +139,21 @@ for (const file of files) {
     for (const [pattern, label] of forbidden) {
       if (pattern.test(source)) violations.push(`MemberGuard application boundary violation (${label}): ${from}`);
     }
+  }
+
+  if (from.startsWith('src/application/audit/')) {
+    const forbidden = [/require\(['"]discord\.js['"]\)/, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/, /process\.env/, /require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*presentation\//, /require\(['"][^'"]*composition\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Audit application boundary violation (${pattern}): ${from}`);
+  }
+
+  if (from.startsWith('src/domain/audit/')) {
+    const forbidden = [/require\(['"]discord\.js['"]\)/, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/, /process\.env/, /require\(['"][^'"]*application\//, /require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*presentation\//, /require\(['"][^'"]*composition\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Audit domain boundary violation (${pattern}): ${from}`);
+  }
+
+  if (from.startsWith('src/presentation/commands/devAudit')) {
+    const forbidden = [/require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Audit presentation boundary violation (${pattern}): ${from}`);
   }
 
   if (from.startsWith('src/domain/memberGuard/')) {

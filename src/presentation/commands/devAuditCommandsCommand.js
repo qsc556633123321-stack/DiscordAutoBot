@@ -1,5 +1,5 @@
 const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { createAuditCommandsUseCase } = require('../../application/development/auditCommandsUseCase');
+const { createAuditFeature } = require('../../composition/auditFeature');
 
 const data = new SlashCommandBuilder()
   .setName('dev-audit-commands')
@@ -10,7 +10,7 @@ function list(items, empty = 'None') {
   return items.length ? items.slice(0, 25).join('\n').slice(0, 1024) : empty;
 }
 
-function createDevAuditCommandsCommand({ useCase = createAuditCommandsUseCase() } = {}) {
+function createDevAuditCommandsCommand({ useCase = createAuditFeature().runCommandAudit } = {}) {
   return {
     data,
     async execute(interaction) {

@@ -5,7 +5,7 @@
 | Memory | list, learn, forget | complete | complete | JSON repository | retained for rollback | commands retained | domain, application, repository, composition, migration | Migrated / Wrapper Remaining |
 | Organizer | auto-organize consumer | planning query complete | scoring complete | via Memory composition | retained, inactive consumer | systems facade | application, integration, migration | Migrated / Legacy Source Retained |
 | MemberGuard | status, settings, release, active message/join runtime | status, evaluation, settings, release complete | policy complete | JSON repository, permission/role gateways | retained for unrelated compatibility | status, settings, and release legacy aliases are thin presentation wrappers | domain, application, repository, composition, gateway, runtime, migration | Migrated / Wrapper Remaining |
-| Audit | dev audit | complete | n/a | command gateway | retained aliases | yes | migration | Migrated / Wrapper Remaining |
+| Audit | dev command audit | complete | command-report policy complete | command-audit gateway | no event runtime exists | legacy alias is a thin presentation wrapper | domain, application, gateway, composition, presentation, runtime, migration | Migrated / Wrapper Remaining |
 | Community | grouped and legacy commands | partial | partial | existing | active | mixed | architecture | Active Legacy |
 | Voice | grouped and legacy commands | partial | partial | existing | active | mixed | existing | Active Legacy |
 | Layout | grouped and legacy commands | partial | partial | existing | active fallback | mixed | existing | In Migration |

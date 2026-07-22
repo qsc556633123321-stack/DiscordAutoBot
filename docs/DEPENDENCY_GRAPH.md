@@ -1,11 +1,11 @@
 # Dependency Graph
 
-Generated: 2026-07-22T16:41:49.820Z
+Generated: 2026-07-22T17:00:42.790Z
 
 ## Summary
 
-- JS files scanned: 274
-- Local dependency edges: 447
+- JS files scanned: 278
+- Local dependency edges: 450
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0
@@ -133,12 +133,12 @@ Penalty model:
 ## Type Counts
 
 - adapter: 5
-- application: 18
+- application: 20
 - command: 80
-- composition: 3
+- composition: 4
 - config: 14
 - core: 3
-- domain: 11
+- domain: 12
 - event: 7
 - infrastructure: 5
 - legacy: 27

@@ -41,6 +41,15 @@ This guard prevents unreviewed dependencies from active code into `src/legacy` w
 - MemberGuard presentation commands must not import JSON storage, `systems/memberGuard`, or legacy mutation implementations. They receive use cases and gateways through the composition feature.
 - MemberGuard legacy command wrappers must stay within five lines and must not import Discord.js, services, systems, or mutation APIs; `npm run test:legacy-boundaries` enforces this contract.
 
+## Audit Command Slice Rules
+
+- `src/domain/audit/**` is pure command-report normalization and must not import Discord.js, filesystem, path, environment variables, application, infrastructure, presentation, composition, systems, or legacy modules.
+- `src/application/audit/**` depends on an audit gateway port and domain policy only. It must not import Discord.js, filesystem, path, environment variables, infrastructure implementations, presentation, composition, systems, or legacy modules.
+- `src/presentation/commands/devAuditCommandsCommand.js` owns the unchanged slash definition and embed rendering. It receives the query use case from `src/composition/auditFeature.js` and must not import storage, legacy, systems, or infrastructure implementations.
+- `src/infrastructure/project/commandAuditGateway.js` is the sole adapter that invokes the existing `scripts/audit-commands.js` implementation.
+- `src/legacy/commands/dev-audit-commands.js` is a direct presentation re-export. It must not contain Discord imports, command construction, option parsing, persistence, replies, or business logic.
+- The current feature has no Audit entry persistence, Discord delivery gateway, or event producer. Do not create one as part of command-audit maintenance.
+
 ## Compatibility Gateways
 
 Existing behavior sometimes remains legacy-owned during a migration. Those temporary edges are recorded in `src/config/legacyBoundaryAllowlist.js` with an exact source, target, and reason. The list is deliberately narrow: a newly added legacy import fails `npm run test:legacy-boundaries` unless it has an explicit, reviewed migration reason.

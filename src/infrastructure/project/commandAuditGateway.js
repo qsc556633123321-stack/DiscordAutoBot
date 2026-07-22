@@ -1,7 +1,13 @@
 const { auditCommands } = require('../../../scripts/audit-commands');
 
-function audit() {
-  return auditCommands();
+function createCommandAuditGateway({ auditRunner = auditCommands } = {}) {
+  return {
+    audit() {
+      return auditRunner();
+    }
+  };
 }
 
-module.exports = { audit };
+const gateway = createCommandAuditGateway();
+
+module.exports = { ...gateway, createCommandAuditGateway };

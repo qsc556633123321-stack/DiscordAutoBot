@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T16:41:49.820Z",
+  "generatedAt": "2026-07-22T17:00:42.790Z",
   "summary": {
-    "fileCount": 274,
-    "dependencyCount": 447,
+    "fileCount": 278,
+    "dependencyCount": 450,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -18,13 +18,13 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 5,
-      "application": 18,
+      "application": 20,
       "command": 80,
-      "composition": 3,
+      "composition": 4,
       "config": 14,
       "core": 3,
       "other": 3,
-      "domain": 11,
+      "domain": 12,
       "event": 7,
       "repository": 5,
       "infrastructure": 5,
@@ -101,6 +101,34 @@
       "dependencyCount": 1,
       "localDependencyCount": 0,
       "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/audit/ports/commandAuditGateway.js",
+      "type": "application",
+      "lines": 7,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/audit/runCommandAuditUseCase.js",
+      "type": "application",
+      "lines": 14,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -458,6 +486,20 @@
       }
     },
     {
+      "file": "src/composition/auditFeature.js",
+      "type": "composition",
+      "lines": 11,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/composition/memberGuardFeature.js",
       "type": "composition",
       "lines": 38,
@@ -747,6 +789,20 @@
       "externalDependencyCount": 2,
       "exports": {
         "moduleExports": 0,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/audit/commandAuditReport.js",
+      "type": "domain",
+      "lines": 18,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
         "exportsDot": 0,
         "esExports": 0
       }
@@ -1090,7 +1146,7 @@
     {
       "file": "src/infrastructure/project/commandAuditGateway.js",
       "type": "infrastructure",
-      "lines": 8,
+      "lines": 14,
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 0,
@@ -1510,7 +1566,7 @@
     {
       "file": "src/legacy/commands/dev-audit-commands.js",
       "type": "command",
-      "lines": 5,
+      "lines": 2,
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
@@ -3931,6 +3987,11 @@
       "specifier": "../../infrastructure/storage/jsonStore"
     },
     {
+      "from": "src/application/audit/runCommandAuditUseCase.js",
+      "to": "src/domain/audit/commandAuditReport.js",
+      "specifier": "../../domain/audit/commandAuditReport"
+    },
+    {
       "from": "src/application/community/checkOnboardingVisibilityUseCase.js",
       "to": "src/domain/community/onboardingVisibilityPolicy.js",
       "specifier": "../../domain/community/onboardingVisibilityPolicy"
@@ -4009,6 +4070,16 @@
       "from": "src/commands/voice.js",
       "to": "src/modules/commands/commandRegistry.js",
       "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/composition/auditFeature.js",
+      "to": "src/application/audit/runCommandAuditUseCase.js",
+      "specifier": "../application/audit/runCommandAuditUseCase"
+    },
+    {
+      "from": "src/composition/auditFeature.js",
+      "to": "src/infrastructure/project/commandAuditGateway.js",
+      "specifier": "../infrastructure/project/commandAuditGateway"
     },
     {
       "from": "src/composition/memberGuardFeature.js",
@@ -5597,8 +5668,8 @@
     },
     {
       "from": "src/presentation/commands/devAuditCommandsCommand.js",
-      "to": "src/application/development/auditCommandsUseCase.js",
-      "specifier": "../../application/development/auditCommandsUseCase"
+      "to": "src/composition/auditFeature.js",
+      "specifier": "../../composition/auditFeature"
     },
     {
       "from": "src/presentation/commands/forgetChannelRuleCommand.js",

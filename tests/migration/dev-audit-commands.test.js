@@ -36,6 +36,7 @@ async function main() {
   assert.equal(calls[1][1].embeds[0].description, 'Deploy loader: registry\nImplemented: 2');
   assert.equal(calls[1][1].embeds[0].fields.length, 4);
   assert.equal(legacy.execute, presentation.execute);
+  assert.equal(legacy, presentation);
   assert.deepEqual(legacy.data.toJSON(), presentation.data.toJSON());
   console.log('dev-audit-commands migration regression tests passed.');
 }

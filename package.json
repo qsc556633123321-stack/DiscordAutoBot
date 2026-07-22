@@ -20,6 +20,7 @@
     "test:organizer": "node tests/application/organizer/organizerPlanningUseCase.test.js && node tests/integration/organizer/organizerMemoryComposition.test.js && node tests/migration/organizer-memory-consumer.test.js",
     "test:memberguard": "node tests/domain/memberGuard/memberGuardPolicy.test.js && node tests/application/memberGuard/memberGuardUseCases.test.js && node tests/infrastructure/memberGuard/jsonMemberGuardRepository.test.js && node tests/composition/memberGuard/memberGuardFeature.test.js && node tests/integration/memberGuard/memberGuardRuntimeAdapter.test.js && node tests/migration/memberguard-status.test.js && node tests/migration/memberguard-feature.test.js",
     "test:memberguard-mutations": "node tests/application/memberGuard/memberGuardMutationUseCases.test.js && node tests/infrastructure/memberGuard/memberGuardMutationGateways.test.js && node tests/migration/memberguard-mutations.test.js",
+    "test:audit": "node tests/domain/audit/commandAuditReport.test.js && node tests/application/audit/runCommandAuditUseCase.test.js && node tests/infrastructure/audit/commandAuditGateway.test.js && node tests/composition/auditFeature.test.js && node tests/presentation/audit/devAuditCommandsCommand.test.js && node tests/integration/audit/commandAuditRuntimeAdapter.test.js && node tests/migration/dev-audit-commands.test.js",
     "audit:commands": "node scripts/audit-commands.js",
     "audit:dead-code": "node scripts/audit-dead-code.js",
     "audit:legacy": "node scripts/generate-legacy-audit.js",
@@ -28,7 +29,7 @@
     "report:commands": "node scripts/report-command-count.js",
     "analyze:dependencies": "node scripts/analyze-dependency-graph.js",
     "report:complexity": "node scripts/report-complexity.js",
-    "quality:gate": "npm run analyze:dependencies && npm run test:architecture && npm run test:permissions && npm run test:legacy-boundaries && npm run test:memory && npm run test:organizer && npm run test:memberguard && npm run test:memberguard-mutations && npm run audit:dead-code && npm run report:commands && npm run report:complexity"
+    "quality:gate": "npm run analyze:dependencies && npm run test:architecture && npm run test:permissions && npm run test:legacy-boundaries && npm run test:memory && npm run test:organizer && npm run test:memberguard && npm run test:memberguard-mutations && npm run test:audit && npm run audit:dead-code && npm run report:commands && npm run report:complexity"
   },
   "keywords": [
     "discord",
