@@ -81,6 +81,18 @@ for (const file of files) {
     }
   }
 
+  if (from.startsWith('src/application/memory/')) {
+    const forbidden = [
+      [/require\(['"][^'"]*infrastructure\//, 'infrastructure'],
+      [/require\(['"][^'"]*presentation\//, 'presentation'],
+      [/require\(['"][^'"]*legacy\//, 'legacy'],
+      [/require\(['"][^'"]*systems\//, 'systems']
+    ];
+    for (const [pattern, label] of forbidden) {
+      if (pattern.test(source)) violations.push(`Memory application boundary violation (${label}): ${from}`);
+    }
+  }
+
   if (isRestricted && from.startsWith('src/presentation/') && /require\(['"][^'"]*legacy\//.test(source)) {
     violations.push(`Presentation must not import legacy directly: ${from}`);
   }

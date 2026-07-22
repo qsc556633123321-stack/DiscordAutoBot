@@ -1,6 +1,5 @@
-const { createJsonChannelRuleRepository } = require('../../infrastructure/storage/jsonChannelRuleRepository');
-
-function createListChannelRulesUseCase({ repository = createJsonChannelRuleRepository() } = {}) {
+function createListChannelRulesUseCase({ repository } = {}) {
+  if (!repository) throw new Error('channelRuleRepository is required');
   return {
     execute({ guildId }) {
       return repository.listByGuild(guildId).slice(0, 25);

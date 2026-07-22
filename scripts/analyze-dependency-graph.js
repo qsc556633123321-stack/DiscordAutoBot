@@ -43,6 +43,7 @@ function classify(file) {
   if (name.startsWith('src/modules/events/')) return 'event';
   if (name.startsWith('src/modules/layout/')) return 'system';
   if (name.startsWith('src/events/')) return 'event';
+  if (name.startsWith('src/composition/')) return 'composition';
   if (name.startsWith('src/presentation/')) return 'presentation';
   if (name.startsWith('src/application/')) return 'application';
   if (name.startsWith('src/services/')) return 'service';
@@ -62,6 +63,7 @@ const layerRank = {
   command: 0,
   router: 0,
   event: 0,
+  composition: 0,
   presentation: 0,
   adapter: 0,
   application: 1,

@@ -1,8 +1,8 @@
 const { fail, ok } = require('../../core/result');
 const { normalizeKeyword } = require('../../domain/memory/channelRule');
-const { createJsonChannelRuleRepository } = require('../../infrastructure/storage/jsonChannelRuleRepository');
 
-function createDeleteChannelRuleUseCase({ repository = createJsonChannelRuleRepository() } = {}) {
+function createDeleteChannelRuleUseCase({ repository } = {}) {
+  if (!repository) throw new Error('channelRuleRepository is required');
   return {
     execute({ guildId, keyword }) {
       const normalizedKeyword = normalizeKeyword(keyword);

@@ -1,5 +1,5 @@
 const { ChannelType, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { createUpsertChannelRuleUseCase } = require('../../application/memory/upsertChannelRuleUseCase');
+const { createMemoryFeature } = require('../../composition/memoryFeature');
 
 const data = new SlashCommandBuilder()
   .setName('learn-channel')
@@ -23,7 +23,8 @@ const data = new SlashCommandBuilder()
     .setMinValue(1)
     .setMaxValue(10));
 
-function createLearnChannelCommand({ useCase = createUpsertChannelRuleUseCase(), logger = console } = {}) {
+function createLearnChannelCommand({ feature, useCase, logger = console } = {}) {
+  const resolvedUseCase = useCase || feature?.upsertChannelRule || createMemoryFeature().upsertChannelRule;
   return {
     data,
     async execute(interaction) {
@@ -39,7 +40,7 @@ function createLearnChannelCommand({ useCase = createUpsertChannelRuleUseCase(),
       const category = interaction.options.getChannel('category');
       const weight = interaction.options.getInteger('weight') || 5;
       try {
-        const result = useCase.execute({ guildId: interaction.guild.id, keyword, category: category.name, weight });
+        const result = resolvedUseCase.execute({ guildId: interaction.guild.id, keyword, category: category.name, weight });
         if (!result.ok) throw new Error(result.error.message);
         const rule = result.data;
         await interaction.reply({

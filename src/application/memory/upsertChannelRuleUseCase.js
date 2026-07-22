@@ -1,10 +1,10 @@
 const { createChannelRule, updateChannelRule } = require('../../domain/memory/channelRulePolicy');
-const { createJsonChannelRuleRepository } = require('../../infrastructure/storage/jsonChannelRuleRepository');
 
 function createUpsertChannelRuleUseCase({
-  repository = createJsonChannelRuleRepository(),
+  repository,
   clock = () => new Date().toISOString()
 } = {}) {
+  if (!repository) throw new Error('channelRuleRepository is required');
   return {
     execute({ guildId, keyword, category, weight }) {
       const existing = repository.findByKeyword(guildId, keyword);

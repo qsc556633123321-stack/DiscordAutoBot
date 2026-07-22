@@ -1,4 +1,6 @@
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 const { createDeleteChannelRuleUseCase } = require('../../../src/application/memory/deleteChannelRuleUseCase');
 const { createListChannelRulesUseCase } = require('../../../src/application/memory/listChannelRulesUseCase');
 const { createUpsertChannelRuleUseCase } = require('../../../src/application/memory/upsertChannelRuleUseCase');
@@ -22,6 +24,20 @@ function createRepository(seed = []) {
       return true;
     }
   };
+}
+
+for (const factory of [
+  createListChannelRulesUseCase,
+  createUpsertChannelRuleUseCase,
+  createDeleteChannelRuleUseCase
+]) {
+  assert.throws(() => factory(), /channelRuleRepository is required/);
+}
+
+for (const file of ['listChannelRulesUseCase.js', 'upsertChannelRuleUseCase.js', 'deleteChannelRuleUseCase.js']) {
+  const source = fs.readFileSync(path.join(__dirname, '..', '..', '..', 'src', 'application', 'memory', file), 'utf8');
+  assert.equal(source.includes('jsonChannelRuleRepository'), false, `${file} must not import the JSON repository.`);
+  assert.equal(source.includes('infrastructure/'), false, `${file} must not import infrastructure.`);
 }
 
 const many = Array.from({ length: 30 }, (_, index) => ({ keyword: `rule-${index}`, category: 'Games', weight: 5 }));

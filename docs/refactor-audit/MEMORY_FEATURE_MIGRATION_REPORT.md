@@ -2,7 +2,7 @@
 
 ## Feature Status
 
-**Migrated; wrappers remaining.** The command-facing Memory feature no longer reads `src/systems/serverMemory.js`.
+**Migrated; wrappers remaining.** The command-facing Memory feature no longer reads `src/systems/serverMemory.js` and now completes dependency inversion through a dedicated composition root.
 
 | Capability | Presentation | Application | Domain | Infrastructure | Legacy status |
 | --- | --- | --- | --- | --- | --- |
@@ -22,6 +22,13 @@
 ## Storage Contract
 
 `src/application/memory/ports/channelRuleRepository.js` documents the repository contract. The JSON adapter implements `listByGuild`, `findByKeyword`, `upsert`, and `deleteByKeyword` using `jsonStore`. It validates top-level and guild-level JSON shape, propagates invalid JSON errors, and does not mutate unrelated guild data.
+
+## Dependency Inversion Completion
+
+- `src/application/memory/**` depends on the repository port supplied at factory construction; missing repositories fail immediately with `channelRuleRepository is required`.
+- `src/composition/memoryFeature.js` is the runtime composition root. It creates the JSON repository, injects it into the three application use cases, and optionally accepts a fake repository or clock for tests.
+- Presentation commands obtain use cases from the composition root and never construct a repository.
+- Application tests use fake repositories and fake clocks. They assert that no Memory application source imports `jsonChannelRuleRepository` or infrastructure.
 
 ## Legacy and Runtime Boundary
 
@@ -46,7 +53,7 @@
 - `npm run test:legacy-boundaries`: passed; no Memory application or presentation path imports `systems/serverMemory`.
 - `npm run quality:gate`: passed; architecture score 100 and circular dependency count 0.
 - `npm run audit:legacy`: passed; 100 legacy files remain inventoried.
-- `npm run dashboard:build`: blocked by a local `spawn EPERM` while Next.js starts its post-TypeScript worker process. Compilation and TypeScript completed, but the process exited non-zero. This is recorded as an environment/process-permission issue; no Dashboard file was changed in this migration.
+- `npm run dashboard:build`: passed on the Phase 5.1 verification rerun. The earlier local `spawn EPERM` was intermittent and is retained as environment history in `DASHBOARD_BUILD_ENVIRONMENT_ISSUE.md`; no Dashboard file was changed in this migration.
 
 ## Rollback
 

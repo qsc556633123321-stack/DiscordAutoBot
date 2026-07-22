@@ -1,5 +1,5 @@
 const { PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { createDeleteChannelRuleUseCase } = require('../../application/memory/deleteChannelRuleUseCase');
+const { createMemoryFeature } = require('../../composition/memoryFeature');
 
 const data = new SlashCommandBuilder()
   .setName('forget-channel-rule')
@@ -12,7 +12,8 @@ const data = new SlashCommandBuilder()
     .setMinLength(1)
     .setMaxLength(50));
 
-function createForgetChannelRuleCommand({ useCase = createDeleteChannelRuleUseCase(), logger = console } = {}) {
+function createForgetChannelRuleCommand({ feature, useCase, logger = console } = {}) {
+  const resolvedUseCase = useCase || feature?.deleteChannelRule || createMemoryFeature().deleteChannelRule;
   return {
     data,
     async execute(interaction) {
@@ -26,7 +27,7 @@ function createForgetChannelRuleCommand({ useCase = createDeleteChannelRuleUseCa
       }
       const keyword = interaction.options.getString('keyword');
       try {
-        const result = useCase.execute({ guildId: interaction.guild.id, keyword });
+        const result = resolvedUseCase.execute({ guildId: interaction.guild.id, keyword });
         if (!result.ok) throw new Error(result.error.message);
         await interaction.reply({
           content: result.data.deleted

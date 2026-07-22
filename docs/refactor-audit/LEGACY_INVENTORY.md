@@ -1,6 +1,6 @@
 # Legacy Inventory
 
-Generated: 2026-07-22T14:22:59.956Z
+Generated: 2026-07-22T14:46:34.612Z
 
 This inventory is conservative: dynamic command/event directory loading is treated as a runtime reference. `REMOVAL_CANDIDATE` means no known runtime, registry, loader, or static reference was found; it is not deletion approval.
 

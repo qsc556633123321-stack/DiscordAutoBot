@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T14:22:51.256Z",
+  "generatedAt": "2026-07-22T14:46:28.106Z",
   "summary": {
-    "fileCount": 251,
-    "dependencyCount": 421,
+    "fileCount": 252,
+    "dependencyCount": 422,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -20,6 +20,7 @@
       "adapter": 4,
       "application": 7,
       "command": 80,
+      "composition": 1,
       "config": 14,
       "core": 3,
       "other": 3,
@@ -125,8 +126,8 @@
       "type": "application",
       "lines": 16,
       "fallbackAllowed": false,
-      "dependencyCount": 3,
-      "localDependencyCount": 3,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -137,10 +138,10 @@
     {
       "file": "src/application/memory/listChannelRulesUseCase.js",
       "type": "application",
-      "lines": 12,
+      "lines": 11,
       "fallbackAllowed": false,
-      "dependencyCount": 1,
-      "localDependencyCount": 1,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -167,8 +168,8 @@
       "type": "application",
       "lines": 22,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
-      "localDependencyCount": 2,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -281,6 +282,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/composition/memoryFeature.js",
+      "type": "composition",
+      "lines": 18,
+      "fallbackAllowed": false,
+      "dependencyCount": 4,
+      "localDependencyCount": 4,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -2741,7 +2756,7 @@
     {
       "file": "src/presentation/commands/forgetChannelRuleCommand.js",
       "type": "presentation",
-      "lines": 48,
+      "lines": 49,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
@@ -2755,7 +2770,7 @@
     {
       "file": "src/presentation/commands/learnChannelCommand.js",
       "type": "presentation",
-      "lines": 60,
+      "lines": 61,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
@@ -2783,7 +2798,7 @@
     {
       "file": "src/presentation/commands/memoryListCommand.js",
       "type": "presentation",
-      "lines": 44,
+      "lines": 45,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
@@ -3633,24 +3648,9 @@
       "specifier": "../../domain/memory/channelRule"
     },
     {
-      "from": "src/application/memory/deleteChannelRuleUseCase.js",
-      "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
-      "specifier": "../../infrastructure/storage/jsonChannelRuleRepository"
-    },
-    {
-      "from": "src/application/memory/listChannelRulesUseCase.js",
-      "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
-      "specifier": "../../infrastructure/storage/jsonChannelRuleRepository"
-    },
-    {
       "from": "src/application/memory/upsertChannelRuleUseCase.js",
       "to": "src/domain/memory/channelRulePolicy.js",
       "specifier": "../../domain/memory/channelRulePolicy"
-    },
-    {
-      "from": "src/application/memory/upsertChannelRuleUseCase.js",
-      "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
-      "specifier": "../../infrastructure/storage/jsonChannelRuleRepository"
     },
     {
       "from": "src/application/security/getMemberGuardStatusUseCase.js",
@@ -3691,6 +3691,26 @@
       "from": "src/commands/voice.js",
       "to": "src/modules/commands/commandRegistry.js",
       "specifier": "../modules/commands/commandRegistry"
+    },
+    {
+      "from": "src/composition/memoryFeature.js",
+      "to": "src/application/memory/deleteChannelRuleUseCase.js",
+      "specifier": "../application/memory/deleteChannelRuleUseCase"
+    },
+    {
+      "from": "src/composition/memoryFeature.js",
+      "to": "src/application/memory/listChannelRulesUseCase.js",
+      "specifier": "../application/memory/listChannelRulesUseCase"
+    },
+    {
+      "from": "src/composition/memoryFeature.js",
+      "to": "src/application/memory/upsertChannelRuleUseCase.js",
+      "specifier": "../application/memory/upsertChannelRuleUseCase"
+    },
+    {
+      "from": "src/composition/memoryFeature.js",
+      "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
+      "specifier": "../infrastructure/storage/jsonChannelRuleRepository"
     },
     {
       "from": "src/config/channelVisibilityRules.js",
@@ -5184,13 +5204,13 @@
     },
     {
       "from": "src/presentation/commands/forgetChannelRuleCommand.js",
-      "to": "src/application/memory/deleteChannelRuleUseCase.js",
-      "specifier": "../../application/memory/deleteChannelRuleUseCase"
+      "to": "src/composition/memoryFeature.js",
+      "specifier": "../../composition/memoryFeature"
     },
     {
       "from": "src/presentation/commands/learnChannelCommand.js",
-      "to": "src/application/memory/upsertChannelRuleUseCase.js",
-      "specifier": "../../application/memory/upsertChannelRuleUseCase"
+      "to": "src/composition/memoryFeature.js",
+      "specifier": "../../composition/memoryFeature"
     },
     {
       "from": "src/presentation/commands/memberGuardStatusCommand.js",
@@ -5204,8 +5224,8 @@
     },
     {
       "from": "src/presentation/commands/memoryListCommand.js",
-      "to": "src/application/memory/listChannelRulesUseCase.js",
-      "specifier": "../../application/memory/listChannelRulesUseCase"
+      "to": "src/composition/memoryFeature.js",
+      "specifier": "../../composition/memoryFeature"
     },
     {
       "from": "src/services/community/communityPermissionService.js",

@@ -1,12 +1,13 @@
 const { EmbedBuilder, PermissionFlagsBits, SlashCommandBuilder } = require('discord.js');
-const { createListChannelRulesUseCase } = require('../../application/memory/listChannelRulesUseCase');
+const { createMemoryFeature } = require('../../composition/memoryFeature');
 
 const data = new SlashCommandBuilder()
   .setName('memory-list')
   .setDescription('顯示目前伺服器已學習的頻道分類規則')
   .setDefaultMemberPermissions(PermissionFlagsBits.ManageChannels);
 
-function createMemoryListCommand({ useCase = createListChannelRulesUseCase(), logger = console } = {}) {
+function createMemoryListCommand({ feature, useCase, logger = console } = {}) {
+  const resolvedUseCase = useCase || feature?.listChannelRules || createMemoryFeature().listChannelRules;
   return {
     data,
     async execute(interaction) {
@@ -19,7 +20,7 @@ function createMemoryListCommand({ useCase = createListChannelRulesUseCase(), lo
         return;
       }
       try {
-        const rules = useCase.execute({ guildId: interaction.guild.id });
+        const rules = resolvedUseCase.execute({ guildId: interaction.guild.id });
         const description = rules.length
           ? rules.map((rule, index) => `**${index + 1}.** \`${rule.keyword}\` -> \`${rule.category}\`（+${rule.weight}）`).join('\n')
           : '目前尚未學習任何頻道分類規則。';
