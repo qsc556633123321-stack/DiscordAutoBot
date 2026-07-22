@@ -17,6 +17,8 @@
     "test:permissions": "node scripts/test-permissions.js",
     "audit:commands": "node scripts/audit-commands.js",
     "audit:dead-code": "node scripts/audit-dead-code.js",
+    "audit:legacy": "node scripts/generate-legacy-audit.js",
+    "test:legacy-audit": "node scripts/test-legacy-audit.js",
     "report:commands": "node scripts/report-command-count.js",
     "analyze:dependencies": "node scripts/analyze-dependency-graph.js",
     "report:complexity": "node scripts/report-complexity.js",
