@@ -1,6 +1,6 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-22T14:46:34.634Z
+Generated: 2026-07-22T14:59:17.965Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
 
@@ -14,6 +14,7 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/learn-channel.js | Migrated; wrapper remaining | src/presentation/commands/learnChannelCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/memberguard-status.js | Migrated; wrapper remaining | src/presentation/commands/memberGuardStatusCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/memory-list.js | Migrated; wrapper remaining | src/presentation/commands/memoryListCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/systemRuntimes/organizerRuntime.js | Migrated; legacy source retained | src/systems/organizer.js -> src/composition/organizerFeature.js -> organizer planning use case | keep wrapper and monitor before legacy deletion review |
 
 ## Wave 1: low-risk, clear boundary
 
@@ -135,7 +136,7 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/systemRuntimes/communityV3BuilderRuntime.js | COMPATIBILITY_WRAPPER; do not schedule while runtime ownership is unclear. |
 | src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js | COMPATIBILITY_WRAPPER; do not schedule while runtime ownership is unclear. |
 | src/legacy/systemRuntimes/linkGuardRuntime.js | COMPATIBILITY_WRAPPER; do not schedule while runtime ownership is unclear. |
-| src/legacy/systemRuntimes/organizerRuntime.js | COMPATIBILITY_WRAPPER; do not schedule while runtime ownership is unclear. |
+| src/legacy/systemRuntimes/organizerRuntime.js | REPLACEMENT_EXISTS, UNKNOWN_DYNAMIC_REFERENCE; do not schedule while runtime ownership is unclear. |
 | src/legacy/systemRuntimes/roleManagerRuntime.js | COMPATIBILITY_WRAPPER; do not schedule while runtime ownership is unclear. |
 | src/legacy/systemRuntimes/tempVoiceRuntime.js | COMPATIBILITY_WRAPPER; do not schedule while runtime ownership is unclear. |
 

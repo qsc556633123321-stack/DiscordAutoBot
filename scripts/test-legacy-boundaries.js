@@ -93,6 +93,21 @@ for (const file of files) {
     }
   }
 
+  if (from.startsWith('src/application/organizer/')) {
+    const forbidden = [
+      [/require\(['"][^'"]*systems\/serverMemory/, 'systems/serverMemory'],
+      [/require\(['"][^'"]*infrastructure\/storage\/jsonChannelRuleRepository/, 'JSON repository'],
+      [/require\(['"]discord\.js['"]\)/, 'discord.js'],
+      [/require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, 'filesystem'],
+      [/require\(['"]node:path['"]\)|require\(['"]path['"]\)/, 'path'],
+      [/process\.env/, 'process.env'],
+      [/require\(['"][^'"]*legacy\//, 'legacy']
+    ];
+    for (const [pattern, label] of forbidden) {
+      if (pattern.test(source)) violations.push(`Organizer application boundary violation (${label}): ${from}`);
+    }
+  }
+
   if (isRestricted && from.startsWith('src/presentation/') && /require\(['"][^'"]*legacy\//.test(source)) {
     violations.push(`Presentation must not import legacy directly: ${from}`);
   }

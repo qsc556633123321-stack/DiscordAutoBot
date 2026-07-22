@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-22T14:46:28.106Z",
+  "generatedAt": "2026-07-22T14:59:10.284Z",
   "summary": {
-    "fileCount": 252,
-    "dependencyCount": 422,
+    "fileCount": 258,
+    "dependencyCount": 429,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -18,13 +18,13 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 4,
-      "application": 7,
+      "application": 11,
       "command": 80,
-      "composition": 1,
+      "composition": 2,
       "config": 14,
       "core": 3,
       "other": 3,
-      "domain": 9,
+      "domain": 10,
       "event": 7,
       "repository": 4,
       "infrastructure": 2,
@@ -136,9 +136,37 @@
       }
     },
     {
+      "file": "src/application/memory/getChannelRulesForOrganizerUseCase.js",
+      "type": "application",
+      "lines": 14,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/application/memory/listChannelRulesUseCase.js",
       "type": "application",
       "lines": 11,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/memory/ports/channelRuleReader.js",
+      "type": "application",
+      "lines": 4,
       "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
@@ -170,6 +198,34 @@
       "fallbackAllowed": false,
       "dependencyCount": 1,
       "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/organizer/createOrganizerPlanningUseCase.js",
+      "type": "application",
+      "lines": 177,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/organizer/ports/channelRuleReader.js",
+      "type": "application",
+      "lines": 4,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -292,11 +348,25 @@
     {
       "file": "src/composition/memoryFeature.js",
       "type": "composition",
-      "lines": 18,
+      "lines": 20,
       "fallbackAllowed": false,
-      "dependencyCount": 4,
-      "localDependencyCount": 4,
+      "dependencyCount": 5,
+      "localDependencyCount": 5,
       "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/composition/organizerFeature.js",
+      "type": "composition",
+      "lines": 38,
+      "fallbackAllowed": false,
+      "dependencyCount": 5,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 1,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -404,7 +474,7 @@
     {
       "file": "src/config/legacyBoundaryAllowlist.js",
       "type": "config",
-      "lines": 53,
+      "lines": 52,
       "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
@@ -660,6 +730,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/organizer/organizerScoring.js",
+      "type": "domain",
+      "lines": 49,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -3344,10 +3428,10 @@
     {
       "file": "src/systems/organizer.js",
       "type": "system",
-      "lines": 3,
-      "fallbackAllowed": true,
-      "dependencyCount": 1,
-      "localDependencyCount": 1,
+      "lines": 36,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -3653,6 +3737,11 @@
       "specifier": "../../domain/memory/channelRulePolicy"
     },
     {
+      "from": "src/application/organizer/createOrganizerPlanningUseCase.js",
+      "to": "src/domain/organizer/organizerScoring.js",
+      "specifier": "../../domain/organizer/organizerScoring"
+    },
+    {
       "from": "src/application/security/getMemberGuardStatusUseCase.js",
       "to": "src/services/security/memberGuardService.js",
       "specifier": "../../services/security/memberGuardService"
@@ -3699,6 +3788,11 @@
     },
     {
       "from": "src/composition/memoryFeature.js",
+      "to": "src/application/memory/getChannelRulesForOrganizerUseCase.js",
+      "specifier": "../application/memory/getChannelRulesForOrganizerUseCase"
+    },
+    {
+      "from": "src/composition/memoryFeature.js",
       "to": "src/application/memory/listChannelRulesUseCase.js",
       "specifier": "../application/memory/listChannelRulesUseCase"
     },
@@ -3711,6 +3805,26 @@
       "from": "src/composition/memoryFeature.js",
       "to": "src/infrastructure/storage/jsonChannelRuleRepository.js",
       "specifier": "../infrastructure/storage/jsonChannelRuleRepository"
+    },
+    {
+      "from": "src/composition/organizerFeature.js",
+      "to": "src/application/organizer/createOrganizerPlanningUseCase.js",
+      "specifier": "../application/organizer/createOrganizerPlanningUseCase"
+    },
+    {
+      "from": "src/composition/organizerFeature.js",
+      "to": "src/composition/memoryFeature.js",
+      "specifier": "./memoryFeature"
+    },
+    {
+      "from": "src/composition/organizerFeature.js",
+      "to": "src/systems/gameChannels.js",
+      "specifier": "../systems/gameChannels"
+    },
+    {
+      "from": "src/composition/organizerFeature.js",
+      "to": "src/systems/tempVoice.js",
+      "specifier": "../systems/tempVoice"
     },
     {
       "from": "src/config/channelVisibilityRules.js",
@@ -5614,8 +5728,13 @@
     },
     {
       "from": "src/systems/organizer.js",
-      "to": "src/legacy/systemRuntimes/organizerRuntime.js",
-      "specifier": "../legacy/systemRuntimes/organizerRuntime"
+      "to": "src/application/organizer/createOrganizerPlanningUseCase.js",
+      "specifier": "../application/organizer/createOrganizerPlanningUseCase"
+    },
+    {
+      "from": "src/systems/organizer.js",
+      "to": "src/composition/organizerFeature.js",
+      "specifier": "../composition/organizerFeature"
     },
     {
       "from": "src/systems/roleManager.js",
@@ -5679,7 +5798,7 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 122,
+    "discord.js": 123,
     "node:path": 26,
     "node:fs": 19,
     "openai": 3,

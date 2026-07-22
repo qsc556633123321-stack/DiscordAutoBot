@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { createDeleteChannelRuleUseCase } = require('../../../src/application/memory/deleteChannelRuleUseCase');
+const { createGetChannelRulesForOrganizerUseCase } = require('../../../src/application/memory/getChannelRulesForOrganizerUseCase');
 const { createListChannelRulesUseCase } = require('../../../src/application/memory/listChannelRulesUseCase');
 const { createUpsertChannelRuleUseCase } = require('../../../src/application/memory/upsertChannelRuleUseCase');
 
@@ -42,6 +43,12 @@ for (const file of ['listChannelRulesUseCase.js', 'upsertChannelRuleUseCase.js',
 
 const many = Array.from({ length: 30 }, (_, index) => ({ keyword: `rule-${index}`, category: 'Games', weight: 5 }));
 assert.equal(createListChannelRulesUseCase({ repository: createRepository(many) }).execute({ guildId: 'guild' }).length, 25);
+assert.equal(
+  createGetChannelRulesForOrganizerUseCase({ channelRuleReader: createRepository(many) }).execute({ guildId: 'guild' }).length,
+  30,
+  'Organizer query must not inherit the /memory-list presentation limit.'
+);
+assert.throws(() => createGetChannelRulesForOrganizerUseCase(), /channelRuleReader is required/);
 assert.throws(
   () => createListChannelRulesUseCase({ repository: { listByGuild: () => { throw new Error('repository unavailable'); } } }).execute({ guildId: 'guild' }),
   /repository unavailable/

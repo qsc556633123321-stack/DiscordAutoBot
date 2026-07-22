@@ -288,7 +288,8 @@ function main() {
     const isLegacyContext = from.type === 'legacy' || to.type === 'legacy';
     const isControlledInfrastructureBridge = from.type === 'infrastructure' && to.type === 'system' && from.fallbackAllowed;
     const isRepositoryDomainDependency = from.type === 'repository' && to.type === 'domain';
-    if (fromRank > toRank && !isEntrypoint && !isTestFixture && !isCoreDependency && !isLegacyContext && !isControlledInfrastructureBridge && !isRepositoryDomainDependency) {
+    const isCompositionRootDependency = to.type === 'composition';
+    if (fromRank > toRank && !isEntrypoint && !isTestFixture && !isCoreDependency && !isLegacyContext && !isControlledInfrastructureBridge && !isRepositoryDomainDependency && !isCompositionRootDependency) {
       violations.reverseLayer.push({
         ...edge,
         fromType: from.type,

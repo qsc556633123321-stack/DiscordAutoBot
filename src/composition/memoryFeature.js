@@ -1,4 +1,5 @@
 const { createDeleteChannelRuleUseCase } = require('../application/memory/deleteChannelRuleUseCase');
+const { createGetChannelRulesForOrganizerUseCase } = require('../application/memory/getChannelRulesForOrganizerUseCase');
 const { createListChannelRulesUseCase } = require('../application/memory/listChannelRulesUseCase');
 const { createUpsertChannelRuleUseCase } = require('../application/memory/upsertChannelRuleUseCase');
 const { createJsonChannelRuleRepository } = require('../infrastructure/storage/jsonChannelRuleRepository');
@@ -10,7 +11,8 @@ function createMemoryFeature({ repository, clock } = {}) {
   return {
     listChannelRules: createListChannelRulesUseCase(useCaseOptions),
     upsertChannelRule: createUpsertChannelRuleUseCase({ ...useCaseOptions, ...(clock ? { clock } : {}) }),
-    deleteChannelRule: createDeleteChannelRuleUseCase(useCaseOptions)
+    deleteChannelRule: createDeleteChannelRuleUseCase(useCaseOptions),
+    getChannelRulesForOrganizer: createGetChannelRulesForOrganizerUseCase({ channelRuleReader: channelRuleRepository })
   };
 }
 

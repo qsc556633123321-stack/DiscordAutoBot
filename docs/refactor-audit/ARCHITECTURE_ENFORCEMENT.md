@@ -19,6 +19,14 @@ This guard prevents unreviewed dependencies from active code into `src/legacy` w
 - The Memory composition root is the only layer that wires the application factories to `jsonChannelRuleRepository`.
 - The JSON channel-rule repository is the only migrated command storage adapter. It uses `jsonStore`; command tests use temporary files and never the project `server-memory.json` data file.
 
+## Organizer Memory Consumer Rules
+
+- Organizer planning receives channel rules through the `channelRuleReader` query contract.
+- `src/application/organizer/**` must not import `systems/serverMemory`, the JSON channel-rule repository, Discord.js, filesystem, path, environment variables, or legacy modules.
+- `src/composition/organizerFeature.js` is the only runtime wiring point between Memory's organizer query and the organizer planning use case.
+- `src/systems/organizer.js` is the active compatibility facade. It must not import the legacy organizer runtime or `serverMemory.js` directly.
+- The legacy organizer runtime remains source-retained for rollback only. It is not part of the active organizer consumer path.
+
 ## Compatibility Gateways
 
 Existing behavior sometimes remains legacy-owned during a migration. Those temporary edges are recorded in `src/config/legacyBoundaryAllowlist.js` with an exact source, target, and reason. The list is deliberately narrow: a newly added legacy import fails `npm run test:legacy-boundaries` unless it has an explicit, reviewed migration reason.

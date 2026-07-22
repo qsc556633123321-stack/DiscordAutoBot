@@ -35,7 +35,6 @@ const entries = [
   ['src/systems/gameSuggestionSystem.js', 'src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js', 'Legacy runtime wrapper pending a future migration.'],
   ['src/systems/guestGate.js', 'src/legacy/permissions/guestGate.js', 'Legacy compatibility facade.'],
   ['src/systems/linkGuard.js', 'src/legacy/systemRuntimes/linkGuardRuntime.js', 'Legacy runtime wrapper pending a future migration.'],
-  ['src/systems/organizer.js', 'src/legacy/systemRuntimes/organizerRuntime.js', 'Legacy runtime wrapper pending a future migration.'],
   ['src/systems/roleManager.js', 'src/legacy/systemRuntimes/roleManagerRuntime.js', 'Legacy runtime wrapper pending a future migration.'],
   ['src/systems/rolePermissions.js', 'src/legacy/permissions/rolePermissions.js', 'Legacy compatibility facade.'],
   ['src/systems/serverPolisher.js', 'src/legacy/community/serverPolisher.js', 'Legacy compatibility facade.'],

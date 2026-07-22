@@ -112,6 +112,9 @@ function replacementFor(name, source) {
     return { value: MIGRATED_COMMANDS[commandName].presentation, confirmed: true };
   }
   if (name.endsWith('layout/legacyLayoutDecisionEngine.js')) return { value: 'src/modules/layout/layoutDecisionEngine.js (partial; still falls back)', confirmed: true };
+  if (name.endsWith('systemRuntimes/organizerRuntime.js')) {
+    return { value: 'src/systems/organizer.js -> src/composition/organizerFeature.js -> organizer planning use case', confirmed: true };
+  }
   if (source.includes('legacyCommandAdapters') || source.includes('/services/')) return { value: 'non-legacy service/adapter is explicitly imported by this module', confirmed: true };
   if (name.includes('/interactions/')) return { value: 'new interaction family routing exists, but behavior is still legacy-owned', confirmed: false };
   if (name.includes('/commands/')) return { value: 'group command router exists; it currently dispatches to this legacy command', confirmed: false };
@@ -178,6 +181,10 @@ function migrationStatus(name, source) {
   const presentationRequest = migration?.presentation.replace(/^src\//, '').replace(/\.js$/, '');
   if (migration && source.includes(presentationRequest)) {
     return 'Migrated; wrapper remaining';
+  }
+  if (name.endsWith('systemRuntimes/organizerRuntime.js')) {
+    const organizerSource = sourceOf(path.join(SRC, 'systems', 'organizer.js'));
+    return organizerSource.includes('organizerRuntime') ? 'Not migrated' : 'Migrated; legacy source retained';
   }
   return 'Not migrated';
 }

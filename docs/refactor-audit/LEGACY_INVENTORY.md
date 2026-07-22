@@ -1,6 +1,6 @@
 # Legacy Inventory
 
-Generated: 2026-07-22T14:46:34.612Z
+Generated: 2026-07-22T14:59:17.948Z
 
 This inventory is conservative: dynamic command/event directory loading is treated as a runtime reference. `REMOVAL_CANDIDATE` means no known runtime, registry, loader, or static reference was found; it is not deletion approval.
 
@@ -13,11 +13,11 @@ This inventory is conservative: dynamic command/event directory loading is treat
 | FALLBACK_REQUIRED | 2 |
 | ALIAS_REQUIRED | 65 |
 | EVENT_REQUIRED | 2 |
-| COMPATIBILITY_WRAPPER | 22 |
-| REPLACEMENT_EXISTS | 35 |
+| COMPATIBILITY_WRAPPER | 21 |
+| REPLACEMENT_EXISTS | 36 |
 | REFERENCE_ONLY | 0 |
 | REMOVAL_CANDIDATE | 4 |
-| UNKNOWN_DYNAMIC_REFERENCE | 3 |
+| UNKNOWN_DYNAMIC_REFERENCE | 4 |
 
 ## File Inventory
 
@@ -120,7 +120,7 @@ This inventory is conservative: dynamic command/event directory loading is treat
 | src/legacy/systemRuntimes/factoryResetRuntime.js | system compatibility runtime; exports: buildFactoryResetEmbed, buildFactoryResetPlan, deleteFactoryResetPlan, executeFactoryReset, getFactoryResetPlan, saveFactoryResetPlan | src/systems/factoryReset.js | - | no | no | no | no | yes | COMPATIBILITY_WRAPPER, REPLACEMENT_EXISTS | non-legacy service/adapter is explicitly imported by this module | Not migrated | medium | medium | Wave 2 |
 | src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js | system compatibility runtime; exports: archiveInactiveGames, createDynamicGameCategory, createGameSuggestion, generateCommunityText, handleCreateSuggestionModal, handleGameSuggestionButton, listPendingSuggestions, rejectSuggestion, showGameSuggestionModal | src/systems/gameSuggestionSystem.js | - | no | no | no | no | yes | COMPATIBILITY_WRAPPER | active systems compatibility wrapper still delegates here | Not migrated | medium | medium | Investigate first |
 | src/legacy/systemRuntimes/linkGuardRuntime.js | system compatibility runtime; exports: addWhitelistDomain, addWhitelistInvite, getLinkGuardSettings, handleLinkGuardMessage, removeWhitelistDomain, removeWhitelistInvite, updateLinkGuardSettings | src/systems/linkGuard.js | - | no | no | no | no | yes | COMPATIBILITY_WRAPPER | active systems compatibility wrapper still delegates here | Not migrated | medium | medium | Investigate first |
-| src/legacy/systemRuntimes/organizerRuntime.js | system compatibility runtime; exports: MAX_MOVES_PER_PLAN, createOrganizePlan, deleteOrganizePlan, formatManualReview, formatMovePreview, getAIReviewInput, getOrganizePlan, pendingOrganizePlans, saveOrganizePlan, scoreChannelName | src/systems/organizer.js | - | no | no | no | no | yes | COMPATIBILITY_WRAPPER | active systems compatibility wrapper still delegates here | Not migrated | medium | medium | Investigate first |
+| src/legacy/systemRuntimes/organizerRuntime.js | system compatibility runtime; exports: MAX_MOVES_PER_PLAN, createOrganizePlan, deleteOrganizePlan, formatManualReview, formatMovePreview, getAIReviewInput, getOrganizePlan, pendingOrganizePlans, saveOrganizePlan, scoreChannelName | - | - | no | no | no | no | no | REPLACEMENT_EXISTS, UNKNOWN_DYNAMIC_REFERENCE | src/systems/organizer.js -> src/composition/organizerFeature.js -> organizer planning use case | Migrated; legacy source retained | medium | unknown | Investigate first |
 | src/legacy/systemRuntimes/roleManagerRuntime.js | system compatibility runtime; exports: DEFAULT_ROLE_SETTINGS, GUEST_ROLE_NAME, GUEST_CLEANUP_DELAY_MAX_MS, GUEST_CLEANUP_DELAY_MIN_MS, GUEST_CLEANUP_MAX_SAFE_MEMBERS, SELF_ASSIGNABLE_ROLES, buildGuestCleanupPlan, deleteGuestCleanupPlan, executeGuestCleanup, findGuestRole, findRoleChannel, getRoleOptions, getRoleSettings, getGuestCleanupPlan, getUnlockedCategoriesForRoles, setupSelfAssignableRoles, syncMemberRoleInheritance, saveGuestCleanupPlan, updateMemberRoles, updateRoleSettings | src/systems/roleManager.js | - | no | no | no | no | yes | COMPATIBILITY_WRAPPER | active systems compatibility wrapper still delegates here | Not migrated | medium | medium | Investigate first |
 | src/legacy/systemRuntimes/tempVoiceRuntime.js | system compatibility runtime; exports: addTempVoice, buildTempVoiceControlPayload, cancelPendingDeletion, cleanupMissingTempVoices, createTemporaryVoice, getCreateVoiceGame, getTempVoiceRecord, getTempVoiceSettings, handleTempVoiceButton, handleTempVoiceChannelDelete, handleTempVoiceModal, handleTempVoiceSelect, isTempVoice, readTempVoice, removeTempVoice, generateSmartVoiceRoomName, scheduleTempVoiceDeletion, sendOwnerControlPanel, transferOwnerIfNeeded, updateTempVoiceRecord, updateTempVoiceSettings | src/systems/tempVoice.js | - | no | no | no | no | yes | COMPATIBILITY_WRAPPER | active systems compatibility wrapper still delegates here | Not migrated | medium | medium | Investigate first |
 
