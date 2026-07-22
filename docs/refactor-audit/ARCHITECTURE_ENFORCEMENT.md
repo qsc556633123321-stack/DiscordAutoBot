@@ -36,6 +36,9 @@ This guard prevents unreviewed dependencies from active code into `src/legacy` w
 - `src/services/security/memberGuardService.js` is an active facade over composition and must not import `src/systems/memberGuard.js` or `src/legacy/**`.
 - Discord message/member side effects are confined to `src/adapters/memberGuard/memberGuardRuntimeAdapter.js`.
 - `src/legacy/commands/memberguard-status.js` remains an alias-compatible thin wrapper. The retained system source is rollback-only for this migrated active path.
+- MemberGuard settings and release application use cases accept IDs and action-plan facts only; they must not import Discord.js, gateway implementations, composition, systems, or legacy modules.
+- MemberGuard permission and role mutations are limited to `src/infrastructure/discord/memberGuardPermissionGateway.js` and `src/infrastructure/discord/memberRoleGateway.js`.
+- MemberGuard presentation commands must not import JSON storage, `systems/memberGuard`, or legacy mutation implementations. They receive use cases and gateways through the composition feature.
 
 ## Compatibility Gateways
 

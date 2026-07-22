@@ -1,6 +1,6 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-22T15:39:01.135Z
+Generated: 2026-07-22T16:24:36.059Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
 
@@ -12,6 +12,8 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/dev-audit-commands.js | Migrated; wrapper remaining | src/presentation/commands/devAuditCommandsCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/forget-channel-rule.js | Migrated; wrapper remaining | src/presentation/commands/forgetChannelRuleCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/learn-channel.js | Migrated; wrapper remaining | src/presentation/commands/learnChannelCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/memberguard-release.js | Migrated; active registry replacement, legacy source retained | src/presentation/commands/memberguardReleaseCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/memberguard-settings.js | Migrated; active registry replacement, legacy source retained | src/presentation/commands/memberguardSettingsCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/memberguard-status.js | Migrated; wrapper remaining | src/presentation/commands/memberGuardStatusCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/memory-list.js | Migrated; wrapper remaining | src/presentation/commands/memoryListCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/systemRuntimes/organizerRuntime.js | Migrated; legacy source retained | src/systems/organizer.js -> src/composition/organizerFeature.js -> organizer planning use case | keep wrapper and monitor before legacy deletion review |
@@ -64,8 +66,6 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/linkguard-settings.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/linkguard-whitelist.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/lock.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
-| src/legacy/commands/memberguard-release.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
-| src/legacy/commands/memberguard-settings.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/move-channel.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/plan_cleanup.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/polish-server-design.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |

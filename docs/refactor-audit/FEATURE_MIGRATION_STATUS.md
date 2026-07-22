@@ -4,7 +4,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Memory | list, learn, forget | complete | complete | JSON repository | retained for rollback | commands retained | domain, application, repository, composition, migration | Migrated / Wrapper Remaining |
 | Organizer | auto-organize consumer | planning query complete | scoring complete | via Memory composition | retained, inactive consumer | systems facade | application, integration, migration | Migrated / Legacy Source Retained |
-| MemberGuard | status plus active message/join runtime | status and evaluation complete | policy complete | JSON repository | retained for unrelated compatibility | status wrapper retained | domain, application, repository, composition, runtime, migration | Migrated / Wrapper Remaining |
+| MemberGuard | status, settings, release, active message/join runtime | status, evaluation, settings, release complete | policy complete | JSON repository, permission/role gateways | retained for unrelated compatibility | legacy sources retained for rollback; active registry uses presentation commands | domain, application, repository, composition, gateway, runtime, migration | Migrated / Wrapper Remaining |
 | Audit | dev audit | complete | n/a | command gateway | retained aliases | yes | migration | Migrated / Wrapper Remaining |
 | Community | grouped and legacy commands | partial | partial | existing | active | mixed | architecture | Active Legacy |
 | Voice | grouped and legacy commands | partial | partial | existing | active | mixed | existing | Active Legacy |

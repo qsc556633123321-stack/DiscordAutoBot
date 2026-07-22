@@ -13,6 +13,11 @@ const DEFAULT_MEMBER_GUARD_SETTINGS = Object.freeze({
   blockedMemberIds: []
 });
 
+const MEMBER_GUARD_ROLE_NAMES = Object.freeze({
+  guest: '👀 訪客',
+  formalMember: '👤 正式成員'
+});
+
 function normalizeMemberId(value) {
   const normalized = String(value || '').trim();
   return /^\d{5,}$/.test(normalized) ? normalized : null;
@@ -79,6 +84,7 @@ function evaluateMemberGuard(facts = {}, storedSettings = {}, now = Date.now()) 
 
 module.exports = {
   DEFAULT_MEMBER_GUARD_SETTINGS,
+  MEMBER_GUARD_ROLE_NAMES,
   evaluateMemberGuard,
   isMemberAllowed,
   isMemberBlocked,

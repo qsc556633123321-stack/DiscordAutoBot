@@ -140,6 +140,19 @@ for (const file of files) {
     }
   }
 
+  if (from.startsWith('src/presentation/commands/memberguard')) {
+    const forbidden = [
+      [/require\(['"][^'"]*infrastructure\/storage\//, 'storage repository'],
+      [/require\(['"][^'"]*systems\/memberGuard/, 'systems/memberGuard'],
+      [/require\(['"][^'"]*legacy\//, 'legacy'],
+      [/require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, 'filesystem'],
+      [/require\(['"]node:path['"]\)|require\(['"]path['"]\)/, 'path']
+    ];
+    for (const [pattern, label] of forbidden) {
+      if (pattern.test(source)) violations.push(`MemberGuard presentation boundary violation (${label}): ${from}`);
+    }
+  }
+
   if (isRestricted && from.startsWith('src/presentation/') && /require\(['"][^'"]*legacy\//.test(source)) {
     violations.push(`Presentation must not import legacy directly: ${from}`);
   }

@@ -29,4 +29,11 @@ for (const command of ['check-onboarding-visibility.js', 'dev-audit-commands.js'
   }
 }
 
+for (const command of ['memberguard-settings.js', 'memberguard-release.js']) {
+  const row = inventoryText.split('\n').find((line) => line.startsWith(`| src/legacy/commands/${command} |`));
+  if (!row?.includes('Migrated; active registry replacement, legacy source retained')) {
+    throw new Error(`Legacy inventory did not record active registry migration for ${command}`);
+  }
+}
+
 console.log('Legacy audit generator tests passed.');

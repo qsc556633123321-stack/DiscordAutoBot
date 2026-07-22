@@ -1,11 +1,11 @@
 # Dependency Graph
 
-Generated: 2026-07-22T15:38:42.679Z
+Generated: 2026-07-22T16:24:09.434Z
 
 ## Summary
 
-- JS files scanned: 266
-- Local dependency edges: 439
+- JS files scanned: 274
+- Local dependency edges: 449
 - Circular dependencies: 0
 - Service chain max depth: 2
 - Service chains over two layers: 0
@@ -90,26 +90,26 @@ Penalty model:
 1. Command directly uses Discord API: `src/legacy/commands/setupServerLegacy.js`
 2. Command directly uses Discord API: `src/legacy/commands/setupTicketLegacy.js`
 3. High dependency count: `src/legacy/interactions/legacyInteractionRuntime.js`
-4. High dependency count: `src/legacy/systemRuntimes/communityV3BuilderRuntime.js`
-5. High dependency count: `src/legacy/community/serverRebuilder.js`
-6. High dependency count: `src/legacy/layout/legacyLayoutRuntime.js`
-7. High dependency count: `src/services/community/communityPermissionService.js`
-8. High dependency count: `src/adapters/legacy/legacyCommunityCommandExecutor.js`
-9. High dependency count: `src/legacy/community/communityBootstrapSystem.js`
-10. High dependency count: `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js`
+4. High dependency count: `src/composition/memberGuardFeature.js`
+5. High dependency count: `src/legacy/systemRuntimes/communityV3BuilderRuntime.js`
+6. High dependency count: `src/legacy/community/serverRebuilder.js`
+7. High dependency count: `src/legacy/layout/legacyLayoutRuntime.js`
+8. High dependency count: `src/services/community/communityPermissionService.js`
+9. High dependency count: `src/adapters/legacy/legacyCommunityCommandExecutor.js`
+10. High dependency count: `src/legacy/community/communityBootstrapSystem.js`
 
 ## Top 10 Dependency Count
 
 1. `src/legacy/interactions/legacyInteractionRuntime.js` - 26 local deps, 2066 lines
-2. `src/legacy/systemRuntimes/communityV3BuilderRuntime.js` - 10 local deps, 513 lines
-3. `src/legacy/community/serverRebuilder.js` - 8 local deps, 365 lines
-4. `src/legacy/layout/legacyLayoutRuntime.js` - 8 local deps, 1058 lines
-5. `src/services/community/communityPermissionService.js` - 8 local deps, 317 lines
-6. `src/adapters/legacy/legacyCommunityCommandExecutor.js` - 7 local deps, 24 lines
-7. `src/legacy/community/communityBootstrapSystem.js` - 7 local deps, 814 lines
-8. `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js` - 7 local deps, 22 lines
-9. `src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js` - 7 local deps, 626 lines
-10. `src/composition/memberGuardFeature.js` - 6 local deps, 26 lines
+2. `src/composition/memberGuardFeature.js` - 10 local deps, 38 lines
+3. `src/legacy/systemRuntimes/communityV3BuilderRuntime.js` - 10 local deps, 513 lines
+4. `src/legacy/community/serverRebuilder.js` - 8 local deps, 365 lines
+5. `src/legacy/layout/legacyLayoutRuntime.js` - 8 local deps, 1058 lines
+6. `src/services/community/communityPermissionService.js` - 8 local deps, 317 lines
+7. `src/adapters/legacy/legacyCommunityCommandExecutor.js` - 7 local deps, 24 lines
+8. `src/legacy/community/communityBootstrapSystem.js` - 7 local deps, 814 lines
+9. `src/legacy/deprecated/services/community/legacyAnalysisCommandService.js` - 7 local deps, 22 lines
+10. `src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js` - 7 local deps, 626 lines
 
 ## Fattest Services
 
@@ -133,17 +133,17 @@ Penalty model:
 ## Type Counts
 
 - adapter: 5
-- application: 14
+- application: 18
 - command: 80
 - composition: 3
 - config: 14
 - core: 3
 - domain: 11
 - event: 7
-- infrastructure: 3
+- infrastructure: 5
 - legacy: 27
 - other: 3
-- presentation: 6
+- presentation: 8
 - repository: 5
 - router: 17
 - service: 8
