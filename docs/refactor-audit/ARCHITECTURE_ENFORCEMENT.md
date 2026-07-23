@@ -61,7 +61,7 @@ This guard prevents unreviewed dependencies from active code into `src/legacy` w
 
 ## Community Roadmap Slice Rules
 
-- `src/domain/community/communityRoadmap.js` is pure Roadmap schema normalization, ordering, grouping, and progress calculation. It must not import Discord.js, filesystem, path, environment variables, application, infrastructure, presentation, composition, legacy, or systems modules.
+- `src/domain/community/communityRoadmap.js` is pure Roadmap schema normalization, ordering, and grouping. It must not import Discord.js, filesystem, path, environment variables, application, infrastructure, presentation, composition, legacy, or systems modules.
 - `src/application/community/getCommunityRoadmapUseCase.js` depends only on its read-only port, the Domain view-model factory, and core Result helpers. It must not import Discord.js, filesystem, path, environment variables, infrastructure implementations, presentation, composition, legacy, or systems modules.
 - `src/infrastructure/community/communityRoadmapGateway.js` is the only active Roadmap JSON reader. It may use filesystem/path and retains the old fallback values, but has no write, Discord, renderer, or interaction behavior.
 - `src/presentation/commands/communityRoadmapCommand.js` owns unchanged slash metadata and immediate ephemeral reply. `src/modules/community/communityRoadmapEmbed.js` is the shared Discord embed adapter for Presentation and the retained Concierge compatibility helper; it owns the fixed embed, footer, and timestamp. Neither may import JSON, legacy Roadmap helpers, systems, or infrastructure implementations.

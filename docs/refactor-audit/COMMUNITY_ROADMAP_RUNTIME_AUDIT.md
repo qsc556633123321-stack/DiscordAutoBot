@@ -36,4 +36,4 @@ command registry
 - No duplicate slash command, prefix command, Dashboard consumer, Dashboard writer, startup preload, JSON `require()` cache, or Roadmap writer was found.
 - `setupRoadmapPanel()` is an existing message mutation path and remains untouched.
 - The new active command is read-only: it has no Guild, Client, channel, message, role, JSON write, or Discord mutation dependency.
-- The JSON adapter is the one source reader. It reads UTF-8 synchronously, returns the legacy fallback on missing/parse-invalid/non-object data, and never writes the file.
+- The JSON adapter is the one active source reader. It reads UTF-8 synchronously, returns the legacy compatibility fallback snapshot on missing/parse-invalid/non-object data, and never writes the file. The formal editable source remains `src/data/community-roadmap.json`; the fallback is not an editable source and may drift until a dedicated data-contract change reconciles it.

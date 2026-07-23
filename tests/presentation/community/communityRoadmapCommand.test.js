@@ -6,8 +6,7 @@ const roadmap = {
     { key: 'completed', label: '✅ 已完成', items: ['Done'] },
     { key: 'inProgress', label: '🛠 開發中', items: [] },
     { key: 'future', label: '🌌 未來計畫', items: ['Later'] }
-  ],
-  progress: 50
+  ]
 };
 const calls = [];
 const command = createCommunityRoadmapCommand({

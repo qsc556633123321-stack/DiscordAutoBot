@@ -47,26 +47,19 @@ function groupRoadmapItems(items) {
   }));
 }
 
-function calculateRoadmapProgress(items) {
-  const total = ROADMAP_SECTION_DEFINITIONS.reduce((count, { key }) => count + items[key].length, 0);
-  return total === 0 ? 0 : Math.round((items.completed.length / total) * 100);
-}
-
 function buildRoadmapViewModel(rawRoadmap) {
   const roadmap = normalizeRoadmap(rawRoadmap);
   return Object.freeze({
     sections: Object.freeze(groupRoadmapItems(roadmap).map((section) => Object.freeze({
       ...section,
       items: Object.freeze([...section.items])
-    }))),
-    progress: calculateRoadmapProgress(roadmap)
+    })))
   });
 }
 
 module.exports = {
   ROADMAP_SECTION_DEFINITIONS,
   buildRoadmapViewModel,
-  calculateRoadmapProgress,
   createEmptyRoadmap,
   groupRoadmapItems,
   normalizeRoadmap,
