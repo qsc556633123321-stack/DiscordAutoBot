@@ -56,3 +56,7 @@ Estimated files: one legacy command wrapper, one presentation command, one appli
 ## Definition of done
 
 Every slice must preserve slash metadata, alias registry, output/reply behavior, data shape, and rollback source; add a focused regression test; pass quality gate/dashboard build; and leave legacy as an explicit wrapper/fallback during the observation window. Community is complete only when no active Community service imports legacy, all mutations go through ports, and cross-feature APIs are one-way and tested.
+
+## Discovery Completion Addendum
+
+The complete remaining-slice audit supersedes the previous broad sequencing detail without changing runtime ownership: `/help-me-start` is the sole recommended next slice. It must preserve its optional-AI fallback and exact Embed output. Guide publication, role selection, onboarding event behavior, panels, proposals, bootstrap/rebuild, Architect execution, and maintenance remain deferred behind their recorded blockers.

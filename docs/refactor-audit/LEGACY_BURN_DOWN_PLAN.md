@@ -148,3 +148,7 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 - Preserve aliases until deploy metadata is intentionally changed in a dedicated release.
 - Dynamic directory loaders require explicit registry updates before any removal.
 - High-risk community, layout, permission, and interaction runtime migration needs behavior fixtures before redirecting the active path.
+
+## Community Discovery Completion Note (2026-07-24)
+
+The next Community migration is not a burn-down action. Full discovery identified `/help-me-start` as the only recommended next read-only slice; all Guide publication, role mutation, onboarding event work, panels, proposals, bootstrap/rebuild, and maintenance remain legacy/compatibility-owned until their dedicated fixtures and cross-feature boundaries are available.

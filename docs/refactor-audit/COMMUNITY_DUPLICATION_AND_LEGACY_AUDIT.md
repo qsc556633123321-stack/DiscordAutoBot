@@ -13,3 +13,7 @@
 | Removal candidate | None proven in Community scope. | Dynamic loading and explicit legacy allowlist prevent a safe unused conclusion. | Reassess after route-by-route migration and release window. |
 | Dead candidate | None proven in Community scope. | Static search is insufficient because aliases/events load directories dynamically. | Keep. |
 | Unknown | Dashboard role/server/announcement pages. | Similar nouns but no verified Community write/read contract. | Dashboard discovery separately. |
+
+## Discovery Completion Addendum
+
+The remaining Community analysis confirms that duplicated names do not imply one safe migration target. Guide, Onboarding, Roles, Panels, Proposals, Bootstrap, and Maintenance have distinct persistence and mutation boundaries. The only current low-risk follow-up is the read-only `/help-me-start` path; no active duplicate or legacy module is approved for removal.

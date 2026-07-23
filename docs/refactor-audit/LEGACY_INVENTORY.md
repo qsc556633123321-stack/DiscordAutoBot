@@ -130,3 +130,7 @@ This inventory is conservative: dynamic command/event directory loading is treat
 - `src/modules/commands/aliasRegistry.js` and `src/index.js` use directory scanning; these paths supersede a missing static reference.
 - Fallback handlers are classified as runtime-required until custom-id coverage is demonstrated by tests or telemetry.
 - Unknown dynamic references remain unknown; the audit never calls them dead.
+
+## Community Discovery Completion Note (2026-07-24)
+
+Community remains **Migration In Progress**. The completed read slices are limited to `check-onboarding-visibility`, `community-about`, and `community-roadmap`; no remaining Guide, Onboarding, Roles, Panels, Proposals, Bootstrap, Rebuild, or Maintenance legacy path is marked migrated by the completion pass. See `COMMUNITY_REMAINING_*` boundary documents for ownership and risk evidence.

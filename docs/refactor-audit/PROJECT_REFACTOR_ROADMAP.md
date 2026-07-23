@@ -10,3 +10,7 @@
 | Voice | partial | partial | partial | existing | partial | legacy active | existing | Deferred / High Risk |
 | Layout | partial | partial | partial | existing | partial | legacy fallback | existing | In Migration |
 | Permission | partial | partial | partial | existing | partial | legacy fallback | permissions | In Migration |
+
+## Community Discovery Completion Note (2026-07-24)
+
+Community's next planned vertical slice is `/help-me-start` read-only recommendation. This is a recommendation only: no runtime route was changed, and all mutation/orchestration work remains behind MemberGuard, Permission Repair, Layout, Voice, or separate Game Proposals boundaries.

@@ -12,3 +12,7 @@
 | Permission | grouped and legacy commands | partial | partial | existing | active fallback | mixed | permissions | In Migration |
 
 Status labels are conservative: a feature is not Legacy Free until active runtime references and rollback sources are intentionally retired after a release window.
+
+## Community Discovery Completion Note (2026-07-24)
+
+Community status remains **Migration In Progress**. Only About, Roadmap, and onboarding-visibility read paths have migrated wrappers. The Completion Pass documented the remaining boundaries and does not change any remaining feature status.
