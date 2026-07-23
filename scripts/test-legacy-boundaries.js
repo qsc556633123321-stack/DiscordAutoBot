@@ -13,7 +13,8 @@ const THIN_AUDIT_WRAPPERS = Object.freeze({
   'src/legacy/commands/dev-audit-commands.js': "module.exports = require('../../presentation/commands/devAuditCommandsCommand');"
 });
 const THIN_COMMUNITY_WRAPPERS = Object.freeze({
-  'src/legacy/commands/community-about.js': "module.exports = require('../../presentation/commands/communityAboutCommand');"
+  'src/legacy/commands/community-about.js': "module.exports = require('../../presentation/commands/communityAboutCommand');",
+  'src/legacy/commands/community-roadmap.js': "module.exports = require('../../presentation/commands/communityRoadmapCommand');"
 });
 
 function walk(directory) {
@@ -159,9 +160,19 @@ for (const file of files) {
     for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Community About domain boundary violation (${pattern}): ${from}`);
   }
 
+  if (from.startsWith('src/domain/community/communityRoadmap')) {
+    const forbidden = [/require\(['"]discord\.js['"]\)/, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/, /process\.env/, /require\(['"][^'"]*application\//, /require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*presentation\//, /require\(['"][^'"]*composition\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Community Roadmap domain boundary violation (${pattern}): ${from}`);
+  }
+
   if (from.startsWith('src/presentation/commands/communityAbout')) {
     const forbidden = [/require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/];
     for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Community About presentation boundary violation (${pattern}): ${from}`);
+  }
+
+  if (from.startsWith('src/presentation/commands/communityRoadmap')) {
+    const forbidden = [/require\(['"][^'"]*infrastructure\//, /require\(['"][^'"]*legacy\//, /require\(['"][^'"]*systems\//, /require\(['"]node:fs['"]\)|require\(['"]fs['"]\)/, /require\(['"]node:path['"]\)|require\(['"]path['"]\)/];
+    for (const pattern of forbidden) if (pattern.test(source)) violations.push(`Community Roadmap presentation boundary violation (${pattern}): ${from}`);
   }
 
   if (from.startsWith('src/domain/audit/')) {

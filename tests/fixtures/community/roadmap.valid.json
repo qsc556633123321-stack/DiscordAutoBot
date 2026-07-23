@@ -1,0 +1,5 @@
+{
+  "completed": ["First completed", "Second completed"],
+  "inProgress": ["Current work"],
+  "future": ["Future work"]
+}

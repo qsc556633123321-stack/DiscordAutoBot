@@ -4,6 +4,7 @@ const path = require('node:path');
 const LEGACY_COMMANDS_DIR = path.join(__dirname, '..', '..', 'legacy', 'commands');
 const ACTIVE_COMMANDS = Object.freeze({
   'community-about': '../../presentation/commands/communityAboutCommand',
+  'community-roadmap': '../../presentation/commands/communityRoadmapCommand',
   'memberguard-settings': '../../presentation/commands/memberguardSettingsCommand',
   'memberguard-release': '../../presentation/commands/memberguardReleaseCommand'
 });

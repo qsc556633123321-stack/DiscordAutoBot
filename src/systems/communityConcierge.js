@@ -10,10 +10,11 @@ const {
 } = require('discord.js');
 const permissionTemplates = require('../config/permissionTemplates');
 const { createCommunityAboutModel } = require('../domain/community/communityAbout');
+const { createCommunityRoadmapFeature } = require('../composition/communityRoadmapFeature');
+const { createCommunityRoadmapEmbed } = require('../modules/community/communityRoadmapEmbed');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
-const ROADMAP_FILE = path.join(DATA_DIR, 'community-roadmap.json');
 const GUIDE_CHANNEL_NAME = '🧭｜伺服器導覽';
 const ROADMAP_CHANNEL_NAME = '🚧｜社群開發日誌';
 const NATIVE_ONBOARDING_RECOMMENDATIONS = [
@@ -61,14 +62,6 @@ function saveOnboarding(guildId, patch) {
   };
   writeJson(ONBOARDING_FILE, data);
   return data[guildId];
-}
-
-function getRoadmapData() {
-  return readJson(ROADMAP_FILE, {
-    completed: ['Temp Voice', 'LFG 招募', 'Voice Hub', 'Night Crew', 'AI 社群系統'],
-    inProgress: ['AI Community Concierge', '活躍成員系統', '遊戲提議系統'],
-    future: ['Web Dashboard', 'AI Server Guide', '社群成就', '行動版 Dashboard', 'AI 活躍推薦']
-  });
 }
 
 async function generateConciergeText(kind, context, fallback) {
@@ -187,18 +180,9 @@ function listChannelsByPatterns(guild, patterns) {
 }
 
 function buildRoadmapEmbed() {
-  const roadmap = getRoadmapData();
-  return new EmbedBuilder()
-    .setColor(0xf2c94c)
-    .setTitle('🚧 社群開發日誌')
-    .setDescription('這不是一張冷冰冰的待辦清單，而是我們一起把社群慢慢做成家的方向。')
-    .addFields(
-      { name: '✅ 已完成', value: roadmap.completed.map((item) => `- ${item}`).join('\n') || '整理中', inline: false },
-      { name: '🛠 開發中', value: roadmap.inProgress.map((item) => `- ${item}`).join('\n') || '整理中', inline: false },
-      { name: '🌌 未來計畫', value: roadmap.future.map((item) => `- ${item}`).join('\n') || '整理中', inline: false }
-    )
-    .setFooter({ text: '如果你有想法，可以直接丟到建議區或開 Ticket。' })
-    .setTimestamp();
+  const result = createCommunityRoadmapFeature().getCommunityRoadmap.execute();
+  if (!result.ok) throw new Error(result.error.message);
+  return createCommunityRoadmapEmbed(result.data.roadmap);
 }
 
 function buildAboutEmbed(guild) {

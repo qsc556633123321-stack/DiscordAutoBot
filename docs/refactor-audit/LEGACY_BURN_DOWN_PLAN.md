@@ -1,6 +1,6 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-23T13:41:16.118Z
+Generated: 2026-07-23T14:25:51.590Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
 
@@ -9,6 +9,8 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | Module | Status | Replacement path | Release-window action |
 | --- | --- | --- | --- |
 | src/legacy/commands/check-onboarding-visibility.js | Migrated; wrapper remaining | src/presentation/commands/checkOnboardingVisibilityCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/community-about.js | Migrated; wrapper remaining | src/presentation/commands/communityAboutCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/community-roadmap.js | Migrated; wrapper remaining | src/presentation/commands/communityRoadmapCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/dev-audit-commands.js | Migrated; wrapper remaining | src/presentation/commands/devAuditCommandsCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/forget-channel-rule.js | Migrated; wrapper remaining | src/presentation/commands/forgetChannelRuleCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/learn-channel.js | Migrated; wrapper remaining | src/presentation/commands/learnChannelCommand.js | keep wrapper and monitor before legacy deletion review |
@@ -146,9 +148,3 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 - Preserve aliases until deploy metadata is intentionally changed in a dedicated release.
 - Dynamic directory loaders require explicit registry updates before any removal.
 - High-risk community, layout, permission, and interaction runtime migration needs behavior fixtures before redirecting the active path.
-
-## Completed Migration: Community About
-
-| Legacy module | Status | Replacement | Verification | Rollback |
-| --- | --- | --- | --- | --- |
-| `src/legacy/commands/community-about.js` | Migrated / Thin Wrapper Complete | `src/presentation/commands/communityAboutCommand.js` through Community About composition | `npm run test:community`, migration regression, quality gate, dashboard build | Revert the presentation redirect and restore the former wrapper body; no data migration exists. |

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-23T13:40:59.472Z",
+  "generatedAt": "2026-07-23T14:25:25.428Z",
   "summary": {
-    "fileCount": 284,
-    "dependencyCount": 457,
+    "fileCount": 291,
+    "dependencyCount": 466,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -18,20 +18,20 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 5,
-      "application": 22,
+      "application": 24,
       "command": 80,
-      "composition": 5,
+      "composition": 6,
       "config": 14,
       "core": 3,
-      "other": 3,
-      "domain": 13,
+      "other": 4,
+      "domain": 14,
       "event": 7,
-      "infrastructure": 6,
+      "infrastructure": 7,
       "repository": 5,
       "legacy": 27,
       "router": 17,
       "system": 57,
-      "presentation": 9,
+      "presentation": 10,
       "service": 8,
       "util": 3
     }
@@ -164,9 +164,37 @@
       }
     },
     {
+      "file": "src/application/community/getCommunityRoadmapUseCase.js",
+      "type": "application",
+      "lines": 20,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/application/community/ports/communityAboutGateway.js",
       "type": "application",
       "lines": 9,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/ports/communityRoadmapGateway.js",
+      "type": "application",
+      "lines": 8,
       "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
@@ -542,6 +570,20 @@
       }
     },
     {
+      "file": "src/composition/communityRoadmapFeature.js",
+      "type": "composition",
+      "lines": 11,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/composition/memberGuardFeature.js",
       "type": "composition",
       "lines": 38,
@@ -878,6 +920,20 @@
       }
     },
     {
+      "file": "src/domain/community/communityRoadmap.js",
+      "type": "domain",
+      "lines": 77,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/domain/community/onboardingVisibilityPolicy.js",
       "type": "domain",
       "lines": 10,
@@ -1123,6 +1179,20 @@
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/community/communityRoadmapGateway.js",
+      "type": "infrastructure",
+      "lines": 45,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1552,11 +1622,11 @@
     {
       "file": "src/legacy/commands/community-roadmap.js",
       "type": "command",
-      "lines": 13,
+      "lines": 2,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -2672,7 +2742,7 @@
     {
       "file": "src/modules/commands/aliasRegistry.js",
       "type": "router",
-      "lines": 26,
+      "lines": 27,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 0,
@@ -2705,6 +2775,20 @@
       "dependencyCount": 1,
       "localDependencyCount": 1,
       "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/modules/community/communityRoadmapEmbed.js",
+      "type": "other",
+      "lines": 18,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -3160,6 +3244,20 @@
       }
     },
     {
+      "file": "src/presentation/commands/communityRoadmapCommand.js",
+      "type": "presentation",
+      "lines": 26,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/presentation/commands/devAuditCommandsCommand.js",
       "type": "presentation",
       "lines": 37,
@@ -3540,10 +3638,10 @@
     {
       "file": "src/systems/communityConcierge.js",
       "type": "system",
-      "lines": 378,
+      "lines": 362,
       "fallbackAllowed": false,
-      "dependencyCount": 5,
-      "localDependencyCount": 2,
+      "dependencyCount": 7,
+      "localDependencyCount": 4,
       "externalDependencyCount": 3,
       "exports": {
         "moduleExports": 1,
@@ -4101,6 +4199,21 @@
       "specifier": "./ports/communityAboutGateway"
     },
     {
+      "from": "src/application/community/getCommunityRoadmapUseCase.js",
+      "to": "src/core/result.js",
+      "specifier": "../../core/result"
+    },
+    {
+      "from": "src/application/community/getCommunityRoadmapUseCase.js",
+      "to": "src/domain/community/communityRoadmap.js",
+      "specifier": "../../domain/community/communityRoadmap"
+    },
+    {
+      "from": "src/application/community/getCommunityRoadmapUseCase.js",
+      "to": "src/application/community/ports/communityRoadmapGateway.js",
+      "specifier": "./ports/communityRoadmapGateway"
+    },
+    {
       "from": "src/application/development/auditCommandsUseCase.js",
       "to": "src/infrastructure/project/commandAuditGateway.js",
       "specifier": "../../infrastructure/project/commandAuditGateway"
@@ -4189,6 +4302,16 @@
       "from": "src/composition/communityAboutFeature.js",
       "to": "src/infrastructure/community/communityAboutGateway.js",
       "specifier": "../infrastructure/community/communityAboutGateway"
+    },
+    {
+      "from": "src/composition/communityRoadmapFeature.js",
+      "to": "src/application/community/getCommunityRoadmapUseCase.js",
+      "specifier": "../application/community/getCommunityRoadmapUseCase"
+    },
+    {
+      "from": "src/composition/communityRoadmapFeature.js",
+      "to": "src/infrastructure/community/communityRoadmapGateway.js",
+      "specifier": "../infrastructure/community/communityRoadmapGateway"
     },
     {
       "from": "src/composition/memberGuardFeature.js",
@@ -4597,8 +4720,8 @@
     },
     {
       "from": "src/legacy/commands/community-roadmap.js",
-      "to": "src/systems/communityConcierge.js",
-      "specifier": "../../systems/communityConcierge"
+      "to": "src/presentation/commands/communityRoadmapCommand.js",
+      "specifier": "../../presentation/commands/communityRoadmapCommand"
     },
     {
       "from": "src/legacy/commands/create-party.js",
@@ -5781,6 +5904,16 @@
       "specifier": "../../composition/communityAboutFeature"
     },
     {
+      "from": "src/presentation/commands/communityRoadmapCommand.js",
+      "to": "src/composition/communityRoadmapFeature.js",
+      "specifier": "../../composition/communityRoadmapFeature"
+    },
+    {
+      "from": "src/presentation/commands/communityRoadmapCommand.js",
+      "to": "src/modules/community/communityRoadmapEmbed.js",
+      "specifier": "../../modules/community/communityRoadmapEmbed"
+    },
+    {
       "from": "src/presentation/commands/devAuditCommandsCommand.js",
       "to": "src/composition/auditFeature.js",
       "specifier": "../../composition/auditFeature"
@@ -6071,6 +6204,16 @@
       "specifier": "../domain/community/communityAbout"
     },
     {
+      "from": "src/systems/communityConcierge.js",
+      "to": "src/composition/communityRoadmapFeature.js",
+      "specifier": "../composition/communityRoadmapFeature"
+    },
+    {
+      "from": "src/systems/communityConcierge.js",
+      "to": "src/modules/community/communityRoadmapEmbed.js",
+      "specifier": "../modules/community/communityRoadmapEmbed"
+    },
+    {
       "from": "src/systems/communityHealthScorer.js",
       "to": "src/domain/games/gameIdentityService.js",
       "specifier": "../domain/games/gameIdentityService"
@@ -6302,9 +6445,9 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 125,
-    "node:path": 27,
-    "node:fs": 19,
+    "discord.js": 126,
+    "node:path": 28,
+    "node:fs": 20,
     "openai": 3,
     "dotenv": 2,
     "node:events": 1,

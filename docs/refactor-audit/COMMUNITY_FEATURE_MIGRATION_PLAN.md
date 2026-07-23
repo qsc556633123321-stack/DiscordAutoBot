@@ -21,7 +21,7 @@ Community owns server structure intent, onboarding/guide experience, community r
 ```text
 Discovery complete
   -> Slice 1: Community About query (complete; thin wrapper retained)
-  -> Slice 2: Community Roadmap query
+  -> Slice 2: Community Roadmap query (complete; thin wrapper retained)
   -> Slice 3: Community onboarding/guide read query
   -> role access policy + self-role mutation
   -> guide setup message/channel workflow
