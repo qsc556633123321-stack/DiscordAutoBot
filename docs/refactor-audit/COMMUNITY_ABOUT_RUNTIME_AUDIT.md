@@ -36,6 +36,8 @@ legacy/commands/community-about.js
 
 `domain/community/communityAbout.js` is now the sole source of static Community About facts. The pre-existing `systems/communityConcierge.buildAboutEmbed` renders the same domain facts for compatibility. The infrastructure gateway maps only the plain guild-name fact, and presentation renders the final Embed. No second static copy of the About wording exists.
 
+The final Discord timestamp is deliberately added only in `presentation/commands/communityAboutCommand.js` through `EmbedBuilder#setTimestamp()`. Domain and Application do not read the clock or return a timestamp.
+
 ## Runtime compatibility
 
 - Canonical command metadata remains byte-equivalent at deploy JSON level.

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-22T17:36:37.237Z",
+  "generatedAt": "2026-07-23T13:40:59.472Z",
   "summary": {
     "fileCount": 284,
     "dependencyCount": 457,
@@ -3148,7 +3148,7 @@
     {
       "file": "src/presentation/commands/communityAboutCommand.js",
       "type": "presentation",
-      "lines": 25,
+      "lines": 27,
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,

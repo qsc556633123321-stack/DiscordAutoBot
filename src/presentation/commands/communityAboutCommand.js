@@ -11,8 +11,10 @@ function createCommunityAboutCommand({ useCase = createCommunityAboutFeature().g
     async execute(interaction) {
       const result = useCase.execute({ guildName: interaction.guild.name });
       if (!result.ok) throw new Error(result.error.message);
+      const embed = new EmbedBuilder(result.data.about.embed)
+        .setTimestamp();
       await interaction.reply({
-        embeds: [new EmbedBuilder(result.data.about.embed)],
+        embeds: [embed],
         ephemeral: true
       });
     }

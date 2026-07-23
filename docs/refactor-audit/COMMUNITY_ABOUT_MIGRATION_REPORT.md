@@ -18,11 +18,12 @@ This migration handles only `/community-about`. It does not change Roadmap, onbo
 
 ## Compatibility results
 
-- Source of truth: `domain/community/communityAbout.js`; the existing Concierge helper now renders those same facts for compatibility.
-- Reply and embed compatibility: exact gateway JSON is rendered through `EmbedBuilder`; field order, color, title, description, timestamp, and ephemeral reply are regression-tested.
+- Source of truth: `domain/community/communityAbout.js`; the existing Concierge helper renders those same facts for compatibility.
+- Reply and embed compatibility: Domain owns only static facts. Presentation builds the final `EmbedBuilder` and calls `.setTimestamp()` immediately before the ephemeral reply. Field order, color, title, description, timestamp shape, and ephemeral reply are regression-tested.
 - Error compatibility: a failed Result is rethrown; no new user-visible fallback or logger was introduced.
 - Registry/deploy compatibility: same alias name, same slash payload, same 72-command registry count.
 - Legacy: retained as a thin wrapper and rollback-compatible alias entry.
+- Concierge compatibility: `buildAboutEmbed()` keeps its public timestamped Embed behavior while rendering the Domain facts. The active slash command no longer calls that helper.
 
 ## Tests and enforcement
 
@@ -32,7 +33,7 @@ This migration handles only `/community-about`. It does not change Roadmap, onbo
 
 ## Rollback
 
-Revert the alias override and restore the original legacy command body from Git. The previous shared `buildAboutEmbed` source was not modified, and no data migration exists.
+Revert the presentation command, alias override, and legacy wrapper commit from Git. The compatibility helper remains available as a rollback reference; no data migration exists.
 
 ## Final state
 

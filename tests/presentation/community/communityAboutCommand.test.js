@@ -10,7 +10,6 @@ const expectedEmbed = {
     { name: '目前伺服器', value: 'Test Guild', inline: true },
     { name: '核心方向', value: '遊戲、語音、深夜聊天室、AI 社群工具', inline: true }
   ],
-  timestamp: '2026-01-02T03:04:05.678Z'
 };
 const calls = [];
 const interaction = {
@@ -24,7 +23,10 @@ const command = createCommunityAboutCommand({ useCase: { execute: () => ({ ok: t
   assert.deepEqual(JSON.parse(JSON.stringify(command.data.toJSON())), { options: [], name: 'community-about', description: '了解這個社群是做什麼的', type: 1 });
   assert.equal(calls.length, 1);
   assert.equal(calls[0].ephemeral, true);
-  assert.deepEqual(calls[0].embeds[0].toJSON(), expectedEmbed);
+  const renderedEmbed = calls[0].embeds[0].toJSON();
+  assert.match(renderedEmbed.timestamp, /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+  delete renderedEmbed.timestamp;
+  assert.deepEqual(renderedEmbed, expectedEmbed);
   const failed = createCommunityAboutCommand({ useCase: { execute: () => ({ ok: false, error: { message: 'source failed' } }) } });
   await assert.rejects(() => failed.execute(interaction), /source failed/);
   console.log('Community About presentation tests passed.');
