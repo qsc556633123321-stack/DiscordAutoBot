@@ -1,0 +1,60 @@
+# Community Remaining Candidate Inventory
+
+## Method
+
+This inventory uses static `require`/registry/event scans across `src`, `tests`, `scripts`, `apps`, and Community documentation. `src/modules/commands/aliasRegistry.js` and `src/index.js` use dynamic directory loading, so a missing literal import is never classified as safe removal. This is an ownership and migration inventory, not deletion authorization.
+
+| File | Current Role | Runtime Active | Read | Mutation | Persistence | Discord Side Effect | Shared With | Risk | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `src/systems/communityConcierge.js` | System / renderer / reader / writer | Active | Guild, channels, onboarding JSON | Categories, guide/roadmap channels, message, role, DM | `onboarding-flows.json` | fetch/create/move/overwrite/send/edit/role add/DM | panels, roles, onboarding, AI, Roadmap | High | Primary remaining Guide owner; mixed responsibilities. |
+| `src/systems/interactiveGuideSystem.js` | Helper / renderer | Active | Guild channel cache, slash answers | none | none | optional OpenAI network read | Concierge / role names | Low-Medium | `help-me-start` recommendation calculation is a bounded read candidate. |
+| `src/systems/welcomeSystem.js` | System / event consumer | Indirectly Active | settings, guild/member/channel cache | guest role, welcome messages, DM, reminder | `welcome-settings.json`, in-memory reminder map | role create/add, send, DM | MemberGuard, panels, roles | High | Member-add behavior; not a Guide-only slice. |
+| `src/events/guildMemberAdd.js` | Event | Active | member | invokes three workflows | none | MemberGuard, welcome message, Concierge DM | MemberGuard / Welcome | High | Ordered runtime path: MemberGuard -> Welcome -> Concierge. |
+| `src/legacy/commands/setup-community-guide.js` | Command | Active | interaction/guild | guide and roadmap publish | onboarding JSON indirectly | channels/messages/overwrites | Roadmap, panels, permissions | High | ManageChannels gated; command name must remain unchanged. |
+| `src/legacy/commands/refresh-community-guide.js` | Command | Active | interaction/guild | guide and roadmap refresh | onboarding JSON indirectly | message edit or send | Roadmap | Medium-High | Shares setup internals; mutation slice candidate after publication contract exists. |
+| `src/legacy/commands/help-me-start.js` | Command | Active | slash options/guild | reply only | none | ephemeral embed reply | Concierge / role naming | Low | Best remaining Community read-only candidate, pending exact-output baseline. |
+| `src/legacy/commands/check-onboarding-visibility.js` | Command | Active compatibility wrapper | guild | none | none | ephemeral embed reply | Permission Repair | Medium | Already migrated; explicitly excluded. |
+| `src/legacy/commands/setup-roles.js` | Command | Active | guild/roles/channel | create roles and role panel | role/panel JSON indirectly | role create, message send | MemberGuard, panels, Guest Gate | High | Roles mutation. |
+| `src/legacy/commands/role-settings.js` | Command | Active | slash options/guild | settings update | `role-settings.json` | reply/log | MemberGuard / roles | Medium | Configuration mutation, not a pure role query. |
+| `src/legacy/commands/cleanup-guest-roles.js` | Command | Active | member cache/fetch | remove guest roles | in-memory cleanup plans | role remove/log/reply | MemberGuard | High | Rate-limit queue and confirmation flow. |
+| `src/legacy/commands/setup-channel-panels.js` | Command | Active | guild/current channel | panel publication/refresh/force delete | `channel-panels.json` | message fetch/send/edit/delete | tickets, roles, Voice, proposals | High | Thin command currently delegates to service facade. |
+| `src/legacy/systemRuntimes/roleManagerRuntime.js` | Runtime / repository / service | Indirectly Active | role/member/settings data | create/add/remove roles, cleanup plans | `role-settings.json`, in-memory plans | guild/member role mutation, server logs | MemberGuard, permissions, panels | Critical | Contains self-assign selection, inheritance, Guest lifecycle, cleanup. |
+| `src/legacy/systemRuntimes/channelPanelsRuntime.js` | Runtime / renderer / writer | Indirectly Active | channels, panel records | panel message lifecycle | `channel-panels.json` | fetch/send/edit/delete messages | tickets, roles, Voice, proposals | High | `force` intentionally deletes only recorded panel messages. |
+| `src/legacy/systemRuntimes/gameSuggestionSystemRuntime.js` | Runtime / writer | Indirectly Active | suggestions/game metadata, guild activity | review, category/channel creation, panel refresh | `game-suggestions.json`, `game-categories.json`, create-entry data | send/edit messages, create/move/rename channels, overwrites | Games, Temp Voice, LFG, Voice Hub, panels | Critical | Proposal mutation / cross-feature integration. |
+| `src/systems/gameSuggestionSystem.js` | Compatibility facade | Indirectly Active | delegated | delegated | delegated | delegated | Games / Voice | High | Not an independent source of truth. |
+| `src/systems/roleManager.js` | Compatibility facade | Indirectly Active | delegated | delegated | delegated | delegated | MemberGuard / panels | High | Preserve until a dedicated Roles slice owns it. |
+| `src/systems/channelPanels.js` | Compatibility facade | Indirectly Active | delegated | delegated | delegated | delegated | tickets / Voice / roles | High | Preserve as adapter until panel runtime is split. |
+| `src/services/community/communityPermissionService.js` | Service | Active | guild / permission matrix | overwrites through writer and legacy policies | plan state indirectly | permission mutation | Guest Gate, MemberGuard, Layout | Critical | Existing shared Permission Repair boundary; do not fold into Guide. |
+| `src/services/community/communityRebuildService.js` | Service | Active | guild / V3 definitions | bootstrap/rebuild/polish/architect | plans/registries indirectly | categories/channels/roles/overwrites | Layout, Voice, panels, games | Critical | Orchestration, not a single vertical slice. |
+| `src/services/community/communityService.js` | Service facade | Active | guild/channel | move/rename/panel setup | none directly | channel/message mutation | panels / channel repository | High | Community operations facade. |
+| `src/legacy/community/communityBootstrapSystem.js` | Legacy system | Indirectly Active | guild/layout/registry | roles/categories/channels/permissions/dedupe | `community-layout-registry.json` | broad Discord mutation | permissions, panels, guide | Critical | Bootstrap / repair / onboarding inspection owner. |
+| `src/legacy/community/serverPolisher.js` | Legacy system | Indirectly Active | guild/template/roles | create/edit/reorder structure | pending plans | roles/categories/channels/overwrites | Layout / roles | Critical | Maintenance workflow. |
+| `src/legacy/community/serverRebuilder.js` | Legacy system | Indirectly Active | guild/templates | build/archive/delete under confirmation | pending rebuild plans | broad Discord mutation/logging | Layout, Voice, tickets | Critical | Not eligible for low-risk migration. |
+| `src/legacy/systemRuntimes/communityV3BuilderRuntime.js` | Runtime | Indirectly Active | architecture/registry/guild | V3 reconciliation plus guide/panel setup | registry/game metadata | broad Discord mutation | Guide, panels, roles, games | Critical | Calls Guide and Panels after reconciliation. |
+| `src/systems/communityArchitect.js` and `communityArchitectPlanner.js` / `Executor.js` | System | Indirectly Active | guild/layout plans | structure diagnosis/execution | `community-architect-plans.json` | moves/renames/permission sync/archive | Layout, games, permissions | Critical | Maintenance orchestration; no migration in this pass. |
+| `src/systems/communityHealthScorer.js` | Helper | Indirectly Active | guild/channel names | none | none | none | Layout / Architect | Low-Medium | Candidate pure diagnostic dependency, but only in a future Architect slice. |
+| `src/systems/communityStructureManager.js` | System | Indirectly Active | guild/category data | ensure archive/suggestion channels | registry data indirectly | create/move channels | proposals / games | High | `ensure` is not a read operation. |
+| `src/config/communityArchitectureV3.js` | Config | Active | static definition | none | none | none | permission, rebuild, games | Medium | Structural facts; source of Community V3 intent. |
+| `src/domain/community/communityArchitectureV3.js` | Domain | Active | static definition | none | none | none | permissions / games | Medium | Shared core facts; do not duplicate in a slice. |
+| `src/domain/community/permissionMatrix.js` | Domain | Active | role/category facts | none | none | none | MemberGuard / Permission Repair | High | Role inheritance and access source. |
+| `src/domain/community/onboardingVisibilityPolicy.js` | Domain | Active | plain facts | none | none | none | onboarding visibility | Low | Completed read-slice dependency. |
+| `src/data/onboarding-flows.json` | JSON | Active | onboarding flow / message IDs | no direct mutation | written by Concierge | no direct effect | Guide/Roadmap/Welcome | High | Formal contract; do not edit in discovery. |
+| `src/data/welcome-settings.json` | JSON | Active | welcome configuration | no direct mutation | written by Welcome System | no direct effect | MemberGuard / Welcome | Medium | Formal contract. |
+| `src/data/role-settings.json` | JSON | Active | role configuration | no direct mutation | written by role runtime | no direct effect | MemberGuard / Roles | High | Formal contract. |
+| `src/data/channel-panels.json` | JSON | Active | panel message records | no direct mutation | written by panel runtime | no direct effect | panels / tickets | High | Formal contract. |
+| `src/data/game-suggestions.json` / `game-categories.json` | JSON | Active | proposal/category metadata | no direct mutation | written by proposal runtime | no direct effect | Games / Voice | Critical | Formal contracts. |
+| `src/adapters/legacy/legacyCommunityCommandExecutor.js` and legacy adapters | Adapter | Indirectly Active | command inputs | delegated | varies | delegated | all Community legacy paths | High | Compatibility boundary, not a target source. |
+| `apps/api/server.js`, `apps/api/discord.js`, `apps/web/**` | Dashboard / API | Unknown for Community mutation | API/dashboard state | no proved Community write workflow | SQLite/API state | HTTP only in current scan | Dashboard | Medium | Excluded: no proven composition root for these Community workflows. |
+| `tests/migration/community-about.test.js`, `community-roadmap.test.js` | Test | Test Only | fixtures | none | none | none | completed slices | Low | Existing regression references; do not alter. |
+
+## Candidate classification
+
+| Category | Verified candidates | Decision |
+| --- | --- | --- |
+| Read-only Slice | `help-me-start` recommendation and embed, Guide content/status queries, existing onboarding visibility | `help-me-start` is the next low-risk candidate; About/Roadmap are excluded as complete. |
+| Mutation Slice | guide publish/refresh, self-role update, Guest cleanup, panel lifecycle, proposal review | Each needs its own contract and regression fixture. |
+| Orchestration Slice | bootstrap, V3 rebuild, polish, Community Architect, permission repair | Deferred; spans multiple feature boundaries. |
+| Shared Infrastructure | Discord channel/permission writers, server log writer, JSON store direction, OpenAI client | Do not migrate as Community-owned behavior. |
+| Compatibility Consumer | aliases, legacy adapters/facades, interaction fallback | Must survive until exact replacement and observation window. |
+| Cross-feature Dependency | MemberGuard, Voice, LFG, Voice Hub, Games, Layout, tickets | Contract-first work only; no direct migration here. |
+| Deferred High-risk Area | native onboarding, Guest Gate, broad rebuild, proposal category creation, destructive/archival maintenance | Requires explicit mutation plans and failure/idempotency tests. |
