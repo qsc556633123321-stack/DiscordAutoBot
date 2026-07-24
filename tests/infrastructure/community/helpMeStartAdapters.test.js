@@ -1,6 +1,6 @@
 const assert = require('node:assert/strict');
 const { createDiscordGuildChannelReader } = require('../../../src/infrastructure/community/discordGuildChannelReader');
-const { createLegacyConciergeTextGenerator } = require('../../../src/infrastructure/community/legacyConciergeTextGenerator');
+const { createLegacyConciergeTextGenerator } = require('../../../src/adapters/legacy/legacyConciergeTextGenerator');
 const { createFakeGuild, standardChannels } = require('../../fixtures/helpMeStartFakes');
 
 async function main() {

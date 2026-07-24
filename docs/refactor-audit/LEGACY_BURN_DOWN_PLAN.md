@@ -152,3 +152,5 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 ## Community Discovery Completion Note (2026-07-24)
 
 `/help-me-start` is now migrated as a read-only slice with its thin wrapper retained. Guide publication, role mutation, onboarding event work, panels, proposals, bootstrap/rebuild, and maintenance remain legacy/compatibility-owned until their dedicated fixtures and cross-feature boundaries are available.
+
+Its 2026-07-24 cleanup kept the wrapper but moved the Concierge compatibility bridge into `src/adapters/legacy/`; no new allowlist entry is required.

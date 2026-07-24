@@ -10,9 +10,9 @@
 | Application | `src/application/community/getHelpMeStartRecommendation.js` |
 | Domain source of truth | `src/domain/community/helpMeStartRecommendation.js` |
 | Ports | `application/community/ports/guildChannelReader.js`, `conciergeTextGenerator.js` |
-| Infrastructure | `infrastructure/community/discordGuildChannelReader.js`, `legacyConciergeTextGenerator.js` |
+| Infrastructure / legacy adapter | `infrastructure/community/discordGuildChannelReader.js`, `adapters/legacy/legacyConciergeTextGenerator.js` |
 | Composition | `src/composition/community/helpMeStartFeature.js` |
-| Compatibility | legacy command wrapper; `interactiveGuideSystem.buildHelpMeStartEmbed` delegates new composition/renderer |
+| Compatibility | legacy command wrapper; `interactiveGuideSystem.buildHelpMeStartEmbed` delegates Composition only |
 
 ## Preserved contracts
 
@@ -27,8 +27,10 @@ No role, channel, permission, message publication, JSON, database, onboarding, M
 
 ## Tests and rollback
 
-Domain, application, adapter, presentation, composition, vertical-slice, migration regression, registry/deploy, and architecture-boundary tests were added to `test:community` / `test:migration`. Rollback is one import reversion in the legacy wrapper; legacy helper remains available. The known invalid-RegExp input risk is preserved and recorded for a separate behavior-change decision.
+Domain, application, adapter, presentation, composition, vertical-slice, migration regression, registry/deploy, and architecture-boundary tests run through `test:community` / `test:migration`. Migration regression now compares active output with a frozen legacy baseline fixture rather than calling the compatibility helper. Rollback is one import reversion in the legacy wrapper; legacy helper remains available. The known invalid-RegExp input risk is preserved and recorded for a separate behavior-change decision.
 
 ## Status
+
+The initial migration introduced two reverse-layer dependencies. This cleanup moved the Concierge bridge to `adapters/legacy` and removed the helper's direct Presentation dependency. The dependency analyzer now reports **100 / 100**, with zero circular and zero reverse-layer dependencies.
 
 `/help-me-start`: **Migrated / Thin Wrapper Complete**. Community overall: **Migration In Progress**.

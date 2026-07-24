@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-23T14:25:25.428Z",
+  "generatedAt": "2026-07-24T13:34:31.325Z",
   "summary": {
-    "fileCount": 291,
-    "dependencyCount": 466,
+    "fileCount": 300,
+    "dependencyCount": 476,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -17,21 +17,21 @@
     "legacyImportWithoutFallbackCount": 0,
     "hardFailureCount": 0,
     "byType": {
-      "adapter": 5,
-      "application": 24,
+      "adapter": 6,
+      "application": 27,
       "command": 80,
-      "composition": 6,
+      "composition": 7,
       "config": 14,
       "core": 3,
       "other": 4,
-      "domain": 14,
+      "domain": 15,
       "event": 7,
-      "infrastructure": 7,
+      "infrastructure": 8,
       "repository": 5,
       "legacy": 27,
       "router": 17,
       "system": 57,
-      "presentation": 10,
+      "presentation": 12,
       "service": 8,
       "util": 3
     }
@@ -58,6 +58,20 @@
       "fallbackAllowed": true,
       "dependencyCount": 7,
       "localDependencyCount": 7,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/adapters/legacy/legacyConciergeTextGenerator.js",
+      "type": "adapter",
+      "lines": 12,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 1,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -178,6 +192,20 @@
       }
     },
     {
+      "file": "src/application/community/getHelpMeStartRecommendation.js",
+      "type": "application",
+      "lines": 30,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/application/community/ports/communityAboutGateway.js",
       "type": "application",
       "lines": 9,
@@ -193,6 +221,34 @@
     },
     {
       "file": "src/application/community/ports/communityRoadmapGateway.js",
+      "type": "application",
+      "lines": 8,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/ports/conciergeTextGenerator.js",
+      "type": "application",
+      "lines": 8,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/ports/guildChannelReader.js",
       "type": "application",
       "lines": 8,
       "fallbackAllowed": false,
@@ -548,6 +604,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/composition/community/helpMeStartFeature.js",
+      "type": "composition",
+      "lines": 38,
+      "fallbackAllowed": false,
+      "dependencyCount": 4,
+      "localDependencyCount": 4,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -922,7 +992,21 @@
     {
       "file": "src/domain/community/communityRoadmap.js",
       "type": "domain",
-      "lines": 77,
+      "lines": 70,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/domain/community/helpMeStartRecommendation.js",
+      "type": "domain",
+      "lines": 94,
       "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
@@ -1193,6 +1277,20 @@
       "dependencyCount": 2,
       "localDependencyCount": 0,
       "externalDependencyCount": 2,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/community/discordGuildChannelReader.js",
+      "type": "infrastructure",
+      "lines": 20,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -1776,11 +1874,11 @@
     {
       "file": "src/legacy/commands/help-me-start.js",
       "type": "command",
-      "lines": 50,
+      "lines": 2,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -3286,6 +3384,20 @@
       }
     },
     {
+      "file": "src/presentation/commands/helpMeStartCommand.js",
+      "type": "presentation",
+      "lines": 70,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 2,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/presentation/commands/learnChannelCommand.js",
       "type": "presentation",
       "lines": 61,
@@ -3348,6 +3460,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 1,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/presentation/community/helpMeStartEmbed.js",
+      "type": "presentation",
+      "lines": 18,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
       "externalDependencyCount": 1,
       "exports": {
         "moduleExports": 1,
@@ -3806,11 +3932,11 @@
     {
       "file": "src/systems/interactiveGuideSystem.js",
       "type": "system",
-      "lines": 81,
+      "lines": 10,
       "fallbackAllowed": false,
-      "dependencyCount": 2,
+      "dependencyCount": 1,
       "localDependencyCount": 1,
-      "externalDependencyCount": 1,
+      "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -4159,6 +4285,11 @@
       "specifier": "../../legacy/commands/rebuild_server"
     },
     {
+      "from": "src/adapters/legacy/legacyConciergeTextGenerator.js",
+      "to": "src/systems/communityConcierge.js",
+      "specifier": "../../systems/communityConcierge"
+    },
+    {
       "from": "src/adapters/legacy/legacyConfigAdapter.js",
       "to": "src/domain/community/communityArchitectureV3.js",
       "specifier": "../../domain/community/communityArchitectureV3"
@@ -4212,6 +4343,21 @@
       "from": "src/application/community/getCommunityRoadmapUseCase.js",
       "to": "src/application/community/ports/communityRoadmapGateway.js",
       "specifier": "./ports/communityRoadmapGateway"
+    },
+    {
+      "from": "src/application/community/getHelpMeStartRecommendation.js",
+      "to": "src/domain/community/helpMeStartRecommendation.js",
+      "specifier": "../../domain/community/helpMeStartRecommendation"
+    },
+    {
+      "from": "src/application/community/getHelpMeStartRecommendation.js",
+      "to": "src/application/community/ports/conciergeTextGenerator.js",
+      "specifier": "./ports/conciergeTextGenerator"
+    },
+    {
+      "from": "src/application/community/getHelpMeStartRecommendation.js",
+      "to": "src/application/community/ports/guildChannelReader.js",
+      "specifier": "./ports/guildChannelReader"
     },
     {
       "from": "src/application/development/auditCommandsUseCase.js",
@@ -4292,6 +4438,26 @@
       "from": "src/composition/auditFeature.js",
       "to": "src/infrastructure/project/commandAuditGateway.js",
       "specifier": "../infrastructure/project/commandAuditGateway"
+    },
+    {
+      "from": "src/composition/community/helpMeStartFeature.js",
+      "to": "src/application/community/getHelpMeStartRecommendation.js",
+      "specifier": "../../application/community/getHelpMeStartRecommendation"
+    },
+    {
+      "from": "src/composition/community/helpMeStartFeature.js",
+      "to": "src/infrastructure/community/discordGuildChannelReader.js",
+      "specifier": "../../infrastructure/community/discordGuildChannelReader"
+    },
+    {
+      "from": "src/composition/community/helpMeStartFeature.js",
+      "to": "src/adapters/legacy/legacyConciergeTextGenerator.js",
+      "specifier": "../../adapters/legacy/legacyConciergeTextGenerator"
+    },
+    {
+      "from": "src/composition/community/helpMeStartFeature.js",
+      "to": "src/presentation/community/helpMeStartEmbed.js",
+      "specifier": "../../presentation/community/helpMeStartEmbed"
     },
     {
       "from": "src/composition/communityAboutFeature.js",
@@ -4785,8 +4951,8 @@
     },
     {
       "from": "src/legacy/commands/help-me-start.js",
-      "to": "src/systems/interactiveGuideSystem.js",
-      "specifier": "../../systems/interactiveGuideSystem"
+      "to": "src/presentation/commands/helpMeStartCommand.js",
+      "specifier": "../../presentation/commands/helpMeStartCommand"
     },
     {
       "from": "src/legacy/commands/layout-doctor.js",
@@ -5924,6 +6090,16 @@
       "specifier": "../../composition/memoryFeature"
     },
     {
+      "from": "src/presentation/commands/helpMeStartCommand.js",
+      "to": "src/composition/community/helpMeStartFeature.js",
+      "specifier": "../../composition/community/helpMeStartFeature"
+    },
+    {
+      "from": "src/presentation/commands/helpMeStartCommand.js",
+      "to": "src/presentation/community/helpMeStartEmbed.js",
+      "specifier": "../community/helpMeStartEmbed"
+    },
+    {
       "from": "src/presentation/commands/learnChannelCommand.js",
       "to": "src/composition/memoryFeature.js",
       "specifier": "../../composition/memoryFeature"
@@ -6305,8 +6481,8 @@
     },
     {
       "from": "src/systems/interactiveGuideSystem.js",
-      "to": "src/systems/communityConcierge.js",
-      "specifier": "./communityConcierge"
+      "to": "src/composition/community/helpMeStartFeature.js",
+      "specifier": "../composition/community/helpMeStartFeature"
     },
     {
       "from": "src/systems/layoutDecisionEngine.js",
