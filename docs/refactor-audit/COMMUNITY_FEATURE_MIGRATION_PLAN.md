@@ -22,7 +22,7 @@ Community owns server structure intent, onboarding/guide experience, community r
 Discovery complete
   -> Slice 1: Community About query (complete; thin wrapper retained)
   -> Slice 2: Community Roadmap query (complete; thin wrapper retained)
-  -> Slice 3: Community onboarding/guide read query
+  -> Slice 3: `/help-me-start` recommendation query (complete; thin wrapper retained)
   -> role access policy + self-role mutation
   -> guide setup message/channel workflow
   -> bootstrap preview plan
@@ -59,4 +59,4 @@ Every slice must preserve slash metadata, alias registry, output/reply behavior,
 
 ## Discovery Completion Addendum
 
-The complete remaining-slice audit supersedes the previous broad sequencing detail without changing runtime ownership: `/help-me-start` is the sole recommended next slice. It must preserve its optional-AI fallback and exact Embed output. Guide publication, role selection, onboarding event behavior, panels, proposals, bootstrap/rebuild, Architect execution, and maintenance remain deferred behind their recorded blockers.
+`/help-me-start` is now migrated with its optional-AI fallback, exact Embed output, and legacy thin wrapper preserved. Guide publication, role selection, onboarding event behavior, panels, proposals, bootstrap/rebuild, Architect execution, and maintenance remain deferred behind their recorded blockers.

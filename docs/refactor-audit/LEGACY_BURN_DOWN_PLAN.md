@@ -11,6 +11,7 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/check-onboarding-visibility.js | Migrated; wrapper remaining | src/presentation/commands/checkOnboardingVisibilityCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/community-about.js | Migrated; wrapper remaining | src/presentation/commands/communityAboutCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/community-roadmap.js | Migrated; wrapper remaining | src/presentation/commands/communityRoadmapCommand.js | keep wrapper and monitor before legacy deletion review |
+| src/legacy/commands/help-me-start.js | Migrated; wrapper remaining | src/presentation/commands/helpMeStartCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/dev-audit-commands.js | Migrated; wrapper remaining | src/presentation/commands/devAuditCommandsCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/forget-channel-rule.js | Migrated; wrapper remaining | src/presentation/commands/forgetChannelRuleCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/learn-channel.js | Migrated; wrapper remaining | src/presentation/commands/learnChannelCommand.js | keep wrapper and monitor before legacy deletion review |
@@ -63,7 +64,6 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/factory-reset-server.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/fix-game-category.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/game-registry-doctor.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
-| src/legacy/commands/help-me-start.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/layout-doctor.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/linkguard-settings.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/linkguard-whitelist.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
@@ -151,4 +151,4 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 
 ## Community Discovery Completion Note (2026-07-24)
 
-The next Community migration is not a burn-down action. Full discovery identified `/help-me-start` as the only recommended next read-only slice; all Guide publication, role mutation, onboarding event work, panels, proposals, bootstrap/rebuild, and maintenance remain legacy/compatibility-owned until their dedicated fixtures and cross-feature boundaries are available.
+`/help-me-start` is now migrated as a read-only slice with its thin wrapper retained. Guide publication, role mutation, onboarding event work, panels, proposals, bootstrap/rebuild, and maintenance remain legacy/compatibility-owned until their dedicated fixtures and cross-feature boundaries are available.
