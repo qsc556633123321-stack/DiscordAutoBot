@@ -16,3 +16,5 @@
 `/help-me-start` read-only recommendation is complete. The next Community work remains intentionally unselected; all mutation/orchestration paths are still behind MemberGuard, Permission Repair, Layout, Voice, or separate Game Proposals boundaries.
 
 The Help-me-start cleanup establishes the intended boundary pattern for future Community read slices: legacy bridge in `adapters/legacy`, Composition-owned compatibility wiring, and frozen-baseline regression rather than helper-to-runtime comparison. The Guide read slice applies the same rule while retaining `communityConcierge` as the publish/mutation owner.
+
+The Community Mutation Runtime Discovery documents active mutation boundaries and blocked candidates. It is not a migration milestone and does not retire legacy runtime owners.

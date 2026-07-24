@@ -138,3 +138,5 @@ Community remains **Migration In Progress**. The completed read slices are `chec
 `help-me-start` retains only its command thin wrapper and explicitly scoped compatibility bridges; its Concierge bridge is classified under `src/adapters/legacy/`, not Infrastructure.
 
 The Guide read slice retains `src/systems/communityConcierge.js` as a compatibility publish consumer. It delegates only pure payload construction through the new composition; no Guide legacy command or mutation runtime is approved for removal.
+
+Community Mutation Runtime Discovery maps retained mutation owners and confirms that no discovery result authorizes a legacy removal or migration-status change.

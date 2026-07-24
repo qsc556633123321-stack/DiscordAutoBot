@@ -61,3 +61,7 @@ Every slice must preserve slash metadata, alias registry, output/reply behavior,
 ## Discovery Completion Addendum
 
 `/help-me-start` is now migrated with its optional-AI fallback, exact Embed output, and legacy thin wrapper preserved. The Community Guide payload read/renderer slice is also complete; `setupCommunityGuide` remains the compatibility-owned publish workflow. Guide status, publication, role selection, onboarding event behavior, panels, proposals, bootstrap/rebuild, Architect execution, and maintenance remain deferred behind their recorded blockers.
+
+## Community Mutation Runtime Discovery
+
+Mutation discovery is complete. The evidence maps active entries, side effects, ownership, dependencies, risks, and blocked candidates without migrating any mutation runtime. No mutation slice is marked migrated.
