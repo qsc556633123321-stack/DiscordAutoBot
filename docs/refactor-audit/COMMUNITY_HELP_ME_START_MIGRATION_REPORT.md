@@ -31,6 +31,6 @@ Domain, application, adapter, presentation, composition, vertical-slice, migrati
 
 ## Status
 
-The initial migration introduced two reverse-layer dependencies. This cleanup moved the Concierge bridge to `adapters/legacy` and removed the helper's direct Presentation dependency. The dependency analyzer now reports **100 / 100**, with zero circular and zero reverse-layer dependencies.
+The initial migration introduced two reverse-layer dependencies. The cleanup moved the Concierge bridge to `adapters/legacy` and removed the helper's direct Presentation dependency. A later full-project report described a stale Infrastructure copy of the Concierge adapter; this checkout at `b189e6f` did not contain that file in either the Git index or filesystem. A file-absence regression assertion now prevents that duplicate from returning. The dependency analyzer reports **100 / 100**, with zero circular and zero reverse-layer dependencies for this checkout.
 
 `/help-me-start`: **Migrated / Thin Wrapper Complete**. Community overall: **Migration In Progress**.
