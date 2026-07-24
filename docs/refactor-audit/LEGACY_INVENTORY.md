@@ -133,6 +133,8 @@ This inventory is conservative: dynamic command/event directory loading is treat
 
 ## Community Discovery Completion Note (2026-07-24)
 
-Community remains **Migration In Progress**. The completed read slices are `check-onboarding-visibility`, `community-about`, `community-roadmap`, and `help-me-start`; no remaining Guide, Onboarding, Roles, Panels, Proposals, Bootstrap, Rebuild, or Maintenance legacy path is marked migrated. See `COMMUNITY_REMAINING_*` boundary documents for ownership and risk evidence.
+Community remains **Migration In Progress**. The completed read slices are `check-onboarding-visibility`, `community-about`, `community-roadmap`, `help-me-start`, and the Community Guide content/status read-render slice. Guide setup, refresh, publication, status writes, buttons, onboarding events, roles, panels, proposals, bootstrap, rebuild, and maintenance remain legacy/compatibility-owned. See `COMMUNITY_REMAINING_*` boundary documents for ownership and risk evidence.
 
 `help-me-start` retains only its command thin wrapper and explicitly scoped compatibility bridges; its Concierge bridge is classified under `src/adapters/legacy/`, not Infrastructure.
+
+The Guide read slice retains `src/systems/communityConcierge.js` as a compatibility publish consumer. It delegates only pure payload construction through the new composition; no Guide legacy command or mutation runtime is approved for removal.

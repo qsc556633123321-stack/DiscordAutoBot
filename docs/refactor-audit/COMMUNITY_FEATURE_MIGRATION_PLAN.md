@@ -24,6 +24,7 @@ Discovery complete
   -> Slice 2: Community Roadmap query (complete; thin wrapper retained)
   -> Slice 3: `/help-me-start` recommendation query (complete; thin wrapper retained)
   -> role access policy + self-role mutation
+  -> Guide content/status read slice (complete; setup mutation remains legacy)
   -> guide setup message/channel workflow
   -> bootstrap preview plan
   -> permission repair plan/application split
@@ -59,4 +60,4 @@ Every slice must preserve slash metadata, alias registry, output/reply behavior,
 
 ## Discovery Completion Addendum
 
-`/help-me-start` is now migrated with its optional-AI fallback, exact Embed output, and legacy thin wrapper preserved. Guide publication, role selection, onboarding event behavior, panels, proposals, bootstrap/rebuild, Architect execution, and maintenance remain deferred behind their recorded blockers.
+`/help-me-start` is now migrated with its optional-AI fallback, exact Embed output, and legacy thin wrapper preserved. The Community Guide pure content/status read and renderer slice is also complete; `setupCommunityGuide` remains the compatibility-owned publish workflow. Guide publication, role selection, onboarding event behavior, panels, proposals, bootstrap/rebuild, Architect execution, and maintenance remain deferred behind their recorded blockers.

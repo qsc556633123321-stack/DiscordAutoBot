@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-07-24T13:49:05.661Z",
+  "generatedAt": "2026-07-24T14:34:04.505Z",
   "summary": {
-    "fileCount": 300,
-    "dependencyCount": 476,
+    "fileCount": 311,
+    "dependencyCount": 490,
     "circularCount": 0,
     "serviceChainMaxDepth": 2,
     "serviceChainOverTwoCount": 0,
@@ -18,20 +18,20 @@
     "hardFailureCount": 0,
     "byType": {
       "adapter": 6,
-      "application": 27,
+      "application": 32,
       "command": 80,
-      "composition": 7,
+      "composition": 8,
       "config": 14,
       "core": 3,
       "other": 4,
-      "domain": 15,
+      "domain": 16,
       "event": 7,
-      "infrastructure": 8,
+      "infrastructure": 11,
       "repository": 5,
       "legacy": 27,
       "router": 17,
       "system": 57,
-      "presentation": 12,
+      "presentation": 13,
       "service": 8,
       "util": 3
     }
@@ -178,6 +178,34 @@
       }
     },
     {
+      "file": "src/application/community/getCommunityGuide.js",
+      "type": "application",
+      "lines": 34,
+      "fallbackAllowed": false,
+      "dependencyCount": 4,
+      "localDependencyCount": 4,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/getCommunityGuideStatus.js",
+      "type": "application",
+      "lines": 21,
+      "fallbackAllowed": false,
+      "dependencyCount": 3,
+      "localDependencyCount": 3,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/application/community/getCommunityRoadmapUseCase.js",
       "type": "application",
       "lines": 20,
@@ -237,6 +265,48 @@
       "file": "src/application/community/ports/conciergeTextGenerator.js",
       "type": "application",
       "lines": 8,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/ports/guideContentReader.js",
+      "type": "application",
+      "lines": 9,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/ports/guideGuildFactsReader.js",
+      "type": "application",
+      "lines": 9,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/application/community/ports/guideStatusReader.js",
+      "type": "application",
+      "lines": 9,
       "fallbackAllowed": false,
       "dependencyCount": 0,
       "localDependencyCount": 0,
@@ -604,6 +674,20 @@
       "fallbackAllowed": false,
       "dependencyCount": 2,
       "localDependencyCount": 2,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/composition/community/createCommunityGuideReadFeature.js",
+      "type": "composition",
+      "lines": 43,
+      "fallbackAllowed": false,
+      "dependencyCount": 6,
+      "localDependencyCount": 6,
       "externalDependencyCount": 0,
       "exports": {
         "moduleExports": 1,
@@ -1004,6 +1088,20 @@
       }
     },
     {
+      "file": "src/domain/community/guideReadModel.js",
+      "type": "domain",
+      "lines": 69,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/domain/community/helpMeStartRecommendation.js",
       "type": "domain",
       "lines": 94,
@@ -1270,6 +1368,20 @@
       }
     },
     {
+      "file": "src/infrastructure/community/communityGuideContentReader.js",
+      "type": "infrastructure",
+      "lines": 43,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/infrastructure/community/communityRoadmapGateway.js",
       "type": "infrastructure",
       "lines": 45,
@@ -1284,6 +1396,20 @@
       }
     },
     {
+      "file": "src/infrastructure/community/discordGuideGuildFactsReader.js",
+      "type": "infrastructure",
+      "lines": 18,
+      "fallbackAllowed": false,
+      "dependencyCount": 0,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/infrastructure/community/discordGuildChannelReader.js",
       "type": "infrastructure",
       "lines": 20,
@@ -1291,6 +1417,20 @@
       "dependencyCount": 0,
       "localDependencyCount": 0,
       "externalDependencyCount": 0,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
+      "file": "src/infrastructure/community/jsonGuideStatusReader.js",
+      "type": "infrastructure",
+      "lines": 22,
+      "fallbackAllowed": false,
+      "dependencyCount": 2,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 2,
       "exports": {
         "moduleExports": 1,
         "exportsDot": 0,
@@ -3468,6 +3608,20 @@
       }
     },
     {
+      "file": "src/presentation/community/communityGuideRenderer.js",
+      "type": "presentation",
+      "lines": 38,
+      "fallbackAllowed": false,
+      "dependencyCount": 1,
+      "localDependencyCount": 0,
+      "externalDependencyCount": 1,
+      "exports": {
+        "moduleExports": 1,
+        "exportsDot": 0,
+        "esExports": 0
+      }
+    },
+    {
       "file": "src/presentation/community/helpMeStartEmbed.js",
       "type": "presentation",
       "lines": 18,
@@ -3764,10 +3918,10 @@
     {
       "file": "src/systems/communityConcierge.js",
       "type": "system",
-      "lines": 362,
+      "lines": 327,
       "fallbackAllowed": false,
-      "dependencyCount": 7,
-      "localDependencyCount": 4,
+      "dependencyCount": 8,
+      "localDependencyCount": 5,
       "externalDependencyCount": 3,
       "exports": {
         "moduleExports": 1,
@@ -4330,6 +4484,41 @@
       "specifier": "./ports/communityAboutGateway"
     },
     {
+      "from": "src/application/community/getCommunityGuide.js",
+      "to": "src/application/community/ports/guideContentReader.js",
+      "specifier": "./ports/guideContentReader"
+    },
+    {
+      "from": "src/application/community/getCommunityGuide.js",
+      "to": "src/application/community/ports/guideGuildFactsReader.js",
+      "specifier": "./ports/guideGuildFactsReader"
+    },
+    {
+      "from": "src/application/community/getCommunityGuide.js",
+      "to": "src/application/community/ports/conciergeTextGenerator.js",
+      "specifier": "./ports/conciergeTextGenerator"
+    },
+    {
+      "from": "src/application/community/getCommunityGuide.js",
+      "to": "src/domain/community/guideReadModel.js",
+      "specifier": "../../domain/community/guideReadModel"
+    },
+    {
+      "from": "src/application/community/getCommunityGuideStatus.js",
+      "to": "src/application/community/ports/guideGuildFactsReader.js",
+      "specifier": "./ports/guideGuildFactsReader"
+    },
+    {
+      "from": "src/application/community/getCommunityGuideStatus.js",
+      "to": "src/application/community/ports/guideStatusReader.js",
+      "specifier": "./ports/guideStatusReader"
+    },
+    {
+      "from": "src/application/community/getCommunityGuideStatus.js",
+      "to": "src/domain/community/guideReadModel.js",
+      "specifier": "../../domain/community/guideReadModel"
+    },
+    {
       "from": "src/application/community/getCommunityRoadmapUseCase.js",
       "to": "src/core/result.js",
       "specifier": "../../core/result"
@@ -4438,6 +4627,36 @@
       "from": "src/composition/auditFeature.js",
       "to": "src/infrastructure/project/commandAuditGateway.js",
       "specifier": "../infrastructure/project/commandAuditGateway"
+    },
+    {
+      "from": "src/composition/community/createCommunityGuideReadFeature.js",
+      "to": "src/application/community/getCommunityGuide.js",
+      "specifier": "../../application/community/getCommunityGuide"
+    },
+    {
+      "from": "src/composition/community/createCommunityGuideReadFeature.js",
+      "to": "src/application/community/getCommunityGuideStatus.js",
+      "specifier": "../../application/community/getCommunityGuideStatus"
+    },
+    {
+      "from": "src/composition/community/createCommunityGuideReadFeature.js",
+      "to": "src/infrastructure/community/communityGuideContentReader.js",
+      "specifier": "../../infrastructure/community/communityGuideContentReader"
+    },
+    {
+      "from": "src/composition/community/createCommunityGuideReadFeature.js",
+      "to": "src/infrastructure/community/discordGuideGuildFactsReader.js",
+      "specifier": "../../infrastructure/community/discordGuideGuildFactsReader"
+    },
+    {
+      "from": "src/composition/community/createCommunityGuideReadFeature.js",
+      "to": "src/infrastructure/community/jsonGuideStatusReader.js",
+      "specifier": "../../infrastructure/community/jsonGuideStatusReader"
+    },
+    {
+      "from": "src/composition/community/createCommunityGuideReadFeature.js",
+      "to": "src/presentation/community/communityGuideRenderer.js",
+      "specifier": "../../presentation/community/communityGuideRenderer"
     },
     {
       "from": "src/composition/community/helpMeStartFeature.js",
@@ -6390,6 +6609,11 @@
       "specifier": "../modules/community/communityRoadmapEmbed"
     },
     {
+      "from": "src/systems/communityConcierge.js",
+      "to": "src/composition/community/createCommunityGuideReadFeature.js",
+      "specifier": "../composition/community/createCommunityGuideReadFeature"
+    },
+    {
       "from": "src/systems/communityHealthScorer.js",
       "to": "src/domain/games/gameIdentityService.js",
       "specifier": "../domain/games/gameIdentityService"
@@ -6621,9 +6845,9 @@
     }
   ],
   "externalDependencies": {
-    "discord.js": 126,
-    "node:path": 28,
-    "node:fs": 20,
+    "discord.js": 127,
+    "node:path": 29,
+    "node:fs": 21,
     "openai": 3,
     "dotenv": 2,
     "node:events": 1,
