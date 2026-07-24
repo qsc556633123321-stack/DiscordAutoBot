@@ -7,9 +7,7 @@ async function main() {
   process.env.OPENAI_API_KEY = '';
   try {
     const guild = {
-      id: 'guild-1',
-      name: 'Test Guild',
-      channels: { cache: new Map(baseline.guildFacts.channels.map((channel) => [channel.id, channel])) }
+      ...baseline.guild
     };
     const payload = await buildGuidePayload(guild);
     const embed = payload.embeds[0].toJSON();

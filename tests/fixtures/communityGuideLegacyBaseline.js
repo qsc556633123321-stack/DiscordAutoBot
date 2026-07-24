@@ -23,7 +23,7 @@ const guideContent = {
   ]
 };
 
-const guildFacts = { id: 'guild-1', name: 'Test Guild', channels: [{ id: 'guide-channel', name: '🧭｜伺服器導覽' }] };
+const guild = { id: 'guild-1', name: 'Test Guild' };
 const guideViewModel = {
   guide: {
     color: 0x5865f2,
@@ -44,7 +44,4 @@ const componentPayload = [
   { type: 1, components: guideContent.actions.slice(0, 3).map((action) => ({ type: 2, custom_id: action.id, label: action.label, style: action.style === 'primary' ? 1 : 2, emoji: { id: undefined, name: action.emoji, animated: false }, disabled: false })) },
   { type: 1, components: guideContent.actions.slice(3).map((action) => ({ type: 2, custom_id: action.id, label: action.label, style: 2, emoji: { id: undefined, name: action.emoji, animated: false }, disabled: false })) }
 ];
-const statusRecord = { guideChannelId: 'guide-channel', guideMessageId: 'guide-message', roadmapChannelId: 'missing-channel', roadmapMessageId: 'roadmap-message' };
-const statusViewModel = { ...statusRecord, guideChannelFound: true, roadmapChannelFound: false };
-
-module.exports = { componentPayload, embedWithoutTimestamp, guideContent, guideViewModel, guildFacts, statusRecord, statusViewModel };
+module.exports = { componentPayload, embedWithoutTimestamp, guideContent, guideViewModel, guild };

@@ -1,27 +1,21 @@
 const { assertGuideContentReader } = require('./ports/guideContentReader');
-const { assertGuideGuildFactsReader } = require('./ports/guideGuildFactsReader');
 const { assertConciergeTextGenerator } = require('./ports/conciergeTextGenerator');
 const { buildCommunityGuideViewModel } = require('../../domain/community/guideReadModel');
 
-function createGetCommunityGuide({ guideContentReader, guideGuildFactsReader, conciergeTextGenerator, viewModelFactory = buildCommunityGuideViewModel } = {}) {
+function createGetCommunityGuide({ guideContentReader, conciergeTextGenerator, viewModelFactory = buildCommunityGuideViewModel } = {}) {
   const contentReader = assertGuideContentReader(guideContentReader);
-  const guildFactsReader = assertGuideGuildFactsReader(guideGuildFactsReader);
   assertConciergeTextGenerator(conciergeTextGenerator);
   const textGenerator = conciergeTextGenerator;
 
   return {
-    async execute({ guildId, guildName } = {}) {
-      const [content, guildFacts] = await Promise.all([
-        contentReader.readGuideContent(),
-        guildFactsReader.readGuideGuildFacts(guildId)
-      ]);
-      const resolvedGuildFacts = { ...guildFacts, name: guildName || guildFacts?.name };
+    async execute({ guildName } = {}) {
+      const content = await contentReader.readGuideContent();
       const intro = await textGenerator.generate(
         'main_guide',
-        { guildName: resolvedGuildFacts.name },
+        { guildName },
         content.fallbackIntro
       );
-      return buildResult(viewModelFactory({ content, guildFacts: resolvedGuildFacts, intro }));
+      return buildResult(viewModelFactory({ content, guildName, intro }));
     }
   };
 }

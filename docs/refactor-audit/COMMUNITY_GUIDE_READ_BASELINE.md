@@ -16,8 +16,6 @@ The frozen fixture is `tests/fixtures/communityGuideLegacyBaseline.js`. It is te
 
 `src/infrastructure/community/communityGuideContentReader.js` holds the extracted static Guide content contract used by the legacy pure builder. It is read-only.
 
-`src/data/onboarding-flows.json` remains the formal persisted source for Guide and Roadmap status records. `jsonGuideStatusReader` only reads it. Missing, malformed, or non-object JSON preserves the legacy read fallback of an empty status object; the reader does not create or write the file.
-
 ## Explicitly excluded
 
-This baseline does not cover Guide channel creation, message publication or refresh, JSON writes, role changes, buttons, onboarding events, panels, Voice, layout, permissions, MemberGuard, or Dashboard behavior.
+This baseline does not cover Guide status, onboarding-flow JSON, Guide channel creation, message publication or refresh, JSON writes, role changes, buttons, onboarding events, panels, Voice, layout, permissions, MemberGuard, or Dashboard behavior.

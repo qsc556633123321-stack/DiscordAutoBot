@@ -4,10 +4,8 @@ const baseline = require('../fixtures/communityGuideLegacyBaseline');
 
 async function main() {
   const payload = await createCommunityGuideReadCompatibilityAdapter({
-    guild: { id: 'guild-1', name: 'Test Guild' },
+    guild: baseline.guild,
     guideContentReader: { readGuideContent: async () => baseline.guideContent },
-    guideStatusReader: { readGuideStatus: async () => baseline.statusRecord },
-    guideGuildFactsReader: { readGuideGuildFacts: async () => baseline.guildFacts },
     conciergeTextGenerator: { generate: async (_kind, _context, fallback) => fallback }
   }).buildPayload();
   const embed = payload.embeds[0].toJSON();

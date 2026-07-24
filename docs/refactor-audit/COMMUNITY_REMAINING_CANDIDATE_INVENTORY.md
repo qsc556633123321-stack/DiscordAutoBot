@@ -51,7 +51,7 @@ This inventory uses static `require`/registry/event scans across `src`, `tests`,
 
 | Category | Verified candidates | Decision |
 | --- | --- | --- |
-| Read-only Slice | `help-me-start` recommendation and embed, Guide content/status queries, existing onboarding visibility | `help-me-start` is the next low-risk candidate; About/Roadmap are excluded as complete. |
+| Read-only Slice | `help-me-start` recommendation and embed, Guide payload read/renderer, existing onboarding visibility | `help-me-start` and Guide payload read are complete; Guide status remains unselected. |
 | Mutation Slice | guide publish/refresh, self-role update, Guest cleanup, panel lifecycle, proposal review | Each needs its own contract and regression fixture. |
 | Orchestration Slice | bootstrap, V3 rebuild, polish, Community Architect, permission repair | Deferred; spans multiple feature boundaries. |
 | Shared Infrastructure | Discord channel/permission writers, server log writer, JSON store direction, OpenAI client | Do not migrate as Community-owned behavior. |
