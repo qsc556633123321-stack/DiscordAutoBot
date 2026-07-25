@@ -1,0 +1,12 @@
+{
+  "existingTrackedGuideMessage": { "fetch": 1, "edit": 1, "send": 0, "writeAttempts": 1 },
+  "missingTrackedGuideMessage": { "fetch": 1, "edit": 0, "send": 1, "writeAttempts": 1 },
+  "missingGuideMessageId": { "fetch": 0, "edit": 0, "send": 1, "writeAttempts": 1 },
+  "missingGuideChannel": { "createdTextChannels": 1, "send": 1, "writeAttempts": 1 },
+  "messageEditFailure": { "rejects": true, "writeAttempts": 0 },
+  "messageSendFailure": { "rejects": true, "writeAttempts": 0 },
+  "jsonWriteFailure": { "resolves": true, "writeAttempts": 1 },
+  "permissionOverwriteFailure": { "resolves": true, "overwriteAttempts": 1 },
+  "roadmapExistingMessage": { "fetch": 1, "edit": 1, "send": 0, "writeAttempts": 1 },
+  "roadmapMissingMessage": { "fetch": 1, "edit": 0, "send": 1, "writeAttempts": 1 }
+}
