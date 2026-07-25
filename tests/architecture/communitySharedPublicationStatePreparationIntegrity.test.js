@@ -16,6 +16,6 @@ for (const source of [domain, mapper, patch]) {
   assert.equal(/require\(['"](?:fs|discord\.js)/.test(source), false);
   assert.equal(/writeFile|readFile|guild\.channels|message\./.test(source), false);
 }
-assert.match(fs.readFileSync(path.join(root, 'src/application/community/publicationStatePortDecision.js'), 'utf8'), /No Production Port Contract Approved/);
+assert.match(fs.readFileSync(path.join(root, 'src/application/community/publicationStatePortDecision.js'), 'utf8'), /No Production Persistence Port Approved/);
 assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community', 'publicationStateRepository.js')), false);
 console.log('Community shared publication state preparation integrity tests passed.');

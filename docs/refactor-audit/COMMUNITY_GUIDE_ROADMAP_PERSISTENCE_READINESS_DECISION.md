@@ -28,3 +28,6 @@ validation or recovery contract.
 The semantic state/operation contract is prepared for tests only. No production
 persistence port, filesystem adapter, retry policy, transaction, or runtime
 consumer is approved.
+
+The coexistence baseline documents that Guide and Roadmap share a full-root
+writer; stale writes are last-write-wins and may lose either publication.

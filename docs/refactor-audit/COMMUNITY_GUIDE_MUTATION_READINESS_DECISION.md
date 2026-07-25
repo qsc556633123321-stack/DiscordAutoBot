@@ -52,3 +52,6 @@ duplicate detector, or recovery mutation may be extracted yet.
 An unused semantic persistence boundary and test-only in-memory store now
 exist. This does not approve a Guide mutation, filesystem adapter, repository,
 or runtime wiring; the first mutation slice remains unapproved.
+
+The writer coexistence baseline also confirms a shared full-root writer and
+timing-dependent lost-update risk; no Guide mutation slice is approved.
