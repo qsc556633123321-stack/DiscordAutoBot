@@ -147,6 +147,33 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 - Dynamic directory loaders require explicit registry updates before any removal.
 - High-risk community, layout, permission, and interaction runtime migration needs behavior fixtures before redirecting the active path.
 
+## Community Discovery Completion Note (2026-07-24)
+
+`/help-me-start` is now migrated as a read-only slice with its thin wrapper
+retained. The Community Guide payload read-render slice is also migrated behind
+a compatibility payload delegation. Guide status, publication, role mutation,
+onboarding event work, panels, proposals, bootstrap/rebuild, and maintenance
+remain legacy/compatibility-owned until their dedicated fixtures and
+cross-feature boundaries are available.
+
+Its 2026-07-24 cleanup kept the wrapper but moved the Concierge compatibility
+bridge into `src/adapters/legacy/`; no new allowlist entry is required.
+
+The Guide read migration does not authorize removal of
+`setup-community-guide`, `refresh-community-guide`, or `communityConcierge`
+mutation behavior. The system remains during its observation window as the
+publish owner.
+
+Community Mutation Runtime Discovery adds evidence for later ordering only. It
+does not move any mutation owner into a removal wave.
+
+## Community Guide Mutation Baseline Update (2026-07-25)
+
+`setup-community-guide`, `refresh-community-guide`, and the legacy
+`communityConcierge` mutation owner remain retained. Their behavior is frozen
+by a test-only baseline; this is not authorization to remove, relocate, or
+mark any Guide mutation legacy source as migrated.
+
 ## Community Guide/Roadmap Shared Persistence Contract (2026-07-25)
 
 The persistence contract is complete as frozen baseline evidence only. It does
