@@ -1,0 +1,11 @@
+const assert = require('node:assert/strict');
+const fixture = require('../../fixtures/communitySharedPublicationStateFrozenFixture');
+const { fromLegacyPublicationRecord } = require('../../../src/application/community/communityPublicationStateMapper');
+const { applyPublicationPatch } = require('../../../src/application/community/applyPublicationPatch');
+const mapped = fromLegacyPublicationRecord(fixture.guildId, fixture.legacyRoot[fixture.guildId]);
+const roundTrip = applyPublicationPatch(fixture.legacyRoot, mapped);
+assert.equal(roundTrip['guild-1'].guideChannelId, 'guide-channel');
+assert.equal(roundTrip['guild-1'].roadmapChannelId, 'roadmap-channel');
+assert.deepEqual(roundTrip['guild-1'].unknown, { retained: true });
+assert.deepEqual(roundTrip['guild-2'], { unknown: 'other-guild' });
+console.log('Community shared publication state legacy compatibility tests passed.');

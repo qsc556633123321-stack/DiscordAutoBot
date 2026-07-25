@@ -1,0 +1,12 @@
+const assert = require('node:assert/strict');
+const fixture = require('../../fixtures/communitySharedPublicationStateFrozenFixture');
+const { applyPublicationPatch } = require('../../../src/application/community/applyPublicationPatch');
+const patched = applyPublicationPatch(fixture.legacyRoot, fixture.full);
+assert.notEqual(patched, fixture.legacyRoot);
+assert.equal(patched['guild-1'].guideMessageId, 'guide-next-message');
+assert.equal(patched['guild-1'].roadmapMessageId, 'roadmap-next-message');
+assert.deepEqual(patched['guild-1'].nativeTaskRecommendations, ['entry']);
+assert.deepEqual(patched['guild-1'].unknown, { retained: true });
+assert.deepEqual(patched['guild-2'], { unknown: 'other-guild' });
+assert.equal(fixture.legacyRoot['guild-1'].guideMessageId, 'guide-message');
+console.log('Community shared publication state patch preservation tests passed.');

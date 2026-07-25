@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const fixture = require('../../fixtures/communitySharedPublicationStateFrozenFixture');
+const { fromLegacyPublicationRecord, toLegacyPublicationPatch } = require('../../../src/application/community/communityPublicationStateMapper');
+const state = fromLegacyPublicationRecord(fixture.guildId, fixture.legacyRoot[fixture.guildId]);
+assert.deepEqual(state.guide, { channelId: 'guide-channel', messageId: 'guide-message' });
+assert.deepEqual(state.roadmap, { channelId: 'roadmap-channel', messageId: 'roadmap-message' });
+assert.deepEqual(toLegacyPublicationPatch(fixture.full), { guideChannelId: 'guide-next', guideMessageId: 'guide-next-message', roadmapChannelId: 'roadmap-next', roadmapMessageId: 'roadmap-next-message' });
+assert.deepEqual(toLegacyPublicationPatch(fixture.guideOnly), { guideChannelId: 'guide-next', guideMessageId: 'guide-next-message' });
+assert.deepEqual(fixture.legacyRoot['guild-1'].unknown, { retained: true });
+console.log('Community shared publication state mapper tests passed.');
