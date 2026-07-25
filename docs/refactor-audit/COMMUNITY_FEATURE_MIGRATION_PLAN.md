@@ -65,3 +65,9 @@ Every slice must preserve slash metadata, alias registry, output/reply behavior,
 ## Community Mutation Runtime Discovery
 
 Mutation discovery is complete. The evidence maps active entries, side effects, ownership, dependencies, risks, and blocked candidates without migrating any mutation runtime. No mutation slice is marked migrated.
+
+## Guide Mutation Baseline Update (2026-07-25)
+
+The Guide setup/refresh mutation path has frozen baseline tests and a readiness
+decision. No production mutation, composition, adapter, or wrapper moved in
+this work; Community remains **Migration In Progress**.

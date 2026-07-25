@@ -11,3 +11,10 @@
 - **Risk:** High. This is the first plausible mutation slice, but not approved for implementation yet.
 
 No candidate is promoted from a dead capability. Guide Status is explicitly excluded because no runtime consumer exists.
+
+## Baseline Update (2026-07-25)
+
+The Guide mutation baseline now freezes command delegation, channel ensure,
+message publication/edit, persistence, failure, retry, and partial-success
+behavior. That evidence is characterization only: no candidate is promoted and
+no mutation runtime has been migrated.

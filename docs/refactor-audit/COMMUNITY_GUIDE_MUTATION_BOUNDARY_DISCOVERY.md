@@ -133,3 +133,9 @@ must retain the same best-effort behavior during migration.
 
 Discovery complete; candidate for a dedicated mutation vertical slice after a
 baseline fake-guild regression harness is added.
+
+## Baseline Update
+
+The baseline harness, branch matrix and failure-path evidence are now complete.
+No production Guide Mutation slice is approved; see
+`COMMUNITY_GUIDE_MUTATION_READINESS_DECISION.md`.

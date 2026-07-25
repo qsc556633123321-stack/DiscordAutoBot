@@ -76,6 +76,21 @@ slash commands remain the verified Guide-plus-Roadmap coupling. Indirect Guide
 failures may be handled as best effort after layout mutation has already
 partially completed.
 
+## Entry Classification
+
+| Entry | Exact path | Status | Evidence |
+| --- | --- | --- | --- |
+| Setup command | `legacy/commands/setup-community-guide.js` -> `execute` -> `setupCommunityGuide` -> `setupRoadmapPanel` | Active Runtime | dynamically loaded command registry and slash metadata |
+| Refresh command | `legacy/commands/refresh-community-guide.js` -> `execute` -> `setupCommunityGuide` -> `setupRoadmapPanel` | Active Runtime | dynamically loaded command registry and slash metadata |
+| Bootstrap caller | `legacy/community/communityBootstrapSystem.js` -> bootstrap execution -> `setupCommunityGuide({ mode: 'refresh' })` | Indirect Active Runtime | literal production import/call |
+| V3 rebuild caller | `legacy/systemRuntimes/communityV3BuilderRuntime.js` -> V3 execution -> `setupCommunityGuide({ mode: 'refresh' })` | Indirect Active Runtime | literal production import/call |
+| Guide Read compatibility consumer | `systems/communityConcierge.js:buildGuidePayload` -> Guide Read compatibility adapter | Compatibility-only | payload composition only; it performs no mutation itself |
+| Baseline harness callers | `tests/community/*Baseline.test.js` | Test-only | test-only source and fake guild/file store |
+| `refreshCommunityGuide` export | no matching production export/function | Dead / No Consumer | source search finds refresh as an option only |
+
+No Dashboard route was verified as a Guide mutation caller. Its status remains
+`Unknown`, not an inferred runtime entry.
+
 ## Branch Baseline
 
 | Branch | Current runtime action | Persisted result | Response/retry consequence |

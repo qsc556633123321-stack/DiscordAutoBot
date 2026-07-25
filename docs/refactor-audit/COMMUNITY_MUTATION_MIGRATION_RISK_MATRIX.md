@@ -11,3 +11,10 @@
 | Bootstrap/rebuild | confirmed | broad multi-resource mutation | all Community contexts | Blocked | orchestrator last |
 | Destructive maintenance | confirmed | irreversible delete / cleanup | Layout, Voice, Ticket | Blocked | diagnostics first |
 | Guide Status | no consumer | none | none | Not a candidate | do not migrate |
+
+## Guide Baseline Update (2026-07-25)
+
+The frozen Guide mutation harness adds characterization evidence without
+changing the legacy runtime. Its risk remains High: Guide/Roadmap persistence,
+full overwrite replacement, and indirect Bootstrap/V3 caller behavior remain
+coupled.

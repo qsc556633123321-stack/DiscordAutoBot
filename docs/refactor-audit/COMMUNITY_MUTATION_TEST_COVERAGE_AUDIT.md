@@ -38,6 +38,14 @@ logic is made a thin wrapper:
 - These tests do **not** prove live Discord mutation equivalence. That absence is
   a migration blocker, not a reason to infer behavior.
 
+## Community Guide Mutation Baseline (2026-07-25)
+
+`test:community-guide-mutation-baseline` freezes command metadata,
+authorization/defer behavior, Guide/Roadmap message branches, persistence,
+partial success, and mutation order through a test-only fake Discord/filesystem
+harness. It is characterization, not a migration approval. The remaining
+focused malformed-Roadmap-record branch is recorded in the coverage matrix.
+
 ## Recommended first test harness
 
 Create a small fake guild/channel/message/role adapter only for the next chosen

@@ -158,3 +158,10 @@ Its 2026-07-24 cleanup kept the wrapper but moved the Concierge compatibility br
 The Guide read migration does not authorize removal of `setup-community-guide`, `refresh-community-guide`, or `communityConcierge` mutation behavior. The system remains during its observation window as the publish owner.
 
 Community Mutation Runtime Discovery adds evidence for later ordering only. It does not move any mutation owner into a removal wave.
+
+## Community Guide Mutation Baseline Update (2026-07-25)
+
+`setup-community-guide`, `refresh-community-guide`, and the legacy
+`communityConcierge` mutation owner remain retained. Their behavior is now
+frozen by a test-only baseline; this is not authorization to remove, relocate,
+or mark any Guide mutation legacy source as migrated.

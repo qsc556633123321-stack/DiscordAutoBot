@@ -20,3 +20,7 @@ Community status remains **Migration In Progress**. About, Roadmap, Help-me-star
 The Help-me-start cleanup preserves its migrated/thin-wrapper status while moving its Concierge compatibility bridge to `adapters/legacy`, removing the helper's direct Presentation dependency, and validating active behavior against a frozen legacy baseline. The Guide read slice separately preserves its existing setup/publish owner while moving only pure read-model and renderer work behind composition.
 
 Community Mutation Discovery is complete as documentation and integrity-test evidence only. It does not change the Community feature status: **Migration In Progress**.
+
+The Community Guide mutation baseline is also complete as characterization
+evidence only. Guide setup/status remains **Dead / No Consumer / Not Migrated**
+for legacy migration tracking; no Guide mutation runtime is marked migrated.

@@ -18,3 +18,7 @@
 The Help-me-start cleanup establishes the intended boundary pattern for future Community read slices: legacy bridge in `adapters/legacy`, Composition-owned compatibility wiring, and frozen-baseline regression rather than helper-to-runtime comparison. The Guide read slice applies the same rule while retaining `communityConcierge` as the publish/mutation owner.
 
 The Community Mutation Runtime Discovery documents active mutation boundaries and blocked candidates. It is not a migration milestone and does not retire legacy runtime owners.
+
+The subsequent Community Guide Mutation Baseline freezes legacy behavior only.
+It does not add a production mutation slice, retire a Guide runtime owner, or
+change Community's **Migration In Progress** status.

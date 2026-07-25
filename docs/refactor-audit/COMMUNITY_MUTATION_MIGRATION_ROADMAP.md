@@ -7,3 +7,11 @@
 5. **Phase 5 - destructive maintenance:** cleanup/delete work only after diagnostics, confirmations, and rollback evidence are independently tested.
 
 Current next mutation slice: **none approved**. The most likely future candidate is Guide Publish/Refresh, currently blocked by the dependencies above.
+
+## Community Guide Mutation Baseline (2026-07-25)
+
+Guide mutation characterization is complete for the active setup/refresh
+commands and their Guide/Roadmap publication coupling. No production mutation
+was migrated, no wrapper was changed, and **no mutation slice is approved**.
+Community remains **Migration In Progress**; Guide setup/status remains
+**Dead / No Consumer / Not Migrated** for migration-status purposes.
