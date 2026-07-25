@@ -12,3 +12,6 @@
 
 **No Publication Identity Preparation Slice Approved.** The previous Guide
 Mutation decision remains **No Mutation Slice Approved**.
+
+The persistence boundary preparation is independent and does not validate,
+resolve, or recover publication identity.

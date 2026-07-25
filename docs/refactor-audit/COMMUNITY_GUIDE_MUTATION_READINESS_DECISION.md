@@ -46,3 +46,9 @@ or a port. The first mutation slice remains unapproved.
 
 The Publication Identity Contract further confirms that no identity resolver,
 duplicate detector, or recovery mutation may be extracted yet.
+
+## Persistence Boundary Preparation Update (2026-07-26)
+
+An unused semantic persistence boundary and test-only in-memory store now
+exist. This does not approve a Guide mutation, filesystem adapter, repository,
+or runtime wiring; the first mutation slice remains unapproved.

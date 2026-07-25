@@ -22,3 +22,9 @@ the active runtime.
 
 Publication identity remains a separate blocker: persisted IDs have no semantic
 validation or recovery contract.
+
+## Boundary Preparation Update (2026-07-26)
+
+The semantic state/operation contract is prepared for tests only. No production
+persistence port, filesystem adapter, retry policy, transaction, or runtime
+consumer is approved.

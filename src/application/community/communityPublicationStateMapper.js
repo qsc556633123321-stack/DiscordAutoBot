@@ -1,10 +1,11 @@
 const { createCommunityPublicationState } = require('../../domain/community/communityPublicationState');
 
 function fromLegacyPublicationRecord(guildId, record = {}) {
+  const source = record && typeof record === 'object' && !Array.isArray(record) ? record : {};
   return createCommunityPublicationState({
     guildId,
-    guide: { channelId: record.guideChannelId, messageId: record.guideMessageId },
-    roadmap: { channelId: record.roadmapChannelId, messageId: record.roadmapMessageId }
+    guide: { channelId: source.guideChannelId, messageId: source.guideMessageId },
+    roadmap: { channelId: source.roadmapChannelId, messageId: source.roadmapMessageId }
   });
 }
 
