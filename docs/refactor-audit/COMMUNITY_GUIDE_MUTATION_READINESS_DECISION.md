@@ -43,3 +43,6 @@ Guide Status: **Dead / No Consumer / Not Migrated**.
 The Guide/Roadmap shared persistence contract is now frozen separately. This
 does not migrate persistence, Guide mutation, Roadmap mutation, a repository,
 or a port. The first mutation slice remains unapproved.
+
+The Publication Identity Contract further confirms that no identity resolver,
+duplicate detector, or recovery mutation may be extracted yet.

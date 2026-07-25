@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const fixture = require('../fixtures/communityPublicationIdentityLegacyBaseline');
+const { createCommunityPublicationIdentityHarness } = require('../helpers/createCommunityPublicationIdentityHarness');
+const roadmap = { id: 'roadmap-channel', name: fixture.roadmap.channelName, messages: { 'roadmap-message': { id: 'roadmap-message', guideLike: true } } };
+let harness = createCommunityPublicationIdentityHarness({ channels: [roadmap], records: fixture.roadmap.record });
+assert.equal(harness.resolve({ kind: 'roadmap', name: fixture.roadmap.channelName, messageField: 'roadmapMessageId' }).action, 'edit');
+assert.equal(harness.log.selected.guideLike, true, 'current runtime does not distinguish Guide/Roadmap payload identity');
+harness = createCommunityPublicationIdentityHarness({ channels: [roadmap], records: { roadmapMessageId: 'missing' }, fetchError: true });
+assert.equal(harness.resolve({ kind: 'roadmap', name: fixture.roadmap.channelName, messageField: 'roadmapMessageId' }).action, 'send');
+console.log('Community Roadmap publication identity baseline tests passed.');

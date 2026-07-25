@@ -76,3 +76,6 @@ this work; Community remains **Migration In Progress**.
 
 The shared Guide/Roadmap persistence behavior is now frozen by tests and audit
 documents. No repository, port, or mutation runtime has moved.
+
+Publication Identity Contract documentation is complete. Community remains
+**Migration In Progress**; no identity runtime moved.

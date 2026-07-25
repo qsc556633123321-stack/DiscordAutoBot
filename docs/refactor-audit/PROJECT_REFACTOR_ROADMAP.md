@@ -25,3 +25,6 @@ change Community's **Migration In Progress** status.
 
 The Shared Persistence Contract adds no production implementation. It freezes
 the existing onboarding-flow schema and failure behavior for a later decision.
+
+The Publication Identity Contract records current identity ambiguity; it does
+not introduce a new Community production owner.

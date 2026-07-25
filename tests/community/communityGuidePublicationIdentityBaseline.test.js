@@ -1,0 +1,12 @@
+const assert = require('node:assert/strict');
+const fixture = require('../fixtures/communityPublicationIdentityLegacyBaseline');
+const { createCommunityPublicationIdentityHarness } = require('../helpers/createCommunityPublicationIdentityHarness');
+const guide = { id: 'guide-channel', name: fixture.guide.channelName, messages: { 'guide-message': { id: 'guide-message', unrelated: true } } };
+let harness = createCommunityPublicationIdentityHarness({ channels: [guide], records: fixture.guide.record });
+assert.equal(harness.resolve({ kind: 'guide', name: fixture.guide.channelName, messageField: 'guideMessageId' }).action, 'edit');
+assert.equal(harness.log.selected.unrelated, true, 'current runtime does not validate author, payload, title, footer, or channel ownership');
+harness = createCommunityPublicationIdentityHarness({ channels: [guide], records: { guideMessageId: 'missing' }, fetchError: true });
+assert.equal(harness.resolve({ kind: 'guide', name: fixture.guide.channelName, messageField: 'guideMessageId' }).action, 'send');
+harness = createCommunityPublicationIdentityHarness({ channels: [guide], records: {} });
+assert.equal(harness.resolve({ kind: 'guide', name: fixture.guide.channelName, messageField: 'guideMessageId' }).action, 'send');
+console.log('Community Guide publication identity baseline tests passed.');

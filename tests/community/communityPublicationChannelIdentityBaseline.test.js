@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const fixture = require('../fixtures/communityPublicationIdentityLegacyBaseline');
+const { createCommunityPublicationIdentityHarness } = require('../helpers/createCommunityPublicationIdentityHarness');
+const first = { id: 'first', name: fixture.guide.channelName, parentId: 'wrong-parent', messages: {} };
+const second = { id: 'second', name: fixture.guide.channelName, parentId: 'right-parent', messages: {} };
+const harness = createCommunityPublicationIdentityHarness({ channels: [first, second], records: fixture.guide.record });
+const result = harness.resolve({ kind: 'guide', name: fixture.guide.channelName, messageField: 'guideMessageId' });
+assert.equal(result.channel.id, 'first', 'exact-name lookup selects first cache match; ID/topic/position are not identity inputs');
+assert.equal(result.action, 'send');
+console.log('Community publication channel identity baseline tests passed.');

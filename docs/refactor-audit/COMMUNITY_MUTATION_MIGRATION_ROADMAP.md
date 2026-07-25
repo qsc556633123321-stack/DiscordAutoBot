@@ -18,3 +18,6 @@ Community remains **Migration In Progress**; Guide setup/status remains
 
 The Shared Persistence Contract is complete as baseline evidence only. No
 persistence repository, port, or mutation slice has been migrated.
+
+The Publication Identity Contract is complete as baseline evidence only; no
+identity resolver, duplicate detector, or recovery path is migrated.

@@ -28,3 +28,6 @@ for legacy migration tracking; no Guide mutation runtime is marked migrated.
 The Shared Persistence Contract is **Complete** as discovery/baseline evidence.
 It is not a `Persistence Migrated`, `Repository Implemented`, or `Port
 Implemented` status; Community remains **Migration In Progress**.
+
+Publication Identity Contract is complete as baseline evidence only. It is not
+an Identity Resolver, Duplicate Detection, or Recovery implementation.

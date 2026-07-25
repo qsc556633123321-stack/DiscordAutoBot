@@ -53,6 +53,10 @@ filesystem harness for schema, preservation, read/write failure, sequential
 write, and stale-read risk. It is baseline evidence only; no persistence port,
 repository, or runtime mutation is approved.
 
+The Publication Identity Contract adds frozen identity states and test-only
+lookup harnesses. It does not implement validation, duplicate detection, or
+recovery.
+
 ## Recommended first test harness
 
 Create a small fake guild/channel/message/role adapter only for the next chosen

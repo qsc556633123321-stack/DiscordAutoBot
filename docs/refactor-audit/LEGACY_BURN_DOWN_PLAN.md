@@ -180,3 +180,6 @@ The persistence contract is complete as frozen baseline evidence only. It does
 not authorize removal of the current `communityConcierge` JSON reader/writer,
 and it does not mark persistence, Guide mutation, or Roadmap mutation as
 migrated.
+
+The Publication Identity Contract likewise does not authorize removal of the
+legacy publication lookup behavior or mark identity handling as migrated.

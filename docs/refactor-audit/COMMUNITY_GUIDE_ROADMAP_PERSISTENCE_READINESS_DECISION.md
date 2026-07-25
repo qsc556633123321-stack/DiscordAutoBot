@@ -19,3 +19,6 @@ The contract is frozen, but no new persistence port/repository/adapter is safe
 until malformed-root coverage, cross-feature consumers, concurrent-write
 semantics, and compatibility for unknown fields are resolved without changing
 the active runtime.
+
+Publication identity remains a separate blocker: persisted IDs have no semantic
+validation or recovery contract.

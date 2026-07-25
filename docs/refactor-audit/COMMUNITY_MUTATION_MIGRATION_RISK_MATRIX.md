@@ -21,3 +21,6 @@ coupled.
 
 The Shared Persistence Contract adds frozen schema and failure evidence, but
 does not lower the Guide publish/refresh risk or mark a repository migrated.
+
+The Publication Identity Contract does not lower that risk: duplicate detection
+and record recovery are absent from the active runtime.
