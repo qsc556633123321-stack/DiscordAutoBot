@@ -24,3 +24,7 @@ Community Mutation Discovery is complete as documentation and integrity-test evi
 The Community Guide mutation baseline is also complete as characterization
 evidence only. Guide setup/status remains **Dead / No Consumer / Not Migrated**
 for legacy migration tracking; no Guide mutation runtime is marked migrated.
+
+The Shared Persistence Contract is **Complete** as discovery/baseline evidence.
+It is not a `Persistence Migrated`, `Repository Implemented`, or `Port
+Implemented` status; Community remains **Migration In Progress**.

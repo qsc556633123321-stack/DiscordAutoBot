@@ -18,3 +18,7 @@ The Guide mutation baseline now freezes command delegation, channel ensure,
 message publication/edit, persistence, failure, retry, and partial-success
 behavior. That evidence is characterization only: no candidate is promoted and
 no mutation runtime has been migrated.
+
+The later Shared Persistence Contract documents why no persistence preparation
+slice is promoted: unknown-field preservation and concurrency semantics remain
+blocking compatibility concerns.

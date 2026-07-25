@@ -1,6 +1,6 @@
 # Legacy Burn-down Plan
 
-Generated: 2026-07-23T14:25:51.590Z
+Generated: 2026-07-25T15:11:35.877Z
 
 The ordering is migration order, not deletion authorization. Every wave preserves public commands and runtime behavior until its tests and release-window checks pass.
 
@@ -9,9 +9,6 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | Module | Status | Replacement path | Release-window action |
 | --- | --- | --- | --- |
 | src/legacy/commands/check-onboarding-visibility.js | Migrated; wrapper remaining | src/presentation/commands/checkOnboardingVisibilityCommand.js | keep wrapper and monitor before legacy deletion review |
-| src/legacy/commands/community-about.js | Migrated; wrapper remaining | src/presentation/commands/communityAboutCommand.js | keep wrapper and monitor before legacy deletion review |
-| src/legacy/commands/community-roadmap.js | Migrated; wrapper remaining | src/presentation/commands/communityRoadmapCommand.js | keep wrapper and monitor before legacy deletion review |
-| src/legacy/commands/help-me-start.js | Migrated; wrapper remaining | src/presentation/commands/helpMeStartCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/dev-audit-commands.js | Migrated; wrapper remaining | src/presentation/commands/devAuditCommandsCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/forget-channel-rule.js | Migrated; wrapper remaining | src/presentation/commands/forgetChannelRuleCommand.js | keep wrapper and monitor before legacy deletion review |
 | src/legacy/commands/learn-channel.js | Migrated; wrapper remaining | src/presentation/commands/learnChannelCommand.js | keep wrapper and monitor before legacy deletion review |
@@ -64,6 +61,7 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 | src/legacy/commands/factory-reset-server.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/fix-game-category.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/game-registry-doctor.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
+| src/legacy/commands/help-me-start.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/layout-doctor.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/linkguard-settings.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
 | src/legacy/commands/linkguard-whitelist.js | confirmed direct/dynamic paths; replacement API stable | targeted fixture + quality gate + dashboard build | public behavior routes through replacement, legacy kept as measured fallback | revert adapter/import; keep source untouched | high |
@@ -149,19 +147,9 @@ The ordering is migration order, not deletion authorization. Every wave preserve
 - Dynamic directory loaders require explicit registry updates before any removal.
 - High-risk community, layout, permission, and interaction runtime migration needs behavior fixtures before redirecting the active path.
 
-## Community Discovery Completion Note (2026-07-24)
+## Community Guide/Roadmap Shared Persistence Contract (2026-07-25)
 
-`/help-me-start` is now migrated as a read-only slice with its thin wrapper retained. The Community Guide payload read-render slice is also migrated behind a compatibility payload delegation. Guide status, publication, role mutation, onboarding event work, panels, proposals, bootstrap/rebuild, and maintenance remain legacy/compatibility-owned until their dedicated fixtures and cross-feature boundaries are available.
-
-Its 2026-07-24 cleanup kept the wrapper but moved the Concierge compatibility bridge into `src/adapters/legacy/`; no new allowlist entry is required.
-
-The Guide read migration does not authorize removal of `setup-community-guide`, `refresh-community-guide`, or `communityConcierge` mutation behavior. The system remains during its observation window as the publish owner.
-
-Community Mutation Runtime Discovery adds evidence for later ordering only. It does not move any mutation owner into a removal wave.
-
-## Community Guide Mutation Baseline Update (2026-07-25)
-
-`setup-community-guide`, `refresh-community-guide`, and the legacy
-`communityConcierge` mutation owner remain retained. Their behavior is now
-frozen by a test-only baseline; this is not authorization to remove, relocate,
-or mark any Guide mutation legacy source as migrated.
+The persistence contract is complete as frozen baseline evidence only. It does
+not authorize removal of the current `communityConcierge` JSON reader/writer,
+and it does not mark persistence, Guide mutation, or Roadmap mutation as
+migrated.

@@ -46,6 +46,13 @@ partial success, and mutation order through a test-only fake Discord/filesystem
 harness. It is characterization, not a migration approval. The remaining
 focused malformed-Roadmap-record branch is recorded in the coverage matrix.
 
+## Shared Persistence Contract Baseline (2026-07-25)
+
+`test:community-guide-roadmap-persistence-contract` adds a pure fixture and
+filesystem harness for schema, preservation, read/write failure, sequential
+write, and stale-read risk. It is baseline evidence only; no persistence port,
+repository, or runtime mutation is approved.
+
 ## Recommended first test harness
 
 Create a small fake guild/channel/message/role adapter only for the next chosen

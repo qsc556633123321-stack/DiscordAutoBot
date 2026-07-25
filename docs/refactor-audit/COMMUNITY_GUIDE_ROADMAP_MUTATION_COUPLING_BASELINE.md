@@ -42,3 +42,8 @@ they share `onboarding-flows.json` and the direct command success path.
 Guide and Roadmap must be treated as coupled at the command workflow boundary,
 but not as one atomic Discord transaction. This remains a blocker for extracting
 either publisher without a precise persistence/recovery contract.
+
+## Shared Persistence Contract Update (2026-07-25)
+
+That contract is now characterized in the dedicated persistence audit. It does
+not change the current coupled workflow or approve a publisher migration.

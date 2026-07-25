@@ -37,3 +37,9 @@ Community Guide Mutation Baseline: **Complete**.
 Community migration: **Migration In Progress**.
 
 Guide Status: **Dead / No Consumer / Not Migrated**.
+
+## Shared Persistence Contract Update (2026-07-25)
+
+The Guide/Roadmap shared persistence contract is now frozen separately. This
+does not migrate persistence, Guide mutation, Roadmap mutation, a repository,
+or a port. The first mutation slice remains unapproved.

@@ -71,3 +71,8 @@ Mutation discovery is complete. The evidence maps active entries, side effects, 
 The Guide setup/refresh mutation path has frozen baseline tests and a readiness
 decision. No production mutation, composition, adapter, or wrapper moved in
 this work; Community remains **Migration In Progress**.
+
+## Shared Persistence Contract Update (2026-07-25)
+
+The shared Guide/Roadmap persistence behavior is now frozen by tests and audit
+documents. No repository, port, or mutation runtime has moved.

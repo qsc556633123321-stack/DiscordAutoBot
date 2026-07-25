@@ -18,3 +18,6 @@ The frozen Guide mutation harness adds characterization evidence without
 changing the legacy runtime. Its risk remains High: Guide/Roadmap persistence,
 full overwrite replacement, and indirect Bootstrap/V3 caller behavior remain
 coupled.
+
+The Shared Persistence Contract adds frozen schema and failure evidence, but
+does not lower the Guide publish/refresh risk or mark a repository migrated.

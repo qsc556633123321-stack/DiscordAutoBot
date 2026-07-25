@@ -22,3 +22,6 @@ The Community Mutation Runtime Discovery documents active mutation boundaries an
 The subsequent Community Guide Mutation Baseline freezes legacy behavior only.
 It does not add a production mutation slice, retire a Guide runtime owner, or
 change Community's **Migration In Progress** status.
+
+The Shared Persistence Contract adds no production implementation. It freezes
+the existing onboarding-flow schema and failure behavior for a later decision.

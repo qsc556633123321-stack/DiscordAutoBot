@@ -15,3 +15,6 @@ commands and their Guide/Roadmap publication coupling. No production mutation
 was migrated, no wrapper was changed, and **no mutation slice is approved**.
 Community remains **Migration In Progress**; Guide setup/status remains
 **Dead / No Consumer / Not Migrated** for migration-status purposes.
+
+The Shared Persistence Contract is complete as baseline evidence only. No
+persistence repository, port, or mutation slice has been migrated.
