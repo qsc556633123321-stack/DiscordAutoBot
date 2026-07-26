@@ -7,4 +7,9 @@ module.exports = Object.freeze({
   numericGuideRecord: Object.freeze({ guideMessageId: 42 }),
   objectGuideRecord: Object.freeze({ guideMessageId: Object.freeze({ id: 'bad' }) }),
   emptyGuideRecord: Object.freeze({ guideMessageId: '' }),
+  emptyRoadmapRecord: Object.freeze({ roadmapMessageId: '' }),
+  numericRoadmapRecord: Object.freeze({ roadmapMessageId: 42 }),
+  objectRoadmapRecord: Object.freeze({ roadmapMessageId: Object.freeze({ id: 'bad' }) }),
+  arrayRoadmapRecord: Object.freeze({ roadmapMessageId: Object.freeze(['bad']) }),
+  trueRoadmapRecord: Object.freeze({ roadmapMessageId: true }),
 });

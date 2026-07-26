@@ -15,3 +15,10 @@ message identity read. The legacy malformed truthy-value branch remains intact.
 
 No Roadmap read, shared read consolidation, persistence port, filesystem
 adapter, writer, mutation, Bootstrap, or Rebuild integration is approved.
+
+## Read Slice #2
+
+**Roadmap Publication State Read: Complete.** `setupRoadmapPanel` now maps its
+existing legacy guild record to `CommunityPublicationState` for the valid
+Roadmap message identity read. The malformed truthy-value compatibility fallback
+is retained. Shared read consolidation and every write-side concern remain blocked.

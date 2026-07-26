@@ -85,3 +85,7 @@ Publication Identity Contract documentation is complete. Community remains
 Guide Existing Publication State Read is integrated through the pure mapper.
 This is read-only: no Guide mutation, persistence, writer, adapter, or
 Roadmap runtime has moved. Community remains **Migration In Progress**.
+
+Roadmap Existing Publication State Read is now integrated by the same
+read-only mapper contract. It does not migrate Roadmap mutation, persistence,
+writer replacement, or any shared publication workflow.

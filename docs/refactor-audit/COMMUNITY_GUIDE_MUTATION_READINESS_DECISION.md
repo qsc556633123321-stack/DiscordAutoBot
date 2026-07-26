@@ -58,3 +58,6 @@ timing-dependent lost-update risk; no Guide mutation slice is approved.
 
 Guide publication **read** integration is complete, but it does not alter any
 Guide mutation, send, edit, or persistence decision.
+
+Roadmap publication **read** integration is also complete. It does not approve
+Roadmap mutation, persistence, writer, Bootstrap, or Rebuild migration.

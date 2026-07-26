@@ -1,0 +1,11 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..', '..');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+assert.match(runtime, /publicationState\.guide\.messageId \|\| data\.guideMessageId/);
+assert.match(runtime, /publicationState\.roadmap\.messageId \|\| data\.roadmapMessageId/);
+assert.equal(/toLegacyPublicationPatch|applyPublicationPatch|CommunityPublicationStateStore/.test(runtime), false);
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/communityPublicationStateFilesystemAdapter.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/composition/communityPublicationStateFeature.js')), false);
+console.log('community Roadmap read runtime boundary passed');

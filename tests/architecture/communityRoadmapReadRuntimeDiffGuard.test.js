@@ -1,0 +1,10 @@
+const assert = require('assert');
+const fs = require('fs');
+const path = require('path');
+const root = path.resolve(__dirname, '..', '..');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+assert.match(runtime, /function saveOnboarding\(guildId, patch\)/);
+assert.match(runtime, /writeJson\(ONBOARDING_FILE, data\)/);
+assert.match(runtime, /async function setupCommunityGuide/);
+assert.equal(/toLegacyPublicationPatch|applyPublicationPatch|CommunityPublicationStateStore/.test(runtime), false);
+console.log('community Roadmap read runtime diff guard passed');

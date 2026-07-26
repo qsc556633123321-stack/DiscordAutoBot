@@ -34,3 +34,6 @@ writer; stale writes are last-write-wins and may lose either publication.
 
 Guide read mapping is complete; it does not approve Roadmap read mapping or any
 persistence integration.
+
+Roadmap read mapping is now also complete. Both read integrations leave the
+shared legacy writer and all persistence decisions unchanged.

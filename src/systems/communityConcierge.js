@@ -187,8 +187,11 @@ async function setupCommunityGuide(guild, options = {}) {
 async function setupRoadmapPanel(guild) {
   const channel = await getOrCreateRoadmapChannel(guild);
   const data = readOnboardingData()[guild.id] || {};
+  const publicationState = fromLegacyPublicationRecord(guild.id, data);
+  // Preserve the legacy truthy malformed-ID fetch behavior until identity validation is approved.
+  const roadmapMessageId = publicationState.roadmap.messageId || data.roadmapMessageId;
   const payload = { embeds: [buildRoadmapEmbed()] };
-  let message = data.roadmapMessageId ? await channel.messages.fetch(data.roadmapMessageId).catch(() => null) : null;
+  let message = roadmapMessageId ? await channel.messages.fetch(roadmapMessageId).catch(() => null) : null;
   if (message) await message.edit(payload);
   else message = await channel.send(payload);
   saveOnboarding(guild.id, {

@@ -25,3 +25,6 @@ identity resolver, duplicate detector, or recovery path is migrated.
 Guide Existing Publication State Read is complete as Runtime Integration Slice
 #1. Mutation, persistence, writer, Bootstrap, and Rebuild migrations remain
 blocked.
+
+Roadmap Existing Publication State Read is complete as Runtime Integration
+Slice #2. Shared read consolidation and all write-side migrations remain blocked.
