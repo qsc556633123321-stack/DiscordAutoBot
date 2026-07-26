@@ -89,3 +89,11 @@ Roadmap runtime has moved. Community remains **Migration In Progress**.
 Roadmap Existing Publication State Read is now integrated by the same
 read-only mapper contract. It does not migrate Roadmap mutation, persistence,
 writer replacement, or any shared publication workflow.
+
+## Channel Lookup Characterization (2026-07-26)
+
+Characterization Slice #1 freezes the active `sendConciergeWelcome` Guide
+channel lookup consumer, including cache/fetch/name fallback and member-DM
+behavior. It is documentation and tests only: channel identity is not
+integrated, no channel port/adapter exists, and Community remains **Migration
+In Progress**.

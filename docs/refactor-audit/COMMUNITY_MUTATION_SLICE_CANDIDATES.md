@@ -25,3 +25,10 @@ blocking compatibility concerns.
 
 Publication identity discovery adds a further blocker: current message IDs and
 name lookup have no secondary validation or safe reconciliation contract.
+
+## Channel Lookup Characterization Update
+
+`sendConciergeWelcome` is a confirmed active consumer and has a frozen lookup
+contract. It is not promoted to a migration candidate because cache/fetch/name
+fallback is immediately coupled to a member DM and no port/adapter boundary is
+approved.

@@ -57,6 +57,11 @@ The Publication Identity Contract adds frozen identity states and test-only
 lookup harnesses. It does not implement validation, duplicate detection, or
 recovery.
 
+The channel lookup characterization suite now freezes the active welcome
+consumer's cache/fetch/name branches, malformed identity pass-through, DM
+failure swallowing, and zero persistence writes. It does not authorize a
+runtime integration.
+
 ## Recommended first test harness
 
 Create a small fake guild/channel/message/role adapter only for the next chosen

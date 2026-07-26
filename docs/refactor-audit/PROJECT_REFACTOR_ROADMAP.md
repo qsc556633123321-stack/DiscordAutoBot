@@ -28,3 +28,7 @@ the existing onboarding-flow schema and failure behavior for a later decision.
 
 The Publication Identity Contract records current identity ambiguity; it does
 not introduce a new Community production owner.
+
+The Guide welcome channel lookup is now characterized with frozen tests. It is
+not integrated through a new runtime boundary; Community remains **Migration In
+Progress** and no lookup runtime slice is approved.

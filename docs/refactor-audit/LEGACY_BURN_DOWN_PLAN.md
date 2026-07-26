@@ -183,3 +183,10 @@ migrated.
 
 The Publication Identity Contract likewise does not authorize removal of the
 legacy publication lookup behavior or mark identity handling as migrated.
+
+## Channel Lookup Characterization Update (2026-07-26)
+
+The active `sendConciergeWelcome` lookup is characterized, not migrated. Its
+legacy runtime remains a protected owner because cache/fetch/name fallback is
+coupled to a member DM. No legacy file is promoted for removal and no channel
+port or adapter is introduced.

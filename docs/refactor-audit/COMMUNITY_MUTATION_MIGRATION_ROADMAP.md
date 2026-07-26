@@ -28,3 +28,8 @@ blocked.
 
 Roadmap Existing Publication State Read is complete as Runtime Integration
 Slice #2. Shared read consolidation and all write-side migrations remain blocked.
+
+Guide channel lookup characterization is complete, but it approves no runtime
+integration: lookup is coupled to member-DM publishing and legacy fallback
+behavior. The next status remains **No Channel Lookup Runtime Integration Slice
+Approved**.

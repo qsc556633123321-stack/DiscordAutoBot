@@ -24,3 +24,7 @@ does not lower the Guide publish/refresh risk or mark a repository migrated.
 
 The Publication Identity Contract does not lower that risk: duplicate detection
 and record recovery are absent from the active runtime.
+
+Guide channel lookup remains characterization-only. It is a confirmed consumer,
+but its immediate member-DM side effect and legacy fallback rules make a
+runtime extraction high-risk without a separately approved boundary.
