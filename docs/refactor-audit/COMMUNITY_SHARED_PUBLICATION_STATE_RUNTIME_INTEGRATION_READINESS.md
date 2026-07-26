@@ -7,4 +7,11 @@ lose same-guild and other-guild updates. No production filesystem adapter,
 shared writer, port integration, runtime integration, or mutation slice is
 approved.
 
-**First Runtime Integration Slice: No Runtime Integration Slice Approved.**
+## Read Slice #1
+
+**Guide Publication State Read: Complete.** `setupCommunityGuide` now maps its
+existing legacy guild record to `CommunityPublicationState` for the valid Guide
+message identity read. The legacy malformed truthy-value branch remains intact.
+
+No Roadmap read, shared read consolidation, persistence port, filesystem
+adapter, writer, mutation, Bootstrap, or Rebuild integration is approved.

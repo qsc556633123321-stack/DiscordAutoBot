@@ -6,6 +6,7 @@ const {
   PermissionFlagsBits
 } = require('discord.js');
 const permissionTemplates = require('../config/permissionTemplates');
+const { fromLegacyPublicationRecord } = require('../application/community');
 const { createCommunityAboutModel } = require('../domain/community/communityAbout');
 const { createCommunityRoadmapFeature } = require('../composition/communityRoadmapFeature');
 const { createCommunityRoadmapEmbed } = require('../modules/community/communityRoadmapEmbed');
@@ -162,9 +163,12 @@ async function setupCommunityGuide(guild, options = {}) {
   const channel = await getOrCreateGuideChannel(guild);
   const payload = await buildGuidePayload(guild);
   const data = readOnboardingData()[guild.id] || {};
+  const publicationState = fromLegacyPublicationRecord(guild.id, data);
+  // Preserve the legacy truthy malformed-ID fetch behavior until identity validation is approved.
+  const guideMessageId = publicationState.guide.messageId || data.guideMessageId;
   let message = null;
-  if (data.guideMessageId && options.mode !== 'force') {
-    message = await channel.messages.fetch(data.guideMessageId).catch(() => null);
+  if (guideMessageId && options.mode !== 'force') {
+    message = await channel.messages.fetch(guideMessageId).catch(() => null);
   }
   if (message) {
     await message.edit(payload);

@@ -79,3 +79,9 @@ documents. No repository, port, or mutation runtime has moved.
 
 Publication Identity Contract documentation is complete. Community remains
 **Migration In Progress**; no identity runtime moved.
+
+## Publication Read Runtime Integration (2026-07-26)
+
+Guide Existing Publication State Read is integrated through the pure mapper.
+This is read-only: no Guide mutation, persistence, writer, adapter, or
+Roadmap runtime has moved. Community remains **Migration In Progress**.

@@ -31,3 +31,6 @@ consumer is approved.
 
 The coexistence baseline documents that Guide and Roadmap share a full-root
 writer; stale writes are last-write-wins and may lose either publication.
+
+Guide read mapping is complete; it does not approve Roadmap read mapping or any
+persistence integration.

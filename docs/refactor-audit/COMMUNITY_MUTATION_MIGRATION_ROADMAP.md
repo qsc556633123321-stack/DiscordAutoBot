@@ -21,3 +21,7 @@ persistence repository, port, or mutation slice has been migrated.
 
 The Publication Identity Contract is complete as baseline evidence only; no
 identity resolver, duplicate detector, or recovery path is migrated.
+
+Guide Existing Publication State Read is complete as Runtime Integration Slice
+#1. Mutation, persistence, writer, Bootstrap, and Rebuild migrations remain
+blocked.

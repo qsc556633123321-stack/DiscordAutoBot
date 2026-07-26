@@ -55,3 +55,6 @@ or runtime wiring; the first mutation slice remains unapproved.
 
 The writer coexistence baseline also confirms a shared full-root writer and
 timing-dependent lost-update risk; no Guide mutation slice is approved.
+
+Guide publication **read** integration is complete, but it does not alter any
+Guide mutation, send, edit, or persistence decision.
