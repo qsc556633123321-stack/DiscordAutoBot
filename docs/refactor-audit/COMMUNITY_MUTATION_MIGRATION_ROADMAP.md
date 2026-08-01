@@ -45,3 +45,7 @@ failure reasons, ports, adapters, and full welcome migration remain unapproved.
 
 Complete as baseline evidence only. No Result/Failure Reason runtime integration
 or full Welcome Delivery migration is approved.
+
+## Guide Publication Mutation Plan Preparation (2026-08-01)
+
+Complete as a pure plan artifact. Guide publication mutation remains unintegrated.

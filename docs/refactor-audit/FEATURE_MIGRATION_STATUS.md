@@ -34,3 +34,6 @@ an Identity Resolver, Duplicate Detection, or Recovery implementation.
 
 Welcome Delivery Result Characterization is complete. Result and Failure Reason
 runtime integration remain unapproved; Community remains **Migration In Progress**.
+
+Guide Publication Mutation Plan is prepared but not integrated. Community remains
+**Migration In Progress**.

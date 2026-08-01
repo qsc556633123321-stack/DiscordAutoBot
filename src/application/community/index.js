@@ -4,6 +4,10 @@ const { CommunityWelcomeDeliveryFailureReason } = require('./welcome/CommunityWe
 const { CommunityWelcomeDeliveryStatus, createCommunityWelcomeDeliveryResult } = require('./welcome/CommunityWelcomeDeliveryResult');
 const { buildCommunityWelcomeMessage } = require('./welcome/buildCommunityWelcomeMessage');
 const { mapLegacyWelcomeDeliveryRequest } = require('./welcome/mapLegacyWelcomeDeliveryRequest');
+const { GuidePublicationOperationType } = require('./guidePublication/GuidePublicationOperationType');
+const { createGuidePublicationMutationInput } = require('./guidePublication/GuidePublicationMutationInput');
+const { createGuidePublicationMutationPlan } = require('./guidePublication/GuidePublicationMutationPlan');
+const { buildGuidePublicationMutationPlan } = require('./guidePublication/buildGuidePublicationMutationPlan');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -14,4 +18,8 @@ module.exports = {
   createCommunityWelcomeDeliveryResult,
   buildCommunityWelcomeMessage,
   mapLegacyWelcomeDeliveryRequest,
+  GuidePublicationOperationType,
+  createGuidePublicationMutationInput,
+  createGuidePublicationMutationPlan,
+  buildGuidePublicationMutationPlan,
 };

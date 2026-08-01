@@ -207,3 +207,9 @@ port or adapter is introduced.
 
 The legacy void-return and swallowed-error contract is frozen. It does not
 authorize a Result/Failure Reason integration or removal of the delivery owner.
+
+## Guide Publication Mutation Plan Preparation Update (2026-08-01)
+
+The Guide edit/send branch now has a pure, immutable plan contract. It does not
+authorize a message port, persistence migration, or removal of the legacy Guide
+publication owner.

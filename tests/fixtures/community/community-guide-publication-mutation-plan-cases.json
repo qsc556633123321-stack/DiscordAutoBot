@@ -1,0 +1,22 @@
+[
+  { "id": "GP-B01", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B02", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": false, "existingMessageLookupAttempted": true }, "operation": "SendNewMessage" },
+  { "id": "GP-B03", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": false, "existingMessageLookupAttempted": true }, "operation": "SendNewMessage" },
+  { "id": "GP-B04", "input": { "guildId": "g1", "mode": "normal", "existingMessageAvailable": false, "existingMessageLookupAttempted": false }, "operation": "SendNewMessage" },
+  { "id": "GP-B05", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": null, "existingMessageAvailable": false, "existingMessageLookupAttempted": false }, "operation": "SendNewMessage" },
+  { "id": "GP-B06", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": null, "existingMessageAvailable": false, "existingMessageLookupAttempted": false }, "operation": "SendNewMessage" },
+  { "id": "GP-B07", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "", "existingMessageAvailable": false, "existingMessageLookupAttempted": false }, "operation": "SendNewMessage" },
+  { "id": "GP-B08", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "valid", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B09", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": 123, "existingMessageAvailable": false, "existingMessageLookupAttempted": true }, "operation": "SendNewMessage" },
+  { "id": "GP-B10", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": { "raw": true }, "existingMessageAvailable": false, "existingMessageLookupAttempted": true }, "operation": "SendNewMessage" },
+  { "id": "GP-B11", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": ["raw"], "existingMessageAvailable": false, "existingMessageLookupAttempted": true }, "operation": "SendNewMessage" },
+  { "id": "GP-B12", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B13", "input": { "guildId": "g1", "mode": "refresh", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B14", "input": { "guildId": "g1", "mode": "force", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "SendNewMessage" },
+  { "id": "GP-B15", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B16", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B17", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": null, "existingMessageAvailable": false, "existingMessageLookupAttempted": false }, "operation": "SendNewMessage" },
+  { "id": "GP-B18", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B19", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" },
+  { "id": "GP-B20", "input": { "guildId": "g1", "mode": "normal", "trackedMessageId": "m1", "existingMessageAvailable": true, "existingMessageLookupAttempted": true }, "operation": "EditExistingMessage" }
+]
