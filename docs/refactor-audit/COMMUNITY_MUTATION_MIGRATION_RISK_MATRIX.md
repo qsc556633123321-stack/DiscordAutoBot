@@ -31,3 +31,6 @@ runtime extraction high-risk without a separately approved boundary.
 
 Welcome delivery contracts do not reduce runtime risk: identity lookup, DM
 send, and swallowed errors remain coupled in the legacy consumer.
+
+The payload builder integration is low-risk and complete; the lookup/DM/error
+coupling remains high-risk for every broader delivery candidate.

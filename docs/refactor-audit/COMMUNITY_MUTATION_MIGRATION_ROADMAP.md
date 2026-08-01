@@ -37,3 +37,6 @@ Approved**.
 Welcome Delivery Preparation is complete as a pure application contract only.
 It does not approve a Discord delivery port, adapter, or `sendConciergeWelcome`
 migration.
+
+The mapper-plus-builder payload integration is now complete. Delivery result,
+failure reasons, ports, adapters, and full welcome migration remain unapproved.

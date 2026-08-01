@@ -65,6 +65,9 @@ runtime integration.
 Welcome Delivery Preparation adds pure contract coverage only. Its tests do not
 execute a delivery adapter or change existing member-DM behavior.
 
+The builder integration suite now differentially proves exact payload equality,
+lookup non-regression, and unchanged call counts without introducing an adapter.
+
 ## Recommended first test harness
 
 Create a small fake guild/channel/message/role adapter only for the next chosen

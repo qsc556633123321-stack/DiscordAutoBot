@@ -1,0 +1,14 @@
+[
+  { "id": "WM-R01", "guildId": "guild-1", "guildName": "科幻基地", "guideChannelId": "guide-1", "route": "cache" },
+  { "id": "WM-R02", "guildId": "guild-2", "guildName": "星際基地", "guideChannelId": "guide-2", "route": "cache" },
+  { "id": "WM-R03", "guildId": "guild-3", "guildName": "Space Guild", "guideChannelId": "guide-3", "route": "cache" },
+  { "id": "WM-R04", "guildId": "guild-4", "guildName": "**Bold** _Guild_", "guideChannelId": "guide-4", "route": "cache" },
+  { "id": "WM-R05", "guildId": "123456789", "guildName": "Numeric Guild", "guideChannelId": "guide-5", "route": "cache" },
+  { "id": "WM-R06", "guildId": "guild-6", "guildName": "Channel Number", "guideChannelId": "987654321", "route": "cache" },
+  { "id": "WM-R07", "guildId": "guild-7", "guildName": "", "guideChannelId": "guide-7", "route": "cache" },
+  { "id": "WM-R08", "guildId": "guild-8", "guildName": "A very long community name with enough text to characterize direct interpolation", "guideChannelId": "guide-8", "route": "cache" },
+  { "id": "WM-R09", "guildId": "guild-9", "guildName": "Cache Channel", "guideChannelId": "guide-9", "route": "cache" },
+  { "id": "WM-R10", "guildId": "guild-10", "guildName": "Fetched Channel", "guideChannelId": "guide-10", "route": "fetch" },
+  { "id": "WM-R11", "guildId": "guild-11", "guildName": "Fallback Channel", "guideChannelId": "fallback-11", "route": "fallback" },
+  { "id": "WM-R12", "guildId": "guild-12", "guildName": "Repeated Delivery", "guideChannelId": "guide-12", "route": "cache" }
+]

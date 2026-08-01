@@ -190,6 +190,12 @@ Pure Welcome Delivery contracts are prepared but intentionally unused by the
 runtime. `communityConcierge` remains the legacy delivery owner; no port,
 adapter, writer, or runtime migration is authorized.
 
+## Welcome Message Builder Runtime Integration Update (2026-08-01)
+
+The approved mapper/builder payload call is now integrated, while
+`communityConcierge` remains the legacy delivery owner. No port, adapter,
+writer, or full delivery migration is authorized.
+
 ## Channel Lookup Characterization Update (2026-07-26)
 
 The active `sendConciergeWelcome` lookup is characterized, not migrated. Its

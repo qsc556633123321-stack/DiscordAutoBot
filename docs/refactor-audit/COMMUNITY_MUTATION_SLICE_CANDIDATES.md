@@ -35,3 +35,6 @@ approved.
 
 Welcome Delivery Preparation makes only the pure message builder artifact ready
 with explicit exclusions. The active member-DM runtime remains retained.
+
+The approved narrow integration now uses the existing mapper and builder at the
+payload construction point; it does not migrate the member-DM runtime owner.

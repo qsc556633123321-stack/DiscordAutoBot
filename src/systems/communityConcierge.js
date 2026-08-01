@@ -6,7 +6,11 @@ const {
   PermissionFlagsBits
 } = require('discord.js');
 const permissionTemplates = require('../config/permissionTemplates');
-const { fromLegacyPublicationRecord } = require('../application/community');
+const {
+  fromLegacyPublicationRecord,
+  mapLegacyWelcomeDeliveryRequest,
+  buildCommunityWelcomeMessage
+} = require('../application/community');
 const { createCommunityAboutModel } = require('../domain/community/communityAbout');
 const { createCommunityRoadmapFeature } = require('../composition/communityRoadmapFeature');
 const { createCommunityRoadmapEmbed } = require('../modules/community/communityRoadmapEmbed');
@@ -313,9 +317,12 @@ async function sendConciergeWelcome(member) {
     ? member.guild.channels.cache.get(data.guideChannelId) || await member.guild.channels.fetch(data.guideChannelId).catch(() => null)
     : findChannelByName(member.guild, GUIDE_CHANNEL_NAME);
   if (!guideChannel) return;
-  await member.send({
-    content: `歡迎加入 ${member.guild.name}。如果你不知道從哪裡開始，可以先看這個互動導覽：https://discord.com/channels/${member.guild.id}/${guideChannel.id}\n也可以直接使用 /help-me-start。`
-  }).catch(() => null);
+  const request = mapLegacyWelcomeDeliveryRequest({
+    guildId: member.guild.id,
+    guideChannelId: guideChannel.id
+  });
+  const payload = buildCommunityWelcomeMessage(request, { guildName: member.guild.name });
+  await member.send(payload).catch(() => null);
 }
 
 module.exports = {

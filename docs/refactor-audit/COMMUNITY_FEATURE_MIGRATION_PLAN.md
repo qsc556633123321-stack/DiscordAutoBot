@@ -103,3 +103,9 @@ In Progress**.
 Preparation Slice #2 adds pure request/result contracts, a pure DM payload
 builder, and a resolved-ID mapper. No Community runtime imports them; delivery,
 lookup, persistence, ports, adapters, and composition remain unchanged.
+
+## Welcome Message Builder Runtime Integration (2026-08-01)
+
+`sendConciergeWelcome` now uses the Application barrel mapper and pure builder
+for its existing DM payload only. Channel lookup, DM API/catch behavior,
+persistence, and all broader delivery concerns remain legacy-owned.
