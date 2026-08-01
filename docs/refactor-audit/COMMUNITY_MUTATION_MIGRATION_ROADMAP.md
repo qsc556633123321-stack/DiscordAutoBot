@@ -33,3 +33,7 @@ Guide channel lookup characterization is complete, but it approves no runtime
 integration: lookup is coupled to member-DM publishing and legacy fallback
 behavior. The next status remains **No Channel Lookup Runtime Integration Slice
 Approved**.
+
+Welcome Delivery Preparation is complete as a pure application contract only.
+It does not approve a Discord delivery port, adapter, or `sendConciergeWelcome`
+migration.

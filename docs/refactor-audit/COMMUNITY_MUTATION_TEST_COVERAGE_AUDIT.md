@@ -62,6 +62,9 @@ consumer's cache/fetch/name branches, malformed identity pass-through, DM
 failure swallowing, and zero persistence writes. It does not authorize a
 runtime integration.
 
+Welcome Delivery Preparation adds pure contract coverage only. Its tests do not
+execute a delivery adapter or change existing member-DM behavior.
+
 ## Recommended first test harness
 
 Create a small fake guild/channel/message/role adapter only for the next chosen

@@ -32,3 +32,6 @@ name lookup have no secondary validation or safe reconciliation contract.
 contract. It is not promoted to a migration candidate because cache/fetch/name
 fallback is immediately coupled to a member DM and no port/adapter boundary is
 approved.
+
+Welcome Delivery Preparation makes only the pure message builder artifact ready
+with explicit exclusions. The active member-DM runtime remains retained.

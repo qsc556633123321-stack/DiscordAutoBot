@@ -184,6 +184,12 @@ migrated.
 The Publication Identity Contract likewise does not authorize removal of the
 legacy publication lookup behavior or mark identity handling as migrated.
 
+## Welcome Delivery Preparation Update (2026-07-29)
+
+Pure Welcome Delivery contracts are prepared but intentionally unused by the
+runtime. `communityConcierge` remains the legacy delivery owner; no port,
+adapter, writer, or runtime migration is authorized.
+
 ## Channel Lookup Characterization Update (2026-07-26)
 
 The active `sendConciergeWelcome` lookup is characterized, not migrated. Its

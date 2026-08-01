@@ -97,3 +97,9 @@ channel lookup consumer, including cache/fetch/name fallback and member-DM
 behavior. It is documentation and tests only: channel identity is not
 integrated, no channel port/adapter exists, and Community remains **Migration
 In Progress**.
+
+## Welcome Delivery Preparation (2026-07-29)
+
+Preparation Slice #2 adds pure request/result contracts, a pure DM payload
+builder, and a resolved-ID mapper. No Community runtime imports them; delivery,
+lookup, persistence, ports, adapters, and composition remain unchanged.

@@ -32,3 +32,6 @@ not introduce a new Community production owner.
 The Guide welcome channel lookup is now characterized with frozen tests. It is
 not integrated through a new runtime boundary; Community remains **Migration In
 Progress** and no lookup runtime slice is approved.
+
+Welcome Delivery Preparation adds pure application contracts only. The existing
+member-DM runtime remains the owner until a separately approved boundary exists.
