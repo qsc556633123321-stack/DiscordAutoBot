@@ -18,11 +18,23 @@ async function withWelcomeRuntimeHarness(options, callback) {
   const conciergeModule = require.resolve(conciergePath);
   const originalApplication = require(applicationModule);
   const cache = new Map((options.cachedChannels || []).map((channel) => [channel.id, channel]));
-  cache.find = (predicate) => { metrics.cacheFinds += 1; return Array.from(cache.values()).find(predicate); };
+  cache.find = (predicate) => {
+    metrics.cacheFinds += 1;
+    if (options.cacheFindError) throw options.cacheFindError;
+    return Array.from(cache.values()).find(predicate);
+  };
   const originalGet = cache.get.bind(cache);
-  cache.get = (id) => { metrics.cacheGets.push(id); return originalGet(id); };
+  cache.get = (id) => {
+    metrics.cacheGets.push(id);
+    if (options.cacheGetError) throw options.cacheGetError;
+    return originalGet(id);
+  };
   fs.readFileSync = (filePath, ...args) => {
-    if (String(filePath).endsWith('onboarding-flows.json')) { metrics.reads += 1; return JSON.stringify(options.root); }
+    if (String(filePath).endsWith('onboarding-flows.json')) {
+      metrics.reads += 1;
+      if (options.readError) throw options.readError;
+      return JSON.stringify(options.root);
+    }
     return originalRead(filePath, ...args);
   };
   fs.writeFileSync = (filePath, data, ...args) => {
@@ -43,10 +55,21 @@ async function withWelcomeRuntimeHarness(options, callback) {
       name: options.guildName,
       channels: {
         cache,
-        fetch: async (id) => { metrics.fetches.push(id); if (options.fetchError) throw options.fetchError; return options.fetchResult || null; }
+        fetch: options.fetchMissing ? undefined : async (id) => {
+          metrics.fetches.push(id);
+          if (options.fetchError) throw options.fetchError;
+          return options.fetchResult || null;
+        }
       }
     };
-    const member = { guild, send: async (payload) => { metrics.sends.push(payload); if (options.sendError) throw options.sendError; } };
+    if (options.channelsMissing) delete guild.channels;
+    const send = options.sendImplementation || ((payload) => {
+      metrics.sends.push(payload);
+      if (options.sendSyncError) throw options.sendSyncError;
+      if (options.sendError) return Promise.reject(options.sendError);
+      return Promise.resolve(options.sendValue);
+    });
+    const member = options.member || { guild, send: options.sendMissing ? undefined : send };
     return await callback({ concierge, member, metrics, guild });
   } finally {
     fs.readFileSync = originalRead;

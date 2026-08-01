@@ -11,3 +11,9 @@
 | G. No runtime integration | Ready | preserves current runtime. |
 
 No additional Welcome Runtime Integration is approved. This does not approve a result/failure integration, port, adapter, full delivery migration, persistence work, channel lookup migration, Bootstrap work, or Rebuild work.
+
+## Result Characterization Update (2026-08-01)
+
+Characterization Slice #2 is complete. It freezes the void return, swallowed DM
+rejection, early-return, and caller catch contracts. No Result or Failure Reason
+runtime integration is approved.

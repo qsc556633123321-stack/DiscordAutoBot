@@ -68,6 +68,9 @@ execute a delivery adapter or change existing member-DM behavior.
 The builder integration suite now differentially proves exact payload equality,
 lookup non-regression, and unchanged call counts without introducing an adapter.
 
+Result characterization now freezes return, thrown/swallowed errors, caller
+continuation, and call counts without changing runtime behavior.
+
 ## Recommended first test harness
 
 Create a small fake guild/channel/message/role adapter only for the next chosen

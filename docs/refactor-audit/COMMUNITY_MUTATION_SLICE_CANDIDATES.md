@@ -38,3 +38,6 @@ with explicit exclusions. The active member-DM runtime remains retained.
 
 The approved narrow integration now uses the existing mapper and builder at the
 payload construction point; it does not migrate the member-DM runtime owner.
+
+Result characterization is complete and approves no new mutation slice: the
+legacy DM delivery owner remains retained.

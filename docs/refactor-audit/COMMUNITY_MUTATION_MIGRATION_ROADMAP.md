@@ -40,3 +40,8 @@ migration.
 
 The mapper-plus-builder payload integration is now complete. Delivery result,
 failure reasons, ports, adapters, and full welcome migration remain unapproved.
+
+## Welcome Delivery Result Characterization (2026-08-01)
+
+Complete as baseline evidence only. No Result/Failure Reason runtime integration
+or full Welcome Delivery migration is approved.

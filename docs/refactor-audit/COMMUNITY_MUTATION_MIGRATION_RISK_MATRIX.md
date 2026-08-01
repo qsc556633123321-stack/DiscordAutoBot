@@ -34,3 +34,6 @@ send, and swallowed errors remain coupled in the legacy consumer.
 
 The payload builder integration is low-risk and complete; the lookup/DM/error
 coupling remains high-risk for every broader delivery candidate.
+
+Result return-shape and Failure Reason mapping remain high risk because the
+legacy caller observes neither and swallowed rejection matches success.

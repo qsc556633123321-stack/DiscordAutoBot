@@ -202,3 +202,8 @@ The active `sendConciergeWelcome` lookup is characterized, not migrated. Its
 legacy runtime remains a protected owner because cache/fetch/name fallback is
 coupled to a member DM. No legacy file is promoted for removal and no channel
 port or adapter is introduced.
+
+## Welcome Delivery Result Characterization Update (2026-08-01)
+
+The legacy void-return and swallowed-error contract is frozen. It does not
+authorize a Result/Failure Reason integration or removal of the delivery owner.
