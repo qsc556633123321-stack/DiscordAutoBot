@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Publication Message Lookup Application Port
+Guide Message Lookup Infrastructure Adapter Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -34,6 +34,8 @@ Estimated local refactor progress: 65%
 - Guide Publication Message Lookup Application Port, immutable request/result
   contract, and test fake implemented without adapter, composition, or runtime
   wiring
+- Guide lookup infrastructure adapter dependency, channel-resolution, and
+  error/count risks characterized with test-only resources; no adapter added
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -51,6 +53,7 @@ Estimated local refactor progress: 65%
 - Guide-specific Discord mutation Infrastructure Adapter preparation
 - Guide pre-Plan message lookup preparation documentation and frozen tests
 - Guide Publication Message Lookup Application Port and lookup test fake
+- Guide Message Lookup Infrastructure Adapter preparation documentation/tests
 
 ### Legacy
 - Discord mutation execution
@@ -78,9 +81,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Guide Publication Infrastructure Lookup Adapter boundary only; do
-not add an adapter implementation, composition wiring, or change legacy
-execution.
+Prepare the additional Guide channel-resource boundary only; do not add an
+adapter implementation, composition wiring, or change legacy execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -92,10 +94,10 @@ execution.
 ## Blockers
 Guide Discord execution remains coupled to message lookup, channel destination,
 channel ensure, partial failure, and Roadmap continuation. The pre-Plan lookup
-result is now represented by an unwired Application port, but no production
-lookup adapter or runtime redirect exists. This continues to block production
-adapter and runtime redirect work.
+result is now represented by an unwired Application port. Channel
+re-resolution would add legacy-incompatible timing/count/failure behavior, so
+no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide Publication Message Lookup Application Port and test fake
-implemented; no runtime migration, Discord adapter, or composition wiring.
+2026-08-08: Guide lookup Infrastructure Adapter boundary characterized; no
+runtime migration, production adapter, or composition wiring.
