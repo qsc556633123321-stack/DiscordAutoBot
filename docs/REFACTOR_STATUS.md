@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Runtime Pair Creation Only Implementation
+Guide Runtime Lookup Redirect Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -66,6 +66,9 @@ Estimated local refactor progress: 65%
   satisfies Pair construction and preserves zero-I/O construction
 - Guide Runtime Pair Creation-only integrated after successful ensure, without
   port use or changes to legacy Discord/persistence/Roadmap behavior
+- Guide Runtime Lookup Redirect boundary characterized with frozen skip,
+  failure, malformed-ID, identity, ordering, and test-only candidate coverage;
+  runtime lookup remains legacy-owned
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -100,7 +103,6 @@ Estimated local refactor progress: 65%
 - Guide production Adapter Pair Factory implementation and not-wired guards
 - Guide Adapter Pair Composition Feature implemented but not runtime-wired;
   legacy runtime still owns lookup, mutation, failure handoff, and ordering
-- Guide Runtime Pair Creation remains legacy-owned and is preparation-only
 - Ensured Channel constructor contract is frozen; no runtime consumer added
 - Runtime creates a fresh Pair per Guide setup invocation; legacy I/O remains
   the owner of lookup, mutation, persistence, and Roadmap continuation
@@ -131,7 +133,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Runtime Lookup Redirect without changing legacy lookup behavior.
+Prepare Guide Lookup Message Identity Handoff without changing runtime lookup.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -142,11 +144,12 @@ Prepare Runtime Lookup Redirect without changing legacy lookup behavior.
 
 ## Blockers
 Guide Discord execution remains coupled to message lookup, channel destination,
-channel ensure, partial failure, and Roadmap continuation. The pre-Plan lookup
-result is now represented by an unwired Application port. Channel
-re-resolution would add legacy-incompatible timing/count/failure behavior, so
-no production lookup adapter or runtime redirect exists.
+channel ensure, partial failure, and Roadmap continuation. The production
+Lookup Port maps all failures to unavailable but its public result lacks the
+exact `Message` object required by the legacy edit branch. Channel
+re-resolution or a second fetch would add legacy-incompatible timing/count/failure
+behavior, so runtime lookup redirect remains blocked.
 
 ## Last Updated
-2026-08-08: Runtime Pair Creation-only integrated; Pair ports remain unused and
-legacy I/O behavior remains unchanged.
+2026-08-09: Runtime Lookup Redirect preparation completed; Pair ports remain
+unused and legacy lookup/mutation behavior remains unchanged.
