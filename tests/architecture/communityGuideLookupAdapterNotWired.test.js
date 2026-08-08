@@ -11,5 +11,5 @@ for (const file of ['src/composition/communityGuideReadFeature.js', 'src/composi
     assert.equal(fs.readFileSync(path.join(root, file), 'utf8').includes('GuidePublicationMessageLookupDiscordAdapter'), false, file);
   }
 }
-assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationMessageMutationDiscordAdapter.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationMessageMutationDiscordAdapter.js')), true);
 console.log('Guide production lookup adapter remains not wired');

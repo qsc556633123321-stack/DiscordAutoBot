@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..', '..');
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationResourceSession.js')), true);
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationMessageLookupDiscordAdapter.js')), true);
-assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationMessageMutationDiscordAdapter.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationMessageMutationDiscordAdapter.js')), true);
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideMutationAdapterFeature.js')), false);
 assert.equal(runtime.includes('GuidePublicationResourceSession'), false);
 assert.equal(runtime.includes('GuidePublicationMessageMutationDiscordAdapter'), false);
