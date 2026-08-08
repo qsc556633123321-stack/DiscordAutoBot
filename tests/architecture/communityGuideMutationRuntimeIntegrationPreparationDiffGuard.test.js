@@ -5,7 +5,8 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..', '..');
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 assert.match(runtime, /async function setupCommunityGuide/);
-assert.equal(/buildGuidePublicationMutationPlan/.test(runtime), false);
+assert.match(runtime, /buildGuidePublicationMutationPlan/);
+assert.match(runtime, /GuidePublicationOperationType/);
 for (const file of [
   'src/infrastructure/community/discordGuidePublicationAdapter.js',
   'src/application/community/guidePublication/GuidePublicationPort.js',

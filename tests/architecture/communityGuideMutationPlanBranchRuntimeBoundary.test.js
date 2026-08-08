@@ -1,0 +1,15 @@
+const assert = require('node:assert');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+assert.match(runtime, /GuidePublicationOperationType/);
+assert.match(runtime, /createGuidePublicationMutationInput/);
+assert.match(runtime, /buildGuidePublicationMutationPlan/);
+assert.match(runtime, /mutationPlan\.operation === GuidePublicationOperationType\.EditExistingMessage/);
+assert.match(runtime, /mutationPlan\.operation === GuidePublicationOperationType\.SendNewMessage/);
+assert.match(runtime, /await message\.edit\(payload\)/);
+assert.match(runtime, /message = await channel\.send\(payload\)/);
+assert.match(runtime, /saveOnboarding\(guild\.id/);
+assert.equal(/GuidePublicationPort|discordGuidePublicationAdapter|communityGuidePublicationFeature/.test(runtime), false);
+console.log('community Guide mutation Plan branch runtime boundary passed');

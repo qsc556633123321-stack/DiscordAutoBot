@@ -43,3 +43,6 @@ Community remains **Migration In Progress**.
 
 Guide Publication Mutation Runtime Integration Preparation is complete; no
 runtime migration, port, adapter, or persistence replacement is approved.
+
+Guide Publication Mutation Plan Branch Runtime Integration is complete for the
+branch decision only. Community remains **Migration In Progress**.

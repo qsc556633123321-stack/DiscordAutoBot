@@ -15,3 +15,6 @@ No execution integration is approved. The next safe work remains additional base
 
 The preparation slice now has branch evidence for a future Plan-controlled
 edit/send review, but does not perform that integration.
+
+Runtime Integration Slice #4 completed only the Plan-controlled branch. No
+Discord execution or persistence migration is approved.

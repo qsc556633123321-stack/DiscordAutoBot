@@ -9,7 +9,10 @@ const permissionTemplates = require('../config/permissionTemplates');
 const {
   fromLegacyPublicationRecord,
   mapLegacyWelcomeDeliveryRequest,
-  buildCommunityWelcomeMessage
+  buildCommunityWelcomeMessage,
+  GuidePublicationOperationType,
+  createGuidePublicationMutationInput,
+  buildGuidePublicationMutationPlan
 } = require('../application/community');
 const { createCommunityAboutModel } = require('../domain/community/communityAbout');
 const { createCommunityRoadmapFeature } = require('../composition/communityRoadmapFeature');
@@ -174,10 +177,20 @@ async function setupCommunityGuide(guild, options = {}) {
   if (guideMessageId && options.mode !== 'force') {
     message = await channel.messages.fetch(guideMessageId).catch(() => null);
   }
-  if (message) {
+  const mutationInput = createGuidePublicationMutationInput({
+    guildId: guild.id,
+    mode: options.mode,
+    trackedMessageId: guideMessageId,
+    existingMessageAvailable: Boolean(message),
+    existingMessageLookupAttempted: Boolean(guideMessageId) && options.mode !== 'force'
+  });
+  const mutationPlan = buildGuidePublicationMutationPlan(mutationInput);
+  if (mutationPlan.operation === GuidePublicationOperationType.EditExistingMessage) {
     await message.edit(payload);
-  } else {
+  } else if (mutationPlan.operation === GuidePublicationOperationType.SendNewMessage) {
     message = await channel.send(payload);
+  } else {
+    throw new Error(`Unsupported Guide publication operation: ${mutationPlan.operation}`);
   }
   saveOnboarding(guild.id, {
     guideChannelId: channel.id,

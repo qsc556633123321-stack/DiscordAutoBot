@@ -47,3 +47,8 @@ legacy DM delivery owner remains retained.
 The only candidate carried forward is Plan Controls Edit/Send Branch. It must
 retain legacy Discord calls, persistence, Roadmap continuation, and responses.
 This is preparation evidence, not an approved runtime change.
+
+## Completed: Guide Plan Branch Runtime Integration
+
+The bounded Plan-controlled Edit/Send branch is complete. No further mutation
+surface is approved by this completion.

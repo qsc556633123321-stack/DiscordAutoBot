@@ -59,3 +59,8 @@ legacy-owned and unintegrated.
 
 Complete. Plan-controlled branch integration is future-ready with explicit
 exclusions; no runtime migration occurred.
+
+## Guide Publication Mutation Plan Branch Runtime Integration (2026-08-08)
+
+Complete. The Plan now controls the active Guide Edit/Send decision only.
+Discord execution, persistence, and Roadmap behavior are not migrated.

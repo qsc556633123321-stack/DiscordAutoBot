@@ -224,3 +224,9 @@ authorized by this baseline.
 
 Plan-controlled branch integration is documented for future review only. The
 legacy Guide mutation owner remains active and no legacy removal is authorized.
+
+## Guide Publication Mutation Plan Branch Runtime Integration (2026-08-08)
+
+The legacy `setupCommunityGuide()` now uses the prepared Plan solely for the
+Edit/Send branch decision. Discord execution, persistence, Roadmap, and all
+other Guide mutation responsibilities remain legacy-owned.

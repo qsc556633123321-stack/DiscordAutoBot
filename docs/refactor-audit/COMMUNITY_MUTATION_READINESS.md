@@ -18,3 +18,6 @@ no execution integration is approved.
 
 Runtime Integration Preparation identifies only a future Plan-controlled
 edit/send branch with explicit exclusions; no runtime integration occurred.
+
+The Plan-controlled Guide edit/send branch is now complete. The remaining
+Discord, persistence, and Roadmap mutation surfaces remain legacy-owned.

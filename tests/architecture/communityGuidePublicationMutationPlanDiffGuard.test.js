@@ -10,5 +10,6 @@ for (const file of [
 ]) assert.equal(fs.existsSync(path.join(root, file)), false, file);
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 assert.match(runtime, /async function setupCommunityGuide/);
-assert.equal(/buildGuidePublicationMutationPlan/.test(runtime), false);
+assert.match(runtime, /buildGuidePublicationMutationPlan/);
+assert.match(runtime, /GuidePublicationOperationType/);
 console.log('guide publication mutation plan diff guard passed');
