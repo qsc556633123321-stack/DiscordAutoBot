@@ -219,3 +219,8 @@ publication owner.
 Guide edit/send/persistence execution is now characterized as legacy behavior.
 No execution port, adapter, persistence migration, or runtime integration is
 authorized by this baseline.
+
+## Guide Publication Runtime Integration Preparation Update (2026-08-08)
+
+Plan-controlled branch integration is documented for future review only. The
+legacy Guide mutation owner remains active and no legacy removal is authorized.

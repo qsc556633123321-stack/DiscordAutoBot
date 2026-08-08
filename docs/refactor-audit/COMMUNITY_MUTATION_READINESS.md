@@ -15,3 +15,6 @@ artifact. It does not change the no-runtime-integration recommendation.
 
 Guide Publication Mutation Execution is characterized as legacy behavior only;
 no execution integration is approved.
+
+Runtime Integration Preparation identifies only a future Plan-controlled
+edit/send branch with explicit exclusions; no runtime integration occurred.

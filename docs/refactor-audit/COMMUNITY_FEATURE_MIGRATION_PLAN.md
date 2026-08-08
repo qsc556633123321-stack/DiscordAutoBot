@@ -109,3 +109,6 @@ lookup, persistence, ports, adapters, and composition remain unchanged.
 `sendConciergeWelcome` now uses the Application barrel mapper and pure builder
 for its existing DM payload only. Channel lookup, DM API/catch behavior,
 persistence, and all broader delivery concerns remain legacy-owned.
+
+Guide publication runtime integration preparation is complete. Community Guide
+execution remains legacy-owned until a separate bounded integration review.

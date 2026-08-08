@@ -1,0 +1,22 @@
+[
+  { "id": "RI-B01", "mode": "normal", "trackedMessageId": "guide-1", "fetch": "message", "operation": "EditExistingMessage" },
+  { "id": "RI-B02", "mode": "refresh", "trackedMessageId": "guide-1", "fetch": "message", "operation": "EditExistingMessage" },
+  { "id": "RI-B03", "mode": "force", "trackedMessageId": "guide-1", "fetch": "not-attempted", "operation": "SendNewMessage" },
+  { "id": "RI-B04", "mode": "normal", "trackedMessageId": null, "fetch": "not-attempted", "operation": "SendNewMessage" },
+  { "id": "RI-B05", "mode": "normal", "trackedMessageId": null, "fetch": "not-attempted", "operation": "SendNewMessage" },
+  { "id": "RI-B06", "mode": "normal", "fetch": "not-attempted", "operation": "SendNewMessage" },
+  { "id": "RI-B07", "mode": "normal", "trackedMessageId": "", "fetch": "not-attempted", "operation": "SendNewMessage" },
+  { "id": "RI-B08", "mode": "normal", "trackedMessageId": 7, "fetch": "message", "operation": "EditExistingMessage" },
+  { "id": "RI-B09", "mode": "normal", "trackedMessageId": { "legacy": true }, "fetch": "message", "operation": "EditExistingMessage" },
+  { "id": "RI-B10", "mode": "normal", "trackedMessageId": ["legacy"], "fetch": "message", "operation": "EditExistingMessage" },
+  { "id": "RI-B11", "mode": "normal", "trackedMessageId": "guide-1", "fetch": "null", "operation": "SendNewMessage" },
+  { "id": "RI-B12", "mode": "normal", "trackedMessageId": "guide-1", "fetch": "reject", "operation": "SendNewMessage" },
+  { "id": "RI-B13", "mode": "normal", "trackedMessageId": "guide-1", "fetch": "message", "operation": "EditExistingMessage" },
+  { "id": "RI-B14", "mode": "normal", "trackedMessageId": null, "fetch": "not-attempted", "operation": "SendNewMessage" },
+  { "id": "RI-B15", "mode": "normal", "trackedMessageId": "guide-1", "fetch": "message", "operation": "EditExistingMessage", "failure": "edit" },
+  { "id": "RI-B16", "mode": "normal", "trackedMessageId": null, "fetch": "not-attempted", "operation": "SendNewMessage", "failure": "send" },
+  { "id": "RI-B17", "mode": "normal", "trackedMessageId": null, "fetch": "not-attempted", "operation": "SendNewMessage", "failure": "persistence" },
+  { "id": "RI-B18", "mode": "normal", "trackedMessageId": null, "fetch": "not-attempted", "operation": "SendNewMessage", "failure": "roadmap" },
+  { "id": "RI-B19", "mode": "normal", "trackedMessageId": "guide-1", "fetch": "message", "operation": "EditExistingMessage", "repeated": true },
+  { "id": "RI-B20", "mode": "normal", "trackedMessageId": "guide-1", "fetch": "message", "operation": "EditExistingMessage", "unknownFields": true }
+]

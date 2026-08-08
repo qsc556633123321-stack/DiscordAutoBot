@@ -61,3 +61,6 @@ Guide mutation, send, edit, or persistence decision.
 
 Roadmap publication **read** integration is also complete. It does not approve
 Roadmap mutation, persistence, writer, Bootstrap, or Rebuild migration.
+
+Preparation evidence identifies Plan-controlled edit/send as the only future
+candidate; current runtime integration remains unapproved.

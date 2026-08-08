@@ -12,3 +12,6 @@
 | H. No Mutation Runtime Integration | Ready | preserves frozen behavior |
 
 No execution integration is approved. The next safe work remains additional baseline evidence only.
+
+The preparation slice now has branch evidence for a future Plan-controlled
+edit/send review, but does not perform that integration.

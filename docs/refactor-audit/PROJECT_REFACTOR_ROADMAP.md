@@ -42,3 +42,7 @@ adapter, Result return shape, or full delivery migration.
 The Welcome Message Builder Runtime Integration now delegates only inline payload
 construction through the Application barrel. It does not move lookup, delivery,
 error handling, persistence, or runtime ownership.
+
+Guide publication mutation has completed Plan and execution preparation. The
+next possible scoped review is Plan-controlled edit/send only; runtime remains
+unchanged.

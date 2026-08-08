@@ -41,3 +41,9 @@ payload construction point; it does not migrate the member-DM runtime owner.
 
 Result characterization is complete and approves no new mutation slice: the
 legacy DM delivery owner remains retained.
+
+## Guide Publication Runtime Integration Preparation
+
+The only candidate carried forward is Plan Controls Edit/Send Branch. It must
+retain legacy Discord calls, persistence, Roadmap continuation, and responses.
+This is preparation evidence, not an approved runtime change.

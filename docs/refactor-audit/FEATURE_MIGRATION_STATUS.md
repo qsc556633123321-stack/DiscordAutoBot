@@ -40,3 +40,6 @@ Guide Publication Mutation Plan is prepared but not integrated. Community remain
 
 Guide Publication Mutation Execution is characterized and remains legacy-owned;
 Community remains **Migration In Progress**.
+
+Guide Publication Mutation Runtime Integration Preparation is complete; no
+runtime migration, port, adapter, or persistence replacement is approved.

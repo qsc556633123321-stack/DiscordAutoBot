@@ -10,3 +10,6 @@
 | F. Full Guide publication mutation migration | Blocked | channel ensure, permissions, publication, and persistence are one legacy workflow |
 
 The first recommended future work is Candidate B only if a separate shadow-observation contract is approved. **No Runtime Integration Approved** in this slice.
+
+Runtime Integration Preparation supersedes the shadow recommendation: Candidate
+D may be reviewed later with explicit legacy execution/persistence exclusions.

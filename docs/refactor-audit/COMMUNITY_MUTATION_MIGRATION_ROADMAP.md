@@ -54,3 +54,8 @@ Complete as a pure plan artifact. Guide publication mutation remains unintegrate
 
 Complete as baseline evidence only. Message execution and persistence remain
 legacy-owned and unintegrated.
+
+## Guide Publication Mutation Runtime Integration Preparation (2026-08-08)
+
+Complete. Plan-controlled branch integration is future-ready with explicit
+exclusions; no runtime migration occurred.
