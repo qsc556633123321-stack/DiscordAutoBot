@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Production Lookup Adapter Implementation
+Guide Mutation Adapter Preparation Using Production Session
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -48,6 +48,8 @@ Estimated local refactor progress: 65%
   or runtime wiring
 - Guide production Lookup Adapter implemented against the existing Session and
   Lookup Port, deliberately without composition or runtime wiring
+- Guide Mutation Adapter session-injection, result/failure mapping, adapter
+  pair continuity, and isolation frozen with test-only candidate coverage
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -73,6 +75,8 @@ Estimated local refactor progress: 65%
 - Guide Lookup Adapter using Session boundary preparation documentation/tests
 - Guide production Lookup Adapter implementation, compatibility, continuity,
   isolation, port compliance, and not-wired guards
+- Guide Mutation Adapter using production Session preparation, with no
+  production Mutation Adapter, composition wiring, or runtime redirect
 
 ### Legacy
 - Discord mutation execution
@@ -100,8 +104,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Guide Mutation Adapter using the production Session; do not add
-composition wiring or redirect legacy runtime execution.
+Implement one production Guide Mutation Adapter using the existing Session;
+keep it unwired from composition and legacy runtime execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -118,5 +122,6 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide production Lookup Adapter implemented but not wired; no
-Mutation Adapter, composition wiring, or runtime migration.
+2026-08-08: Guide Mutation Adapter behavior prepared against the production
+Session with frozen test-only candidate coverage; no production adapter,
+composition wiring, or runtime migration.
