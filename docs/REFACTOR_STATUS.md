@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Production Mutation Adapter Implementation
+Guide Per-Invocation Adapter Pair Composition Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -52,6 +52,8 @@ Estimated local refactor progress: 65%
   pair continuity, and isolation frozen with test-only candidate coverage
 - Guide production Mutation Adapter implemented against the existing Resource
   Session and Mutation Port shape, deliberately without runtime wiring
+- Guide per-invocation lookup/mutation adapter-pair lifetime, ordering,
+  persistence handoff, isolation, and composition candidates characterized
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -81,6 +83,8 @@ Estimated local refactor progress: 65%
   production Mutation Adapter, composition wiring, or runtime redirect
 - Guide production Mutation Adapter implementation, compatibility, continuity,
   isolation, port compliance, and not-wired guards
+- Guide adapter-pair composition preparation with test-only factory; no
+  production pair factory, composition feature, or runtime redirect
 
 ### Legacy
 - Discord mutation execution
@@ -108,8 +112,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare per-invocation Guide lookup/mutation adapter-pair composition without a
-runtime redirect.
+Implement one stateless production Guide adapter-pair factory, not wired to
+composition or runtime.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -126,5 +130,5 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide production Mutation Adapter implemented but not wired; no
-composition wiring or runtime migration.
+2026-08-08: Guide adapter-pair composition boundary prepared with test-only
+factory and frozen ordering; no production pair factory or runtime migration.
