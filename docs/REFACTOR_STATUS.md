@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Execution Request Runtime Integration Preparation — Blocked
+Guide Execution Request Post-Persistence Reassessment
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -20,6 +20,8 @@ Estimated local refactor progress: 65%
   infrastructure, and composition layers
 - Execution Request runtime preparation deferred pending an explicit baseline
   decision
+- Execution Request reassessed after persistence migration; runtime integration
+  rejected and Guide-specific Discord mutation port preparation selected next
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -59,9 +61,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Re-baseline the Guide Execution Request preparation specification on the
-post-`b97aa32` repository, explicitly excluding the completed persistence
-writer migration from its diff guard.
+Prepare a Guide-specific Discord Message Mutation Port contract without
+changing the legacy Discord execution runtime.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -71,11 +72,9 @@ writer migration from its diff guard.
 - Quality gate PASS
 
 ## Blockers
-The requested Execution Request preparation specification requires `25225fb`
-and a clean tree. Current `main` is `b97aa32` and contains the later approved
-persistence writer migration; eight audit/analyzer generated reports are also
-unstaged. See
-`docs/refactor-audit/COMMUNITY_GUIDE_EXECUTION_REQUEST_RUNTIME_PREPARATION_BLOCKERS.md`.
+Guide Discord execution remains coupled to message lookup, channel destination,
+channel ensure, partial failure, and Roadmap continuation. The existing
+Execution Request lacks the resource identity/reference inputs for a port.
 
 ## Last Updated
-2026-08-08: blocker-only pass recorded; no runtime migration performed.
+2026-08-08: post-persistence reassessment recorded; no runtime migration performed.

@@ -6,7 +6,7 @@
 | --- | --- | --- | --- | --- |
 | Guide Existing-Message Refresh | active | covered edit/fetch, partial parent/category prerequisites | shared ensure and record write | Needs more baseline |
 | Guide New-Message Publish | active | covered send/fetch/write failure | send-before-write duplicate risk | Needs more baseline |
-| Guide Message Record Persistence | active | covered missing/malformed/write failure | same record owns Roadmap and native task fields | Blocked |
+| Guide Message Record Persistence | active | covered missing/malformed/write failure | shared record ownership remains, writer/repository migrated | Migrated |
 | Guide Channel Ensure | active | category/channel/overwrite covered; some failures partial | layout/permission direct writes | Needs more baseline |
 | Guide Permission Ensure | active | swallowed overwrite failure covered | full overwrite replacement, Guest Gate coupling | Blocked |
 | Roadmap Existing-Message Refresh | active via direct command workflow | happy path only | shared record/command response | Needs more baseline |
@@ -27,7 +27,7 @@ writes, a shared legacy JSON record and command-level Guide/Roadmap ordering.
    the category-create, parent-move, Roadmap edit, and Roadmap send failures
    are now characterized.
 3. Full permission overwrite replacement is inseparable from channel ensure.
-4. JSON persistence is synchronous, non-atomic and shared with native task data.
+4. JSON persistence is synchronous, non-atomic and shared with native task data; its writer/repository is migrated but its contract remains intentionally unchanged.
 5. Indirect bootstrap/V3 callers have different best-effort error handling.
 
 ## Status

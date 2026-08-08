@@ -112,3 +112,11 @@ persistence, and all broader delivery concerns remain legacy-owned.
 
 Guide publication runtime integration preparation is complete. Community Guide
 execution remains legacy-owned until a separate bounded integration review.
+
+## Publication Persistence Migration Update (2026-08-08)
+
+The Guide/Roadmap publication writer/repository is migrated through the
+application, composition, and filesystem adapter boundary. Guide Discord
+execution remains legacy-owned. Execution Request is prepared but not
+integrated; the next preparation target is a Guide-specific Discord mutation
+port.

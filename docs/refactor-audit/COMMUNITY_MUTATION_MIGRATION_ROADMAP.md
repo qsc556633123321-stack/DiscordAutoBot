@@ -64,3 +64,11 @@ exclusions; no runtime migration occurred.
 
 Complete. The Plan now controls the active Guide Edit/Send decision only.
 Discord execution, persistence, and Roadmap behavior are not migrated.
+
+## Post-Persistence Reassessment (2026-08-08)
+
+The shared publication persistence writer/repository is now migrated while its
+legacy synchronous full-root behavior is preserved. Guide Discord execution
+and Roadmap continuation remain legacy-owned. `GuidePublicationExecutionRequest`
+is prepared but is not integrated into runtime; the next preparation boundary
+is a Guide-specific Discord mutation port.

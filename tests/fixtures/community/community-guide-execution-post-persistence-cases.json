@@ -1,0 +1,22 @@
+[
+  { "id": "ER-PP-01", "name": "edit normal", "mode": "refresh", "existingMessageAvailable": true, "trackedMessageId": "tracked", "operation": "EditExistingMessage" },
+  { "id": "ER-PP-02", "name": "edit refresh", "mode": "refresh", "existingMessageAvailable": true, "trackedMessageId": "refresh-id", "operation": "EditExistingMessage" },
+  { "id": "ER-PP-03", "name": "send force", "mode": "force", "existingMessageAvailable": true, "trackedMessageId": "tracked", "operation": "SendNewMessage" },
+  { "id": "ER-PP-04", "name": "send missing tracked id", "mode": "refresh", "existingMessageAvailable": false, "operation": "SendNewMessage" },
+  { "id": "ER-PP-05", "name": "send fetch null", "mode": "refresh", "existingMessageAvailable": false, "trackedMessageId": "tracked", "operation": "SendNewMessage" },
+  { "id": "ER-PP-06", "name": "send fetch rejection", "mode": "refresh", "existingMessageAvailable": false, "trackedMessageId": "tracked", "operation": "SendNewMessage" },
+  { "id": "ER-PP-07", "name": "numeric malformed tracked id", "mode": "refresh", "existingMessageAvailable": false, "trackedMessageId": 42, "operation": "SendNewMessage" },
+  { "id": "ER-PP-08", "name": "object malformed tracked id", "mode": "refresh", "existingMessageAvailable": false, "trackedMessageId": { "legacy": true }, "operation": "SendNewMessage" },
+  { "id": "ER-PP-09", "name": "array malformed tracked id", "mode": "refresh", "existingMessageAvailable": false, "trackedMessageId": ["legacy"], "operation": "SendNewMessage" },
+  { "id": "ER-PP-10", "name": "edit payload", "mode": "refresh", "existingMessageAvailable": true, "trackedMessageId": "tracked", "operation": "EditExistingMessage" },
+  { "id": "ER-PP-11", "name": "send payload", "mode": "force", "existingMessageAvailable": false, "operation": "SendNewMessage" },
+  { "id": "ER-PP-12", "name": "edit failure", "mode": "refresh", "existingMessageAvailable": true, "trackedMessageId": "tracked", "operation": "EditExistingMessage", "failure": "edit" },
+  { "id": "ER-PP-13", "name": "send failure", "mode": "force", "existingMessageAvailable": false, "operation": "SendNewMessage", "failure": "send" },
+  { "id": "ER-PP-14", "name": "send generated id", "mode": "force", "existingMessageAvailable": false, "operation": "SendNewMessage", "generatedMessageId": "sent" },
+  { "id": "ER-PP-15", "name": "persistence failure", "mode": "force", "existingMessageAvailable": false, "operation": "SendNewMessage", "failure": "persistence" },
+  { "id": "ER-PP-16", "name": "roadmap continuation", "mode": "refresh", "existingMessageAvailable": true, "trackedMessageId": "tracked", "operation": "EditExistingMessage", "roadmap": true },
+  { "id": "ER-PP-17", "name": "repeated invocation", "mode": "refresh", "existingMessageAvailable": true, "trackedMessageId": "tracked", "operation": "EditExistingMessage" },
+  { "id": "ER-PP-18", "name": "unknown payload field", "mode": "force", "existingMessageAvailable": false, "operation": "SendNewMessage", "unknownPayloadField": true },
+  { "id": "ER-PP-19", "name": "immutable payload reference", "mode": "refresh", "existingMessageAvailable": true, "trackedMessageId": "tracked", "operation": "EditExistingMessage" },
+  { "id": "ER-PP-20", "name": "force malformed tracked id", "mode": "force", "existingMessageAvailable": true, "trackedMessageId": { "legacy": true }, "operation": "SendNewMessage" }
+]

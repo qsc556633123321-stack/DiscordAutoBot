@@ -52,3 +52,10 @@ This is preparation evidence, not an approved runtime change.
 
 The bounded Plan-controlled Edit/Send branch is complete. No further mutation
 surface is approved by this completion.
+
+## Post-Persistence Candidate Update
+
+Publication persistence writer/repository migration is complete. The next
+candidate is **Guide-specific Discord Mutation Port Preparation** only. Do not
+redirect runtime through `GuidePublicationExecutionRequest`: it lacks message
+and destination resources and would add no useful runtime seam.

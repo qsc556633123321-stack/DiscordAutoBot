@@ -48,3 +48,16 @@ Guide Publication Mutation Plan Branch Runtime Integration is complete for the
 branch decision only. Community remains **Migration In Progress**.
 
 Guide Discord Mutation Execution Contract is **Prepared / Not Integrated**.
+
+## Community Publication Update (2026-08-08)
+
+| Capability | Status |
+| --- | --- |
+| Guide/Roadmap publication persistence writer/repository | Migrated |
+| Guide Plan Edit/Send decision | Integrated for branch decision |
+| Guide Discord edit/send execution | Legacy |
+| Guide Execution Request | Prepared / Not Integrated |
+| Community feature migration | In Progress |
+
+The next approved preparation is a Guide-specific Discord mutation port; this
+does not authorize an Execution Request runtime redirect.

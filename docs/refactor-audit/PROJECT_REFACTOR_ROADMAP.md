@@ -46,3 +46,11 @@ error handling, persistence, or runtime ownership.
 Guide publication mutation has completed Plan and execution preparation. The
 next possible scoped review is Plan-controlled edit/send only; runtime remains
 unchanged.
+
+## Community Guide Publication Position (2026-08-08)
+
+Publication persistence has moved into the new architecture without changing
+its legacy compatibility semantics. Guide Discord message mutation remains a
+separate legacy boundary. Do not treat the existing Execution Request contract
+as a complete port input; first characterize a Guide-specific Discord mutation
+port with message lookup and destination identity.
