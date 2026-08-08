@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Publication Persistence Writer/Repository Migration
+Guide Execution Request Runtime Integration Preparation — Blocked
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -18,6 +18,8 @@ Estimated local refactor progress: 65%
 - Guide runtime integration started
 - Guide publication persistence writer/repository migrated through application,
   infrastructure, and composition layers
+- Execution Request runtime preparation deferred pending an explicit baseline
+  decision
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -57,7 +59,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Migrate Guide persistence writer/repository while preserving existing runtime behavior.
+Re-baseline the Guide Execution Request preparation specification on the
+post-`b97aa32` repository, explicitly excluding the completed persistence
+writer migration from its diff guard.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -67,7 +71,11 @@ Migrate Guide persistence writer/repository while preserving existing runtime be
 - Quality gate PASS
 
 ## Blockers
-None currently documented.
+The requested Execution Request preparation specification requires `25225fb`
+and a clean tree. Current `main` is `b97aa32` and contains the later approved
+persistence writer migration; eight audit/analyzer generated reports are also
+unstaged. See
+`docs/refactor-audit/COMMUNITY_GUIDE_EXECUTION_REQUEST_RUNTIME_PREPARATION_BLOCKERS.md`.
 
 ## Last Updated
-Update this file after every approved refactor slice.
+2026-08-08: blocker-only pass recorded; no runtime migration performed.
