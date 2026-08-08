@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Message Lookup Infrastructure Adapter Preparation
+Guide Channel Resource Boundary Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -36,6 +36,8 @@ Estimated local refactor progress: 65%
   wiring
 - Guide lookup infrastructure adapter dependency, channel-resolution, and
   error/count risks characterized with test-only resources; no adapter added
+- Guide channel resource lifecycle and same-resource continuity characterized;
+  production adapters remain blocked by re-resolution risk
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -54,6 +56,7 @@ Estimated local refactor progress: 65%
 - Guide pre-Plan message lookup preparation documentation and frozen tests
 - Guide Publication Message Lookup Application Port and lookup test fake
 - Guide Message Lookup Infrastructure Adapter preparation documentation/tests
+- Guide Channel Resource Boundary preparation documentation/tests
 
 ### Legacy
 - Discord mutation execution
@@ -81,8 +84,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the additional Guide channel-resource boundary only; do not add an
-adapter implementation, composition wiring, or change legacy execution.
+Prepare an Infrastructure Resource Session boundary only; do not implement a
+session, adapter, composition wiring, or change legacy execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -99,5 +102,5 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide lookup Infrastructure Adapter boundary characterized; no
-runtime migration, production adapter, or composition wiring.
+2026-08-08: Guide Channel Resource Boundary characterized; no runtime
+migration, production resource/lookup/mutation adapter, or composition wiring.
