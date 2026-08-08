@@ -18,3 +18,6 @@ edit/send review, but does not perform that integration.
 
 Runtime Integration Slice #4 completed only the Plan-controlled branch. No
 Discord execution or persistence migration is approved.
+
+Discord execution contracts are now prepared but unintegrated. Legacy runtime
+still owns edit/send calls and all surrounding behavior.

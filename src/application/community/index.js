@@ -8,6 +8,9 @@ const { GuidePublicationOperationType } = require('./guidePublication/GuidePubli
 const { createGuidePublicationMutationInput } = require('./guidePublication/GuidePublicationMutationInput');
 const { createGuidePublicationMutationPlan } = require('./guidePublication/GuidePublicationMutationPlan');
 const { buildGuidePublicationMutationPlan } = require('./guidePublication/buildGuidePublicationMutationPlan');
+const { GuidePublicationExecutionFailure } = require('./guideExecution/GuidePublicationExecutionFailure');
+const { createGuidePublicationExecutionRequest } = require('./guideExecution/GuidePublicationExecutionRequest');
+const { createGuidePublicationExecutionResult } = require('./guideExecution/GuidePublicationExecutionResult');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -22,4 +25,7 @@ module.exports = {
   createGuidePublicationMutationInput,
   createGuidePublicationMutationPlan,
   buildGuidePublicationMutationPlan,
+  GuidePublicationExecutionFailure,
+  createGuidePublicationExecutionRequest,
+  createGuidePublicationExecutionResult,
 };

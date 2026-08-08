@@ -46,3 +46,5 @@ runtime migration, port, adapter, or persistence replacement is approved.
 
 Guide Publication Mutation Plan Branch Runtime Integration is complete for the
 branch decision only. Community remains **Migration In Progress**.
+
+Guide Discord Mutation Execution Contract is **Prepared / Not Integrated**.

@@ -1,0 +1,22 @@
+[
+  { "id": "DE-B01", "operation": "EditExistingMessage", "success": true, "messageId": "tracked" },
+  { "id": "DE-B02", "operation": "EditExistingMessage", "success": false, "failureKind": "EditRejected" },
+  { "id": "DE-B03", "operation": "SendNewMessage", "success": true, "messageId": "sent" },
+  { "id": "DE-B04", "operation": "SendNewMessage", "success": false, "failureKind": "SendRejected" },
+  { "id": "DE-B05", "operation": "SendNewMessage", "success": true, "messageId": "generated" },
+  { "id": "DE-B06", "operation": "SendNewMessage", "success": true },
+  { "id": "DE-B07", "operation": "SendNewMessage", "success": false, "failureKind": "Unknown" },
+  { "id": "DE-B08", "operation": "EditExistingMessage", "trackedMessageId": "tracked" },
+  { "id": "DE-B09", "operation": "SendNewMessage" },
+  { "id": "DE-B10", "operation": "EditExistingMessage", "trackedMessageId": "tracked" },
+  { "id": "DE-B11", "operation": "EditExistingMessage", "trackedMessageId": { "legacy": true } },
+  { "id": "DE-B12", "operation": "SendNewMessage", "trackedMessageId": "tracked" },
+  { "id": "DE-B13", "operation": "EditExistingMessage", "trackedMessageId": "tracked" },
+  { "id": "DE-B14", "operation": "EditExistingMessage", "trackedMessageId": "tracked" },
+  { "id": "DE-B15", "operation": "SendNewMessage", "success": true, "messageId": "sent" },
+  { "id": "DE-B16", "operation": "SendNewMessage", "success": true, "messageId": "sent" },
+  { "id": "DE-B17", "operation": "EditExistingMessage", "success": true, "messageId": "tracked" },
+  { "id": "DE-B18", "operation": "SendNewMessage", "success": true, "messageId": "sent" },
+  { "id": "DE-B19", "operation": "SendNewMessage", "success": false, "failureKind": "Unknown" },
+  { "id": "DE-B20", "operation": "EditExistingMessage", "trackedMessageId": "tracked" }
+]

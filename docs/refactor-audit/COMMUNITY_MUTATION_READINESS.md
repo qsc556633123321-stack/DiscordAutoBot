@@ -21,3 +21,6 @@ edit/send branch with explicit exclusions; no runtime integration occurred.
 
 The Plan-controlled Guide edit/send branch is now complete. The remaining
 Discord, persistence, and Roadmap mutation surfaces remain legacy-owned.
+
+Guide Discord Mutation Execution Request/Result contracts are prepared only;
+no Discord execution runtime integration is approved.
