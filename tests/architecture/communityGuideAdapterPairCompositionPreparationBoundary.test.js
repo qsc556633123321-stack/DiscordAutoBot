@@ -10,6 +10,6 @@ for (const file of [
   'src/infrastructure/community/guidePublication/GuidePublicationMessageMutationDiscordAdapter.js'
 ]) assert.equal(fs.existsSync(path.join(root, file)), true, file);
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js')), true);
-assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), true);
 assert.equal(runtime.includes('GuidePublicationAdapterPairFactory'), false);
 console.log('Guide adapter pair composition preparation boundary passed');

@@ -17,6 +17,7 @@ const SOURCE_OF_TRUTH = new Set([
   'src/infrastructure/community/guidePublication/GuidePublicationMessageLookupDiscordAdapter.js',
   'src/infrastructure/community/guidePublication/GuidePublicationMessageMutationDiscordAdapter.js',
   'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js',
+  'src/composition/communityGuideAdapterPairFeature.js',
 ]);
 
 function jsFiles(dir) {

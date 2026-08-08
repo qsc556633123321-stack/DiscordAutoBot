@@ -19,5 +19,5 @@ for (const file of [
   'docs/refactor-audit/COMMUNITY_GUIDE_ADAPTER_PAIR_COMPOSITION_FEATURE_READINESS.md',
   'tests/fakes/community/FakeCommunityGuideAdapterPairCompositionFeature.js'
 ]) assert.equal(fs.existsSync(path.join(root, file)), true, file);
-assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), true);
 console.log('Guide adapter pair composition feature preparation integrity passed');

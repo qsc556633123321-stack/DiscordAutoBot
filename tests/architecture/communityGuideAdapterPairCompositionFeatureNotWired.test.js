@@ -4,8 +4,10 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..', '..');
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 
-assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js')), true);
+assert.equal(runtime.includes('communityGuideAdapterPairFeature'), false);
 assert.equal(runtime.includes('GuidePublicationAdapterPairFactory'), false);
+assert.equal(runtime.includes('GuidePublicationResourceSession'), false);
 assert.match(runtime, /channel\.messages\.fetch\(guideMessageId\)\.catch\(\(\) => null\)/);
-assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), true);
-console.log('Guide production adapter pair factory not wired guard passed');
+assert.match(runtime, /message\.edit\(payload\)/);
+assert.match(runtime, /channel\.send\(payload\)/);
+console.log('Community guide adapter pair composition feature not-wired guard passed');

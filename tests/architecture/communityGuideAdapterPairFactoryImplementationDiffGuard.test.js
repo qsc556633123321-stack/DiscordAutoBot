@@ -6,5 +6,5 @@ const source = fs.readFileSync(path.join(root, 'src/infrastructure/community/gui
 
 assert.equal(/module\.exports = \{ createGuidePublicationAdapterPair \}/.test(source), true);
 assert.equal(/currentPair|currentSession|cache|registry|AsyncLocalStorage|singleton/.test(source), false);
-assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), true);
 console.log('Guide production adapter pair factory implementation diff guard passed');
