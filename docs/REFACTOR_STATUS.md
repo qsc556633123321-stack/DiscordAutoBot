@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Channel Resource Boundary Preparation
+Guide Infrastructure Resource Session Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -38,6 +38,9 @@ Estimated local refactor progress: 65%
   error/count risks characterized with test-only resources; no adapter added
 - Guide channel resource lifecycle and same-resource continuity characterized;
   production adapters remain blocked by re-resolution risk
+- Guide infrastructure-local, per-invocation resource-session contract,
+  lifetime, continuity, bridge models, and frozen failure/call-count fixtures
+  prepared without production implementation or runtime wiring
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -57,6 +60,7 @@ Estimated local refactor progress: 65%
 - Guide Publication Message Lookup Application Port and lookup test fake
 - Guide Message Lookup Infrastructure Adapter preparation documentation/tests
 - Guide Channel Resource Boundary preparation documentation/tests
+- Guide Infrastructure Resource Session preparation documentation/tests
 
 ### Legacy
 - Discord mutation execution
@@ -84,8 +88,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare an Infrastructure Resource Session boundary only; do not implement a
-session, adapter, composition wiring, or change legacy execution.
+Implement a production Guide resource session only in a separately approved
+slice; do not wire adapters or redirect legacy execution in that slice.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -102,5 +106,6 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide Channel Resource Boundary characterized; no runtime
-migration, production resource/lookup/mutation adapter, or composition wiring.
+2026-08-08: Guide Infrastructure Resource Session preparation completed; no
+runtime migration, production resource/lookup/mutation adapter, or composition
+wiring.

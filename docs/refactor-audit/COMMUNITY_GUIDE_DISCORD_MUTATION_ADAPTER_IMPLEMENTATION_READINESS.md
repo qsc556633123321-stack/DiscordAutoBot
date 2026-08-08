@@ -11,6 +11,6 @@
 | G. Edit + Send redirect | Rejected |
 | H. Reject current adapter design | Rejected |
 
-**Next recommended slice:** Infrastructure Resource Session Preparation. The
-channel resource lifecycle must be represented without independent
-re-resolution before any production adapter implementation is safe.
+Resource Session Preparation is complete. A future production session must
+preserve the ensured Channel and retained Message without independent
+re-resolution; production adapters and runtime redirect remain unapproved.

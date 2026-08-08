@@ -11,5 +11,6 @@
 | G. No further integration | Rejected | Lookup port is implemented |
 
 Production adapter implementation is not approved: scalar channel resolution
-adds a failure/count/timing surface absent from legacy runtime. The next
-candidate is Infrastructure Resource Session Preparation only.
+adds a failure/count/timing surface absent from legacy runtime. Resource Session
+Preparation is now complete; the next candidate is a separately approved
+production session implementation only, without adapter/runtime wiring.
