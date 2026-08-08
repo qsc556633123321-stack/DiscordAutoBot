@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Runtime Lookup Redirect Preparation
+Guide Lookup Message Identity Handoff Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -69,6 +69,8 @@ Estimated local refactor progress: 65%
 - Guide Runtime Lookup Redirect boundary characterized with frozen skip,
   failure, malformed-ID, identity, ordering, and test-only candidate coverage;
   runtime lookup remains legacy-owned
+- Guide Lookup Message Identity Handoff lifecycle, ownership, purity, isolation,
+  and no-second-fetch requirements frozen without production implementation
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -106,6 +108,8 @@ Estimated local refactor progress: 65%
 - Ensured Channel constructor contract is frozen; no runtime consumer added
 - Runtime creates a fresh Pair per Guide setup invocation; legacy I/O remains
   the owner of lookup, mutation, persistence, and Roadmap continuation
+- Exact Discord Message identity remains private to the Infrastructure Session;
+  no handoff accessor or runtime redirect exists
 
 ### Legacy
 - Discord mutation execution
@@ -133,7 +137,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Guide Lookup Message Identity Handoff without changing runtime lookup.
+Implement the Infrastructure Session retained-message accessor only, without runtime wiring.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -146,10 +150,10 @@ Prepare Guide Lookup Message Identity Handoff without changing runtime lookup.
 Guide Discord execution remains coupled to message lookup, channel destination,
 channel ensure, partial failure, and Roadmap continuation. The production
 Lookup Port maps all failures to unavailable but its public result lacks the
-exact `Message` object required by the legacy edit branch. Channel
-re-resolution or a second fetch would add legacy-incompatible timing/count/failure
-behavior, so runtime lookup redirect remains blocked.
+exact `Message` object required by the legacy edit branch. A Session-local,
+per-invocation handoff accessor is characterized but not implemented; channel
+re-resolution or a second fetch would add legacy-incompatible behavior.
 
 ## Last Updated
-2026-08-09: Runtime Lookup Redirect preparation completed; Pair ports remain
-unused and legacy lookup/mutation behavior remains unchanged.
+2026-08-09: Lookup Message Identity Handoff preparation completed; no accessor
+or runtime redirect was implemented and legacy lookup/mutation behavior remains unchanged.
