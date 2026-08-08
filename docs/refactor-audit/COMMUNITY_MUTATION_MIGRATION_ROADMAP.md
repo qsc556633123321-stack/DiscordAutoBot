@@ -8,6 +8,13 @@
 
 Current next mutation slice: **none approved**. The most likely future candidate is Guide Publish/Refresh, currently blocked by the dependencies above.
 
+## Guide-specific Discord Mutation Port Preparation (2026-08-08)
+
+The Guide-specific Port contract is now prepared with scalar identity, lookup
+ownership, result/failure semantics, and 30 frozen compatibility cases. This
+does not migrate Discord execution. The next bounded candidate is a production
+Application port interface plus test-adapter preparation only.
+
 ## Community Guide Mutation Baseline (2026-07-25)
 
 Guide mutation characterization is complete for the active setup/refresh

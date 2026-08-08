@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Execution Request Post-Persistence Reassessment
+Guide-specific Discord Mutation Port Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -22,6 +22,8 @@ Estimated local refactor progress: 65%
   decision
 - Execution Request reassessed after persistence migration; runtime integration
   rejected and Guide-specific Discord mutation port preparation selected next
+- Guide-specific Discord mutation identity, lookup, result, failure, and
+  compatibility contracts prepared without a runtime redirect
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -34,6 +36,7 @@ Estimated local refactor progress: 65%
 - Community read-only logic
 - Migration orchestration
 - Guide/Roadmap publication record persistence
+- Guide-specific Discord mutation contract preparation
 
 ### Legacy
 - Discord mutation execution
@@ -61,8 +64,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a Guide-specific Discord Message Mutation Port contract without
-changing the legacy Discord execution runtime.
+Prepare a production Guide-specific Discord Message Mutation Port interface and
+test adapter without adding a Discord adapter or changing legacy execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -73,8 +76,10 @@ changing the legacy Discord execution runtime.
 
 ## Blockers
 Guide Discord execution remains coupled to message lookup, channel destination,
-channel ensure, partial failure, and Roadmap continuation. The existing
-Execution Request lacks the resource identity/reference inputs for a port.
+channel ensure, partial failure, and Roadmap continuation. The prepared port
+contract has the scalar identity model, but no production adapter or runtime
+error/result mapping has been introduced.
 
 ## Last Updated
-2026-08-08: post-persistence reassessment recorded; no runtime migration performed.
+2026-08-08: Guide-specific Discord mutation port contract prepared; no runtime
+migration, adapter, or composition wiring performed.

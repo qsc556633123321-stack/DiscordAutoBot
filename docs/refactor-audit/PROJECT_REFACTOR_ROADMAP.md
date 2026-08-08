@@ -54,3 +54,9 @@ its legacy compatibility semantics. Guide Discord message mutation remains a
 separate legacy boundary. Do not treat the existing Execution Request contract
 as a complete port input; first characterize a Guide-specific Discord mutation
 port with message lookup and destination identity.
+
+## Guide-specific Port Preparation Update (2026-08-08)
+
+That characterization is complete as a contract-only slice. The next bounded
+step is a production Application port interface plus test-adapter preparation;
+legacy Discord mutation remains authoritative until a later integration slice.

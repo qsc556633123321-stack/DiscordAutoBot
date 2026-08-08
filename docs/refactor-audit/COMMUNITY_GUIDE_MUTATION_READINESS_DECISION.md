@@ -64,3 +64,11 @@ Roadmap mutation, persistence, writer, Bootstrap, or Rebuild migration.
 
 Preparation evidence identifies Plan-controlled edit/send as the only future
 candidate; current runtime integration remains unapproved.
+
+## Guide-specific Discord Mutation Port Preparation (2026-08-08)
+
+The resource identity, lookup ownership, request/result, failure, and
+compatibility contracts are frozen. This is preparation only: persistence is
+migrated, while Guide Discord execution and Roadmap continuation remain
+legacy-owned. The next candidate is an Application port interface plus a
+test-adapter preparation, not a Discord adapter or runtime redirect.

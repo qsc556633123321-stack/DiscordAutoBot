@@ -25,3 +25,8 @@ Discord, persistence, and Roadmap mutation surfaces remain legacy-owned.
 Guide Discord Mutation Execution Request/Result contracts remain prepared only.
 Post-persistence reassessment rejects their runtime integration; no Discord
 execution runtime integration is approved.
+
+Guide-specific Discord mutation port preparation is now complete. The scalar-ID
+contract is **Prepared / Not Integrated**; no production port, Discord adapter,
+composition feature, or runtime redirect was added. The next bounded candidate
+is a production Application port interface plus test-adapter preparation.

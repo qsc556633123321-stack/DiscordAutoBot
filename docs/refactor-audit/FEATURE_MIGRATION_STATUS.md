@@ -61,3 +61,9 @@ Guide Discord Mutation Execution Contract is **Prepared / Not Integrated**.
 
 The next approved preparation is a Guide-specific Discord mutation port; this
 does not authorize an Execution Request runtime redirect.
+
+## Guide Discord Mutation Port Preparation (2026-08-08)
+
+The Guide-specific scalar-ID contract is frozen and **Prepared / Not
+Integrated**. No Discord adapter, composition feature, or runtime redirect
+exists.

@@ -59,3 +59,10 @@ Publication persistence writer/repository migration is complete. The next
 candidate is **Guide-specific Discord Mutation Port Preparation** only. Do not
 redirect runtime through `GuidePublicationExecutionRequest`: it lacks message
 and destination resources and would add no useful runtime seam.
+
+## Post-Preparation Update
+
+Guide-specific Discord Mutation Port Preparation is complete. The recommended
+next slice is **Production Guide-specific Port Interface + Test Adapter
+Preparation**. It must not add a Discord adapter, composition wiring, or a
+runtime redirect.

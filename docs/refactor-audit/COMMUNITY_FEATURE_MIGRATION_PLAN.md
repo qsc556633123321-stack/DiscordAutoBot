@@ -120,3 +120,10 @@ application, composition, and filesystem adapter boundary. Guide Discord
 execution remains legacy-owned. Execution Request is prepared but not
 integrated; the next preparation target is a Guide-specific Discord mutation
 port.
+
+## Guide Discord Mutation Port Preparation (2026-08-08)
+
+The Guide Edit/Send boundary now has frozen resource identity, lookup ownership,
+result, failure, and compatibility evidence. This did not migrate Discord
+execution. Publication persistence remains new-architecture owned; Guide
+Discord lookup and `message.edit` / `channel.send` remain legacy-owned.
