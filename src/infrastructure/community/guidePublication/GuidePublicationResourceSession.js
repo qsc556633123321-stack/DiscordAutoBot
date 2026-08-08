@@ -18,10 +18,18 @@ function createGuidePublicationResourceSession({ ensuredChannel } = {}) {
     getChannelId() {
       return ensuredChannel.id;
     },
+    getRetainedMessage() {
+      return retainedMessage;
+    },
     async lookupTrackedMessage(messageId) {
-      const message = await ensuredChannel.messages.fetch(messageId);
-      retainedMessage = message || null;
-      return { available: Boolean(retainedMessage) };
+      try {
+        const message = await ensuredChannel.messages.fetch(messageId);
+        retainedMessage = message || null;
+        return { available: Boolean(retainedMessage) };
+      } catch (error) {
+        retainedMessage = null;
+        throw error;
+      }
     },
     async editTrackedMessage(payload) {
       if (!retainedMessage) {

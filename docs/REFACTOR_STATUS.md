@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Lookup Message Identity Handoff Preparation
+Guide Resource Session Retained Message Accessor Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -71,6 +71,8 @@ Estimated local refactor progress: 65%
   runtime lookup remains legacy-owned
 - Guide Lookup Message Identity Handoff lifecycle, ownership, purity, isolation,
   and no-second-fetch requirements frozen without production implementation
+- Guide Resource Session retained-message accessor implemented as synchronous,
+  read-only, per-session infrastructure capability without runtime wiring
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -109,7 +111,7 @@ Estimated local refactor progress: 65%
 - Runtime creates a fresh Pair per Guide setup invocation; legacy I/O remains
   the owner of lookup, mutation, persistence, and Roadmap continuation
 - Exact Discord Message identity remains private to the Infrastructure Session;
-  no handoff accessor or runtime redirect exists
+  the accessor is not exposed through Pair, Composition, Application, or Runtime
 
 ### Legacy
 - Discord mutation execution
@@ -137,7 +139,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the Infrastructure Session retained-message accessor only, without runtime wiring.
+Prepare a narrow Pair retained-message handoff capability without runtime redirect.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -151,9 +153,9 @@ Guide Discord execution remains coupled to message lookup, channel destination,
 channel ensure, partial failure, and Roadmap continuation. The production
 Lookup Port maps all failures to unavailable but its public result lacks the
 exact `Message` object required by the legacy edit branch. A Session-local,
-per-invocation handoff accessor is characterized but not implemented; channel
-re-resolution or a second fetch would add legacy-incompatible behavior.
+per-invocation accessor now retains exact identity but is not visible to Runtime;
+channel re-resolution or a second fetch would add legacy-incompatible behavior.
 
 ## Last Updated
-2026-08-09: Lookup Message Identity Handoff preparation completed; no accessor
-or runtime redirect was implemented and legacy lookup/mutation behavior remains unchanged.
+2026-08-09: Retained Message accessor implemented only in Resource Session;
+runtime lookup/mutation behavior remains unchanged.
