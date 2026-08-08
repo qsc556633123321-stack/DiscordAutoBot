@@ -15,6 +15,12 @@ ownership, result/failure semantics, and 30 frozen compatibility cases. This
 does not migrate Discord execution. The next bounded candidate is a production
 Application port interface plus test-adapter preparation only.
 
+## Guide Discord Mutation Application Port (2026-08-08)
+
+The Application Port interface and test fake are complete and not wired. The
+next possible preparation slice is the Guide-specific infrastructure adapter
+boundary; no adapter implementation or runtime redirect is approved.
+
 ## Community Guide Mutation Baseline (2026-07-25)
 
 Guide mutation characterization is complete for the active setup/refresh

@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide-specific Discord Mutation Port Preparation
+Guide Discord Mutation Application Port Interface
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -24,6 +24,8 @@ Estimated local refactor progress: 65%
   rejected and Guide-specific Discord mutation port preparation selected next
 - Guide-specific Discord mutation identity, lookup, result, failure, and
   compatibility contracts prepared without a runtime redirect
+- Guide-specific Application Port interface, immutable request/result contracts,
+  failure vocabulary, and test adapter implemented without wiring
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -37,6 +39,7 @@ Estimated local refactor progress: 65%
 - Migration orchestration
 - Guide/Roadmap publication record persistence
 - Guide-specific Discord mutation contract preparation
+- Guide-specific Discord mutation Application Port and test adapter
 
 ### Legacy
 - Discord mutation execution
@@ -64,8 +67,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a production Guide-specific Discord Message Mutation Port interface and
-test adapter without adding a Discord adapter or changing legacy execution.
+Prepare the Guide-specific Infrastructure Adapter boundary without implementing
+an adapter, composition wiring, or changing legacy execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -77,9 +80,9 @@ test adapter without adding a Discord adapter or changing legacy execution.
 ## Blockers
 Guide Discord execution remains coupled to message lookup, channel destination,
 channel ensure, partial failure, and Roadmap continuation. The prepared port
-contract has the scalar identity model, but no production adapter or runtime
-error/result mapping has been introduced.
+contract has the scalar identity model and an Application Port, but no
+production adapter or runtime error/result mapping has been introduced.
 
 ## Last Updated
-2026-08-08: Guide-specific Discord mutation port contract prepared; no runtime
-migration, adapter, or composition wiring performed.
+2026-08-08: Guide-specific Discord mutation Application Port and test adapter
+implemented; no runtime migration, Discord adapter, or composition wiring.

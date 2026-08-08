@@ -67,3 +67,10 @@ does not authorize an Execution Request runtime redirect.
 The Guide-specific scalar-ID contract is frozen and **Prepared / Not
 Integrated**. No Discord adapter, composition feature, or runtime redirect
 exists.
+
+## Guide Discord Mutation Application Port (2026-08-08)
+
+`GuidePublicationMessageMutationPort`: **Implemented / Not Wired**.
+Test Adapter: **Implemented**. Discord Production Adapter: **Not Implemented**.
+Guide Discord execution remains legacy-owned; Community remains Migration In
+Progress.

@@ -127,3 +127,9 @@ The Guide Edit/Send boundary now has frozen resource identity, lookup ownership,
 result, failure, and compatibility evidence. This did not migrate Discord
 execution. Publication persistence remains new-architecture owned; Guide
 Discord lookup and `message.edit` / `channel.send` remain legacy-owned.
+
+## Guide Discord Mutation Application Port (2026-08-08)
+
+The pure Application Port and test fake now represent Edit/Send identity and
+scalar result/failure contracts. They are not injected into runtime. Discord
+lookup/mutation, persistence handoff, and Roadmap continuation remain legacy.

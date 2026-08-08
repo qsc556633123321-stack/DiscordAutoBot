@@ -60,3 +60,9 @@ port with message lookup and destination identity.
 That characterization is complete as a contract-only slice. The next bounded
 step is a production Application port interface plus test-adapter preparation;
 legacy Discord mutation remains authoritative until a later integration slice.
+
+## Guide Discord Mutation Application Port (2026-08-08)
+
+The Application Port interface and test fake are now complete but not wired.
+The next preparation is infrastructure adapter characterization; production
+Discord execution remains legacy-owned.

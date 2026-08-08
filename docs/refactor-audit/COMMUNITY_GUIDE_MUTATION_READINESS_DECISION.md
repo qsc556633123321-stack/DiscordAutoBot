@@ -72,3 +72,9 @@ compatibility contracts are frozen. This is preparation only: persistence is
 migrated, while Guide Discord execution and Roadmap continuation remain
 legacy-owned. The next candidate is an Application port interface plus a
 test-adapter preparation, not a Discord adapter or runtime redirect.
+
+## Application Port Interface Implementation (2026-08-08)
+
+`GuidePublicationMessageMutationPort`, immutable Edit/Send requests, scalar
+results/failure vocabulary, and a test-only fake are now complete. No Discord
+adapter, composition feature, or runtime consumer was added.

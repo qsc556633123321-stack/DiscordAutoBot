@@ -66,3 +66,9 @@ Guide-specific Discord Mutation Port Preparation is complete. The recommended
 next slice is **Production Guide-specific Port Interface + Test Adapter
 Preparation**. It must not add a Discord adapter, composition wiring, or a
 runtime redirect.
+
+## Application Port Completion
+
+The Application Port and test adapter are now complete. The next recommended
+slice is **Guide-specific Infrastructure Adapter Preparation** only; do not add
+an adapter implementation, composition wiring, or runtime redirect.

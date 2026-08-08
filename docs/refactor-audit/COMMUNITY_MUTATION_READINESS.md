@@ -29,4 +29,8 @@ execution runtime integration is approved.
 Guide-specific Discord mutation port preparation is now complete. The scalar-ID
 contract is **Prepared / Not Integrated**; no production port, Discord adapter,
 composition feature, or runtime redirect was added. The next bounded candidate
-is a production Application port interface plus test-adapter preparation.
+was a production Application port interface plus test-adapter preparation.
+
+The Application port and test adapter are now implemented but not wired. The
+next bounded preparation candidate is the Guide-specific infrastructure adapter
+boundary; legacy Discord execution remains authoritative.

@@ -12,6 +12,15 @@ const { GuidePublicationExecutionFailure } = require('./guideExecution/GuidePubl
 const { createGuidePublicationExecutionRequest } = require('./guideExecution/GuidePublicationExecutionRequest');
 const { createGuidePublicationExecutionResult } = require('./guideExecution/GuidePublicationExecutionResult');
 const { createPersistCommunityPublicationRecordUseCase } = require('./persistCommunityPublicationRecordUseCase');
+const { assertGuidePublicationMessageMutationPort } = require('./ports/GuidePublicationMessageMutationPort');
+const { createGuidePublicationMessageEditRequest } = require('./guideDiscordMutation/GuidePublicationMessageEditRequest');
+const { createGuidePublicationMessageSendRequest } = require('./guideDiscordMutation/GuidePublicationMessageSendRequest');
+const { GuidePublicationMessageMutationFailure } = require('./guideDiscordMutation/GuidePublicationMessageMutationFailure');
+const {
+  createGuidePublicationMessageEditSuccess,
+  createGuidePublicationMessageSendSuccess,
+  createGuidePublicationMessageMutationFailure
+} = require('./guideDiscordMutation/GuidePublicationMessageMutationResult');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -30,4 +39,11 @@ module.exports = {
   createGuidePublicationExecutionRequest,
   createGuidePublicationExecutionResult,
   createPersistCommunityPublicationRecordUseCase,
+  assertGuidePublicationMessageMutationPort,
+  createGuidePublicationMessageEditRequest,
+  createGuidePublicationMessageSendRequest,
+  GuidePublicationMessageMutationFailure,
+  createGuidePublicationMessageEditSuccess,
+  createGuidePublicationMessageSendSuccess,
+  createGuidePublicationMessageMutationFailure,
 };
