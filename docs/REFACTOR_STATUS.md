@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Lookup Adapter Preparation Using Production Session
+Guide Production Lookup Adapter Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -46,6 +46,8 @@ Estimated local refactor progress: 65%
 - Guide Lookup Adapter session injection, result mapping, continuity, and
   isolation prepared with test-only adapter coverage; no production adapter
   or runtime wiring
+- Guide production Lookup Adapter implemented against the existing Session and
+  Lookup Port, deliberately without composition or runtime wiring
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -69,6 +71,8 @@ Estimated local refactor progress: 65%
 - Guide production Resource Session implementation, isolated infrastructure
   tests, and not-wired regression guards
 - Guide Lookup Adapter using Session boundary preparation documentation/tests
+- Guide production Lookup Adapter implementation, compatibility, continuity,
+  isolation, port compliance, and not-wired guards
 
 ### Legacy
 - Discord mutation execution
@@ -96,8 +100,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement one production Guide Lookup Adapter only, without composition wiring
-or legacy runtime redirect.
+Prepare the Guide Mutation Adapter using the production Session; do not add
+composition wiring or redirect legacy runtime execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -114,5 +118,5 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide Lookup Adapter session boundary prepared with a test-only
-candidate; no production adapter, composition wiring, or runtime migration.
+2026-08-08: Guide production Lookup Adapter implemented but not wired; no
+Mutation Adapter, composition wiring, or runtime migration.

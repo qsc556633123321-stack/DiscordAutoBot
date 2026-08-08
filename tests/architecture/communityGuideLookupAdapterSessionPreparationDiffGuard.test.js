@@ -4,7 +4,6 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..', '..');
 
 for (const forbidden of [
-  'src/infrastructure/community/guidePublication/GuidePublicationMessageLookupDiscordAdapter.js',
   'src/infrastructure/community/GuidePublicationMessageMutationDiscordAdapter.js',
   'src/composition/communityGuideLookupAdapterSessionFeature.js'
 ]) assert.equal(fs.existsSync(path.join(root, forbidden)), false, forbidden);

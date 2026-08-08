@@ -14,6 +14,7 @@ const SOURCE_OF_TRUTH = new Set([
   'src/services/voice/voiceHubService.js',
   'src/domain/games/gameIdentityService.js',
   'src/infrastructure/community/guidePublication/GuidePublicationResourceSession.js',
+  'src/infrastructure/community/guidePublication/GuidePublicationMessageLookupDiscordAdapter.js',
 ]);
 
 function jsFiles(dir) {
