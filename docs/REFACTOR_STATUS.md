@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Discord Mutation Infrastructure Adapter Preparation
+Guide Pre-Plan Message Lookup Boundary Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -28,6 +28,9 @@ Estimated local refactor progress: 65%
   failure vocabulary, and test adapter implemented without wiring
 - Guide-specific Infrastructure Adapter boundary characterized with a test-only
   resource harness; no production adapter implemented
+- Guide pre-Plan tracked-message lookup timing, force behavior, malformed-ID
+  behavior, and Plan mapping characterized; no lookup port, adapter, or runtime
+  redirect implemented
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -43,6 +46,7 @@ Estimated local refactor progress: 65%
 - Guide-specific Discord mutation contract preparation
 - Guide-specific Discord mutation Application Port and test adapter
 - Guide-specific Discord mutation Infrastructure Adapter preparation
+- Guide pre-Plan message lookup preparation documentation and frozen tests
 
 ### Legacy
 - Discord mutation execution
@@ -70,8 +74,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Guide pre-Plan message lookup boundary; do not implement an
-adapter, composition wiring, or change legacy execution.
+Implement a Guide Publication Application Lookup Port plus test fake only; do
+not add a production adapter, composition wiring, or change legacy execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -82,11 +86,10 @@ adapter, composition wiring, or change legacy execution.
 
 ## Blockers
 Guide Discord execution remains coupled to message lookup, channel destination,
-channel ensure, partial failure, and Roadmap continuation. The prepared port
-contract has the scalar identity model and an Application Port, but the legacy
-pre-Plan fetch-to-Send fallback cannot be represented by a post-Plan Edit
-request. This blocks production adapter and runtime redirect work.
+channel ensure, partial failure, and Roadmap continuation. The pre-Plan lookup
+result is now characterized, but no production lookup port or runtime redirect
+exists. This continues to block production adapter and runtime redirect work.
 
 ## Last Updated
-2026-08-08: Guide-specific Infrastructure Adapter boundary characterized; no
-runtime migration, Discord adapter, or composition wiring.
+2026-08-08: Guide pre-Plan message lookup boundary characterized; no runtime
+migration, lookup port, Discord adapter, or composition wiring.

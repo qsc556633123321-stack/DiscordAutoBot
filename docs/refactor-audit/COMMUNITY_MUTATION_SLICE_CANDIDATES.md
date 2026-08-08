@@ -78,3 +78,11 @@ an adapter implementation, composition wiring, or runtime redirect.
 The Adapter boundary is characterized. The next recommended slice is
 **Additional Pre-Plan Lookup Boundary Preparation**. Do not implement an
 adapter until the branch-selection semantic mismatch has a safe contract.
+
+## Pre-Plan Lookup Preparation Completion
+
+The tracked-message lookup state, exact timing, force bypass, malformed-ID
+behavior, and mapping into the pure Guide Mutation Plan are now frozen.
+Candidate **Guide Publication Application Lookup Port plus test fake** is the
+only recommended next slice. Production lookup adapters, Discord mutation
+adapters, composition wiring, and runtime redirects remain blocked.

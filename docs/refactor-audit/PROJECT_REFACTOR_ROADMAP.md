@@ -72,3 +72,9 @@ blocks a post-Plan adapter implementation.
 The Application Port interface and test fake are now complete but not wired.
 The next preparation is infrastructure adapter characterization; production
 Discord execution remains legacy-owned.
+
+## Guide Pre-Plan Lookup Preparation (2026-08-08)
+
+Pre-Plan tracked-message lookup is now characterized. Implement an Application
+Lookup Port plus test fake before any production lookup adapter, Guide Discord
+mutation adapter, composition feature, or runtime redirect.

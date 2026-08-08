@@ -80,3 +80,9 @@ semantics; Community remains Migration In Progress.
 Test Adapter: **Implemented**. Discord Production Adapter: **Not Implemented**.
 Guide Discord execution remains legacy-owned; Community remains Migration In
 Progress.
+
+## Guide Pre-Plan Message Lookup Preparation (2026-08-08)
+
+Prepared / Not Integrated. The next candidate is an Application Lookup Port
+plus test fake. Runtime message lookup, Discord mutation execution, and
+composition wiring remain legacy-owned or absent.

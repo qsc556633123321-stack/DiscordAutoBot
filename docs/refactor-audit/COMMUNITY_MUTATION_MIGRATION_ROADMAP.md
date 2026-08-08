@@ -91,3 +91,9 @@ is a Guide-specific Discord mutation port.
 Preparation is complete with 40 frozen cases. Production adapter work is not
 approved because pre-Plan lookup failure selects Send in legacy runtime but is
 not expressible from the post-Plan Edit request alone.
+
+## Guide Pre-Plan Lookup Preparation (2026-08-08)
+
+The legacy lookup state and Plan mapping are frozen. The next bounded step is
+an Application Lookup Port plus test fake; no production lookup adapter,
+mutation adapter, composition wiring, or runtime redirect is approved.

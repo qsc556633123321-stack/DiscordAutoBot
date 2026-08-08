@@ -36,5 +36,6 @@ next bounded preparation candidate is the Guide-specific infrastructure adapter
 boundary; legacy Discord execution remains authoritative.
 
 Infrastructure Adapter Preparation is complete as frozen behavior evidence.
-The pre-Plan lookup semantic mismatch blocks adapter implementation and runtime
-redirect; the next candidate is additional pre-Plan lookup boundary preparation.
+Pre-Plan lookup behavior is now characterized. The next bounded candidate is an
+Application Lookup Port plus test fake; production lookup adapter, mutation
+adapter, and runtime redirect remain blocked.
