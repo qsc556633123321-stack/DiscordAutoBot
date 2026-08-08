@@ -9,6 +9,6 @@ for (const file of [
   'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js',
   'src/composition/communityGuideAdapterPairFeature.js'
 ]) assert.equal(fs.existsSync(path.join(root, file)), true, file);
-assert.equal(runtime.includes('communityGuideAdapterPairFeature'), false);
+assert.equal(runtime.includes('communityGuideAdapterPairFeature'), true);
 assert.equal(runtime.includes('GuidePublicationAdapterPairFactory'), false);
 console.log('Guide ensured channel surface preparation boundary passed');

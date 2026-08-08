@@ -6,7 +6,7 @@ const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.
 
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideAdapterPairFeature.js')), true);
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js')), true);
-assert.equal(runtime.includes('communityGuideAdapterPairFeature'), false);
+assert.equal(runtime.includes('communityGuideAdapterPairFeature'), true);
 assert.equal(runtime.includes('GuidePublicationAdapterPairFactory'), false);
 assert.match(runtime, /channel\.messages\.fetch\(guideMessageId\)\.catch\(\(\) => null\)/);
 assert.match(runtime, /message\.edit\(payload\)/);

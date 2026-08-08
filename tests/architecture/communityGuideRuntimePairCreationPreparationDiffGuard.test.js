@@ -4,7 +4,8 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..', '..');
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 
-assert.equal(/createCommunityGuideAdapterPairFeature|GuidePublicationAdapterPairFactory|GuidePublicationResourceSession|lookupPort|mutationPort/.test(runtime), false);
+assert.equal(runtime.includes('createCommunityGuideAdapterPairFeature'), true);
+assert.equal(/GuidePublicationAdapterPairFactory|GuidePublicationResourceSession|lookupPort|mutationPort/.test(runtime), false);
 for (const forbidden of [
   'src/application/community/guidePublication/RuntimePairCreationUseCase.js',
   'src/infrastructure/community/guidePublication/RuntimePairCreationAdapter.js'

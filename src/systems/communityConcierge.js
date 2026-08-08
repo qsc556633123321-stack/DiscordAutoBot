@@ -19,6 +19,9 @@ const { createCommunityRoadmapFeature } = require('../composition/communityRoadm
 const { createCommunityRoadmapEmbed } = require('../modules/community/communityRoadmapEmbed');
 const { createCommunityGuideReadCompatibilityAdapter } = require('../composition/community/createCommunityGuideReadFeature');
 const { createCommunityPublicationStateFeature } = require('../composition/communityPublicationStateFeature');
+const { createCommunityGuideAdapterPairFeature } = require('../composition/communityGuideAdapterPairFeature');
+
+const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
@@ -157,6 +160,7 @@ function buildAboutEmbed(guild) {
 
 async function setupCommunityGuide(guild, options = {}) {
   const channel = await getOrCreateGuideChannel(guild);
+  communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const payload = await buildGuidePayload(guild);
   const data = readOnboardingData()[guild.id] || {};
   const publicationState = fromLegacyPublicationRecord(guild.id, data);

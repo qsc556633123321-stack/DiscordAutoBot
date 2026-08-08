@@ -4,7 +4,7 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..', '..', '..');
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 
-assert.equal(runtime.includes('communityGuideAdapterPairFeature'), false);
+assert.equal(runtime.includes('communityGuideAdapterPairFeature'), true);
 assert.equal(runtime.includes('GuidePublicationAdapterPairFactory'), false);
 assert.match(runtime, /channel\.messages\.fetch\(guideMessageId\)\.catch\(\(\) => null\)/);
 console.log('Community guide runtime pair creation rollback boundary characterized');
