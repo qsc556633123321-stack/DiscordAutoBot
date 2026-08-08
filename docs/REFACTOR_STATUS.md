@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Publication Runtime Integration
+Guide Publication Persistence Writer/Repository Migration
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -16,6 +16,8 @@ Estimated local refactor progress: 65%
 - Guide publication plan builder completed
 - Guide execution characterization completed
 - Guide runtime integration started
+- Guide publication persistence writer/repository migrated through application,
+  infrastructure, and composition layers
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -27,10 +29,10 @@ Estimated local refactor progress: 65%
 - Guide publication planning
 - Community read-only logic
 - Migration orchestration
+- Guide/Roadmap publication record persistence
 
 ### Legacy
 - Discord mutation execution
-- Persistence writer
 - Some community mutation flows
 - Roles
 - Proposals

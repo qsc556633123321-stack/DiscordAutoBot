@@ -1,6 +1,8 @@
 # Community Publication Filesystem Adapter Readiness
 
-**Not approved.** A filesystem adapter would own malformed-root handling,
-atomic-write strategy, legacy ordering, error translation, locking, and the
-shared native-onboarding record contract. Those choices remain frozen in the
-legacy Guide runtime. No production filesystem adapter was added.
+**Approved for the characterized legacy contract only.**
+`communityPublicationStateFilesystemAdapter` owns the synchronous whole-root
+read, shallow guild-record merge, and full-root write that were previously in
+the legacy Concierge runtime. It intentionally retains malformed-root fallback,
+non-atomic writes, no lock, no retry, no rollback, and swallowed write errors.
+This is a responsibility move, not a persistence-contract redesign.

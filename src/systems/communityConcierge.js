@@ -18,6 +18,7 @@ const { createCommunityAboutModel } = require('../domain/community/communityAbou
 const { createCommunityRoadmapFeature } = require('../composition/communityRoadmapFeature');
 const { createCommunityRoadmapEmbed } = require('../modules/community/communityRoadmapEmbed');
 const { createCommunityGuideReadCompatibilityAdapter } = require('../composition/community/createCommunityGuideReadFeature');
+const { createCommunityPublicationStateFeature } = require('../composition/communityPublicationStateFeature');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
@@ -46,28 +47,16 @@ function readJson(filePath, fallback = {}) {
   }
 }
 
-function writeJson(filePath, data) {
-  ensureFile(filePath);
-  try {
-    fs.writeFileSync(filePath, `${JSON.stringify(data, null, 2)}\n`, 'utf8');
-  } catch (error) {
-    console.error(`Write ${path.basename(filePath)} failed:`, error);
-  }
-}
-
 function readOnboardingData() {
   return readJson(ONBOARDING_FILE, {});
 }
 
 function saveOnboarding(guildId, patch) {
-  const data = readOnboardingData();
-  data[guildId] = {
-    ...(data[guildId] || {}),
-    ...patch,
-    updatedAt: new Date().toISOString()
-  };
-  writeJson(ONBOARDING_FILE, data);
-  return data[guildId];
+  const feature = createCommunityPublicationStateFeature({
+    filePath: ONBOARDING_FILE,
+    dataDirectory: DATA_DIR
+  });
+  return feature.persistCommunityPublicationRecord.execute({ guildId, patch }).record;
 }
 
 async function generateConciergeText(kind, context, fallback) {

@@ -10,6 +10,8 @@ const applicationFiles = [
   'src/application/community/communityPublicationStateOperations.js',
   'src/application/community/communityPublicationStateMapper.js',
   'src/application/community/applyPublicationPatch.js',
+  'src/application/community/ports/communityPublicationRecordRepository.js',
+  'src/application/community/persistCommunityPublicationRecordUseCase.js',
 ];
 
 for (const relativePath of applicationFiles) {
@@ -18,12 +20,8 @@ for (const relativePath of applicationFiles) {
   assert.equal(/src\/systems|src\/events|src\/commands/.test(source), false, `${relativePath} must not depend on runtime layers`);
 }
 
-for (const forbidden of [
-  'src/infrastructure/community/communityPublicationStateFilesystemAdapter.js',
-  'src/infrastructure/community/communityPublicationStateRepository.js',
-  'src/composition/communityPublicationStateFeature.js',
-]) {
-  assert.equal(fs.existsSync(path.join(root, forbidden)), false, `${forbidden} must not be introduced during preparation`);
-}
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/communityPublicationStateFilesystemAdapter.js')), true);
+assert.equal(fs.existsSync(path.join(root, 'src/composition/communityPublicationStateFeature.js')), true);
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/communityPublicationStateRepository.js')), false);
 
 console.log('community publication persistence boundary architecture passed');

@@ -6,8 +6,11 @@ setup-community-guide / refresh-community-guide
  -> setupCommunityGuide / setupRoadmapPanel
  -> readOnboardingData -> readJson -> fs.readFileSync
  -> channel create/move/permission, message fetch/edit/send
- -> saveOnboarding -> readOnboardingData -> shallow guild merge
- -> writeJson -> fs.writeFileSync(full root)
+ -> saveOnboarding
+ -> CommunityPublicationStateFeature
+ -> PersistCommunityPublicationRecordUseCase
+ -> CommunityPublicationStateFilesystemAdapter.mergeRecord
+ -> fs.readFileSync -> shallow guild merge -> fs.writeFileSync(full root)
  -> editReply
 ```
 
@@ -15,5 +18,6 @@ setup-community-guide / refresh-community-guide
 and `communityV3BuilderRuntime... -> setupCommunityGuide(...refresh...)` follow
 the same writer path after their own Discord work. Both can leave Discord side
 effects completed before the final JSON write. Read/parse failures are caught by
-`readJson` and fall back; write failures are logged and swallowed by `writeJson`.
+the filesystem adapter and fall back; write failures are logged and swallowed by
+the filesystem adapter.
 There is no retry, rollback, lock, or version check.

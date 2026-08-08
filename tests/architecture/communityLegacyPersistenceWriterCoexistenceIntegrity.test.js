@@ -22,9 +22,11 @@ for (const file of required) assert.equal(fs.existsSync(path.join(root, file)), 
 
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 assert.match(runtime, /function saveOnboarding/);
-assert.match(runtime, /writeJson\(ONBOARDING_FILE, data\)/);
-for (const forbidden of [
+assert.match(runtime, /createCommunityPublicationStateFeature/);
+assert.match(runtime, /persistCommunityPublicationRecord\.execute/);
+assert.equal(/function writeJson\(/.test(runtime), false, 'legacy runtime must no longer own the writer');
+for (const requiredRuntimeBoundary of [
   'src/infrastructure/community/communityPublicationStateFilesystemAdapter.js',
   'src/composition/communityPublicationStateFeature.js',
-]) assert.equal(fs.existsSync(path.join(root, forbidden)), false, `unexpected production integration: ${forbidden}`);
+]) assert.equal(fs.existsSync(path.join(root, requiredRuntimeBoundary)), true, `missing persistence boundary: ${requiredRuntimeBoundary}`);
 console.log('community legacy persistence writer coexistence integrity passed');

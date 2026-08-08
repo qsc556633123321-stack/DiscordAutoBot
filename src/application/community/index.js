@@ -11,6 +11,7 @@ const { buildGuidePublicationMutationPlan } = require('./guidePublication/buildG
 const { GuidePublicationExecutionFailure } = require('./guideExecution/GuidePublicationExecutionFailure');
 const { createGuidePublicationExecutionRequest } = require('./guideExecution/GuidePublicationExecutionRequest');
 const { createGuidePublicationExecutionResult } = require('./guideExecution/GuidePublicationExecutionResult');
+const { createPersistCommunityPublicationRecordUseCase } = require('./persistCommunityPublicationRecordUseCase');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -28,4 +29,5 @@ module.exports = {
   GuidePublicationExecutionFailure,
   createGuidePublicationExecutionRequest,
   createGuidePublicationExecutionResult,
+  createPersistCommunityPublicationRecordUseCase,
 };
