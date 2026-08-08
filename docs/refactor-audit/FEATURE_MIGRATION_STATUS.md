@@ -83,6 +83,7 @@ Progress.
 
 ## Guide Pre-Plan Message Lookup Preparation (2026-08-08)
 
-Prepared / Not Integrated. The next candidate is an Application Lookup Port
-plus test fake. Runtime message lookup, Discord mutation execution, and
-composition wiring remain legacy-owned or absent.
+The Application Lookup Port and test fake are **Implemented / Not Wired**. The
+next candidate is Infrastructure Lookup Adapter Preparation. Runtime message
+lookup, Discord mutation execution, and composition wiring remain legacy-owned
+or absent.

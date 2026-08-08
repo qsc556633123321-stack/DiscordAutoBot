@@ -94,6 +94,7 @@ not expressible from the post-Plan Edit request alone.
 
 ## Guide Pre-Plan Lookup Preparation (2026-08-08)
 
-The legacy lookup state and Plan mapping are frozen. The next bounded step is
-an Application Lookup Port plus test fake; no production lookup adapter,
-mutation adapter, composition wiring, or runtime redirect is approved.
+The legacy lookup state and Plan mapping are frozen. The Application Lookup Port
+plus test fake is now implemented. The next bounded step is Infrastructure
+Lookup Adapter Preparation; no production lookup adapter, mutation adapter,
+composition wiring, or runtime redirect is approved.

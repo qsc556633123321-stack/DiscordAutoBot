@@ -83,6 +83,7 @@ adapter until the branch-selection semantic mismatch has a safe contract.
 
 The tracked-message lookup state, exact timing, force bypass, malformed-ID
 behavior, and mapping into the pure Guide Mutation Plan are now frozen.
-Candidate **Guide Publication Application Lookup Port plus test fake** is the
-only recommended next slice. Production lookup adapters, Discord mutation
-adapters, composition wiring, and runtime redirects remain blocked.
+The Application Lookup Port plus test fake is complete. **Infrastructure Lookup
+Adapter Preparation** is the only recommended next slice. Production lookup
+adapters, Discord mutation adapters, composition wiring, and runtime redirects
+remain blocked.

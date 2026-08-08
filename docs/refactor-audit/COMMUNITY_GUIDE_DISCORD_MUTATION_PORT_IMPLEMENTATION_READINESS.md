@@ -14,7 +14,7 @@
 ## Recommended Next Slice
 
 The Application port interface and test adapter are complete. Infrastructure
-Adapter Preparation and pre-Plan lookup preparation are complete as
-characterization only. Approve only **a Guide Publication Application Lookup
-Port plus test fake** next; add no production Discord adapter, composition
-wiring, or runtime redirect.
+Adapter Preparation is blocked behind lookup execution, but the Application
+Lookup Port and test fake are now complete. Approve only **Infrastructure
+Lookup Adapter Preparation** next; add no production Discord adapter,
+composition wiring, or runtime redirect.

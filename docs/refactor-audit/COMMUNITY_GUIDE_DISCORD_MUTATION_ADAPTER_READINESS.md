@@ -10,6 +10,6 @@
 | F. Edit + Send runtime redirect | Rejected now | broad high-risk replacement |
 | G. No further integration | Rejected | Application port is now implemented |
 
-Pre-Plan lookup preparation is complete. The next recommended slice is a
-**Guide Publication Application Lookup Port plus test fake**, not an adapter
+The Application Lookup Port and test fake are complete. The next recommended
+slice is **Infrastructure Lookup Adapter Preparation**, not an adapter
 implementation or runtime redirect.

@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Pre-Plan Message Lookup Boundary Preparation
+Guide Publication Message Lookup Application Port
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -31,6 +31,9 @@ Estimated local refactor progress: 65%
 - Guide pre-Plan tracked-message lookup timing, force behavior, malformed-ID
   behavior, and Plan mapping characterized; no lookup port, adapter, or runtime
   redirect implemented
+- Guide Publication Message Lookup Application Port, immutable request/result
+  contract, and test fake implemented without adapter, composition, or runtime
+  wiring
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -47,6 +50,7 @@ Estimated local refactor progress: 65%
 - Guide-specific Discord mutation Application Port and test adapter
 - Guide-specific Discord mutation Infrastructure Adapter preparation
 - Guide pre-Plan message lookup preparation documentation and frozen tests
+- Guide Publication Message Lookup Application Port and lookup test fake
 
 ### Legacy
 - Discord mutation execution
@@ -74,8 +78,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement a Guide Publication Application Lookup Port plus test fake only; do
-not add a production adapter, composition wiring, or change legacy execution.
+Prepare the Guide Publication Infrastructure Lookup Adapter boundary only; do
+not add an adapter implementation, composition wiring, or change legacy
+execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -87,9 +92,10 @@ not add a production adapter, composition wiring, or change legacy execution.
 ## Blockers
 Guide Discord execution remains coupled to message lookup, channel destination,
 channel ensure, partial failure, and Roadmap continuation. The pre-Plan lookup
-result is now characterized, but no production lookup port or runtime redirect
-exists. This continues to block production adapter and runtime redirect work.
+result is now represented by an unwired Application port, but no production
+lookup adapter or runtime redirect exists. This continues to block production
+adapter and runtime redirect work.
 
 ## Last Updated
-2026-08-08: Guide pre-Plan message lookup boundary characterized; no runtime
-migration, lookup port, Discord adapter, or composition wiring.
+2026-08-08: Guide Publication Message Lookup Application Port and test fake
+implemented; no runtime migration, Discord adapter, or composition wiring.

@@ -13,6 +13,14 @@ const { createGuidePublicationExecutionRequest } = require('./guideExecution/Gui
 const { createGuidePublicationExecutionResult } = require('./guideExecution/GuidePublicationExecutionResult');
 const { createPersistCommunityPublicationRecordUseCase } = require('./persistCommunityPublicationRecordUseCase');
 const { assertGuidePublicationMessageMutationPort } = require('./ports/GuidePublicationMessageMutationPort');
+const { assertGuidePublicationMessageLookupPort } = require('./ports/GuidePublicationMessageLookupPort');
+const { GuidePublicationMessageLookupStatus } = require('./guideLookup/GuidePublicationMessageLookupStatus');
+const { createGuidePublicationMessageLookupRequest } = require('./guideLookup/GuidePublicationMessageLookupRequest');
+const {
+  createLookupSkipped,
+  createMessageAvailable,
+  createMessageUnavailable
+} = require('./guideLookup/GuidePublicationMessageLookupResult');
 const { createGuidePublicationMessageEditRequest } = require('./guideDiscordMutation/GuidePublicationMessageEditRequest');
 const { createGuidePublicationMessageSendRequest } = require('./guideDiscordMutation/GuidePublicationMessageSendRequest');
 const { GuidePublicationMessageMutationFailure } = require('./guideDiscordMutation/GuidePublicationMessageMutationFailure');
@@ -40,6 +48,12 @@ module.exports = {
   createGuidePublicationExecutionResult,
   createPersistCommunityPublicationRecordUseCase,
   assertGuidePublicationMessageMutationPort,
+  assertGuidePublicationMessageLookupPort,
+  GuidePublicationMessageLookupStatus,
+  createGuidePublicationMessageLookupRequest,
+  createLookupSkipped,
+  createMessageAvailable,
+  createMessageUnavailable,
   createGuidePublicationMessageEditRequest,
   createGuidePublicationMessageSendRequest,
   GuidePublicationMessageMutationFailure,

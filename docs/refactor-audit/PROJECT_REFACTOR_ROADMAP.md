@@ -75,6 +75,6 @@ Discord execution remains legacy-owned.
 
 ## Guide Pre-Plan Lookup Preparation (2026-08-08)
 
-Pre-Plan tracked-message lookup is now characterized. Implement an Application
-Lookup Port plus test fake before any production lookup adapter, Guide Discord
-mutation adapter, composition feature, or runtime redirect.
+The Application Lookup Port plus test fake is now implemented. Prepare the
+infrastructure lookup adapter boundary before any production lookup adapter,
+Guide Discord mutation adapter, composition feature, or runtime redirect.
