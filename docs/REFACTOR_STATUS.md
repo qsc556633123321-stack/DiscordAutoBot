@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Adapter Pair Composition Feature Implementation
+Guide Runtime Pair Creation Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -60,6 +60,8 @@ Estimated local refactor progress: 65%
   boundary prepared with a test-only candidate
 - Guide production Adapter Pair Composition Feature implemented with lazy Pair
   factory delegation, zero retained state, and no runtime wiring
+- Guide Runtime Pair Creation timing, identity, isolation, zero-I/O, and
+  coexistence behavior characterized; runtime insertion remains unapproved
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -94,6 +96,7 @@ Estimated local refactor progress: 65%
 - Guide production Adapter Pair Factory implementation and not-wired guards
 - Guide Adapter Pair Composition Feature implemented but not runtime-wired;
   legacy runtime still owns lookup, mutation, failure handoff, and ordering
+- Guide Runtime Pair Creation remains legacy-owned and is preparation-only
 
 ### Legacy
 - Discord mutation execution
@@ -121,7 +124,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare runtime Pair creation without redirecting legacy lookup or mutation.
+Freeze the valid ensured-Channel constructor surface before approving Runtime
+Pair Creation-only insertion.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -138,5 +142,5 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide Adapter Pair Composition Feature implemented without runtime
-wiring; production behavior remains legacy-owned.
+2026-08-08: Guide Runtime Pair Creation preparation completed; no runtime
+insertion, redirect, or observable behavior change.
