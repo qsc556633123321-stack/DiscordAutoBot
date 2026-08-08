@@ -13,6 +13,7 @@ const SOURCE_OF_TRUTH = new Set([
   'src/services/security/memberGuardService.js',
   'src/services/voice/voiceHubService.js',
   'src/domain/games/gameIdentityService.js',
+  'src/infrastructure/community/guidePublication/GuidePublicationResourceSession.js',
 ]);
 
 function jsFiles(dir) {

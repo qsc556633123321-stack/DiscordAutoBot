@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Infrastructure Resource Session Preparation
+Guide Production Resource Session Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -41,6 +41,8 @@ Estimated local refactor progress: 65%
 - Guide infrastructure-local, per-invocation resource-session contract,
   lifetime, continuity, bridge models, and frozen failure/call-count fixtures
   prepared without production implementation or runtime wiring
+- Guide production infrastructure resource session implemented and covered, but
+  deliberately not wired to adapters, composition, or legacy runtime
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -61,6 +63,8 @@ Estimated local refactor progress: 65%
 - Guide Message Lookup Infrastructure Adapter preparation documentation/tests
 - Guide Channel Resource Boundary preparation documentation/tests
 - Guide Infrastructure Resource Session preparation documentation/tests
+- Guide production Resource Session implementation, isolated infrastructure
+  tests, and not-wired regression guards
 
 ### Legacy
 - Discord mutation execution
@@ -88,8 +92,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement a production Guide resource session only in a separately approved
-slice; do not wire adapters or redirect legacy execution in that slice.
+Prepare one Guide adapter boundary using the production session; do not
+implement or wire an adapter and do not redirect legacy execution.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -106,6 +110,5 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide Infrastructure Resource Session preparation completed; no
-runtime migration, production resource/lookup/mutation adapter, or composition
-wiring.
+2026-08-08: Guide production Resource Session implemented but not wired; no
+lookup/mutation adapter, composition wiring, or runtime migration.
