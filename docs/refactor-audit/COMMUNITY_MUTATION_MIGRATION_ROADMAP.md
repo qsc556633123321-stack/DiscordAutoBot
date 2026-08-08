@@ -49,3 +49,8 @@ or full Welcome Delivery migration is approved.
 ## Guide Publication Mutation Plan Preparation (2026-08-01)
 
 Complete as a pure plan artifact. Guide publication mutation remains unintegrated.
+
+## Guide Publication Mutation Execution Characterization (2026-08-08)
+
+Complete as baseline evidence only. Message execution and persistence remain
+legacy-owned and unintegrated.

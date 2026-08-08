@@ -213,3 +213,9 @@ authorize a Result/Failure Reason integration or removal of the delivery owner.
 The Guide edit/send branch now has a pure, immutable plan contract. It does not
 authorize a message port, persistence migration, or removal of the legacy Guide
 publication owner.
+
+## Guide Publication Mutation Execution Characterization Update (2026-08-08)
+
+Guide edit/send/persistence execution is now characterized as legacy behavior.
+No execution port, adapter, persistence migration, or runtime integration is
+authorized by this baseline.

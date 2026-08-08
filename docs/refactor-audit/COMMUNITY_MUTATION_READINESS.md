@@ -12,3 +12,6 @@ Recommendation: **E. No Mutation Approved**. The next safe work is additional mu
 
 Guide Publication Mutation Plan Preparation is complete as a pure application
 artifact. It does not change the no-runtime-integration recommendation.
+
+Guide Publication Mutation Execution is characterized as legacy behavior only;
+no execution integration is approved.

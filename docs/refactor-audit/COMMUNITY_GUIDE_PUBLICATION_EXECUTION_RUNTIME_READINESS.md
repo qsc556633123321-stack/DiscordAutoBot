@@ -1,0 +1,14 @@
+# Community Guide Publication Execution Runtime Readiness
+
+| Candidate | Status | Reason |
+| --- | --- | --- |
+| A. Shadow plan computation | Needs more preparation | no approved observation sink |
+| B. Plan controls edit/send with legacy Discord calls | Blocked | execution/persistence/error contract still coupled |
+| C. Extract Discord execution helper | Blocked | would create an unapproved runtime boundary |
+| D. Discord Message Mutation Port | Rejected | port not approved |
+| E. Plan plus Discord Port | Rejected | compounds unapproved changes |
+| F. Plan plus persistence | Blocked | shared writer contract remains |
+| G. Full Guide publication mutation | Blocked | wide cross-feature mutation workflow |
+| H. No Mutation Runtime Integration | Ready | preserves frozen behavior |
+
+No execution integration is approved. The next safe work remains additional baseline evidence only.

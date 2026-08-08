@@ -37,3 +37,6 @@ runtime integration remain unapproved; Community remains **Migration In Progress
 
 Guide Publication Mutation Plan is prepared but not integrated. Community remains
 **Migration In Progress**.
+
+Guide Publication Mutation Execution is characterized and remains legacy-owned;
+Community remains **Migration In Progress**.
