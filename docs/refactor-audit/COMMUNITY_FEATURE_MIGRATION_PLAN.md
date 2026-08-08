@@ -121,6 +121,12 @@ execution remains legacy-owned. Execution Request is prepared but not
 integrated; the next preparation target is a Guide-specific Discord mutation
 port.
 
+## Guide Infrastructure Adapter Preparation (2026-08-08)
+
+Adapter dependencies and lookup/failure behavior are characterized only. The
+legacy pre-Plan fetch-to-Send fallback cannot be reproduced by a post-Plan Edit
+request, so production adapter implementation remains blocked.
+
 ## Guide Discord Mutation Port Preparation (2026-08-08)
 
 The Guide Edit/Send boundary now has frozen resource identity, lookup ownership,

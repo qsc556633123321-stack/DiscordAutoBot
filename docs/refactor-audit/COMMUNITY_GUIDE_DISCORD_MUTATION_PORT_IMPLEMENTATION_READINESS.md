@@ -4,7 +4,7 @@
 | --- | --- | --- |
 | A. Contract-only preparation | Complete | This slice |
 | B. Production port interface + test adapter | Complete | Implemented without runtime wiring |
-| C. Discord adapter without runtime redirect | Ready with explicit exclusions | next preparation slice; needs adapter failure characterization |
+| C. Discord adapter without runtime redirect | Needs more preparation | pre-Plan lookup mismatch blocks implementation |
 | D. Composition wiring without redirect | Needs more preparation | depends on production interface/adapter |
 | E. Runtime redirect Edit only | Blocked | lookup/error mapping not frozen enough |
 | F. Runtime redirect Send only | Blocked | destination/error mapping not frozen enough |
@@ -13,6 +13,7 @@
 
 ## Recommended Next Slice
 
-The Application port interface and test adapter are complete. Approve only
-**Infrastructure Adapter Preparation** next. It must add no production Discord
-adapter, composition wiring, or runtime redirect.
+The Application port interface and test adapter are complete. Infrastructure
+Adapter Preparation is also complete as characterization only. Approve only
+**Additional Pre-Plan Lookup Boundary Preparation** next; add no production
+Discord adapter, composition wiring, or runtime redirect.

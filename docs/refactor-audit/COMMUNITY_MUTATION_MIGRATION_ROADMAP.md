@@ -85,3 +85,9 @@ legacy synchronous full-root behavior is preserved. Guide Discord execution
 and Roadmap continuation remain legacy-owned. `GuidePublicationExecutionRequest`
 is prepared but is not integrated into runtime; the next preparation boundary
 is a Guide-specific Discord mutation port.
+
+## Guide Infrastructure Adapter Preparation (2026-08-08)
+
+Preparation is complete with 40 frozen cases. Production adapter work is not
+approved because pre-Plan lookup failure selects Send in legacy runtime but is
+not expressible from the post-Plan Edit request alone.

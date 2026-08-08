@@ -72,3 +72,9 @@ runtime redirect.
 The Application Port and test adapter are now complete. The next recommended
 slice is **Guide-specific Infrastructure Adapter Preparation** only; do not add
 an adapter implementation, composition wiring, or runtime redirect.
+
+## Adapter Preparation Completion
+
+The Adapter boundary is characterized. The next recommended slice is
+**Additional Pre-Plan Lookup Boundary Preparation**. Do not implement an
+adapter until the branch-selection semantic mismatch has a safe contract.

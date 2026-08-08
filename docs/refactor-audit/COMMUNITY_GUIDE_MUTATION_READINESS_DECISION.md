@@ -78,3 +78,10 @@ test-adapter preparation, not a Discord adapter or runtime redirect.
 `GuidePublicationMessageMutationPort`, immutable Edit/Send requests, scalar
 results/failure vocabulary, and a test-only fake are now complete. No Discord
 adapter, composition feature, or runtime consumer was added.
+
+## Infrastructure Adapter Preparation (2026-08-08)
+
+Adapter resource/lookup/failure semantics are characterized with a test-only
+harness. A pre-Plan message fetch failure currently changes the branch to Send,
+while a future Edit request represents an existing Edit decision. This blocks
+adapter implementation and all runtime redirect candidates.

@@ -61,6 +61,12 @@ That characterization is complete as a contract-only slice. The next bounded
 step is a production Application port interface plus test-adapter preparation;
 legacy Discord mutation remains authoritative until a later integration slice.
 
+## Guide Infrastructure Adapter Preparation (2026-08-08)
+
+The adapter boundary is characterized but no adapter exists. The next safe work
+is pre-Plan lookup boundary preparation; the legacy fetch-to-Send branch change
+blocks a post-Plan adapter implementation.
+
 ## Guide Discord Mutation Application Port (2026-08-08)
 
 The Application Port interface and test fake are now complete but not wired.

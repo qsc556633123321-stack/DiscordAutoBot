@@ -68,6 +68,12 @@ The Guide-specific scalar-ID contract is frozen and **Prepared / Not
 Integrated**. No Discord adapter, composition feature, or runtime redirect
 exists.
 
+## Guide Infrastructure Adapter Preparation (2026-08-08)
+
+Infrastructure Adapter Boundary: **Prepared**. Discord Production Adapter:
+**Not Implemented**. Runtime integration is blocked by pre-Plan lookup
+semantics; Community remains Migration In Progress.
+
 ## Guide Discord Mutation Application Port (2026-08-08)
 
 `GuidePublicationMessageMutationPort`: **Implemented / Not Wired**.

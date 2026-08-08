@@ -34,3 +34,7 @@ was a production Application port interface plus test-adapter preparation.
 The Application port and test adapter are now implemented but not wired. The
 next bounded preparation candidate is the Guide-specific infrastructure adapter
 boundary; legacy Discord execution remains authoritative.
+
+Infrastructure Adapter Preparation is complete as frozen behavior evidence.
+The pre-Plan lookup semantic mismatch blocks adapter implementation and runtime
+redirect; the next candidate is additional pre-Plan lookup boundary preparation.
