@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Runtime Pair Creation Preparation
+Guide Ensured Channel Constructor Surface Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -62,6 +62,8 @@ Estimated local refactor progress: 65%
   factory delegation, zero retained state, and no runtime wiring
 - Guide Runtime Pair Creation timing, identity, isolation, zero-I/O, and
   coexistence behavior characterized; runtime insertion remains unapproved
+- Guide ensured-channel constructor surface frozen; successful ensure output
+  satisfies Pair construction and preserves zero-I/O construction
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -97,6 +99,7 @@ Estimated local refactor progress: 65%
 - Guide Adapter Pair Composition Feature implemented but not runtime-wired;
   legacy runtime still owns lookup, mutation, failure handoff, and ordering
 - Guide Runtime Pair Creation remains legacy-owned and is preparation-only
+- Ensured Channel constructor contract is frozen; no runtime consumer added
 
 ### Legacy
 - Discord mutation execution
@@ -124,8 +127,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Freeze the valid ensured-Channel constructor surface before approving Runtime
-Pair Creation-only insertion.
+Implement Runtime Pair Creation-only as a separate, minimal runtime slice.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -142,5 +144,5 @@ re-resolution would add legacy-incompatible timing/count/failure behavior, so
 no production lookup adapter or runtime redirect exists.
 
 ## Last Updated
-2026-08-08: Guide Runtime Pair Creation preparation completed; no runtime
-insertion, redirect, or observable behavior change.
+2026-08-08: Guide ensured Channel constructor surface frozen; Runtime Pair
+Creation-only is ready with explicit exclusions.
