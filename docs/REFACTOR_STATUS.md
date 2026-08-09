@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Adapter Pair Boundary Preparation
+Roadmap Adapter Pair Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -169,6 +169,8 @@ Estimated local refactor progress: 65%
 - Roadmap Adapter Pair boundary is frozen as a test-only candidate with one
   per-invocation Session, one Lookup Adapter, and narrow retained-message
   handoff; production pair, composition, and runtime remain absent
+- Roadmap Adapter Pair Factory is implemented as isolated infrastructure with
+  no composition, runtime, mutation, or persistence wiring
 
 ### Legacy
 - Discord mutation execution
@@ -196,8 +198,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the isolated Roadmap Adapter Pair Factory only; keep composition and
-runtime lookup legacy-owned.
+Prepare the Roadmap composition boundary only; keep runtime lookup legacy-owned.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -212,4 +213,4 @@ and lookup-port contract are prepared, but adapter, composition, runtime
 redirect, and mutation boundaries still require isolated migration slices.
 
 ## Last Updated
-2026-08-09: Roadmap adapter-pair boundary is prepared; runtime remains legacy.
+2026-08-09: Roadmap Adapter Pair Factory is implemented but not wired; runtime remains legacy.

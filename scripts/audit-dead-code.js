@@ -16,6 +16,7 @@ const SOURCE_OF_TRUTH = new Set([
   'src/infrastructure/community/guidePublication/GuidePublicationResourceSession.js',
   'src/infrastructure/community/roadmapPublication/RoadmapPublicationResourceSession.js',
   'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageLookupAdapter.js',
+  'src/infrastructure/community/roadmapPublication/RoadmapPublicationAdapterPairFactory.js',
   'src/infrastructure/community/guidePublication/GuidePublicationMessageLookupDiscordAdapter.js',
   'src/infrastructure/community/guidePublication/GuidePublicationMessageMutationDiscordAdapter.js',
   'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js',
