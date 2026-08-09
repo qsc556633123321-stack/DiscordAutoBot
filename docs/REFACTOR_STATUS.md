@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Resource Session Mutation Extension Implementation
+Roadmap Mutation Adapter Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -199,6 +199,8 @@ Estimated local refactor progress: 65%
   stale-failure clearing, lookup interaction, and zero-extra-I/O constraints
 - Roadmap Resource Session mutation extension implemented with retained-message
   identity, exact raw failure handoff, and zero persistence/runtime wiring
+- Roadmap Mutation Adapter boundary prepared with a frozen test-only candidate,
+  strict Edit identity invariant, raw failure propagation, and no runtime wiring
 
 ### Legacy
 - Discord mutation execution
@@ -226,8 +228,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Roadmap Mutation Adapter boundary using the implemented Resource
-Session and existing Application Mutation Port, without Pair or runtime wiring.
+Implement the approved Roadmap Mutation Adapter only, without Pair mutation
+surface, composition wiring, runtime redirect, or persistence changes.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -238,9 +240,9 @@ Session and existing Application Mutation Port, without Pair or runtime wiring.
 
 ## Blockers
 Roadmap runtime mutation and persistence sequencing remain legacy-owned. The
-Session is implemented but no mutation Adapter, Pair mutation surface, or
-runtime redirect exists.
+Mutation Adapter boundary is prepared but no production Adapter, Pair mutation
+surface, or runtime redirect exists.
 
 ## Last Updated
-2026-08-09: Roadmap Resource Session mutation extension implemented without
+2026-08-09: Roadmap Mutation Adapter boundary prepared with no production
 Adapter, Pair mutation surface, runtime, or persistence wiring.

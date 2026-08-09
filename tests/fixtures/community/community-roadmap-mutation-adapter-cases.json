@@ -1,0 +1,13 @@
+[
+  "factory-missing-resource-session", "factory-missing-retained-getter", "factory-missing-failure-getter", "factory-missing-edit", "factory-missing-send",
+  "edit-success", "edit-different-resolve", "edit-message-id-strict-match", "edit-message-id-mismatch", "edit-missing-retained",
+  "edit-retained-missing-id", "edit-payload-identity", "edit-one-call", "edit-no-fetch", "edit-no-send",
+  "edit-error-rejection", "edit-string-rejection", "edit-number-rejection", "edit-object-rejection", "edit-null-rejection", "edit-undefined-rejection",
+  "send-success", "send-payload-identity", "send-result-id-source", "send-retained-identity", "send-one-call",
+  "send-no-fetch", "send-no-edit", "send-null-result", "send-undefined-result", "send-false-result", "send-object-without-id", "send-undefined-id",
+  "send-error-rejection", "send-string-rejection", "send-number-rejection", "send-object-rejection", "send-null-rejection", "send-undefined-rejection",
+  "failure-getter-required", "failure-getter-not-called", "failure-getter-session-owned", "no-failure-result", "no-failure-wrap",
+  "same-session-edit", "same-session-send", "different-session-isolation", "concurrent-adapters-isolation", "application-result-no-message",
+  "application-result-no-channel", "application-result-no-error", "no-persistence", "no-retry-edit", "no-retry-send",
+  "no-fallback-send", "no-refetch", "pair-extension-deferred", "runtime-legacy", "production-adapter-absent"
+]
