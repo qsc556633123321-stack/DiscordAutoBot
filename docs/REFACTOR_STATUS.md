@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Guide Persistence Reuse Feature Preparation
+Community Guide Persistence Reuse Feature Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 67%
@@ -249,6 +249,9 @@ Estimated local refactor progress: 67%
   candidate that delegates the existing Guide mapper to the generic
   publication feature exactly once, synchronously, and without adding a
   writer, repository, Port, adapter, or runtime wiring
+- Guide Persistence Reuse Composition feature implemented with the same
+  synchronous, one-execute delegation contract; it is not runtime-used and
+  `saveOnboarding` remains Guide's final known runtime persistence consumer
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -291,10 +294,10 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Guide persistence migration. Roadmap is closed with the shared Guide
-`saveOnboarding` dependency remaining outside Roadmap ownership.
-Prepare the Guide Persistence Reuse Feature boundary, then implement that thin
-Composition delegation before any Guide runtime redirect.
+Prepare the Guide Runtime Persistence Redirect boundary. It must characterize
+feature construction lifetime, final-mutation ordering, result-ignore behavior,
+writer-swallowed partial success, and exact invariant failure identity before
+changing the final legacy `saveOnboarding` call.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -318,6 +321,6 @@ not a deployment-readiness claim; Guide and other high-risk mutation boundaries
 remain outstanding.
 
 ## Last Updated
-2026-08-10: Guide Persistence Reuse boundary prepared with test-only coverage.
-Runtime ownership did not move, so progress remains 67%; Roadmap remains
-closed with shared Guide legacy dependencies.
+2026-08-10: Guide Persistence Reuse Composition feature implemented without a
+runtime redirect. Runtime ownership did not move, so progress remains 67%;
+Roadmap remains closed with shared Guide legacy dependencies.

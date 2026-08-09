@@ -13,5 +13,5 @@ assert.match(guide, /nativeTaskRecommendations: NATIVE_ONBOARDING_RECOMMENDATION
 assert.match(guide, /nativeTaskExcludedChannels:/);
 assert.equal(fs.existsSync(path.join(root, 'src/application/community/guidePublication/GuidePersistenceRequest.js')), true);
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/GuidePersistenceFilesystemAdapter.js')), false);
-assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuidePersistenceFeature.js')), false);
-console.log('Guide persistence request is implemented while runtime, Composition, and duplicate writer surfaces remain unchanged.');
+assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuidePersistenceFeature.js')), true);
+console.log('Guide persistence request and reuse Composition are implemented while runtime and duplicate writer surfaces remain unchanged.');
