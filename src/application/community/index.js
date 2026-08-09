@@ -35,6 +35,14 @@ const {
   createRoadmapPublicationMessageAvailable,
   createRoadmapPublicationMessageUnavailable
 } = require('./roadmapPublication/RoadmapPublicationMessageLookupPort');
+const {
+  RoadmapPublicationMessageMutationKind,
+  createRoadmapPublicationMessageEditRequest,
+  createRoadmapPublicationMessageSendRequest,
+  createRoadmapPublicationMessageEditSuccess,
+  createRoadmapPublicationMessageSendSuccess,
+  assertRoadmapPublicationMessageMutationPort
+} = require('./roadmapPublication/RoadmapPublicationMessageMutationPort');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -70,4 +78,10 @@ module.exports = {
   createRoadmapPublicationMessageLookupRequest,
   createRoadmapPublicationMessageAvailable,
   createRoadmapPublicationMessageUnavailable,
+  RoadmapPublicationMessageMutationKind,
+  createRoadmapPublicationMessageEditRequest,
+  createRoadmapPublicationMessageSendRequest,
+  createRoadmapPublicationMessageEditSuccess,
+  createRoadmapPublicationMessageSendSuccess,
+  assertRoadmapPublicationMessageMutationPort,
 };

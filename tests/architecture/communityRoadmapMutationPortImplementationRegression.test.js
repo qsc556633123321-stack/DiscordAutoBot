@@ -1,0 +1,19 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const root = path.resolve(__dirname, '../..');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
+const session = fs.readFileSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationResourceSession.js'), 'utf8');
+const pair = fs.readFileSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationAdapterPairFactory.js'), 'utf8');
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageMutationAdapter.js')), false);
+assert.match(roadmap, /await message\.edit\(payload\)/);
+assert.match(roadmap, /message = await channel\.send\(payload\)/);
+assert.match(roadmap, /saveOnboarding\(guild\.id/);
+assert.doesNotMatch(roadmap, /RoadmapPublicationMessageMutationPort|mutationPort/);
+assert.doesNotMatch(session, /editTrackedMessage|sendMessage|getRetainedMutationFailure/);
+assert.doesNotMatch(pair, /mutationPort/);
+assert.match(roadmap, /lookupPort\.lookupTrackedMessage\(\{ messageId: roadmapMessageId \}\)/);
+assert.doesNotMatch(roadmap, /channel\.messages\.fetch\(roadmapMessageId\)/);
+console.log('Roadmap mutation Port implementation preserves adapter/session/pair/runtime boundaries');
