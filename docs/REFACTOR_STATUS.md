@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Persistence Reuse Feature Implementation
+Roadmap Runtime Persistence Redirect Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -228,6 +228,9 @@ Estimated local refactor progress: 65%
 - Roadmap persistence reuse Composition feature implemented as a synchronous
   request-to-generic delegation with exact result and thrown-value identity;
   runtime persistence remains legacy-owned
+- Roadmap runtime persistence redirect ordering, result-ignore behavior,
+  writer-failure partial success, invariant throws, and exact ID contracts
+  prepared with a test-only candidate; no runtime source changed
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -238,6 +241,8 @@ Estimated local refactor progress: 65%
   runtime sequencing remains legacy-owned
 - Roadmap persistence reuse feature is Composition-owned but not runtime-used;
   legacy `saveOnboarding` still owns Roadmap runtime persistence sequencing
+- Roadmap runtime persistence redirect is preparation-owned; the production
+  call remains legacy-owned until the approved narrow redirect slice
 
 ### Legacy
 - Discord mutation execution
@@ -265,8 +270,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Roadmap runtime persistence redirect by freezing legacy ordering,
-partial-success, and result-handling behavior before any runtime call changes.
+Implement the approved Roadmap runtime persistence redirect only: replace the
+Roadmap `saveOnboarding` call after a successful mutation, preserving the
+prepared synchronous, result-ignore, ordering, and return contracts.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -279,13 +285,14 @@ partial-success, and result-handling behavior before any runtime call changes.
 - Roadmap persistence request implementation suite PASS
 - Roadmap persistence reuse feature preparation suite PASS
 - Roadmap persistence reuse feature implementation suite PASS
+- Roadmap runtime persistence redirect preparation suite PASS
 - Dashboard build PASS
 
 ## Blockers
-Roadmap persistence sequencing remains legacy-owned. A runtime redirect must
-not introduce a duplicate Roadmap writer and must preserve schema, exact IDs,
-writer-swallowed partial success, and current ordering.
+Roadmap runtime persistence remains legacy-owned. The approved redirect must
+not introduce a duplicate writer and must preserve schema, exact IDs,
+writer-swallowed partial success, raw invariant throws, and current ordering.
 
 ## Last Updated
-2026-08-09: Roadmap persistence reuse Composition feature implemented; runtime
-and writer ownership remain unchanged.
+2026-08-09: Roadmap runtime persistence redirect characterized and prepared;
+runtime and writer ownership remain unchanged.

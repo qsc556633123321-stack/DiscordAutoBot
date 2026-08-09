@@ -1,0 +1,14 @@
+{
+  "cases": [
+    "edit-success", "send-success", "writer-success", "writer-failure", "persisted-true",
+    "persisted-false", "record-ignore", "exact-guild-id", "exact-channel-id", "exact-message-id",
+    "sync-order", "no-await", "no-promise", "partial-edit", "partial-send",
+    "guide-fields", "welcome-fields", "unknown-fields", "other-guild", "invariant-throw",
+    "error-identity", "string-identity", "number-identity", "object-identity", "null-identity",
+    "undefined-identity", "no-retry", "no-rollback", "no-double-write", "guide-still-legacy",
+    "schema-frozen", "mutation-migrated", "lookup-migrated", "runtime-unchanged", "result-ignored",
+    "generic-feature-reused", "request-reused", "no-direct-patch", "no-duplicate-writer", "no-repository",
+    "no-port", "no-filesystem", "no-discord", "exact-message-return", "exact-channel-return",
+    "post-mutation-only", "pair-before-persistence", "send-invariant-before-persistence", "legacy-save-audit", "diff-guard"
+  ]
+}
