@@ -201,17 +201,19 @@ async function setupCommunityGuide(guild, options = {}) {
       payload
     });
     if (result.kind !== 'EditSuccess') throwMutationFailure(getRetainedMutationFailure, 'edit', result);
-    message = getRetainedMessage();
-    if (message !== getRetainedMessage() || message.id !== result.messageId) {
+    const retainedMessage = getRetainedMessage();
+    if (retainedMessage !== message || !retainedMessage || retainedMessage.id !== result.messageId) {
       throw new Error('Guide edit mutation retained-message invariant failed');
     }
+    message = retainedMessage;
   } else if (mutationPlan.operation === GuidePublicationOperationType.SendNewMessage) {
     const result = await mutationPort.send({ guildId: guild.id, channelId: channel.id, payload });
     if (result.kind !== 'SendSuccess') throwMutationFailure(getRetainedMutationFailure, 'send', result);
-    message = getRetainedMessage();
-    if (!message || message.id !== result.messageId) {
+    const retainedMessage = getRetainedMessage();
+    if (!retainedMessage || retainedMessage.id !== result.messageId) {
       throw new Error('Guide send mutation retained-message invariant failed');
     }
+    message = retainedMessage;
   } else {
     throw new Error(`Unsupported Guide publication operation: ${mutationPlan.operation}`);
   }

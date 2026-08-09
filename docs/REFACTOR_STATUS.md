@@ -130,12 +130,15 @@ Estimated local refactor progress: 65%
 - Guide Adapter Pair Composition Feature implemented but not runtime-wired;
   legacy runtime still owns lookup, mutation, failure handoff, and ordering
 - Ensured Channel constructor contract is frozen; no runtime consumer added
-- Runtime creates a fresh Pair per Guide setup invocation; legacy I/O remains
-  the owner of lookup, mutation, persistence, and Roadmap continuation
-- Exact Discord Message identity remains private to the Infrastructure Session;
-  the accessor is not exposed through Pair, Composition, Application, or Runtime
-- Production Pair retained-message handoff: implemented as a narrow delegate;
-  runtime remains legacy-owned and does not consume it
+- Runtime creates a fresh Pair per Guide setup invocation; Pair ports now own
+  Guide lookup and mutation while legacy runtime retains persistence sequencing
+  and Roadmap continuation
+- Exact Discord Message identity remains private to the Infrastructure Session
+  and is exposed only through the narrow Pair handoff consumed by the Guide
+  runtime
+- Production Pair retained-message and mutation-failure handoffs are consumed
+  by runtime mutation branches; persistence and Roadmap continuation remain
+  legacy-owned
 
 ### Legacy
 - Discord mutation execution
@@ -163,7 +166,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement Runtime Mutation Redirect Only using the frozen Pair handoffs.
+Characterize the Roadmap continuation as the next isolated Guide runtime
+boundary.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -173,14 +177,11 @@ Implement Runtime Mutation Redirect Only using the frozen Pair handoffs.
 - Quality gate PASS
 
 ## Blockers
-Guide Discord execution remains coupled to message lookup, channel destination,
-channel ensure, partial failure, and Roadmap continuation. The production
-Lookup Port maps all failures to unavailable but its public result lacks the
-exact `Message` object required by the legacy edit branch. A Session-local,
-per-invocation accessor now retains exact identity through the production Pair,
-but is not visible to Runtime; channel re-resolution or a second fetch would
-add legacy-incompatible behavior.
+Guide Discord execution remains coupled to channel destination, channel ensure,
+partial failure, and Roadmap continuation. Guide lookup and mutation now use
+the per-invocation Pair handoffs without a second fetch or duplicate mutation;
+Roadmap continuation is the remaining uncharacterized legacy boundary.
 
 ## Last Updated
-2026-08-09: Pair retained-message handoff capability implemented; runtime
-lookup and mutation behavior remain unchanged.
+2026-08-09: Guide lookup and mutation are redirected through the per-invocation
+Adapter Pair; persistence sequencing and Roadmap continuation remain unchanged.
