@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Roadmap End-to-End Migration Closure Audit
+Community Guide Persistence Migration Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 67%
@@ -238,6 +238,10 @@ Estimated local refactor progress: 67%
   mutation, and persistence are verified through one shared Resource Session,
   approved Pair/Port/Composition surfaces, and legacy-compatible persistence
   without direct Roadmap runtime Discord or filesystem I/O
+- Guide persistence boundary prepared: one legacy synchronous write after a
+  successful Guide mutation contains publication IDs and native task
+  recommendations; Guide runtime persistence and `saveOnboarding` remain
+  legacy-owned pending the next pure Application request slice
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -282,6 +286,7 @@ Target for first refactored Vultr deployment:
 ## Next Recommended Slice
 Prepare Guide persistence migration. Roadmap is closed with the shared Guide
 `saveOnboarding` dependency remaining outside Roadmap ownership.
+The concrete next slice is Guide Persistence Request Implementation.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -305,6 +310,7 @@ not a deployment-readiness claim; Guide and other high-risk mutation boundaries
 remain outstanding.
 
 ## Last Updated
-2026-08-09: Roadmap E2E closure audit completed. Roadmap is closed with shared
-Guide legacy dependencies; Architecture Score remains 100/100 pending the
-recorded verification run and commit SHA.
+2026-08-10: Guide persistence migration preparation completed. The baseline is
+one synchronous four-field Guide write; Roadmap remains closed with shared
+Guide legacy dependencies. Progress remains 67% because runtime ownership did
+not move in this preparation slice.

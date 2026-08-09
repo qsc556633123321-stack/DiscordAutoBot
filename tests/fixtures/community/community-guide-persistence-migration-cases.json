@@ -1,0 +1,29 @@
+{
+  "cases": [
+    { "id": "guide-edit-01", "kind": "guide-edit" }, { "id": "guide-edit-02", "kind": "guide-edit" },
+    { "id": "guide-edit-03", "kind": "guide-edit" }, { "id": "guide-send-01", "kind": "guide-send" },
+    { "id": "guide-send-02", "kind": "guide-send" }, { "id": "guide-send-03", "kind": "guide-send" },
+    { "id": "guide-channel-id-01", "kind": "guide-channel-id" }, { "id": "guide-channel-id-02", "kind": "guide-channel-id" },
+    { "id": "guide-message-id-01", "kind": "guide-message-id" }, { "id": "guide-message-id-02", "kind": "guide-message-id" },
+    { "id": "writer-success-01", "kind": "writer-success" }, { "id": "writer-success-02", "kind": "writer-success" },
+    { "id": "writer-failure-01", "kind": "writer-failure" }, { "id": "writer-failure-02", "kind": "writer-failure" },
+    { "id": "persisted-false-01", "kind": "persisted-false" }, { "id": "persisted-false-02", "kind": "persisted-false" },
+    { "id": "merge-01", "kind": "merge" }, { "id": "merge-02", "kind": "merge" },
+    { "id": "roadmap-preservation-01", "kind": "roadmap-preservation" }, { "id": "roadmap-preservation-02", "kind": "roadmap-preservation" },
+    { "id": "welcome-preservation-01", "kind": "welcome-preservation" }, { "id": "welcome-preservation-02", "kind": "welcome-preservation" },
+    { "id": "unknown-field-01", "kind": "unknown-field" }, { "id": "unknown-field-02", "kind": "unknown-field" },
+    { "id": "other-guild-01", "kind": "other-guild" }, { "id": "other-guild-02", "kind": "other-guild" },
+    { "id": "native-state-01", "kind": "native-state" }, { "id": "native-state-02", "kind": "native-state" },
+    { "id": "native-state-03", "kind": "native-state" }, { "id": "call-count-edit", "kind": "call-count" },
+    { "id": "call-count-send", "kind": "call-count" }, { "id": "call-count-native", "kind": "call-count" },
+    { "id": "ordering-edit", "kind": "ordering" }, { "id": "ordering-send", "kind": "ordering" },
+    { "id": "partial-success-edit", "kind": "partial-success" }, { "id": "partial-success-send", "kind": "partial-success" },
+    { "id": "sync-01", "kind": "sync" }, { "id": "sync-02", "kind": "sync" },
+    { "id": "result-ignored-01", "kind": "result" }, { "id": "result-ignored-02", "kind": "result" },
+    { "id": "read-after-write-01", "kind": "read-after-write" }, { "id": "no-schema-change-01", "kind": "no-schema-change" },
+    { "id": "no-schema-change-02", "kind": "no-schema-change" }, { "id": "no-writer-duplication-01", "kind": "no-writer-duplication" },
+    { "id": "roadmap-regression-01", "kind": "roadmap-regression" }, { "id": "save-onboarding-consumer-01", "kind": "save-onboarding-consumer" },
+    { "id": "force-send-01", "kind": "guide-send" }, { "id": "truthy-id-edit-01", "kind": "guide-edit" },
+    { "id": "empty-id-send-01", "kind": "guide-send" }, { "id": "native-overwrite-01", "kind": "native-state" }
+  ]
+}
