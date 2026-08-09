@@ -1,0 +1,10 @@
+[
+  "guide-edit", "guide-send", "exact-guild", "exact-channel", "exact-message",
+  "recommendations-identity", "excluded-identity", "four-field-patch", "single-execute", "persisted-true",
+  "persisted-false", "invariant-error", "invariant-string", "invariant-number", "invariant-object",
+  "invariant-null", "invariant-undefined", "sync", "no-promise", "roadmap-coexistence",
+  "welcome-preservation", "unknown-preservation", "other-guild", "updatedAt", "no-writer",
+  "no-repository", "no-port", "no-discord", "no-filesystem", "no-roadmap-semantic-coupling",
+  "runtime-legacy", "roadmap-closure", "saveOnboarding-consumer", "no-retry", "no-relog",
+  "generic-result-identity", "legacy-request-mapper", "no-schema-ownership", "no-runtime-wiring", "production-diff-zero"
+]

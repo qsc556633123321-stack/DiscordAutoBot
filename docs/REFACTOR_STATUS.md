@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Guide Persistence Request Implementation
+Community Guide Persistence Reuse Feature Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 67%
@@ -245,6 +245,10 @@ Estimated local refactor progress: 67%
 - Guide Persistence Request implemented as a pure, legacy-compatible
   Application request/mapper with exact four-field atomic grouping; it is not
   runtime-used and Guide persistence remains legacy-owned
+- Guide Persistence Reuse boundary prepared with a production-shape test
+  candidate that delegates the existing Guide mapper to the generic
+  publication feature exactly once, synchronously, and without adding a
+  writer, repository, Port, adapter, or runtime wiring
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -314,6 +318,6 @@ not a deployment-readiness claim; Guide and other high-risk mutation boundaries
 remain outstanding.
 
 ## Last Updated
-2026-08-10: Guide Persistence Request implemented as a pure Application
-contract. Runtime ownership did not move, so progress remains 67%; Roadmap
-remains closed with shared Guide legacy dependencies.
+2026-08-10: Guide Persistence Reuse boundary prepared with test-only coverage.
+Runtime ownership did not move, so progress remains 67%; Roadmap remains
+closed with shared Guide legacy dependencies.
