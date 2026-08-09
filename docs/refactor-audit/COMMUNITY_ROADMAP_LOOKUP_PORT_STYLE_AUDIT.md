@@ -19,4 +19,5 @@ identity and failure contracts belong to Guide publication, while roadmap fetch
 rejections are swallowed as an unavailable lookup. A generic publication port
 would hide this currently important semantic distinction.
 
-No production port is implemented in this preparation slice.
+The production port is implemented in the following implementation slice; it
+remains unconnected to an adapter, composition feature, or runtime.

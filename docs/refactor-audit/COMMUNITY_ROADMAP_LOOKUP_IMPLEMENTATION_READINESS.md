@@ -3,7 +3,7 @@
 ## Current state
 
 - Roadmap Resource Session: implemented, not wired.
-- Roadmap lookup port: prepared through test-only contract/fake coverage.
+- Roadmap lookup port: implemented as a pure application contract, not wired.
 - Roadmap lookup adapter: not implemented.
 - Roadmap runtime lookup: legacy-owned.
 

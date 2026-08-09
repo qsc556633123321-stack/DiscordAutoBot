@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Lookup Port Preparation
+Roadmap Lookup Port Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -107,6 +107,9 @@ Estimated local refactor progress: 65%
 - Roadmap Lookup Port contract prepared with test-only port/adapter candidates,
   frozen falsy-ID, rejection, identity, and no-extra-I/O behavior; production
   port, adapter, and runtime wiring remain unimplemented
+- Roadmap Lookup Port application contract implemented without an adapter,
+  composition, or runtime redirect; the Resource Session remains the sole
+  infrastructure owner of Discord message identity and fetch semantics
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -153,6 +156,8 @@ Estimated local refactor progress: 65%
   legacy-owned
 - Roadmap-specific Resource Session is implemented and audit-recognized as an
   approved not-yet-wired infrastructure source of truth
+- Roadmap Lookup Port is implemented as an application-safe contract with no
+  infrastructure dependency, adapter, composition feature, or runtime use
 
 ### Legacy
 - Discord mutation execution
@@ -180,8 +185,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the production Roadmap-specific lookup port only, without adapter,
-composition, or runtime wiring.
+Prepare the Roadmap-specific lookup adapter boundary only, using the existing
+Resource Session without composition or runtime wiring.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -196,4 +201,4 @@ and lookup-port contract are prepared, but adapter, composition, runtime
 redirect, and mutation boundaries still require isolated migration slices.
 
 ## Last Updated
-2026-08-09: Roadmap lookup port contract is prepared; runtime remains legacy.
+2026-08-09: Roadmap lookup port is implemented but not wired; runtime remains legacy.

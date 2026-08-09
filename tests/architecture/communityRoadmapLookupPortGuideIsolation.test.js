@@ -1,0 +1,7 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const source = fs.readFileSync(path.resolve(__dirname, '../../src/application/community/roadmapPublication/RoadmapPublicationMessageLookupPort.js'), 'utf8');
+assert.doesNotMatch(source, /GuidePublicationMessageLookupPort|guideLookup|GuidePublication/);
+console.log('Roadmap lookup port remains Guide-isolated');

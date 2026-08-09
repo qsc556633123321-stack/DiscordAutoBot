@@ -1,5 +1,6 @@
 # Roadmap Lookup Port Preparation Blockers
 
-The port is test-only. A production port requires a separately approved
-application contract and an adapter over the existing Roadmap Session. It must
-not expose Discord Message, Channel, Error, or Session objects.
+Resolved by the Roadmap Lookup Port implementation slice. The production
+application contract now exists and does not expose Discord Message, Channel,
+Error, or Session objects. The next separate blocker is production adapter
+preparation over the existing Roadmap Resource Session.

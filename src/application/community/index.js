@@ -29,6 +29,12 @@ const {
   createGuidePublicationMessageSendSuccess,
   createGuidePublicationMessageMutationFailure
 } = require('./guideDiscordMutation/GuidePublicationMessageMutationResult');
+const {
+  RoadmapPublicationMessageLookupKind,
+  createRoadmapPublicationMessageLookupRequest,
+  createRoadmapPublicationMessageAvailable,
+  createRoadmapPublicationMessageUnavailable
+} = require('./roadmapPublication/RoadmapPublicationMessageLookupPort');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -60,4 +66,8 @@ module.exports = {
   createGuidePublicationMessageEditSuccess,
   createGuidePublicationMessageSendSuccess,
   createGuidePublicationMessageMutationFailure,
+  RoadmapPublicationMessageLookupKind,
+  createRoadmapPublicationMessageLookupRequest,
+  createRoadmapPublicationMessageAvailable,
+  createRoadmapPublicationMessageUnavailable,
 };
