@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Resource Session Preparation
+Roadmap Lookup Port Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -102,8 +102,11 @@ Estimated local refactor progress: 65%
   identity, partial-success behavior, and migration boundaries characterized
 - Roadmap lookup truthiness, exact channel/message identity, rejection swallow,
   and no-retry behavior characterized
-- Roadmap-specific per-invocation resource-session ownership and retained
-  message lifecycle prepared with test-only candidates
+- Roadmap-specific per-invocation Resource Session implemented with retained
+  message lifecycle coverage, deliberately not wired to runtime
+- Roadmap Lookup Port contract prepared with test-only port/adapter candidates,
+  frozen falsy-ID, rejection, identity, and no-extra-I/O behavior; production
+  port, adapter, and runtime wiring remain unimplemented
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -148,6 +151,8 @@ Estimated local refactor progress: 65%
 - Production Pair retained-message and mutation-failure handoffs are consumed
   by runtime mutation branches; persistence and Roadmap continuation remain
   legacy-owned
+- Roadmap-specific Resource Session is implemented and audit-recognized as an
+  approved not-yet-wired infrastructure source of truth
 
 ### Legacy
 - Discord mutation execution
@@ -175,8 +180,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the Roadmap-specific Resource Session only, without wiring it to
-ports, adapters, composition, or runtime.
+Implement the production Roadmap-specific lookup port only, without adapter,
+composition, or runtime wiring.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -186,10 +191,9 @@ ports, adapters, composition, or runtime.
 - Quality gate PASS
 
 ## Blockers
-Guide Discord execution remains coupled to channel destination, channel ensure,
-partial failure, and Roadmap continuation. Guide lookup and mutation now use
-the per-invocation Pair handoffs without a second fetch or duplicate mutation;
-Roadmap continuation is the remaining uncharacterized legacy boundary.
+Roadmap lookup and mutation remain legacy-owned. The Roadmap Resource Session
+and lookup-port contract are prepared, but adapter, composition, runtime
+redirect, and mutation boundaries still require isolated migration slices.
 
 ## Last Updated
-2026-08-09: Roadmap lookup semantics are frozen; its runtime remains legacy.
+2026-08-09: Roadmap lookup port contract is prepared; runtime remains legacy.
