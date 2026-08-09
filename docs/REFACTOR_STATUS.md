@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Runtime Mutation Redirect Preparation
+Roadmap Runtime Mutation Redirect Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -213,6 +213,8 @@ Estimated local refactor progress: 65%
   consumption-only production wiring is unnecessary and runtime stays legacy
 - Roadmap Runtime Mutation Redirect contract characterized with exact M/S,
   rejection, persistence, and return-identity constraints
+- Roadmap Runtime Mutation Redirect implemented through the existing Pair while
+  retaining legacy persistence sequencing and writer-swallowed partial success
 
 ### Legacy
 - Discord mutation execution
@@ -240,8 +242,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement Runtime Mutation Redirect Only, preserving the characterized contract
-without persistence migration.
+Prepare Roadmap Persistence Migration, preserving the current publication
+record format and writer-swallowed partial-success behavior.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -251,10 +253,10 @@ without persistence migration.
 - Quality gate PASS
 
 ## Blockers
-Roadmap runtime mutation and persistence sequencing remain legacy-owned. The
-existing Pair makes mutationPort available. Redirect behavior is characterized
-but remains legacy-owned until its isolated implementation slice.
+Roadmap persistence sequencing remains legacy-owned. Runtime mutation now uses
+the existing Pair, but persistence migration needs its own characterization and
+must not be combined with further mutation changes.
 
 ## Last Updated
-2026-08-09: Roadmap Runtime Mutation Redirect prepared with frozen identity,
-persistence, and raw-failure constraints.
+2026-08-09: Roadmap Runtime Mutation Redirect implemented through the existing
+Pair; persistence remains legacy runtime-owned.

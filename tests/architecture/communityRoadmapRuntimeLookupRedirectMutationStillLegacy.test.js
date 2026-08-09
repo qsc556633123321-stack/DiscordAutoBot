@@ -4,8 +4,8 @@ const path = require('node:path');
 
 const source = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
 const roadmap = source.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
-assert.match(roadmap, /message\.edit\(payload\)/);
-assert.match(roadmap, /channel\.send\(payload\)/);
+assert.match(roadmap, /mutationPort\.edit\(/);
+assert.match(roadmap, /mutationPort\.send\(/);
 assert.match(roadmap, /saveOnboarding\(guild\.id/);
-assert.doesNotMatch(roadmap, /mutationPort|RoadmapPublicationMessageMutation/);
-console.log('Roadmap runtime lookup redirect retains legacy mutation and persistence');
+assert.doesNotMatch(roadmap, /RoadmapPublicationMessageMutationAdapter|getRetainedMutationFailure/);
+console.log('Roadmap runtime lookup redirect uses Pair mutation while persistence remains legacy-owned');

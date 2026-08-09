@@ -4,8 +4,8 @@ const path = require('node:path');
 
 const source = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
 const roadmap = source.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
-assert.match(roadmap, /await message\.edit\(payload\)/);
-assert.match(roadmap, /message = await channel\.send\(payload\)/);
+assert.match(roadmap, /mutationPort\.edit\(/);
+assert.match(roadmap, /mutationPort\.send\(/);
 assert.match(roadmap, /saveOnboarding\(guild\.id/);
-assert.doesNotMatch(roadmap, /mutationPort|editTrackedMessage|sendMessage/);
-console.log('Roadmap runtime mutation remains legacy-owned during Session mutation preparation');
+assert.doesNotMatch(roadmap, /editTrackedMessage|sendMessage/);
+console.log('Roadmap runtime mutation reaches Session only through the Pair');

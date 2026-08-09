@@ -66,6 +66,19 @@ function createCompatiblePair(channel, metrics) {
         }
       }
     },
+    mutationPort: {
+      async edit({ messageId, payload }) {
+        if (!retainedMessage || retainedMessage.id !== messageId) {
+          throw new Error('Compatible Roadmap Pair edit retained-message invariant failed');
+        }
+        await retainedMessage.edit(payload);
+        return { kind: 'EditSuccess', messageId };
+      },
+      async send({ payload }) {
+        retainedMessage = await channel.send(payload);
+        return { kind: 'SendSuccess', messageId: retainedMessage.id };
+      }
+    },
     getRetainedMessage() { metrics.getterCalls += 1; return retainedMessage; }
   };
 }

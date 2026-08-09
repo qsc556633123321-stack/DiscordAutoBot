@@ -4,6 +4,6 @@ const path = require('node:path');
 
 const runtime = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
 assert.doesNotMatch(runtime, /roadmapMutationPort|RoadmapPublicationMessageMutationAdapter/);
-assert.match(runtime, /await message\.edit\(payload\)/);
-assert.match(runtime, /message = await channel\.send\(payload\)/);
-console.log('Roadmap runtime mutation remains legacy-owned after Pair surface implementation');
+assert.match(runtime, /mutationPort\.edit\(/);
+assert.match(runtime, /mutationPort\.send\(/);
+console.log('Roadmap runtime mutation uses the existing Pair surface without direct Adapter wiring');

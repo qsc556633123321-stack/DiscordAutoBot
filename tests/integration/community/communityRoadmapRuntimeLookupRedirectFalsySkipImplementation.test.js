@@ -7,7 +7,7 @@ const { withCommunityRoadmapLookupRuntime, createCompatiblePair } = require('../
       const result = await concierge.setupRoadmapPanel(guild);
       assert.equal(result.message.id, 'roadmap-channel-sent');
       assert.equal(metrics.lookupCalls, 0);
-      assert.equal(metrics.getterCalls, 0);
+      assert.equal(metrics.getterCalls, 1);
       assert.equal(log.calls.filter((call) => call === 'roadmap.message.fetch').length, 0);
       assert.equal(log.calls.filter((call) => call === 'roadmap.message.send').length, 1);
     });

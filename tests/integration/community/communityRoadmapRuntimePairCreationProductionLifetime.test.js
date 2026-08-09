@@ -14,9 +14,17 @@ const { createGuild, createTextChannel, withOnboardingFile } = require('../../he
         createAdapterPair(input) {
           const pair = { input };
           pairs.push(pair);
+          let retainedMessage = null;
           return {
             lookupPort: { async lookupTrackedMessage() { return { kind: 'Unavailable' }; } },
-            getRetainedMessage() { return null; }
+            mutationPort: {
+              async edit({ messageId }) { return { kind: 'EditSuccess', messageId }; },
+              async send({ payload }) {
+                retainedMessage = await input.ensuredChannel.send(payload);
+                return { kind: 'SendSuccess', messageId: retainedMessage.id };
+              }
+            },
+            getRetainedMessage() { return retainedMessage; }
           };
         }
       };

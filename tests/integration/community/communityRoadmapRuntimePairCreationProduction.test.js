@@ -28,6 +28,19 @@ async function withRoadmapPair(run) {
                 }
               }
             },
+            mutationPort: {
+              async edit({ messageId, payload }) {
+                if (!retainedMessage || retainedMessage.id !== messageId) {
+                  throw new Error('Roadmap Pair test edit retained-message invariant failed');
+                }
+                await retainedMessage.edit(payload);
+                return { kind: 'EditSuccess', messageId };
+              },
+              async send({ payload }) {
+                retainedMessage = await input.ensuredChannel.send(payload);
+                return { kind: 'SendSuccess', messageId: retainedMessage.id };
+              }
+            },
             getRetainedMessage() { metrics.getterCalls += 1; return retainedMessage; }
           };
         }
@@ -87,7 +100,7 @@ async function capture({ roadmapMessageId, existingMessage, fetchFails = false }
     const missing = await capture({ roadmapMessageId, existingMessage: false });
     assert.equal(missing.metrics.pairs.length, 1);
     assert.equal(missing.metrics.lookupCalls, 0);
-    assert.equal(missing.metrics.getterCalls, 0);
+    assert.equal(missing.metrics.getterCalls, 1);
     assert.equal(missing.log.calls.filter((call) => call === 'roadmap.message.fetch').length, 0);
     assert.equal(missing.log.calls.filter((call) => call === 'roadmap.message.edit').length, 0);
     assert.equal(missing.log.calls.filter((call) => call === 'roadmap.message.send').length, 1);
@@ -100,6 +113,6 @@ async function capture({ roadmapMessageId, existingMessage, fetchFails = false }
   assert.equal(rejected.log.calls.filter((call) => call === 'roadmap.message.send').length, 1);
   assert.equal(rejected.log.calls.filter((call) => call === 'roadmap.message.edit').length, 0);
   assert.equal(rejected.metrics.lookupCalls, 1);
-  assert.equal(rejected.metrics.getterCalls, 0);
+  assert.equal(rejected.metrics.getterCalls, 1);
   console.log('Roadmap runtime Pair creation production integration passed');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

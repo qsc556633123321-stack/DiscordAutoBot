@@ -233,7 +233,7 @@ async function setupCommunityGuide(guild, options = {}) {
 
 async function setupRoadmapPanel(guild) {
   const channel = await getOrCreateRoadmapChannel(guild);
-  const { lookupPort, getRetainedMessage } =
+  const { lookupPort, mutationPort, getRetainedMessage } =
     communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const data = readOnboardingData()[guild.id] || {};
   const publicationState = fromLegacyPublicationRecord(guild.id, data);
@@ -253,8 +253,8 @@ async function setupRoadmapPanel(guild) {
       throw new Error('Roadmap lookup returned unexpected result');
     }
   }
-  if (message) await message.edit(payload);
-  else message = await channel.send(payload);
+  if (message) await mutationPort.edit({ messageId: message.id, payload });
+  else { const sendResult = await mutationPort.send({ payload }); const retainedMessage = getRetainedMessage(); if (!retainedMessage || typeof retainedMessage.id !== 'string' || !retainedMessage.id || retainedMessage.id !== sendResult.messageId) throw new Error('Roadmap send mutation retained-message invariant failed'); message = retainedMessage; }
   saveOnboarding(guild.id, {
     roadmapChannelId: channel.id,
     roadmapMessageId: message.id

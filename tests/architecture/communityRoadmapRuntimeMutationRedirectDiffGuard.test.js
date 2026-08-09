@@ -8,7 +8,7 @@ const roadmapRuntime = runtimeSource.match(
   /async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/
 )[1];
 
-assert.match(roadmapRuntime, /await message\.edit\(payload\)/);
-assert.match(roadmapRuntime, /message = await channel\.send\(payload\)/);
-assert.doesNotMatch(roadmapRuntime, /mutationPort\.edit|mutationPort\.send/);
-console.log('Roadmap redirect preparation source guard preserves legacy mutation ownership');
+assert.match(roadmapRuntime, /mutationPort\.edit\(\{ messageId: message\.id, payload \}\)/);
+assert.match(roadmapRuntime, /mutationPort\.send\(\{ payload \}\)/);
+assert.doesNotMatch(roadmapRuntime, /RoadmapPublicationMessageMutationAdapter|RoadmapPublicationResourceSession|getRetainedMutationFailure/);
+console.log('Roadmap redirect source guard preserves Pair-only mutation ownership');
