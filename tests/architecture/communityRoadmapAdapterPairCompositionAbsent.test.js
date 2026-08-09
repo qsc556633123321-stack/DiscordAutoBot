@@ -7,5 +7,6 @@ const composition = path.join(root, 'src/composition/communityRoadmapAdapterPair
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 
 assert.equal(fs.existsSync(composition), true);
-assert.doesNotMatch(runtime, /communityRoadmapAdapterPairFeature|createCommunityRoadmapAdapterPairFeature|createRoadmapPublicationAdapterPair/);
-console.log('Roadmap adapter pair composition exists and remains runtime-unwired');
+assert.match(runtime, /communityRoadmapAdapterPairFeature/);
+assert.doesNotMatch(runtime, /createRoadmapPublicationAdapterPair/);
+console.log('Roadmap adapter pair composition is runtime-created without direct factory access');

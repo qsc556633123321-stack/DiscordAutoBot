@@ -11,5 +11,6 @@ for (const file of [
   assert.equal(fs.existsSync(path.join(root, file)), false, `${file} must remain absent`);
 }
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
-assert.doesNotMatch(runtime, /createCommunityRoadmapAdapterPairFeature|createRoadmapPublicationAdapterPair/);
+assert.match(runtime, /createCommunityRoadmapAdapterPairFeature/);
+assert.doesNotMatch(runtime, /createRoadmapPublicationAdapterPair/);
 console.log('Roadmap production composition implementation boundary passed');

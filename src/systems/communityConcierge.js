@@ -21,8 +21,10 @@ const { createCommunityRoadmapEmbed } = require('../modules/community/communityR
 const { createCommunityGuideReadCompatibilityAdapter } = require('../composition/community/createCommunityGuideReadFeature');
 const { createCommunityPublicationStateFeature } = require('../composition/communityPublicationStateFeature');
 const { createCommunityGuideAdapterPairFeature } = require('../composition/communityGuideAdapterPairFeature');
+const { createCommunityRoadmapAdapterPairFeature } = require('../composition/communityRoadmapAdapterPairFeature');
 
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
+const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
@@ -228,6 +230,7 @@ async function setupCommunityGuide(guild, options = {}) {
 
 async function setupRoadmapPanel(guild) {
   const channel = await getOrCreateRoadmapChannel(guild);
+  communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const data = readOnboardingData()[guild.id] || {};
   const publicationState = fromLegacyPublicationRecord(guild.id, data);
   // Preserve the legacy truthy malformed-ID fetch behavior until identity validation is approved.

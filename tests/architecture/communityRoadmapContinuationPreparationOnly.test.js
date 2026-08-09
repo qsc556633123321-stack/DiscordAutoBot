@@ -7,5 +7,5 @@ const roadmap = source.slice(source.indexOf('async function setupRoadmapPanel'),
 assert.match(roadmap, /channel\.messages\.fetch\(roadmapMessageId\)\.catch\(\(\) => null\)/);
 assert.match(roadmap, /message\.edit\(payload\)/);
 assert.match(roadmap, /channel\.send\(payload\)/);
-assert.doesNotMatch(roadmap, /RoadmapPublicationResourceSession|roadmapPort|roadmapAdapter/i);
+assert.doesNotMatch(roadmap, /RoadmapPublicationResourceSession|lookupPort|getRetainedMessage|mutationPort/);
 console.log('Community Roadmap continuation remains legacy preparation-only');

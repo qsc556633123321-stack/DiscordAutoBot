@@ -6,5 +6,6 @@ const root = path.resolve(__dirname, '../..');
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityRoadmapAdapterPairFeature.js')), true);
 assert.equal(fs.existsSync(path.join(root, 'src/application/community/roadmapPublication/RoadmapPublicationAdapterPair.js')), false);
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
-assert.doesNotMatch(runtime, /communityRoadmapAdapterPairFeature|createRoadmapPublicationAdapterPair/);
+assert.match(runtime, /communityRoadmapAdapterPairFeature/);
+assert.doesNotMatch(runtime, /createRoadmapPublicationAdapterPair/);
 console.log('Roadmap composition preparation diff guard passed');

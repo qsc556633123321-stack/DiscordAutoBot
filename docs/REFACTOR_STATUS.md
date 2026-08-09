@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Runtime Pair Creation Preparation
+Roadmap Runtime Pair Creation Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -177,6 +177,8 @@ Estimated local refactor progress: 65%
   but is not imported by runtime
 - Roadmap Runtime Pair Creation is characterized as a zero-I/O, per-invocation
   boundary; lookup, mutation, and persistence remain legacy-owned
+- Roadmap Runtime Pair Creation is implemented: runtime creates one fresh,
+  unused Pair after channel ensure while lookup, mutation, and persistence stay legacy-owned
 
 ### Legacy
 - Discord mutation execution
@@ -204,7 +206,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement Roadmap runtime Pair creation only; keep lookup redirect legacy-owned.
+Prepare Roadmap runtime lookup redirect; keep the current direct fetch legacy-owned.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -214,9 +216,8 @@ Implement Roadmap runtime Pair creation only; keep lookup redirect legacy-owned.
 - Quality gate PASS
 
 ## Blockers
-Roadmap lookup and mutation remain legacy-owned. The Roadmap Resource Session
-and lookup-port contract are prepared, but adapter, composition, runtime
-redirect, and mutation boundaries still require isolated migration slices.
+Roadmap lookup and mutation remain legacy-owned. Pair creation is integrated,
+but lookup redirect and mutation boundaries still require isolated slices.
 
 ## Last Updated
-2026-08-09: Roadmap runtime Pair creation is prepared; runtime remains legacy.
+2026-08-09: Roadmap runtime Pair creation is implemented; lookup remains legacy.
