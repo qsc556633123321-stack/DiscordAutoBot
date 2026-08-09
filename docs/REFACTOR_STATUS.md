@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Runtime Mutation Redirect Only Implementation
+Roadmap Continuation Boundary Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -98,6 +98,8 @@ Estimated local refactor progress: 65%
 - Guide mutation redirect regression coverage now verifies exact `Error`,
   string, number, object, null, and undefined rejection identity plus
   invariant fallback behavior without post-mutation persistence or Roadmap work
+- Roadmap continuation channel/message I/O, persistence timing, failure
+  identity, partial-success behavior, and migration boundaries characterized
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -169,8 +171,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Characterize the Roadmap continuation as the next isolated Guide runtime
-boundary.
+Prepare the Roadmap lookup boundary only; do not introduce a Roadmap port,
+adapter, session, mutation plan, or runtime redirect yet.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -186,6 +188,5 @@ the per-invocation Pair handoffs without a second fetch or duplicate mutation;
 Roadmap continuation is the remaining uncharacterized legacy boundary.
 
 ## Last Updated
-2026-08-09: Guide lookup and mutation are redirected through the per-invocation
-Adapter Pair; exact rejection handoff and fallback behavior are covered.
-Persistence sequencing and Roadmap continuation remain unchanged.
+2026-08-09: Roadmap continuation is characterized as the remaining Guide
+publication legacy boundary. Runtime remains unchanged.

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    "existing-channel-existing-message-edit",
+    "existing-channel-missing-message-send",
+    "existing-channel-fetch-rejection-send",
+    "missing-channel-create-send",
+    "existing-message-edit-error",
+    "existing-message-edit-string",
+    "existing-message-edit-number",
+    "existing-message-edit-object",
+    "existing-message-edit-null",
+    "existing-message-edit-undefined",
+    "send-error",
+    "send-string",
+    "send-number",
+    "send-object",
+    "send-null",
+    "send-undefined",
+    "persistence-error-after-edit",
+    "persistence-error-after-send",
+    "guide-success-roadmap-success",
+    "guide-success-roadmap-failure",
+    "same-guild-repeat-edit",
+    "malformed-truthy-message-id-fetch",
+    "no-message-id-send",
+    "return-existing-message-identity",
+    "return-sent-message-identity"
+  ],
+  "frozenFacts": {
+    "fetchRejection": "swallowed and replaced by send",
+    "editFailure": "propagates raw rejection; no persistence write",
+    "sendFailure": "propagates raw rejection; no persistence write",
+    "persistenceFailure": "occurs after Discord mutation",
+    "forceOrRefreshParameter": "not accepted by standalone setupRoadmapPanel"
+  }
+}

@@ -1,7 +1,8 @@
-# Community Roadmap Message Identity Contract
+# Roadmap Message Identity Contract
 
-Roadmap follows the same pattern through `roadmapMessageId` and exact Roadmap
-channel name. It is independent from Guide by ID but coupled by command order and
-shared guild JSON. There is no Roadmap payload, author, saved-channel-ID, or
-Guide-vs-Roadmap validation. Fetch failure sends; write failure can leave an
-untracked publication. Automatic and manual identity repair are **Not Present**.
+Edit: fetch returns exact message `M`; runtime calls `M.edit(payload)`,
+persists `M.id`, and returns `M`.
+
+Send: `channel.send(payload)` returns exact message `S`; runtime persists
+`S.id` and returns `S`. No post-send fetch occurs. This is characterized for
+future migration only and is not shared with the Guide identity handoff.
