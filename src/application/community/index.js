@@ -47,6 +47,10 @@ const {
   createRoadmapPublicationPersistenceRequest,
   mapRoadmapPublicationPersistenceRequestToGenericInput
 } = require('./roadmapPublication/RoadmapPublicationPersistenceRequest');
+const {
+  createGuidePersistenceRequest,
+  mapGuidePersistenceRequestToGenericInput
+} = require('./guidePublication/GuidePersistenceRequest');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -90,4 +94,6 @@ module.exports = {
   assertRoadmapPublicationMessageMutationPort,
   createRoadmapPublicationPersistenceRequest,
   mapRoadmapPublicationPersistenceRequestToGenericInput,
+  createGuidePersistenceRequest,
+  mapGuidePersistenceRequestToGenericInput,
 };
