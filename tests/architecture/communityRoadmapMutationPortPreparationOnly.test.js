@@ -4,6 +4,6 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '../..');
 assert.equal(fs.existsSync(path.join(root, 'src/application/community/roadmapPublication/RoadmapPublicationMessageMutationPort.js')), true);
-assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageMutationAdapter.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageMutationAdapter.js')), true);
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityRoadmapMutationFeature.js')), false);
-console.log('Roadmap production mutation Port is implemented while Adapter and Composition remain absent');
+console.log('Roadmap production mutation Port and isolated Adapter are implemented while Composition remains absent');

@@ -7,7 +7,7 @@ const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.
 const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
 const session = fs.readFileSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationResourceSession.js'), 'utf8');
 const pair = fs.readFileSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationAdapterPairFactory.js'), 'utf8');
-assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageMutationAdapter.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageMutationAdapter.js')), true);
 assert.match(roadmap, /await message\.edit\(payload\)/);
 assert.match(roadmap, /message = await channel\.send\(payload\)/);
 assert.match(roadmap, /saveOnboarding\(guild\.id/);
