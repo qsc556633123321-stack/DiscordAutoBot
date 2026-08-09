@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Composition Feature Implementation
+Roadmap Runtime Pair Creation Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -175,6 +175,8 @@ Estimated local refactor progress: 65%
   delegates only to the Pair Factory and retains no state
 - Roadmap Composition Feature is implemented with Pair Factory delegation only,
   but is not imported by runtime
+- Roadmap Runtime Pair Creation is characterized as a zero-I/O, per-invocation
+  boundary; lookup, mutation, and persistence remain legacy-owned
 
 ### Legacy
 - Discord mutation execution
@@ -202,7 +204,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Roadmap runtime Pair creation only; keep lookup redirect legacy-owned.
+Implement Roadmap runtime Pair creation only; keep lookup redirect legacy-owned.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -217,4 +219,4 @@ and lookup-port contract are prepared, but adapter, composition, runtime
 redirect, and mutation boundaries still require isolated migration slices.
 
 ## Last Updated
-2026-08-09: Roadmap composition feature is implemented but not runtime used.
+2026-08-09: Roadmap runtime Pair creation is prepared; runtime remains legacy.

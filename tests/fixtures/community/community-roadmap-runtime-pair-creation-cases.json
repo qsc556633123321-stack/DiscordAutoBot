@@ -1,0 +1,14 @@
+{
+  "cases": [
+    "missing-id", "undefined-id", "null-id", "empty-id", "zero-id", "false-id",
+    "truthy-id", "malformed-truthy-id", "available-message", "unavailable-message",
+    "fetch-rejection", "fetch-rejection-swallows", "edit-branch", "send-branch",
+    "edit-rejection", "send-rejection", "persistence-success", "persistence-failure",
+    "return-shape", "same-guild-repeat", "concurrent-invocations", "invalid-channel",
+    "pair-creation-throw", "feature-creation", "feature-module-lifetime", "pair-per-invocation",
+    "same-channel-pair-isolation", "different-channel-pair-isolation", "exact-channel-identity",
+    "pair-zero-fetch", "pair-zero-edit", "pair-zero-send", "session-zero-io",
+    "adapter-zero-io", "getter-zero-io", "lookup-port-zero-calls", "legacy-truthy-fetch-one",
+    "legacy-falsy-fetch-zero", "mutation-legacy", "persistence-legacy"
+  ]
+}
