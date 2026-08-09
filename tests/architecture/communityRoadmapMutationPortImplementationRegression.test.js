@@ -10,7 +10,8 @@ const pair = fs.readFileSync(path.join(root, 'src/infrastructure/community/roadm
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageMutationAdapter.js')), true);
 assert.match(roadmap, /mutationPort\.edit\(/);
 assert.match(roadmap, /mutationPort\.send\(/);
-assert.match(roadmap, /saveOnboarding\(guild\.id/);
+assert.match(roadmap, /communityRoadmapPersistenceFeature\.persist\(persistenceRequest\)/);
+assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id/);
 assert.doesNotMatch(roadmap, /RoadmapPublicationMessageMutationPort/);
 assert.match(session, /editTrackedMessage/);
 assert.match(session, /sendMessage/);
