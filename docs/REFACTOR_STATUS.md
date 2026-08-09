@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Runtime Lookup Redirect Implementation
+Roadmap Mutation Boundary Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -185,6 +185,9 @@ Estimated local refactor progress: 65%
 - Roadmap Runtime Lookup Redirect is migrated through the existing
   Composition/Pair/Lookup Port path; direct legacy fetch is removed while
   Edit/Send and persistence sequencing remain legacy-owned
+- Roadmap Mutation boundary is characterized: direct Edit/Send, exact resource
+  identity, failure propagation, call ordering, and writer-swallowed
+  partial-success behavior are frozen without production migration
 
 ### Legacy
 - Discord mutation execution
@@ -212,8 +215,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Roadmap mutation boundary only; keep current Edit/Send and
-persistence sequencing unchanged.
+Prepare a Roadmap-specific Mutation Port contract only; keep current Edit/Send
+and persistence sequencing unchanged.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -223,9 +226,9 @@ persistence sequencing unchanged.
 - Quality gate PASS
 
 ## Blockers
-Roadmap runtime mutation remains legacy-owned. Its failure, partial-success,
-and persistence-order contracts must be characterized before any redirect.
+Roadmap runtime mutation remains legacy-owned. A Mutation Port is not yet
+implemented; its application contract requires a separate approval.
 
 ## Last Updated
-2026-08-09: Roadmap runtime lookup redirect implemented; mutation and runtime
+2026-08-09: Roadmap mutation behavior characterized; runtime mutation and
 persistence sequencing remain legacy-owned.

@@ -1,0 +1,11 @@
+{
+  "cases": [
+    "edit-success", "edit-return-different-object", "edit-payload-identity", "edit-message-identity", "edit-error", "edit-string", "edit-number", "edit-object", "edit-null", "edit-undefined",
+    "send-success", "send-payload-identity", "send-message-identity", "send-error", "send-string", "send-number", "send-object", "send-null", "send-undefined",
+    "edit-persist-success", "send-persist-success", "edit-persist-error", "edit-persist-string", "edit-persist-number", "edit-persist-object", "edit-persist-null", "edit-persist-undefined",
+    "edit-no-send-fallback", "send-no-edit", "edit-no-retry", "send-no-retry", "edit-persist-no-retry", "send-persist-no-retry", "edit-persist-no-rollback", "send-persist-no-delete",
+    "lookup-before-edit", "lookup-before-send", "edit-before-persist", "send-before-persist", "persist-before-return", "return-edit-original-message", "return-send-resolved-message",
+    "edit-persist-id-original-message", "send-persist-id-sent-message", "same-message-repeat", "different-message-repeat", "same-guild-sequential", "same-guild-concurrent",
+    "available-path", "unavailable-path", "falsy-id-send", "truthy-id-edit", "malformed-id-send", "rejection-send", "resource-session-reused-for-lookup", "no-mutation-port", "no-mutation-adapter", "legacy-runtime-owner", "persistence-failure-swallowed-edit", "persistence-failure-swallowed-send"
+  ]
+}

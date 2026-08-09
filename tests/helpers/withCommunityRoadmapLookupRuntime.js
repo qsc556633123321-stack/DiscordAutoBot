@@ -1,7 +1,7 @@
 const { createGuild, createMessage, createTextChannel, withOnboardingFile } = require('./createCommunityGuideMutationHarness');
 
 async function withCommunityRoadmapLookupRuntime(input = {}, run) {
-  const { roadmapMessageId, fetchResult, rejection, createPair } = input;
+  const { roadmapMessageId, fetchResult, rejection, createPair, writeFails = false } = input;
   const hasRejection = Object.prototype.hasOwnProperty.call(input, 'rejection');
   const hasFetchResult = Object.prototype.hasOwnProperty.call(input, 'fetchResult');
   const featurePath = require.resolve('../../src/composition/communityRoadmapAdapterPairFeature');
@@ -23,7 +23,8 @@ async function withCommunityRoadmapLookupRuntime(input = {}, run) {
   }
   try {
     return await withOnboardingFile({
-      initial: { 'guild-1': roadmapMessageId === undefined ? {} : { roadmapMessageId } }
+    initial: { 'guild-1': roadmapMessageId === undefined ? {} : { roadmapMessageId } },
+    writeFails
     }, async ({ log, getState }) => {
       const concierge = require(runtimePath);
       const existing = hasFetchResult ? fetchResult : createMessage(roadmapMessageId || 'tracked', log, {}, 'roadmap');
