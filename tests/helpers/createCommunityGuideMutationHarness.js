@@ -121,7 +121,7 @@ function createGuild({ guideName, roadmapName, log, behavior = {}, existingGuide
   };
 }
 
-async function withOnboardingFile({ initial = {}, raw, writeFails = false, writeFailAt, missingFile = false }, run) {
+async function withOnboardingFile({ initial = {}, raw, readFails = false, writeFails = false, writeFailAt, missingFile = false }, run) {
   const original = {
     existsSync: fs.existsSync,
     readFileSync: fs.readFileSync,
@@ -135,6 +135,7 @@ async function withOnboardingFile({ initial = {}, raw, writeFails = false, write
   fs.readFileSync = (file, ...args) => {
     if (path.resolve(file) !== onboardingPath) return original.readFileSync(file, ...args);
     log.calls.push('onboarding.read');
+    if (readFails) throw new Error('onboarding read failure');
     return raw === undefined ? JSON.stringify(state) : raw;
   };
   fs.writeFileSync = (file, content, ...args) => {

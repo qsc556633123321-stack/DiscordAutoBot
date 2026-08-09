@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Guide End-to-End Migration Closure Audit
+Community Guide Read Boundary Migration Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 70%
@@ -261,6 +261,9 @@ Estimated local refactor progress: 70%
 - Guide end-to-end closure audited: lookup, mutation, and persistence are
   migrated; tracked publication state remains a classified shared read
   compatibility dependency, so Guide is closed with that dependency recorded
+- Guide tracked-state read boundary prepared: Guide, Roadmap, and welcome
+  consumers share one compatibility reader; a Guide-only content feature is
+  not reusable for publication tracking state
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -303,8 +306,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Guide Read Boundary Migration. Characterize and isolate the shared
-tracked-publication-state read without changing Guide runtime behavior.
+Prepare the Shared Publication Tracking State Read Boundary. Freeze a semantic
+query contract for Guide and Roadmap tracked-message IDs before any runtime
+redirect.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -322,14 +326,13 @@ tracked-publication-state read without changing Guide runtime behavior.
 - Dashboard build PASS
 
 ## Blockers
-Guide is closed with a shared `readOnboardingData` compatibility dependency.
-The retained zero-consumer `saveOnboarding` helper still needs dedicated
-cleanup preparation. The 70% estimate reflects migrated Guide mutation and
-persistence ownership, not deployment readiness; high-risk community flows
-remain outstanding.
+Guide is closed with a shared `readOnboardingData` compatibility dependency:
+Guide, Roadmap, and welcome still use it. The retained zero-consumer
+`saveOnboarding` helper still needs dedicated cleanup preparation. The 70%
+estimate reflects migrated Guide mutation and persistence ownership, not
+deployment readiness; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Guide end-to-end migration closure audit completed. Guide lookup,
-mutation, and persistence are migrated; the tracked-message read remains a
-shared compatibility dependency. Progress remains 70% because this audit did
-not move that last active read ownership boundary.
+2026-08-10: Guide read boundary migration preparation completed without a
+runtime change. The next boundary is shared because Guide, Roadmap, and
+welcome all consume the same compatibility reader. Progress remains 70%.
