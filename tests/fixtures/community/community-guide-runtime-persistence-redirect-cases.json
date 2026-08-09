@@ -1,0 +1,7 @@
+[
+  "edit-success", "send-success", "exact-guild", "exact-channel", "exact-message", "recommendations-identity", "excluded-identity", "four-field-atomic", "single-persist", "single-execute",
+  "persisted-true", "persisted-false", "result-ignore", "writer-failure", "partial-edit", "partial-send", "native-side-effect", "invariant-error", "invariant-string", "invariant-number",
+  "invariant-object", "invariant-null", "invariant-undefined", "sync", "no-promise-gap", "no-retry", "no-rollback", "no-double-write", "no-patch-runtime", "read-after-write",
+  "roadmap-closure", "saveOnboarding-last-consumer", "production-diff-zero", "construction-per-invocation", "generic-reuse", "legacy-ordering", "post-mutation-only", "return-message-identity", "native-constant", "native-literal",
+  "no-schema-change", "no-port", "no-writer", "no-repository", "no-filesystem", "no-discord-coupling", "no-roadmap-coupling", "no-async-persistence", "no-result-branch", "retirement-forecast"
+]
