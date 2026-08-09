@@ -5,7 +5,7 @@ const root = path.resolve(__dirname, '..', '..');
 const source = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 
 assert.match(source, /const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature\(\);/);
-assert.match(source, /const channel = await getOrCreateGuideChannel\(guild\);\s+communityGuideAdapterPairFeature\.createAdapterPair\(\{ ensuredChannel: channel \}\);\s+const payload = await buildGuidePayload\(guild\);/s);
+assert.match(source, /const channel = await getOrCreateGuideChannel\(guild\);\s+const \{ lookupPort, mutationPort, getRetainedMessage, getRetainedMutationFailure \ }\s+=\s+communityGuideAdapterPairFeature\.createAdapterPair\(\{ ensuredChannel: channel \}\);\s+const payload = await buildGuidePayload\(guild\);/s);
 assert.match(source, /channel\.messages\.fetch\(guideMessageId\)\.catch\(\(\) => null\)/);
 assert.match(source, /message\.edit\(payload\)/);
 assert.match(source, /channel\.send\(payload\)/);
