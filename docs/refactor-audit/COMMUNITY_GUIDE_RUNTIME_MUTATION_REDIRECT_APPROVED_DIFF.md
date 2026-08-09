@@ -1,4 +1,5 @@
-# Approved Future Diff
+# Approved Runtime Mutation Redirect Diff
 
-No production mutation redirect diff is approved in this slice. A later slice
-may change only `communityConcierge.js` after both identity handoffs are proven.
+Only `src/systems/communityConcierge.js` may later replace direct edit/send with
+`mutationPort` calls and use the existing Pair handoffs. No other production
+file is approved.

@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Session-local Mutation Failure Handoff Implementation
+Guide Runtime Mutation Redirect Preparation Refresh
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -92,6 +92,7 @@ Estimated local refactor progress: 65%
   undefined-presence semantics remain necessary before runtime mutation redirect
 - Session-local mutation failure handoff and narrow Pair delegate implemented;
   runtime mutation remains legacy-owned
+- Runtime mutation redirect refreshed against completed Message/failure handoffs
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -160,7 +161,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement Session-local mutation failure handoff with explicit presence semantics.
+Implement Runtime Mutation Redirect Only using the frozen Pair handoffs.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
