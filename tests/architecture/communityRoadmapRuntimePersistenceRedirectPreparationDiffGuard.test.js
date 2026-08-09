@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '../..');
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
 
-assert.match(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId: channel\.id,\s+roadmapMessageId: message\.id/s);
-assert.doesNotMatch(runtime, /createCommunityRoadmapPersistenceFeature|createRoadmapPublicationPersistenceRequest/);
+assert.match(roadmap, /communityRoadmapPersistenceFeature\.persist\(persistenceRequest\)/);
+assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId/);
 assert.doesNotMatch(roadmap, /roadmapChannelId.*patch|roadmapMessageId.*patch/);
-console.log('Roadmap persistence redirect preparation guards the unchanged production runtime boundary.');
+console.log('Roadmap persistence redirect preparation guards the semantic runtime boundary.');

@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Runtime Persistence Redirect Preparation
+Roadmap Runtime Persistence Redirect Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -227,10 +227,13 @@ Estimated local refactor progress: 65%
   feature delegation candidate; no production reuse feature or runtime wiring
 - Roadmap persistence reuse Composition feature implemented as a synchronous
   request-to-generic delegation with exact result and thrown-value identity;
-  runtime persistence remains legacy-owned
+  runtime now consumes it after finalized Roadmap mutations
 - Roadmap runtime persistence redirect ordering, result-ignore behavior,
   writer-failure partial success, invariant throws, and exact ID contracts
   prepared with a test-only candidate; no runtime source changed
+- Roadmap runtime persistence redirected after finalized Edit/Send Message to
+  the semantic request and reuse feature, preserving synchronous ordering,
+  result-ignore behavior, raw invariant throws, and partial success
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -239,10 +242,13 @@ Estimated local refactor progress: 65%
 - Roadmap persistence request/value object and pure mapper are new
   Application-owned code; generic persistence remains the reuse target and
   runtime sequencing remains legacy-owned
-- Roadmap persistence reuse feature is Composition-owned but not runtime-used;
-  legacy `saveOnboarding` still owns Roadmap runtime persistence sequencing
-- Roadmap runtime persistence redirect is preparation-owned; the production
-  call remains legacy-owned until the approved narrow redirect slice
+- Roadmap persistence reuse feature is Composition-owned and runtime-active for
+  Roadmap publication; shared `saveOnboarding` remains for Guide consumers
+- Roadmap runtime persistence redirect is runtime-active; only the Roadmap
+  legacy persistence call was removed
+- Roadmap Lookup, Mutation, and Persistence are runtime-active through their
+  approved boundaries; Guide persistence and shared `saveOnboarding` remain
+  legacy-owned
 
 ### Legacy
 - Discord mutation execution
@@ -270,9 +276,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the approved Roadmap runtime persistence redirect only: replace the
-Roadmap `saveOnboarding` call after a successful mutation, preserving the
-prepared synchronous, result-ignore, ordering, and return contracts.
+Perform a Roadmap End-to-End Migration Closure Audit to confirm no Roadmap
+runtime legacy ownership remains before any cleanup proposal.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -286,13 +291,14 @@ prepared synchronous, result-ignore, ordering, and return contracts.
 - Roadmap persistence reuse feature preparation suite PASS
 - Roadmap persistence reuse feature implementation suite PASS
 - Roadmap runtime persistence redirect preparation suite PASS
+- Roadmap runtime persistence redirect implementation suite PASS
 - Dashboard build PASS
 
 ## Blockers
-Roadmap runtime persistence remains legacy-owned. The approved redirect must
-not introduce a duplicate writer and must preserve schema, exact IDs,
-writer-swallowed partial success, raw invariant throws, and current ordering.
+Guide persistence and shared `saveOnboarding` remain legacy-owned. Any future
+cleanup must preserve schema, exact IDs, writer-swallowed partial success, raw
+invariant throws, and current ordering.
 
 ## Last Updated
-2026-08-09: Roadmap runtime persistence redirect characterized and prepared;
-runtime and writer ownership remain unchanged.
+2026-08-09: Roadmap runtime persistence redirected through the semantic request
+and reuse feature; generic writer ownership remains unchanged.

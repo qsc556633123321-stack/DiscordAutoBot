@@ -4,6 +4,7 @@ const path = require('node:path');
 
 const source = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
 const roadmap = source.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
-assert.match(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId: channel\.id,\s+roadmapMessageId: message\.id/s);
-assert.doesNotMatch(roadmap, /savePublicationState|RoadmapPublicationPersistence/);
-console.log('Roadmap runtime persistence remains legacy-owned during preparation');
+assert.match(roadmap, /createRoadmapPublicationPersistenceRequest\(\{\s+guildId: guild\.id,\s+channelId: channel\.id,\s+messageId: message\.id/s);
+assert.match(roadmap, /communityRoadmapPersistenceFeature\.persist\(persistenceRequest\)/);
+assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId/);
+console.log('Roadmap runtime persistence redirects through the Roadmap reuse feature');

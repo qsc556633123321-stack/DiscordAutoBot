@@ -10,7 +10,7 @@ assert.match(roadmap, /const \{ lookupPort, mutationPort, getRetainedMessage \}/
 assert.match(roadmap, /mutationPort\.edit\(\{ messageId: message\.id, payload \}\)/);
 assert.match(roadmap, /const sendResult = await mutationPort\.send\(\{ payload \}\)/);
 assert.match(roadmap, /retainedMessage\.id !== sendResult\.messageId/);
-assert.match(roadmap, /saveOnboarding\(guild\.id/);
+assert.match(roadmap, /communityRoadmapPersistenceFeature\.persist\(persistenceRequest\)/);
 assert.doesNotMatch(roadmap, /channel\.messages\.fetch\(roadmapMessageId\)|await message\.edit\(payload\)|message = await channel\.send\(payload\)/);
 assert.doesNotMatch(roadmap, /RoadmapPublicationMessageMutationAdapter|RoadmapPublicationResourceSession|getRetainedMutationFailure/);
 console.log('Roadmap runtime mutation redirect implementation diff guard passed');

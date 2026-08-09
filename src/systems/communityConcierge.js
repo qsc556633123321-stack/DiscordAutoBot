@@ -20,8 +20,10 @@ const { createCommunityRoadmapFeature } = require('../composition/communityRoadm
 const { createCommunityRoadmapEmbed } = require('../modules/community/communityRoadmapEmbed');
 const { createCommunityGuideReadCompatibilityAdapter } = require('../composition/community/createCommunityGuideReadFeature');
 const { createCommunityPublicationStateFeature } = require('../composition/communityPublicationStateFeature');
+const { createCommunityRoadmapPersistenceFeature } = require('../composition/communityRoadmapPersistenceFeature');
 const { createCommunityGuideAdapterPairFeature } = require('../composition/communityGuideAdapterPairFeature');
 const { createCommunityRoadmapAdapterPairFeature } = require('../composition/communityRoadmapAdapterPairFeature');
+const { createRoadmapPublicationPersistenceRequest } = require('../application/community/roadmapPublication/RoadmapPublicationPersistenceRequest');
 const {
   RoadmapPublicationMessageLookupKind
 } = require('../application/community/roadmapPublication/RoadmapPublicationMessageLookupPort');
@@ -255,10 +257,10 @@ async function setupRoadmapPanel(guild) {
   }
   if (message) await mutationPort.edit({ messageId: message.id, payload });
   else { const sendResult = await mutationPort.send({ payload }); const retainedMessage = getRetainedMessage(); if (!retainedMessage || typeof retainedMessage.id !== 'string' || !retainedMessage.id || retainedMessage.id !== sendResult.messageId) throw new Error('Roadmap send mutation retained-message invariant failed'); message = retainedMessage; }
-  saveOnboarding(guild.id, {
-    roadmapChannelId: channel.id,
-    roadmapMessageId: message.id
-  });
+  const communityPublicationStateFeature = createCommunityPublicationStateFeature({ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR });
+  const communityRoadmapPersistenceFeature = createCommunityRoadmapPersistenceFeature({ communityPublicationStateFeature });
+  const persistenceRequest = createRoadmapPublicationPersistenceRequest({ guildId: guild.id, channelId: channel.id, messageId: message.id });
+  communityRoadmapPersistenceFeature.persist(persistenceRequest);
   return { channel, message };
 }
 
