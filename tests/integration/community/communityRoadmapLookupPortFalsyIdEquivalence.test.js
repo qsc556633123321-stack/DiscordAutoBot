@@ -1,2 +1,2 @@
-const assert=require('node:assert/strict');const {createRoadmapPublicationResourceSession}=require('../../src/infrastructure/community/roadmapPublication/RoadmapPublicationResourceSession');
+const assert=require('node:assert/strict');const {createRoadmapPublicationResourceSession}=require('../../../src/infrastructure/community/roadmapPublication/RoadmapPublicationResourceSession');
 (async()=>{let calls=0;const s=createRoadmapPublicationResourceSession({ensuredChannel:{id:'c',messages:{async fetch(){calls++;}}}});for(const id of [undefined,null,'',0,false])assert.deepEqual(await s.lookupTrackedMessage(id),{kind:'Unavailable'});assert.equal(calls,0);console.log('Roadmap lookup port falsy equivalence passed');})().catch(e=>{console.error(e);process.exitCode=1;});
