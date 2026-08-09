@@ -1,0 +1,6 @@
+[
+  {"id":"edit-success-01"},{"id":"edit-error-01"},{"id":"send-success-01"},{"id":"send-error-01"},{"id":"missing-resource"},{"id":"unknown"},
+  {"id":"force-send"},{"id":"missing-id"},{"id":"lookup-unavailable"},{"id":"refresh-edit"},{"id":"malformed-edit"},{"id":"malformed-send"},
+  {"id":"persist-failure"},{"id":"roadmap-failure"},{"id":"same-guild"},{"id":"concurrent"},{"id":"return-shape"},{"id":"identity"},
+  {"id":"case-19"},{"id":"case-20"},{"id":"case-21"},{"id":"case-22"},{"id":"case-23"},{"id":"case-24"},{"id":"case-25"},{"id":"case-26"},{"id":"case-27"},{"id":"case-28"},{"id":"case-29"},{"id":"case-30"},{"id":"case-31"},{"id":"case-32"},{"id":"case-33"},{"id":"case-34"},{"id":"case-35"},{"id":"case-36"},{"id":"case-37"},{"id":"case-38"},{"id":"case-39"},{"id":"case-40"},{"id":"case-41"},{"id":"case-42"},{"id":"case-43"},{"id":"case-44"},{"id":"case-45"},{"id":"case-46"},{"id":"case-47"},{"id":"case-48"},{"id":"case-49"},{"id":"case-50"},{"id":"case-51"},{"id":"case-52"},{"id":"case-53"},{"id":"case-54"},{"id":"case-55"},{"id":"case-56"},{"id":"case-57"},{"id":"case-58"},{"id":"case-59"},{"id":"case-60"}
+]
