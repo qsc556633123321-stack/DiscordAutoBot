@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Persistence Request Contract Implementation
+Roadmap Persistence Reuse Feature Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -223,6 +223,8 @@ Estimated local refactor progress: 65%
   rejected without changing runtime
 - Roadmap persistence pure Application request and generic-input mapper
   implemented without runtime, infrastructure, composition, or schema wiring
+- Roadmap persistence reuse feature boundary prepared with an exact generic
+  feature delegation candidate; no production reuse feature or runtime wiring
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -231,6 +233,8 @@ Estimated local refactor progress: 65%
 - Roadmap persistence request/value object and pure mapper are new
   Application-owned code; generic persistence remains the reuse target and
   runtime sequencing remains legacy-owned
+- Roadmap persistence reuse feature remains test-only preparation; a future
+  Composition feature will own request-to-generic delegation
 
 ### Legacy
 - Discord mutation execution
@@ -258,8 +262,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a narrow Roadmap persistence reuse adapter/feature that delegates to
-the existing generic composition boundary, without a runtime redirect.
+Implement the narrow Roadmap persistence Composition feature that delegates to
+the existing generic feature, without a runtime redirect.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -270,6 +274,7 @@ the existing generic composition boundary, without a runtime redirect.
 - Roadmap persistence preparation suite PASS
 - Roadmap persistence request/reuse preparation suite PASS
 - Roadmap persistence request implementation suite PASS
+- Roadmap persistence reuse feature preparation suite PASS
 - Dashboard build PASS
 
 ## Blockers
@@ -278,5 +283,5 @@ introduce a duplicate Roadmap writer and must preserve schema, exact IDs,
 writer-swallowed partial success, and current ordering.
 
 ## Last Updated
-2026-08-09: Roadmap persistence request contract implemented as an
-Application-only value object and mapper; runtime and writer ownership remain unchanged.
+2026-08-09: Roadmap persistence reuse feature boundary prepared; runtime and
+writer ownership remain unchanged.
