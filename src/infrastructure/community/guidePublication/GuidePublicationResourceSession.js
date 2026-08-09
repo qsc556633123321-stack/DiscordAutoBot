@@ -38,7 +38,9 @@ function createGuidePublicationResourceSession({ ensuredChannel } = {}) {
       return retainedMessage.edit(payload);
     },
     async sendMessage(payload) {
-      return ensuredChannel.send(payload);
+      const sentMessage = await ensuredChannel.send(payload);
+      retainedMessage = sentMessage;
+      return sentMessage;
     }
   };
 }
