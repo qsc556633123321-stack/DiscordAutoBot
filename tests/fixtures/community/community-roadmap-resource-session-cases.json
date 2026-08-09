@@ -1,0 +1,1 @@
+{"schemaVersion":1,"cases":["fresh","available","null","undefined","false","error","string","number","object","null-rejection","undefined-rejection","M1-to-M2","M1-to-unavailable","same-channel-isolation","zero-io-getter"]}

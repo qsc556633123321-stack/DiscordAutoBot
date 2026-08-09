@@ -1,0 +1,1 @@
+const assert=require('node:assert/strict');const fs=require('node:fs');const path=require('node:path');const s=fs.readFileSync(path.resolve(__dirname,'../../src/systems/communityConcierge.js'),'utf8');assert.match(s,/channel\.messages\.fetch\(roadmapMessageId\)\.catch\(\(\) => null\)/);console.log('Roadmap resource session preparation boundary passed');

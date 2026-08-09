@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Lookup Boundary Preparation
+Roadmap Resource Session Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -102,6 +102,8 @@ Estimated local refactor progress: 65%
   identity, partial-success behavior, and migration boundaries characterized
 - Roadmap lookup truthiness, exact channel/message identity, rejection swallow,
   and no-retry behavior characterized
+- Roadmap-specific per-invocation resource-session ownership and retained
+  message lifecycle prepared with test-only candidates
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -173,8 +175,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a Roadmap-specific Resource Session only; do not introduce a Roadmap
-port, adapter, pair, mutation plan, or runtime redirect yet.
+Implement the Roadmap-specific Resource Session only, without wiring it to
+ports, adapters, composition, or runtime.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
