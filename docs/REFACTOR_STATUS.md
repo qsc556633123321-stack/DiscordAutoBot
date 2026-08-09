@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Mutation Boundary Preparation
+Roadmap Mutation Port Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -188,6 +188,9 @@ Estimated local refactor progress: 65%
 - Roadmap Mutation boundary is characterized: direct Edit/Send, exact resource
   identity, failure propagation, call ordering, and writer-swallowed
   partial-success behavior are frozen without production migration
+- Roadmap Mutation Port boundary is prepared with a test-only contract:
+  separate scalar Edit/Send operations, result discriminators, identity and
+  raw-rejection constraints, and explicit persistence exclusion
 
 ### Legacy
 - Discord mutation execution
@@ -215,8 +218,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a Roadmap-specific Mutation Port contract only; keep current Edit/Send
-and persistence sequencing unchanged.
+Implement the approved Roadmap-specific Application Mutation Port contract,
+without Adapter, Pair, or runtime wiring.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -226,9 +229,10 @@ and persistence sequencing unchanged.
 - Quality gate PASS
 
 ## Blockers
-Roadmap runtime mutation remains legacy-owned. A Mutation Port is not yet
-implemented; its application contract requires a separate approval.
+Roadmap runtime mutation remains legacy-owned. The Port boundary is prepared,
+but payload ownership and exact `undefined` failure handoff require explicit
+contract decisions before production implementation.
 
 ## Last Updated
-2026-08-09: Roadmap mutation behavior characterized; runtime mutation and
-persistence sequencing remain legacy-owned.
+2026-08-09: Roadmap Mutation Port boundary prepared; no production Port,
+Adapter, Pair mutation surface, or runtime redirect exists.

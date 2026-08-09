@@ -1,0 +1,12 @@
+[
+  "edit-success", "send-success", "edit-message-id", "send-message-id", "edit-payload-identity",
+  "send-payload-identity", "edit-no-channel", "send-no-channel", "edit-no-message", "send-no-message",
+  "edit-no-guild", "send-no-guild", "edit-no-raw-error", "send-no-raw-error", "result-no-raw-message",
+  "result-no-raw-channel", "edit-error", "send-error", "edit-string", "send-string",
+  "edit-number", "send-number", "edit-object", "send-object", "edit-null",
+  "send-null", "edit-undefined", "send-undefined", "edit-original-message-forecast", "send-exact-message-forecast",
+  "same-session-edit-forecast", "same-session-send-forecast", "no-persistence", "no-save-onboarding", "no-filesystem",
+  "no-retry-edit", "no-retry-send", "no-rollback", "no-fallback-send", "edit-discriminator",
+  "send-discriminator", "edit-result-scalar", "send-result-scalar", "payload-opaque", "partial-success-outside-port",
+  "concurrent-invocation-unspecified", "lookup-outside-port", "pair-extension-deferred", "adapter-deferred", "runtime-redirect-deferred"
+]
