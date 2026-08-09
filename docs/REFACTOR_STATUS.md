@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Persistence Migration Preparation
+Roadmap Persistence Request Contract and Reuse Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -218,9 +218,14 @@ Estimated local refactor progress: 65%
 - Roadmap persistence runtime, schema, merge, ordering, failure, identity,
   read-after-write, cross-field, and sequential-concurrency behavior frozen;
   no production persistence path changed
+- Roadmap persistence request boundary prepared; generic Community publication
+  persistence is the reuse target and duplicate Roadmap writer/repository is
+  rejected without changing runtime
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
+- Roadmap persistence request preparation owns a test-only scalar contract and
+  reuse decision only; no production Port, mapper, adapter, or runtime wiring
 
 ### Legacy
 - Discord mutation execution
@@ -248,8 +253,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a pure Roadmap persistence request contract and explicit reuse decision
-for the existing Community publication persistence feature.
+Implement the pure Roadmap persistence request/value object and mapper to the
+existing generic `{ guildId, patch }` input, without runtime wiring.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -258,6 +263,7 @@ for the existing Community publication persistence feature.
 - Legacy audit PASS
 - Quality gate PASS
 - Roadmap persistence preparation suite PASS
+- Roadmap persistence request/reuse preparation suite PASS
 - Dashboard build PASS
 
 ## Blockers
@@ -266,5 +272,5 @@ introduce a duplicate Roadmap writer and must preserve schema, exact IDs,
 writer-swallowed partial success, and current ordering.
 
 ## Last Updated
-2026-08-09: Roadmap persistence migration preparation completed; runtime,
+2026-08-09: Roadmap persistence request/reuse preparation completed; runtime,
 formal JSON, and writer ownership remain unchanged.
