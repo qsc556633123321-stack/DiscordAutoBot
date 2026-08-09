@@ -1,0 +1,9 @@
+{
+  "cases": [
+    "surface-exact", "surface-no-session", "surface-no-channel", "surface-no-failure-getter", "lookup-available", "lookup-unavailable", "lookup-falsy", "lookup-rejection", "lookup-retains-message", "lookup-no-extra-io",
+    "edit-same-session", "edit-retained-m", "edit-success-m-id", "edit-resolve-e-different", "edit-payload-identity", "edit-one-call", "edit-no-fetch", "edit-no-send", "edit-error", "edit-string",
+    "edit-number", "edit-object", "edit-null", "edit-undefined", "edit-retained-after-failure", "send-same-session", "send-retained-s", "send-success-s-id", "send-payload-identity", "send-one-call",
+    "send-no-fetch", "send-no-edit", "send-error", "send-string", "send-number", "send-object", "send-null", "send-undefined", "send-retained-after-success", "failure-getter-absent",
+    "failure-getter-undefined-propagation", "pair-creation-no-io", "invalid-channel-throws", "no-persistence", "guide-isolation", "concurrent-pair-a", "concurrent-pair-b", "same-channel-isolation", "composition-unchanged", "runtime-legacy"
+  ]
+}
