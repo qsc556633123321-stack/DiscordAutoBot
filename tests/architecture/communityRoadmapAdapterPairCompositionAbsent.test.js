@@ -3,5 +3,9 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '../..');
-assert.equal(fs.existsSync(path.join(root, 'src/composition/communityRoadmapAdapterPairFeature.js')), false);
-console.log('Roadmap adapter pair composition remains absent');
+const composition = path.join(root, 'src/composition/communityRoadmapAdapterPairFeature.js');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+
+assert.equal(fs.existsSync(composition), true);
+assert.doesNotMatch(runtime, /communityRoadmapAdapterPairFeature|createCommunityRoadmapAdapterPairFeature|createRoadmapPublicationAdapterPair/);
+console.log('Roadmap adapter pair composition exists and remains runtime-unwired');

@@ -4,5 +4,5 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '../..');
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationAdapterPairFactory.js')), true);
-assert.equal(fs.existsSync(path.join(root, 'src/composition/communityRoadmapAdapterPairFeature.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src/composition/communityRoadmapAdapterPairFeature.js')), true);
 console.log('Roadmap adapter pair implementation remains not runtime wired');
