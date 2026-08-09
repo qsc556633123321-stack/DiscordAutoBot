@@ -4,8 +4,8 @@ const { createRoadmapPublicationAdapterPair } = require('../../src/infrastructur
 const pair = createRoadmapPublicationAdapterPair({
   ensuredChannel: { id: 'channel', messages: { async fetch() { return null; } }, async send() { return { id: 'sent' }; } }
 });
-assert.deepEqual(Object.keys(pair).sort(), ['getRetainedMessage', 'lookupPort']);
-for (const forbidden of ['session', 'resourceSession', 'channel', 'mutationPort', 'lookupTrackedMessage', 'sendMessage', 'editTrackedMessage']) {
+assert.deepEqual(Object.keys(pair).sort(), ['getRetainedMessage', 'lookupPort', 'mutationPort']);
+for (const forbidden of ['session', 'resourceSession', 'channel', 'getRetainedMutationFailure', 'lookupTrackedMessage', 'sendMessage', 'editTrackedMessage']) {
   assert.equal(forbidden in pair, false, `${forbidden} must not be public`);
 }
 console.log('Roadmap production adapter pair surface is narrow');

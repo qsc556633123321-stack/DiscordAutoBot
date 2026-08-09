@@ -15,7 +15,9 @@ assert.doesNotMatch(roadmap, /RoadmapPublicationMessageMutationPort|mutationPort
 assert.match(session, /editTrackedMessage/);
 assert.match(session, /sendMessage/);
 assert.match(session, /getRetainedMutationFailure/);
-assert.doesNotMatch(pair, /mutationPort/);
+assert.match(pair, /RoadmapPublicationMessageMutationAdapter/);
+assert.match(pair, /mutationPort/);
+assert.doesNotMatch(pair, /getRetainedMutationFailure/);
 assert.match(roadmap, /lookupPort\.lookupTrackedMessage\(\{ messageId: roadmapMessageId \}\)/);
 assert.doesNotMatch(roadmap, /channel\.messages\.fetch\(roadmapMessageId\)/);
 console.log('Roadmap mutation Port implementation preserves adapter/pair/runtime boundaries with Session mutation support');

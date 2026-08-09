@@ -8,5 +8,7 @@ const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\
 const pair = fs.readFileSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationAdapterPairFactory.js'), 'utf8');
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationMessageMutationAdapter.js')), true);
 assert.doesNotMatch(roadmap, /mutationPort\.edit|mutationPort\.send|RoadmapPublicationMessageMutationAdapter/);
-assert.doesNotMatch(pair, /mutationPort|getRetainedMutationFailure/);
+assert.match(pair, /RoadmapPublicationMessageMutationAdapter/);
+assert.match(pair, /mutationPort/);
+assert.doesNotMatch(pair, /getRetainedMutationFailure/);
 console.log('Roadmap mutation adapter implementation keeps Pair and runtime untouched');

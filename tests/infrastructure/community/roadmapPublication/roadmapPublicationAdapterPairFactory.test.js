@@ -21,8 +21,8 @@ const { createRoadmapPublicationAdapterPair } = require('../../../../src/infrast
   };
 
   const pair = createRoadmapPublicationAdapterPair({ ensuredChannel: channel });
-  assert.deepEqual(Object.keys(pair).sort(), ['getRetainedMessage', 'lookupPort']);
-  for (const key of ['session', 'resourceSession', 'channel', 'mutationPort', 'sendMessage', 'editTrackedMessage']) {
+  assert.deepEqual(Object.keys(pair).sort(), ['getRetainedMessage', 'lookupPort', 'mutationPort']);
+  for (const key of ['session', 'resourceSession', 'channel', 'getRetainedMutationFailure', 'sendMessage', 'editTrackedMessage']) {
     assert.equal(key in pair, false, `${key} must remain private`);
   }
   assert.equal(pair.getRetainedMessage.length, 0);

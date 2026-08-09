@@ -6,5 +6,7 @@ const pair = createRoadmapPublicationAdapterPair({
 });
 assert.equal(typeof pair.lookupPort.lookupTrackedMessage, 'function');
 assert.equal(typeof pair.getRetainedMessage, 'function');
-assert.equal('mutationPort' in pair, false);
-console.log('Roadmap Pair remains lookup-only during mutation Port preparation');
+assert.equal(typeof pair.mutationPort.edit, 'function');
+assert.equal(typeof pair.mutationPort.send, 'function');
+assert.equal('getRetainedMutationFailure' in pair, false);
+console.log('Roadmap Pair exposes the implemented mutation Port without failure getter');
