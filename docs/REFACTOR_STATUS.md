@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Resource Session Retained Message Accessor Implementation
+Guide Pair Retained Message Handoff Capability Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -73,6 +73,9 @@ Estimated local refactor progress: 65%
   and no-second-fetch requirements frozen without production implementation
 - Guide Resource Session retained-message accessor implemented as synchronous,
   read-only, per-session infrastructure capability without runtime wiring
+- Guide Pair retained-message handoff capability prepared with a test-only
+  narrow delegate, frozen identity/no-second-fetch/isolation invariants, and
+  explicit guards that production Pair and runtime remain unchanged
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -112,6 +115,8 @@ Estimated local refactor progress: 65%
   the owner of lookup, mutation, persistence, and Roadmap continuation
 - Exact Discord Message identity remains private to the Infrastructure Session;
   the accessor is not exposed through Pair, Composition, Application, or Runtime
+- Production Pair retained-message handoff: not implemented; the test-only
+  candidate is preparation evidence only
 
 ### Legacy
 - Discord mutation execution
@@ -139,7 +144,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a narrow Pair retained-message handoff capability without runtime redirect.
+Implement the narrow Pair `getRetainedMessage()` capability only, without a runtime redirect.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -153,9 +158,10 @@ Guide Discord execution remains coupled to message lookup, channel destination,
 channel ensure, partial failure, and Roadmap continuation. The production
 Lookup Port maps all failures to unavailable but its public result lacks the
 exact `Message` object required by the legacy edit branch. A Session-local,
-per-invocation accessor now retains exact identity but is not visible to Runtime;
-channel re-resolution or a second fetch would add legacy-incompatible behavior.
+per-invocation accessor now retains exact identity but is not visible to the
+production Pair or Runtime; channel re-resolution or a second fetch would add
+legacy-incompatible behavior.
 
 ## Last Updated
-2026-08-09: Retained Message accessor implemented only in Resource Session;
-runtime lookup/mutation behavior remains unchanged.
+2026-08-09: Pair retained-message handoff capability prepared with test-only
+coverage; production Pair/runtime lookup and mutation behavior remain unchanged.
