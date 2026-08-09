@@ -43,6 +43,10 @@ const {
   createRoadmapPublicationMessageSendSuccess,
   assertRoadmapPublicationMessageMutationPort
 } = require('./roadmapPublication/RoadmapPublicationMessageMutationPort');
+const {
+  createRoadmapPublicationPersistenceRequest,
+  mapRoadmapPublicationPersistenceRequestToGenericInput
+} = require('./roadmapPublication/RoadmapPublicationPersistenceRequest');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -84,4 +88,6 @@ module.exports = {
   createRoadmapPublicationMessageEditSuccess,
   createRoadmapPublicationMessageSendSuccess,
   assertRoadmapPublicationMessageMutationPort,
+  createRoadmapPublicationPersistenceRequest,
+  mapRoadmapPublicationPersistenceRequestToGenericInput,
 };
