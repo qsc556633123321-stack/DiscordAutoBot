@@ -21,9 +21,11 @@ const { createCommunityRoadmapEmbed } = require('../modules/community/communityR
 const { createCommunityGuideReadCompatibilityAdapter } = require('../composition/community/createCommunityGuideReadFeature');
 const { createCommunityPublicationStateFeature } = require('../composition/communityPublicationStateFeature');
 const { createCommunityRoadmapPersistenceFeature } = require('../composition/communityRoadmapPersistenceFeature');
+const { createCommunityGuidePersistenceFeature } = require('../composition/communityGuidePersistenceFeature');
 const { createCommunityGuideAdapterPairFeature } = require('../composition/communityGuideAdapterPairFeature');
 const { createCommunityRoadmapAdapterPairFeature } = require('../composition/communityRoadmapAdapterPairFeature');
 const { createRoadmapPublicationPersistenceRequest } = require('../application/community/roadmapPublication/RoadmapPublicationPersistenceRequest');
+const { createGuidePersistenceRequest } = require('../application/community/guidePublication/GuidePersistenceRequest');
 const {
   RoadmapPublicationMessageLookupKind
 } = require('../application/community/roadmapPublication/RoadmapPublicationMessageLookupPort');
@@ -224,12 +226,10 @@ async function setupCommunityGuide(guild, options = {}) {
   } else {
     throw new Error(`Unsupported Guide publication operation: ${mutationPlan.operation}`);
   }
-  saveOnboarding(guild.id, {
-    guideChannelId: channel.id,
-    guideMessageId: message.id,
-    nativeTaskRecommendations: NATIVE_ONBOARDING_RECOMMENDATIONS,
-    nativeTaskExcludedChannels: ['🎮｜目前語音房', '🎮｜遊戲中心']
-  });
+  const communityPublicationStateFeature = createCommunityPublicationStateFeature({ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR });
+  const communityGuidePersistenceFeature = createCommunityGuidePersistenceFeature({ communityPublicationStateFeature });
+  const persistenceRequest = createGuidePersistenceRequest({ guildId: guild.id, channelId: channel.id, messageId: message.id, nativeTaskRecommendations: NATIVE_ONBOARDING_RECOMMENDATIONS, nativeTaskExcludedChannels: ['🎮｜目前語音房', '🎮｜遊戲中心'] });
+  communityGuidePersistenceFeature.persist(persistenceRequest);
   return { channel, message };
 }
 

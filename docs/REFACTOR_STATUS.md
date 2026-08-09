@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Guide Runtime Persistence Redirect Preparation
+Community Guide Runtime Persistence Redirect Implementation
 
 ## Overall Progress
-Estimated local refactor progress: 67%
+Estimated local refactor progress: 70%
 
 ## Latest Completed
 - Project Architecture V2 established
@@ -255,6 +255,9 @@ Estimated local refactor progress: 67%
 - Guide Runtime Persistence Redirect boundary prepared with frozen legacy/future
   ordering, exact four-value mapping, writer partial-success, invariant identity,
   per-invocation construction, and `saveOnboarding` retirement constraints
+- Guide Runtime Persistence redirected through the semantic request and reuse
+  feature with per-invocation construction; direct Guide `saveOnboarding` call
+  is removed while the zero-consumer helper remains retained for cleanup review
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -297,10 +300,10 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the Guide Runtime Persistence Redirect only. Preserve the frozen
-per-invocation feature lifetime, final-mutation ordering, result-ignore behavior,
-writer-swallowed partial success, and exact invariant failure identity; do not
-remove `saveOnboarding` in that slice.
+Run a Guide End-to-End Migration Closure Audit. Confirm the completed lookup,
+mutation, and persistence runtime boundaries, classify remaining direct Guide
+read/helper ownership, and decide whether a separate `saveOnboarding` cleanup
+preparation slice is justified.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -318,12 +321,12 @@ remove `saveOnboarding` in that slice.
 - Dashboard build PASS
 
 ## Blockers
-Guide persistence and shared `saveOnboarding` remain legacy-owned. The local
-progress increase from 65% to 67% reflects a completed Roadmap runtime closure,
-not a deployment-readiness claim; Guide and other high-risk mutation boundaries
-remain outstanding.
+Guide read-state helper ownership and retained zero-consumer `saveOnboarding`
+cleanup remain to be audited. The progress increase to 70% reflects completed
+Guide runtime persistence ownership, not deployment readiness; high-risk
+community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Guide Runtime Persistence Redirect boundary prepared without a
-runtime change. Runtime ownership did not move, so progress remains 67%;
-Roadmap remains closed with shared Guide legacy dependencies.
+2026-08-10: Guide Runtime Persistence redirected through the semantic request
+and reuse feature. Progress is 70%; Roadmap remains closed and `saveOnboarding`
+is retained with zero known runtime consumers pending cleanup preparation.

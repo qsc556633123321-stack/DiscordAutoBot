@@ -4,12 +4,8 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '../..');
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
-  .split(/\r?\n/).filter(Boolean);
-const sourceChanges = changed
+  .split(/\r?\n/).filter(Boolean)
   .map((line) => line.slice(3))
   .filter((file) => file.startsWith('src/'));
-assert.ok(sourceChanges.every((file) => [
-  'src/composition/communityGuidePersistenceFeature.js',
-  'src/systems/communityConcierge.js'
-].includes(file)));
-console.log('Guide persistence reuse implementation and approved runtime consumer are the only Guide persistence sources changed.');
+assert.ok(changed.every((file) => file === 'src/systems/communityConcierge.js'));
+console.log('Guide runtime persistence redirect modifies only the approved runtime source.');

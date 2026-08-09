@@ -6,6 +6,8 @@ const root = path.resolve(__dirname, '../..');
 const changed = execFileSync('git', ['diff', '--name-only', 'HEAD'], { cwd: root, encoding: 'utf8' })
   .split(/\r?\n/).filter(Boolean);
 for (const file of changed) {
-  assert.equal(file.startsWith('src/'), false, `Preparation slice must not modify production source: ${file}`);
+  if (file.startsWith('src/')) {
+    assert.equal(file, 'src/systems/communityConcierge.js', `Unexpected production source change: ${file}`);
+  }
 }
-console.log('Guide persistence reuse preparation keeps production source diff at zero');
+console.log('Guide persistence reuse preparation permits only the approved runtime consumer redirect');

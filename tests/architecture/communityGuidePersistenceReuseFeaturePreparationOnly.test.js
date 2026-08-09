@@ -13,6 +13,7 @@ assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuidePersis
 assert.match(source, /mapGuidePersistenceRequestToGenericInput/);
 assert.match(source, /persistCommunityPublicationRecord\.execute/);
 assert.doesNotMatch(source, /node:fs|readFile|writeFile|onboarding-flows\.json|discord\.js|\bGuild\b|\bChannel\b|\bMessage\b|communityPublicationRecordRepository|GuidePersistencePort|RoadmapPublicationPersistenceRequest|communityRoadmapPersistenceFeature|saveOnboarding/);
-assert.match(guide, /saveOnboarding\(guild\.id, \{/);
-assert.doesNotMatch(guide, /createCommunityGuidePersistenceFeature|createGuidePersistenceRequest|mapGuidePersistenceRequestToGenericInput/);
-console.log('Guide persistence reuse feature is implemented while Guide runtime stays legacy-owned');
+assert.match(guide, /createCommunityGuidePersistenceFeature/);
+assert.match(guide, /createGuidePersistenceRequest/);
+assert.doesNotMatch(guide, /saveOnboarding\(|mapGuidePersistenceRequestToGenericInput/);
+console.log('Guide persistence reuse feature is implemented and consumed without mapper leakage');

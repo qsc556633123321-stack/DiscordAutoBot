@@ -1,0 +1,19 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const runtime = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
+const guide = runtime.match(/async function setupCommunityGuide\(guild, options = \{\}\) \{([\s\S]*?)\n\}\n\nasync function setupRoadmapPanel/)[1];
+const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
+assert.match(runtime, /createGuidePersistenceRequest/);
+assert.match(runtime, /createCommunityGuidePersistenceFeature/);
+assert.match(guide, /createCommunityPublicationStateFeature\(\{\s*filePath: ONBOARDING_FILE,\s*dataDirectory: DATA_DIR/);
+assert.match(guide, /createCommunityGuidePersistenceFeature\(\{\s*communityPublicationStateFeature/);
+assert.match(guide, /createGuidePersistenceRequest\(\{\s*guildId: guild\.id,\s*channelId: channel\.id,\s*messageId: message\.id/);
+assert.match(guide, /communityGuidePersistenceFeature\.persist\(persistenceRequest\)/);
+assert.doesNotMatch(guide, /saveOnboarding\(|persistCommunityPublicationRecord\.execute|mapGuidePersistenceRequestToGenericInput|await\s+communityGuidePersistenceFeature\.persist|Promise\.resolve/);
+assert.ok(guide.indexOf('communityGuidePersistenceFeature.persist') > guide.indexOf('retainedMessage'));
+assert.doesNotMatch(roadmap, /GuidePersistenceRequest|createCommunityGuidePersistenceFeature/);
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
+assert.equal((runtime.match(/saveOnboarding\(guild\.id/g) || []).length, 0);
+console.log('Guide runtime persistence redirect is semantic, synchronous, and leaves Roadmap and helper definition untouched.');
