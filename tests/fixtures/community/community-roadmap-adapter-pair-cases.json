@@ -1,0 +1,14 @@
+{
+  "cases": [
+    "fresh-empty", "fresh-repeated-getter", "available-m1", "available-m2",
+    "unavailable-missing", "unavailable-falsy-undefined", "unavailable-falsy-null", "unavailable-falsy-empty",
+    "unavailable-falsy-zero", "unavailable-falsy-false", "fetch-rejection-error", "fetch-rejection-string",
+    "fetch-rejection-number", "fetch-rejection-object", "fetch-rejection-null", "fetch-rejection-undefined",
+    "single-fetch-available", "getter-no-second-fetch", "exact-message-identity", "no-edit-on-create",
+    "no-send-on-create", "no-edit-on-getter", "no-send-on-getter", "pair-a-fresh",
+    "pair-b-fresh", "pair-a-available", "pair-b-isolated", "same-channel-isolation",
+    "different-channel-isolation", "same-message-id-isolation", "different-message-id-isolation", "concurrent-pairs",
+    "invalid-channel-throws", "missing-fetch-throws", "surface-lookup-port", "surface-retained-message",
+    "surface-no-session", "surface-no-mutation-port", "guide-isolation", "runtime-legacy"
+  ]
+}
