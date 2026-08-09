@@ -35,6 +35,12 @@ const NATIVE_ONBOARDING_RECOMMENDATIONS = [
   '📜｜社群規則'
 ];
 
+function throwMutationFailure(getRetainedMutationFailure, operation, result) {
+  const handoff = getRetainedMutationFailure();
+  if (handoff.hasFailure) throw handoff.failure;
+  throw new Error(`Guide ${operation} mutation failed: ${result.kind}/${result.failureKind || 'Unknown'}`);
+}
+
 function ensureFile(filePath, fallback = '{}') {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, fallback, 'utf8');
@@ -161,7 +167,7 @@ function buildAboutEmbed(guild) {
 
 async function setupCommunityGuide(guild, options = {}) {
   const channel = await getOrCreateGuideChannel(guild);
-  const { lookupPort, getRetainedMessage } =
+  const { lookupPort, mutationPort, getRetainedMessage, getRetainedMutationFailure } =
     communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const payload = await buildGuidePayload(guild);
   const data = readOnboardingData()[guild.id] || {};
@@ -188,9 +194,24 @@ async function setupCommunityGuide(guild, options = {}) {
   });
   const mutationPlan = buildGuidePublicationMutationPlan(mutationInput);
   if (mutationPlan.operation === GuidePublicationOperationType.EditExistingMessage) {
-    await message.edit(payload);
+    const result = await mutationPort.edit({
+      guildId: guild.id,
+      channelId: channel.id,
+      messageId: message.id,
+      payload
+    });
+    if (result.kind !== 'EditSuccess') throwMutationFailure(getRetainedMutationFailure, 'edit', result);
+    message = getRetainedMessage();
+    if (message !== getRetainedMessage() || message.id !== result.messageId) {
+      throw new Error('Guide edit mutation retained-message invariant failed');
+    }
   } else if (mutationPlan.operation === GuidePublicationOperationType.SendNewMessage) {
-    message = await channel.send(payload);
+    const result = await mutationPort.send({ guildId: guild.id, channelId: channel.id, payload });
+    if (result.kind !== 'SendSuccess') throwMutationFailure(getRetainedMutationFailure, 'send', result);
+    message = getRetainedMessage();
+    if (!message || message.id !== result.messageId) {
+      throw new Error('Guide send mutation retained-message invariant failed');
+    }
   } else {
     throw new Error(`Unsupported Guide publication operation: ${mutationPlan.operation}`);
   }

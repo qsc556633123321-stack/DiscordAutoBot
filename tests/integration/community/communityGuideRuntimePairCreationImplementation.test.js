@@ -22,7 +22,16 @@ async function withPairSpy(run) {
               return { status: 'MessageUnavailable', messageId };
             }
           } },
-          mutationPort: {},
+          mutationPort: {
+            async edit({ messageId, payload }) {
+              try { await retainedMessage.edit(payload); return { kind: 'EditSuccess', messageId }; }
+              catch (error) { return { kind: 'Failure', failureKind: 'EditRejected' }; }
+            },
+            async send({ payload }) {
+              try { retainedMessage = await ensuredChannel.send(payload); return { kind: 'SendSuccess', messageId: retainedMessage.id }; }
+              catch (error) { return { kind: 'Failure', failureKind: 'SendRejected' }; }
+            }
+          },
           getRetainedMessage() { return retainedMessage; }
         };
       } };

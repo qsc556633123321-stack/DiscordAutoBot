@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Runtime Mutation Redirect Preparation Refresh
+Guide Runtime Mutation Redirect Only Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -93,6 +93,8 @@ Estimated local refactor progress: 65%
 - Session-local mutation failure handoff and narrow Pair delegate implemented;
   runtime mutation remains legacy-owned
 - Runtime mutation redirect refreshed against completed Message/failure handoffs
+- Runtime Guide mutation redirected through the Adapter Pair while preserving
+  persistence and Roadmap continuation ordering
 
 ## Architecture Health
 - Architecture Score: 100 / 100
