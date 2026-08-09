@@ -1,0 +1,12 @@
+{
+  "cases": [
+    "falsy-undefined", "falsy-null", "falsy-empty-string", "falsy-zero", "falsy-false",
+    "truthy-normal", "truthy-whitespace", "truthy-malformed-string", "truthy-number", "truthy-object", "truthy-true",
+    "available-normal-message", "available-message-identity", "available-edit-success", "available-edit-failure", "available-persistence-success", "available-persistence-failure",
+    "unavailable-null", "unavailable-undefined", "unavailable-false", "unavailable-send-success", "unavailable-send-failure", "unavailable-persistence-success", "unavailable-persistence-failure",
+    "reject-error", "reject-string", "reject-number", "reject-object", "reject-null", "reject-undefined",
+    "legacy-error", "legacy-string", "legacy-number", "legacy-object", "legacy-null", "legacy-undefined",
+    "no-second-fetch", "getter-no-io", "exact-request-shape", "exact-return-shape", "same-guild-repeat", "same-guild-concurrent",
+    "different-guild", "existing-record-merge", "legacy-fallback-id", "malformed-id-passthrough", "available-null-invariant", "mutation-remains-legacy", "persistence-after-mutation", "pair-created-after-channel"
+  ]
+}
