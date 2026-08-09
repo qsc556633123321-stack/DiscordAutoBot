@@ -1,0 +1,5 @@
+{
+  "cases": [
+    "pair-creation", "same-pair", "lookup-m", "lookup-unavailable", "legacy-edit", "legacy-send", "future-edit-candidate", "future-send-candidate", "edit-success", "send-success", "m-identity", "s-identity", "payload-identity", "error", "string", "number", "object", "null", "undefined", "persistence-success", "persistence-failure", "edit-persistence-sequence", "send-persistence-sequence", "zero-extra-io", "no-failure-getter", "no-direct-adapter-import", "composition-passthrough", "pair-surface", "runtime-unchanged", "lookup-migrated", "edit-return-m", "send-return-s", "return-channel", "edit-reject", "send-reject", "retry-zero", "second-pair-absent", "direct-mutation-absent", "writer-legacy-owned", "redirect-deferred", "raw-message-recovery", "edit-message-id", "send-message-id", "getter-same-pair", "falsy-lookup", "fetch-rejection", "send-after-unavailable", "edit-after-available", "consumption-only-rejected", "next-redirect-preparation"
+  ]
+}
