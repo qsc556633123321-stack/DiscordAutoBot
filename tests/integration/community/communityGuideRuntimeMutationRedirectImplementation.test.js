@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const { createGuild, createMessage, createTextChannel, withOnboardingFile } = require('../../helpers/createCommunityGuideMutationHarness');
 
-async function withMutationPair(run, failures = {}) {
+async function withMutationPair(run, outcomes = {}) {
   const featurePath = require.resolve('../../../src/composition/communityGuideAdapterPairFeature');
   const runtimePath = require.resolve('../../../src/systems/communityConcierge');
   const originalFeature = require(featurePath);
@@ -13,6 +13,15 @@ async function withMutationPair(run, failures = {}) {
         createAdapterPair({ ensuredChannel }) {
           let retainedMessage = null;
           let failure = { hasFailure: false };
+          const reject = (operation, result) => {
+            const configured = outcomes[operation];
+            if (configured?.resultOnly) return configured.result;
+            if (Object.hasOwn(outcomes, operation)) {
+              failure = { hasFailure: true, failure: configured };
+              return { kind: 'Failure', failureKind: `${operation}Rejected` };
+            }
+            return null;
+          };
           return {
             lookupPort: {
               async lookup({ messageId }) {
@@ -28,31 +37,17 @@ async function withMutationPair(run, failures = {}) {
             mutationPort: {
               async edit(request) {
                 calls.push({ operation: 'edit', request });
-                if (Object.hasOwn(failures, 'edit')) {
-                  failure = { hasFailure: true, failure: failures.edit };
-                  return { kind: 'Failure', failureKind: 'EditRejected' };
-                }
-                try {
-                  await retainedMessage.edit(request.payload);
-                  return { kind: 'EditSuccess', messageId: request.messageId };
-                } catch (error) {
-                  failure = { hasFailure: true, failure: error };
-                  return { kind: 'Failure', failureKind: 'EditRejected' };
-                }
+                const rejection = reject('edit');
+                if (rejection) return rejection;
+                await retainedMessage.edit(request.payload);
+                return { kind: 'EditSuccess', messageId: request.messageId };
               },
               async send(request) {
                 calls.push({ operation: 'send', request });
-                if (Object.hasOwn(failures, 'send')) {
-                  failure = { hasFailure: true, failure: failures.send };
-                  return { kind: 'Failure', failureKind: 'SendRejected' };
-                }
-                try {
-                  retainedMessage = await ensuredChannel.send(request.payload);
-                  return { kind: 'SendSuccess', messageId: retainedMessage.id };
-                } catch (error) {
-                  failure = { hasFailure: true, failure: error };
-                  return { kind: 'Failure', failureKind: 'SendRejected' };
-                }
+                const rejection = reject('send');
+                if (rejection) return rejection;
+                retainedMessage = await ensuredChannel.send(request.payload);
+                return { kind: 'SendSuccess', messageId: retainedMessage.id };
               }
             },
             getRetainedMessage() { return retainedMessage; },
@@ -71,48 +66,86 @@ async function withMutationPair(run, failures = {}) {
   }
 }
 
-async function runSetup({ trackedMessageId, existingMessage, failures }) {
-  return withMutationPair(({ concierge, calls }) => withOnboardingFile({ initial: { 'guild-1': { guideMessageId: trackedMessageId } } }, async ({ log }) => {
+async function captureSetup({ trackedMessageId, outcomes = {} }) {
+  return withMutationPair(({ concierge, calls }) => withOnboardingFile({
+    initial: { 'guild-1': { guideMessageId: trackedMessageId } }
+  }, async ({ log }) => {
+    const tracked = trackedMessageId ? createMessage(trackedMessageId, log) : null;
     const guide = createTextChannel({
       id: 'guide-channel', name: concierge.GUIDE_CHANNEL_NAME, parentId: 'category-existing', log,
-      behavior: { existingMessage }
+      behavior: { existingMessage: tracked }, label: 'guide'
     });
-    const guild = createGuild({ guideName: concierge.GUIDE_CHANNEL_NAME, roadmapName: concierge.ROADMAP_CHANNEL_NAME, log, behavior: { categoryExists: true }, existingGuide: guide });
-    return { result: await concierge.setupCommunityGuide(guild), calls, log };
-  }), failures);
+    const guild = createGuild({
+      guideName: concierge.GUIDE_CHANNEL_NAME,
+      roadmapName: concierge.ROADMAP_CHANNEL_NAME,
+      log,
+      behavior: { categoryExists: true },
+      existingGuide: guide
+    });
+    try {
+      return { result: await concierge.setupCommunityGuide(guild), calls, log, threw: false };
+    } catch (error) {
+      return { error, calls, log, threw: true };
+    }
+  }), outcomes);
+}
+
+function assertNoPostMutationWrites(result) {
+  assert.equal(result.log.writes, 0);
+  assert.equal(result.log.calls.some((call) => call.startsWith('roadmap.')), false);
 }
 
 (async () => {
-  const tracked = createMessage('tracked', { calls: [] });
-  const edit = await runSetup({ trackedMessageId: 'tracked', existingMessage: tracked });
+  const edit = await captureSetup({ trackedMessageId: 'tracked' });
+  assert.equal(edit.threw, false);
   assert.equal(edit.calls.length, 1);
+  assert.deepEqual(Object.keys(edit.calls[0].request).sort(), ['channelId', 'guildId', 'messageId', 'payload']);
   assert.equal(edit.calls[0].operation, 'edit');
   assert.equal(edit.calls[0].request.messageId, 'tracked');
-  assert.equal(edit.result.message, tracked);
+  assert.equal(edit.result.message.id, 'tracked');
+  assert.equal(edit.log.calls.filter((call) => call === 'guide.message.fetch').length, 1);
+  assert.equal(edit.log.writes, 1);
 
-  const send = await runSetup({ trackedMessageId: null, existingMessage: null });
+  const send = await captureSetup({ trackedMessageId: null });
+  assert.equal(send.threw, false);
   assert.equal(send.calls.length, 1);
+  assert.deepEqual(Object.keys(send.calls[0].request).sort(), ['channelId', 'guildId', 'payload']);
   assert.equal(send.calls[0].operation, 'send');
   assert.equal(send.result.message.id, 'guide-channel-sent');
+  assert.equal(send.log.calls.filter((call) => call === 'guide.message.fetch').length, 0);
+  assert.equal(send.log.writes, 1);
 
-  const editFailure = new Error('frozen edit rejection');
-  let editReason;
-  try {
-    await runSetup({ trackedMessageId: 'tracked', existingMessage: createMessage('tracked', { calls: [] }), failures: { edit: editFailure } });
-  } catch (error) {
-    editReason = error;
+  const rejectionCases = [
+    ['edit', new Error('frozen edit rejection')],
+    ['send', new Error('frozen send rejection')],
+    ['edit', 'string rejection'],
+    ['send', 42],
+    ['edit', { reason: 'object rejection' }],
+    ['send', null],
+    ['edit', undefined],
+    ['send', undefined]
+  ];
+  for (const [operation, expected] of rejectionCases) {
+    const result = await captureSetup({
+      trackedMessageId: operation === 'edit' ? 'tracked' : null,
+      outcomes: { [operation]: expected }
+    });
+    assert.equal(result.threw, true, `${operation} should reject`);
+    assert.equal(result.error, expected, `${operation} preserves raw rejection identity`);
+    assert.equal(result.calls.length, 1, `${operation} performs exactly one mutation request`);
+    assert.equal(result.calls[0].operation, operation);
+    assertNoPostMutationWrites(result);
   }
-  assert.equal(editReason, editFailure);
 
-  let sendRejected = false;
-  let sendReason = 'not-run';
-  try {
-    await runSetup({ trackedMessageId: null, existingMessage: null, failures: { send: undefined } });
-  } catch (error) {
-    sendRejected = true;
-    sendReason = error;
+  for (const [operation, failureKind] of [['edit', 'MissingResource'], ['send', 'Unknown']]) {
+    const result = await captureSetup({
+      trackedMessageId: operation === 'edit' ? 'tracked' : null,
+      outcomes: { [operation]: { resultOnly: true, result: { kind: 'Failure', failureKind } } }
+    });
+    assert.equal(result.threw, true);
+    assert.match(result.error.message, new RegExp(`${operation} mutation failed: Failure/${failureKind}`));
+    assertNoPostMutationWrites(result);
   }
-  assert.equal(sendRejected, true);
-  assert.equal(sendReason, undefined);
+
   console.log('Community guide runtime mutation redirect implementation passed');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

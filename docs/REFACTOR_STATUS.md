@@ -95,6 +95,9 @@ Estimated local refactor progress: 65%
 - Runtime mutation redirect refreshed against completed Message/failure handoffs
 - Runtime Guide mutation redirected through the Adapter Pair while preserving
   persistence and Roadmap continuation ordering
+- Guide mutation redirect regression coverage now verifies exact `Error`,
+  string, number, object, null, and undefined rejection identity plus
+  invariant fallback behavior without post-mutation persistence or Roadmap work
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -184,4 +187,5 @@ Roadmap continuation is the remaining uncharacterized legacy boundary.
 
 ## Last Updated
 2026-08-09: Guide lookup and mutation are redirected through the per-invocation
-Adapter Pair; persistence sequencing and Roadmap continuation remain unchanged.
+Adapter Pair; exact rejection handoff and fallback behavior are covered.
+Persistence sequencing and Roadmap continuation remain unchanged.
