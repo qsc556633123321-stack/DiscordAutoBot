@@ -1,0 +1,11 @@
+[
+  {"id":"force-01","kind":"force"},{"id":"force-02","kind":"force"},{"id":"force-03","kind":"force"},{"id":"force-04","kind":"force"},
+  {"id":"missing-01","kind":"missing"},{"id":"missing-02","kind":"missing"},{"id":"missing-03","kind":"missing"},{"id":"missing-04","kind":"missing"},
+  {"id":"available-01","kind":"available"},{"id":"available-02","kind":"available"},{"id":"available-03","kind":"available"},{"id":"available-04","kind":"available"},
+  {"id":"unavailable-01","kind":"unavailable"},{"id":"unavailable-02","kind":"unavailable"},{"id":"unavailable-03","kind":"unavailable"},{"id":"unavailable-04","kind":"unavailable"},
+  {"id":"reject-unknown","kind":"rejection"},{"id":"reject-access","kind":"rejection"},{"id":"reject-permissions","kind":"rejection"},{"id":"reject-generic","kind":"rejection"},{"id":"reject-network","kind":"rejection"},{"id":"reject-string","kind":"rejection"},{"id":"reject-null","kind":"rejection"},{"id":"reject-undefined","kind":"rejection"},
+  {"id":"malformed-01","kind":"malformed"},{"id":"malformed-02","kind":"malformed"},{"id":"identity-01","kind":"identity"},{"id":"identity-02","kind":"identity"},
+  {"id":"same-guild-01","kind":"isolation"},{"id":"same-guild-02","kind":"isolation"},{"id":"concurrent-01","kind":"isolation"},{"id":"concurrent-02","kind":"isolation"},
+  {"id":"edit-01","kind":"edit"},{"id":"edit-02","kind":"edit"},{"id":"send-01","kind":"send"},{"id":"send-02","kind":"send"},
+  {"id":"persistence-success","kind":"ordering"},{"id":"persistence-failure","kind":"ordering"},{"id":"roadmap-success","kind":"ordering"},{"id":"roadmap-failure","kind":"ordering"}
+]

@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Pair Retained Message Handoff Capability Implementation
+Guide Runtime Lookup Redirect Preparation Refresh
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -78,6 +78,8 @@ Estimated local refactor progress: 65%
   explicit guards that production Pair and runtime remain unchanged
 - Guide Pair now exposes the narrow synchronous retained-message delegate while
   retaining Session privacy and leaving all runtime I/O legacy-owned
+- Runtime Lookup Redirect final preparation refreshed against the production
+  Pair handoff surface; no runtime redirect implemented
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -146,7 +148,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Refresh runtime lookup redirect preparation using the now-public Pair capability.
+Implement Runtime Lookup Redirect Only using the frozen Pair handoff contract.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS

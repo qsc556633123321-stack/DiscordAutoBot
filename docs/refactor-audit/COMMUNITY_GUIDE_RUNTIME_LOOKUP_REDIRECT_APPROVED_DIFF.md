@@ -1,3 +1,3 @@
-# Community Guide Runtime Lookup Redirect Approved Diff
+# Approved Future Diff
 
-No runtime diff is approved. If a future candidate is approved after an explicit identity-handoff contract, its runtime scope must be limited to replacing the single legacy lookup expression. It must not redirect mutation, persistence, Roadmap, retry, fallback fetch, or channel resolution.
+Only `src/systems/communityConcierge.js` may later replace its legacy tracked-message fetch with Pair `lookupPort.lookup()` and `getRetainedMessage()`. Edit/send, persistence, Roadmap, and mutation port ownership must remain unchanged.
