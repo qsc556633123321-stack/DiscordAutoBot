@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    "falsy-undefined", "falsy-null", "falsy-empty", "falsy-zero", "falsy-false",
+    "normal-id", "malformed-id", "whitespace-id", "numeric-id", "object-id",
+    "available", "unavailable-null", "unavailable-undefined", "unavailable-false",
+    "rejection-error", "rejection-string", "rejection-number", "rejection-object",
+    "rejection-null", "rejection-undefined", "unknown-null", "unknown-undefined",
+    "unknown-empty-object", "unknown-kind", "session-throw", "same-session-repeat",
+    "different-sessions", "same-channel", "different-channel", "concurrent"
+  ]
+}
