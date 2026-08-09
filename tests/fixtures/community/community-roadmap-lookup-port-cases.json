@@ -1,0 +1,1 @@
+{"schemaVersion":1,"cases":["falsy-undefined","falsy-null","falsy-empty","falsy-zero","falsy-false","available","unavailable-null","unavailable-undefined","unavailable-false","rejection-error","rejection-string","rejection-number","rejection-object","rejection-null","rejection-undefined","identity-handoff","zero-extra-io"]}

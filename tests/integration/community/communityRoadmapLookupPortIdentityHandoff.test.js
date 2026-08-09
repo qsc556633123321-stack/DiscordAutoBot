@@ -1,0 +1,2 @@
+const assert=require('node:assert/strict');const {createRoadmapPublicationResourceSession}=require('../../src/infrastructure/community/roadmapPublication/RoadmapPublicationResourceSession');
+(async()=>{const m={id:'M'};const s=createRoadmapPublicationResourceSession({ensuredChannel:{id:'c',messages:{async fetch(){return m;}}}});assert.deepEqual(await s.lookupTrackedMessage('M'),{kind:'Available',messageId:'M'});assert.equal(s.getRetainedMessage(),m);console.log('Roadmap lookup port identity handoff passed');})().catch(e=>{console.error(e);process.exitCode=1;});
