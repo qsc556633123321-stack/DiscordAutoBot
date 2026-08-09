@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Resource Session Mutation Semantics Preparation
+Roadmap Resource Session Mutation Extension Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -197,6 +197,8 @@ Estimated local refactor progress: 65%
 - Roadmap Resource Session mutation semantics characterized with a test-only
   candidate: retained Message identity, Send handoff, presence-aware failures,
   stale-failure clearing, lookup interaction, and zero-extra-I/O constraints
+- Roadmap Resource Session mutation extension implemented with retained-message
+  identity, exact raw failure handoff, and zero persistence/runtime wiring
 
 ### Legacy
 - Discord mutation execution
@@ -224,8 +226,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the approved Roadmap Resource Session mutation extension only,
-without Adapter, Pair mutation surface, or runtime wiring.
+Prepare the Roadmap Mutation Adapter boundary using the implemented Resource
+Session and existing Application Mutation Port, without Pair or runtime wiring.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -235,11 +237,10 @@ without Adapter, Pair mutation surface, or runtime wiring.
 - Quality gate PASS
 
 ## Blockers
-Roadmap runtime mutation remains legacy-owned. Session mutation semantics are
-prepared but no production Session extension exists; failure handoff and exact
-resource identity must be implemented before Adapter work.
+Roadmap runtime mutation and persistence sequencing remain legacy-owned. The
+Session is implemented but no mutation Adapter, Pair mutation surface, or
+runtime redirect exists.
 
 ## Last Updated
-2026-08-09: Roadmap Resource Session mutation semantics prepared with no
-production Session change; Adapter, Pair mutation surface, runtime, and
-persistence sequencing remain unchanged.
+2026-08-09: Roadmap Resource Session mutation extension implemented without
+Adapter, Pair mutation surface, runtime, or persistence wiring.

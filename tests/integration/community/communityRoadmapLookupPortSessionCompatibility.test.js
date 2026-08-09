@@ -17,7 +17,7 @@ async function mapLookup(session, request) {
   const message = { id: 'message-id' };
   let fetches = 0;
   const availableSession = createRoadmapPublicationResourceSession({
-    ensuredChannel: { id: 'channel-id', messages: { fetch: async () => { fetches += 1; return message; } } }
+    ensuredChannel: { id: 'channel-id', messages: { fetch: async () => { fetches += 1; return message; } }, send: async () => ({ id: 'sent' }) }
   });
   const request = createRoadmapPublicationMessageLookupRequest({ messageId: 'message-id' });
   assert.deepEqual(await mapLookup(availableSession, request), { kind: 'Available', messageId: 'message-id' });
@@ -26,14 +26,14 @@ async function mapLookup(session, request) {
 
   for (const messageId of [undefined, null, '', 0, false]) {
     const session = createRoadmapPublicationResourceSession({
-      ensuredChannel: { id: 'channel-id', messages: { fetch: async () => { throw new Error('must not fetch'); } } }
+      ensuredChannel: { id: 'channel-id', messages: { fetch: async () => { throw new Error('must not fetch'); } }, send: async () => ({ id: 'sent' }) }
     });
     assert.deepEqual(await mapLookup(session, createRoadmapPublicationMessageLookupRequest({ messageId })), { kind: 'Unavailable' });
   }
 
   for (const rejection of [new Error('error'), 'error', 1, {}, null, undefined]) {
     const session = createRoadmapPublicationResourceSession({
-      ensuredChannel: { id: 'channel-id', messages: { fetch: async () => Promise.reject(rejection) } }
+      ensuredChannel: { id: 'channel-id', messages: { fetch: async () => Promise.reject(rejection) }, send: async () => ({ id: 'sent' }) }
     });
     assert.deepEqual(await mapLookup(session, createRoadmapPublicationMessageLookupRequest({ messageId: 'tracked' })), { kind: 'Unavailable' });
   }

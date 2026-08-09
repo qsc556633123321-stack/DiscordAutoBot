@@ -4,7 +4,7 @@ const { createRoadmapPublicationAdapterPair } = require('../../../src/infrastruc
 (async () => {
   for (const rejection of [new Error('error'), 'string', 1, {}, null, undefined]) {
     const pair = createRoadmapPublicationAdapterPair({
-      ensuredChannel: { id: 'channel-id', messages: { async fetch() { throw rejection; } } }
+      ensuredChannel: { id: 'channel-id', messages: { async fetch() { throw rejection; } }, async send() { return { id: 'sent' }; } }
     });
     assert.deepEqual(await pair.lookupPort.lookupTrackedMessage({ messageId: 'tracked' }), { kind: 'Unavailable' });
     assert.equal(pair.getRetainedMessage(), null);

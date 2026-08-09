@@ -6,7 +6,7 @@ const { createRoadmapPublicationMessageLookupAdapter } = require('../../../src/i
   for (const rejection of [new Error('error'), 'error', 9, {}, null, undefined]) {
     let fetches = 0;
     const session = createRoadmapPublicationResourceSession({
-      ensuredChannel: { id: 'channel', messages: { fetch: async () => { fetches += 1; return Promise.reject(rejection); } } }
+      ensuredChannel: { id: 'channel', messages: { fetch: async () => { fetches += 1; return Promise.reject(rejection); } }, send: async () => ({ id: 'sent' }) }
     });
     const adapter = createRoadmapPublicationMessageLookupAdapter({ resourceSession: session });
     assert.deepEqual(await adapter.lookupTrackedMessage({ messageId: 'tracked' }), { kind: 'Unavailable' });

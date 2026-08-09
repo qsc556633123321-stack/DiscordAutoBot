@@ -3,7 +3,7 @@ const { createCommunityRoadmapAdapterPairFeature } = require('../../../src/compo
 
 (async () => {
   const message = { id: 'M' };
-  const channel = { id: 'roadmap', messages: { async fetch() { return message; } } };
+  const channel = { id: 'roadmap', messages: { async fetch() { return message; } }, async send() { return { id: 'sent' }; } };
   const feature = createCommunityRoadmapAdapterPairFeature();
   const first = feature.createAdapterPair({ ensuredChannel: channel });
   const second = feature.createAdapterPair({ ensuredChannel: channel });

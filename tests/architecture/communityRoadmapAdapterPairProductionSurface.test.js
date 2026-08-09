@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const { createRoadmapPublicationAdapterPair } = require('../../src/infrastructure/community/roadmapPublication/RoadmapPublicationAdapterPairFactory');
 
 const pair = createRoadmapPublicationAdapterPair({
-  ensuredChannel: { id: 'channel', messages: { async fetch() { return null; } } }
+  ensuredChannel: { id: 'channel', messages: { async fetch() { return null; } }, async send() { return { id: 'sent' }; } }
 });
 assert.deepEqual(Object.keys(pair).sort(), ['getRetainedMessage', 'lookupPort']);
 for (const forbidden of ['session', 'resourceSession', 'channel', 'mutationPort', 'lookupTrackedMessage', 'sendMessage', 'editTrackedMessage']) {

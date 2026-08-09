@@ -6,7 +6,7 @@ const { createFakeCommunityRoadmapLookupAdapter } = require('../../fakes/communi
   let fetches = 0;
   const message = { id: 'roadmap-message' };
   const session = createRoadmapPublicationResourceSession({
-    ensuredChannel: { id: 'roadmap-channel', messages: { fetch: async () => { fetches += 1; return message; } } }
+    ensuredChannel: { id: 'roadmap-channel', messages: { fetch: async () => { fetches += 1; return message; } }, send: async () => ({ id: 'sent' }) }
   });
   const adapter = createFakeCommunityRoadmapLookupAdapter({ session });
 

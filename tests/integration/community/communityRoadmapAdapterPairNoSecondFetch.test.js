@@ -5,7 +5,7 @@ const { createRoadmapPublicationAdapterPair } = require('../../../src/infrastruc
   const message = { id: 'message-id' };
   let fetches = 0;
   const pair = createRoadmapPublicationAdapterPair({
-    ensuredChannel: { id: 'channel-id', messages: { async fetch() { fetches += 1; return message; } } }
+    ensuredChannel: { id: 'channel-id', messages: { async fetch() { fetches += 1; return message; } }, async send() { return { id: 'sent' }; } }
   });
   await pair.lookupPort.lookupTrackedMessage({ messageId: 'message-id' });
   assert.strictEqual(pair.getRetainedMessage(), message);

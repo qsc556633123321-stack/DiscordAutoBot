@@ -6,7 +6,7 @@ const { createRoadmapPublicationMessageLookupAdapter } = require('../../../src/i
   const message = { id: 'message-id' };
   let fetches = 0;
   const session = createRoadmapPublicationResourceSession({
-    ensuredChannel: { id: 'channel-id', messages: { fetch: async () => { fetches += 1; return message; } } }
+    ensuredChannel: { id: 'channel-id', messages: { fetch: async () => { fetches += 1; return message; } }, send: async () => ({ id: 'sent' }) }
   });
   const adapter = createRoadmapPublicationMessageLookupAdapter({ resourceSession: session });
   assert.deepEqual(await adapter.lookupTrackedMessage({ messageId: 'message-id' }), { kind: 'Available', messageId: 'message-id' });
@@ -14,7 +14,7 @@ const { createRoadmapPublicationMessageLookupAdapter } = require('../../../src/i
   assert.equal(fetches, 1);
 
   const rejectionSession = createRoadmapPublicationResourceSession({
-    ensuredChannel: { id: 'channel-id', messages: { fetch: async () => Promise.reject('rejected') } }
+    ensuredChannel: { id: 'channel-id', messages: { fetch: async () => Promise.reject('rejected') }, send: async () => ({ id: 'sent' }) }
   });
   const rejectionAdapter = createRoadmapPublicationMessageLookupAdapter({ resourceSession: rejectionSession });
   assert.deepEqual(await rejectionAdapter.lookupTrackedMessage({ messageId: 'message-id' }), { kind: 'Unavailable' });

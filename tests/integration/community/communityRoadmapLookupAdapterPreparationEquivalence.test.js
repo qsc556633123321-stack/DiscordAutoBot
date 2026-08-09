@@ -6,7 +6,7 @@ const { createFakeProductionShapeRoadmapLookupAdapter } = require('../../fakes/c
   const message = { id: 'tracked-message' };
   let fetches = 0;
   const session = createRoadmapPublicationResourceSession({
-    ensuredChannel: { id: 'roadmap-channel', messages: { fetch: async () => { fetches += 1; return message; } } }
+    ensuredChannel: { id: 'roadmap-channel', messages: { fetch: async () => { fetches += 1; return message; } }, send: async () => ({ id: 'sent' }) }
   });
   const adapter = createFakeProductionShapeRoadmapLookupAdapter({ resourceSession: session });
   assert.deepEqual(await adapter.lookupTrackedMessage({ messageId: 'tracked-message' }), { kind: 'Available', messageId: 'tracked-message' });
@@ -15,7 +15,7 @@ const { createFakeProductionShapeRoadmapLookupAdapter } = require('../../fakes/c
 
   let falsyFetches = 0;
   const falsySession = createRoadmapPublicationResourceSession({
-    ensuredChannel: { id: 'roadmap-channel', messages: { fetch: async () => { falsyFetches += 1; return message; } } }
+    ensuredChannel: { id: 'roadmap-channel', messages: { fetch: async () => { falsyFetches += 1; return message; } }, send: async () => ({ id: 'sent' }) }
   });
   const falsyAdapter = createFakeProductionShapeRoadmapLookupAdapter({ resourceSession: falsySession });
   assert.deepEqual(await falsyAdapter.lookupTrackedMessage({ messageId: false }), { kind: 'Unavailable' });

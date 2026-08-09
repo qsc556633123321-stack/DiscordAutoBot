@@ -4,5 +4,7 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '../..');
 const source = fs.readFileSync(path.join(root, 'src/infrastructure/community/roadmapPublication/RoadmapPublicationResourceSession.js'), 'utf8');
-assert.doesNotMatch(source, /editTrackedMessage|sendMessage|getRetainedMutationFailure/);
-console.log('Roadmap production Resource Session remains lookup-only during mutation preparation');
+assert.match(source, /editTrackedMessage/);
+assert.match(source, /sendMessage/);
+assert.match(source, /getRetainedMutationFailure/);
+console.log('Roadmap production Resource Session exposes the approved mutation-only extension');
