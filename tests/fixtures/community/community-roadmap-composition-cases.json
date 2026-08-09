@@ -1,0 +1,12 @@
+{
+  "cases": [
+    "feature-creation", "feature-public-surface", "feature-no-precreated-pair", "injected-factory",
+    "default-production-factory", "exact-input-pass-through", "ensured-channel-identity", "fresh-pair-first-call",
+    "fresh-pair-second-call", "same-channel-pair-isolation", "different-channel-pair-isolation", "same-message-id-isolation",
+    "available-lookup-forecast", "unavailable-lookup-forecast", "retained-message-identity", "getter-no-fetch",
+    "feature-construction-zero-fetch", "feature-construction-zero-edit", "feature-construction-zero-send", "pair-creation-zero-fetch",
+    "pair-creation-zero-edit", "pair-creation-zero-send", "lookup-one-fetch", "getter-zero-io",
+    "invalid-channel-propagates", "factory-invariant-propagates", "no-session-retention", "runtime-legacy",
+    "guide-isolation", "composition-production-absence"
+  ]
+}
