@@ -1,6 +1,5 @@
 # Community Roadmap Lookup Adapter Preparation Blockers
 
-No adapter implementation is approved in this slice. The test-only candidate
-has frozen the resource-session dependency, result mapping, throw propagation,
-and no-extra-I/O contract. Production implementation remains blocked until the
-candidate is reviewed as its own implementation slice.
+Resolved by the Roadmap Lookup Adapter implementation slice. The production
+adapter now owns only Session-to-port-result mapping and remains deliberately
+not wired. A future Roadmap pair is the next separate boundary.

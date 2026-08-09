@@ -10,6 +10,7 @@ const { createLegacyFacade } = require('../src/tests/fixtures/serviceFacade');
 const { readJson, updateJson, writeJsonAtomic } = require('../src/infrastructure/storage/jsonStore');
 const { auditCommands } = require('./audit-commands');
 const { getCommandRegistry } = require('../src/modules/commands/commandRegistry');
+const { isAllowedInfrastructureApplicationPortDependency } = require('./analyze-dependency-graph');
 
 function assertUnique(items, label) {
   assert.equal(new Set(items).size, items.length, `${label} must be unique`);
@@ -116,5 +117,13 @@ assert.deepEqual(
 );
 assert.equal(getCommandRegistry().size, 72);
 assert.equal(fs.readdirSync(path.join(__dirname, '..', 'src', 'events')).filter((name) => name.endsWith('.js')).length, 6);
+assert.equal(isAllowedInfrastructureApplicationPortDependency(
+  { type: 'infrastructure', file: 'src/infrastructure/example/Adapter.js' },
+  { type: 'application', file: 'src/application/example/ExamplePort.js' }
+), true);
+assert.equal(isAllowedInfrastructureApplicationPortDependency(
+  { type: 'infrastructure', file: 'src/infrastructure/example/Adapter.js' },
+  { type: 'application', file: 'src/application/example/ExampleUseCase.js' }
+), false);
 
 console.log(`Architecture V2 tests passed. Commands: ${audit.implemented.length}`);

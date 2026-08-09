@@ -1,6 +1,6 @@
 # Community Roadmap Lookup Adapter Style Audit
 
-The future adapter is named `RoadmapPublicationMessageLookupAdapter`. It uses a
+The adapter is named `RoadmapPublicationMessageLookupAdapter`. It uses a
 CommonJS factory: `createRoadmapPublicationMessageLookupAdapter({ resourceSession })`.
 Construction validates only `resourceSession.lookupTrackedMessage`; it does not
 require `getRetainedMessage`, which belongs to a future pair/runtime handoff.

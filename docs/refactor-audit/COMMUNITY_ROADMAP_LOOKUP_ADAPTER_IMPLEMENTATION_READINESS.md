@@ -1,11 +1,18 @@
 # Community Roadmap Lookup Adapter Implementation Readiness
 
+## Completed
+
+`RoadmapPublicationMessageLookupAdapter` is now implemented as a production
+infrastructure adapter and remains not wired. It accepts only
+`{ resourceSession }`, delegates one lookup, maps with Roadmap port factories,
+propagates invariant throws, and exposes no retained message or Discord
+resource.
+
 ## Ready next slice
 
-Implement `RoadmapPublicationMessageLookupAdapter` as a production
-infrastructure adapter, not wired. It should accept only `{ resourceSession }`,
-delegate one lookup, map with Roadmap port factories, propagate invariant
-throws, and expose no retained message or Discord resource.
+Prepare the Roadmap adapter-pair boundary. A future runtime needs both lookup
+results and the Resource Session retained-message handoff, but no pair,
+composition feature, or runtime redirect is approved yet.
 
 ## Not approved
 

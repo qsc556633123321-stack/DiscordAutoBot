@@ -59,6 +59,13 @@ function classify(file) {
   return 'other';
 }
 
+function isAllowedInfrastructureApplicationPortDependency(from, to) {
+  return from.type === 'infrastructure' &&
+    to.type === 'application' &&
+    to.file.startsWith('src/application/') &&
+    to.file.endsWith('Port.js');
+}
+
 const layerRank = {
   command: 0,
   router: 0,
@@ -289,7 +296,8 @@ function main() {
     const isControlledInfrastructureBridge = from.type === 'infrastructure' && to.type === 'system' && from.fallbackAllowed;
     const isRepositoryDomainDependency = from.type === 'repository' && to.type === 'domain';
     const isCompositionRootDependency = to.type === 'composition';
-    if (fromRank > toRank && !isEntrypoint && !isTestFixture && !isCoreDependency && !isLegacyContext && !isControlledInfrastructureBridge && !isRepositoryDomainDependency && !isCompositionRootDependency) {
+    const isInfrastructureApplicationPortDependency = isAllowedInfrastructureApplicationPortDependency(from, to);
+    if (fromRank > toRank && !isEntrypoint && !isTestFixture && !isCoreDependency && !isLegacyContext && !isControlledInfrastructureBridge && !isRepositoryDomainDependency && !isCompositionRootDependency && !isInfrastructureApplicationPortDependency) {
       violations.reverseLayer.push({
         ...edge,
         fromType: from.type,
@@ -523,4 +531,6 @@ Full machine-readable graph: \`dependency-graph.json\`
   }
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { isAllowedInfrastructureApplicationPortDependency };
