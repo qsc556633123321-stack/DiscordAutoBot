@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Mutation Failure Identity Handoff Preparation
+Guide Session-local Mutation Failure Handoff Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -90,6 +90,8 @@ Estimated local refactor progress: 65%
   Pair, Adapter, or runtime redirect
 - Mutation failure identity handoff prepared; exact original rejection and
   undefined-presence semantics remain necessary before runtime mutation redirect
+- Session-local mutation failure handoff and narrow Pair delegate implemented;
+  runtime mutation remains legacy-owned
 
 ## Architecture Health
 - Architecture Score: 100 / 100

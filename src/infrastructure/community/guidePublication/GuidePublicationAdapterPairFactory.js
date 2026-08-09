@@ -9,6 +9,9 @@ function createGuidePublicationAdapterPair({ ensuredChannel } = {}) {
     mutationPort: createGuidePublicationMessageMutationDiscordAdapter({ session }),
     getRetainedMessage() {
       return session.getRetainedMessage();
+    },
+    getRetainedMutationFailure() {
+      return session.getRetainedMutationFailure();
     }
   };
 }

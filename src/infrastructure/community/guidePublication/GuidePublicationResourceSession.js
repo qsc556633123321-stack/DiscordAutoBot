@@ -13,6 +13,18 @@ function assertEnsuredChannel(ensuredChannel) {
 function createGuidePublicationResourceSession({ ensuredChannel } = {}) {
   assertEnsuredChannel(ensuredChannel);
   let retainedMessage = null;
+  let hasRetainedMutationFailure = false;
+  let retainedMutationFailure;
+
+  function clearRetainedMutationFailure() {
+    hasRetainedMutationFailure = false;
+    retainedMutationFailure = undefined;
+  }
+
+  function retainMutationFailure(failure) {
+    hasRetainedMutationFailure = true;
+    retainedMutationFailure = failure;
+  }
 
   return {
     getChannelId() {
@@ -20,6 +32,11 @@ function createGuidePublicationResourceSession({ ensuredChannel } = {}) {
     },
     getRetainedMessage() {
       return retainedMessage;
+    },
+    getRetainedMutationFailure() {
+      return hasRetainedMutationFailure
+        ? { hasFailure: true, failure: retainedMutationFailure }
+        : { hasFailure: false };
     },
     async lookupTrackedMessage(messageId) {
       try {
@@ -35,12 +52,24 @@ function createGuidePublicationResourceSession({ ensuredChannel } = {}) {
       if (!retainedMessage) {
         throw new Error('GuidePublicationResourceSession requires a retained message before edit');
       }
-      return retainedMessage.edit(payload);
+      clearRetainedMutationFailure();
+      try {
+        return await retainedMessage.edit(payload);
+      } catch (error) {
+        retainMutationFailure(error);
+        throw error;
+      }
     },
     async sendMessage(payload) {
-      const sentMessage = await ensuredChannel.send(payload);
-      retainedMessage = sentMessage;
-      return sentMessage;
+      clearRetainedMutationFailure();
+      try {
+        const sentMessage = await ensuredChannel.send(payload);
+        retainedMessage = sentMessage;
+        return sentMessage;
+      } catch (error) {
+        retainMutationFailure(error);
+        throw error;
+      }
     }
   };
 }
