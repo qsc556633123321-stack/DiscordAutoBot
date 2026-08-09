@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Runtime Mutation Redirect Preparation
+Guide Send Message Identity Handoff Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -84,6 +84,8 @@ Estimated local refactor progress: 65%
   preserving legacy edit/send, persistence, and Roadmap continuation
 - Runtime mutation redirect characterized; send-message and raw failure-identity
   handoffs remain explicit blockers
+- Send Message identity handoff prepared; existing retained-message capability
+  can carry the exact sent Message in a future Session-only slice
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -152,7 +154,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Guide send-message identity handoff before mutation redirect.
+Implement Session send-success retained-message semantics only.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
