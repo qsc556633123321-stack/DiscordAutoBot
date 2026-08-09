@@ -14,9 +14,21 @@ async function withRoadmapPair(run) {
           const pair = { input };
           metrics.pairInputs.push(input);
           metrics.pairs.push(pair);
+          let retainedMessage = null;
           return {
-            lookupPort: { lookupTrackedMessage() { metrics.lookupCalls += 1; throw new Error('Roadmap Pair lookup must remain unused'); } },
-            getRetainedMessage() { metrics.getterCalls += 1; throw new Error('Roadmap Pair getter must remain unused'); }
+            lookupPort: {
+              async lookupTrackedMessage({ messageId }) {
+                metrics.lookupCalls += 1;
+                try {
+                  retainedMessage = await input.ensuredChannel.messages.fetch(messageId);
+                  return retainedMessage ? { kind: 'Available', messageId } : { kind: 'Unavailable' };
+                } catch (_) {
+                  retainedMessage = null;
+                  return { kind: 'Unavailable' };
+                }
+              }
+            },
+            getRetainedMessage() { metrics.getterCalls += 1; return retainedMessage; }
           };
         }
       };
@@ -59,8 +71,8 @@ async function capture({ roadmapMessageId, existingMessage, fetchFails = false }
   assert.equal(existing.metrics.featureCreations, 1);
   assert.equal(existing.metrics.pairs.length, 1);
   assert.strictEqual(existing.metrics.pairInputs[0].ensuredChannel, existing.roadmap);
-  assert.equal(existing.metrics.lookupCalls, 0);
-  assert.equal(existing.metrics.getterCalls, 0);
+  assert.equal(existing.metrics.lookupCalls, 1);
+  assert.equal(existing.metrics.getterCalls, 1);
   assert.deepEqual(existing.log.fetchArgs, ['tracked']);
   assert.equal(existing.log.calls.filter((call) => call === 'roadmap.message.fetch').length, 1);
   assert.equal(existing.log.calls.filter((call) => call === 'roadmap.message.edit').length, 1);
@@ -87,7 +99,7 @@ async function capture({ roadmapMessageId, existingMessage, fetchFails = false }
   assert.equal(rejected.log.calls.filter((call) => call === 'roadmap.message.fetch').length, 1);
   assert.equal(rejected.log.calls.filter((call) => call === 'roadmap.message.send').length, 1);
   assert.equal(rejected.log.calls.filter((call) => call === 'roadmap.message.edit').length, 0);
-  assert.equal(rejected.metrics.lookupCalls, 0);
+  assert.equal(rejected.metrics.lookupCalls, 1);
   assert.equal(rejected.metrics.getterCalls, 0);
   console.log('Roadmap runtime Pair creation production integration passed');
 })().catch((error) => { console.error(error); process.exitCode = 1; });

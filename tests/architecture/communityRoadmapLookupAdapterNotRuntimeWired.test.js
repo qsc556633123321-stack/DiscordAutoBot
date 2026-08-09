@@ -3,6 +3,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const source = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
-assert.match(source, /roadmapMessageId \? await channel\.messages\.fetch\(roadmapMessageId\)\.catch\(\(\) => null\) : null/);
+assert.match(source, /lookupPort\.lookupTrackedMessage\(\{ messageId: roadmapMessageId \}\)/);
 assert.doesNotMatch(source, /RoadmapPublicationMessageLookupAdapter|roadmapLookupPort/);
-console.log('Roadmap production lookup adapter is not runtime wired');
+console.log('Roadmap production lookup adapter is runtime wired through Composition');

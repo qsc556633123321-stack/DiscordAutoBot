@@ -7,4 +7,4 @@ const roadmap = source.match(/async function setupRoadmapPanel\(guild\) \{([\s\S
 assert.match(roadmap, /message\.edit\(payload\)/);
 assert.match(roadmap, /channel\.send\(payload\)/);
 assert.doesNotMatch(roadmap, /mutationPort|RoadmapPublicationMessageMutation/);
-console.log('Roadmap lookup redirect preparation retains legacy mutation ownership');
+console.log('Roadmap lookup redirect implementation retains legacy mutation ownership');

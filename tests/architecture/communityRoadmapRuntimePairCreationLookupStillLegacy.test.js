@@ -4,6 +4,7 @@ const path = require('node:path');
 
 const source = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
 const roadmap = source.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
-assert.match(roadmap, /channel\.messages\.fetch\(roadmapMessageId\)\.catch\(\(\) => null\)/);
-assert.doesNotMatch(roadmap, /lookupPort\.lookupTrackedMessage|getRetainedMessage/);
-console.log('Roadmap runtime lookup remains legacy-owned after Pair creation');
+assert.match(roadmap, /lookupPort\.lookupTrackedMessage\(\{ messageId: roadmapMessageId \}\)/);
+assert.match(roadmap, /getRetainedMessage/);
+assert.doesNotMatch(roadmap, /channel\.messages\.fetch\(roadmapMessageId\)\.catch\(\(\) => null\)/);
+console.log('Roadmap runtime lookup uses the Pair after Pair creation');

@@ -10,7 +10,16 @@ const { createGuild, createTextChannel, withOnboardingFile } = require('../../he
   require.cache[featurePath].exports = {
     createCommunityRoadmapAdapterPairFeature() {
       featureCreations += 1;
-      return { createAdapterPair(input) { const pair = { input }; pairs.push(pair); return {}; } };
+      return {
+        createAdapterPair(input) {
+          const pair = { input };
+          pairs.push(pair);
+          return {
+            lookupPort: { async lookupTrackedMessage() { return { kind: 'Unavailable' }; } },
+            getRetainedMessage() { return null; }
+          };
+        }
+      };
     }
   };
   delete require.cache[runtimePath];

@@ -3,6 +3,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const source = fs.readFileSync(path.resolve(__dirname, '../../src/systems/communityConcierge.js'), 'utf8');
-assert.match(source, /roadmapMessageId \? await channel\.messages\.fetch\(roadmapMessageId\)\.catch\(\(\) => null\) : null/);
-assert.doesNotMatch(source, /RoadmapPublicationMessageLookupPort|RoadmapLookupAdapter|roadmapLookupPort/);
-console.log('Roadmap runtime lookup remains legacy-owned');
+assert.match(source, /RoadmapPublicationMessageLookupPort/);
+assert.match(source, /lookupPort\.lookupTrackedMessage/);
+console.log('Roadmap runtime lookup uses the application port contract');

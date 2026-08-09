@@ -22,6 +22,9 @@ const { createCommunityGuideReadCompatibilityAdapter } = require('../composition
 const { createCommunityPublicationStateFeature } = require('../composition/communityPublicationStateFeature');
 const { createCommunityGuideAdapterPairFeature } = require('../composition/communityGuideAdapterPairFeature');
 const { createCommunityRoadmapAdapterPairFeature } = require('../composition/communityRoadmapAdapterPairFeature');
+const {
+  RoadmapPublicationMessageLookupKind
+} = require('../application/community/roadmapPublication/RoadmapPublicationMessageLookupPort');
 
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
@@ -230,13 +233,26 @@ async function setupCommunityGuide(guild, options = {}) {
 
 async function setupRoadmapPanel(guild) {
   const channel = await getOrCreateRoadmapChannel(guild);
-  communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
+  const { lookupPort, getRetainedMessage } =
+    communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const data = readOnboardingData()[guild.id] || {};
   const publicationState = fromLegacyPublicationRecord(guild.id, data);
   // Preserve the legacy truthy malformed-ID fetch behavior until identity validation is approved.
   const roadmapMessageId = publicationState.roadmap.messageId || data.roadmapMessageId;
   const payload = { embeds: [buildRoadmapEmbed()] };
-  let message = roadmapMessageId ? await channel.messages.fetch(roadmapMessageId).catch(() => null) : null;
+  let message = null;
+  if (roadmapMessageId) {
+    const lookupResult = await lookupPort.lookupTrackedMessage({ messageId: roadmapMessageId });
+    if (lookupResult?.kind === RoadmapPublicationMessageLookupKind.Available) {
+      const retainedMessage = getRetainedMessage();
+      if (!retainedMessage) {
+        throw new Error('Roadmap lookup returned Available without retained message');
+      }
+      message = retainedMessage;
+    } else if (lookupResult?.kind !== RoadmapPublicationMessageLookupKind.Unavailable) {
+      throw new Error('Roadmap lookup returned unexpected result');
+    }
+  }
   if (message) await message.edit(payload);
   else message = await channel.send(payload);
   saveOnboarding(guild.id, {

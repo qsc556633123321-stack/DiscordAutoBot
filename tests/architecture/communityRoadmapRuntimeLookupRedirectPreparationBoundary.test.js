@@ -7,4 +7,5 @@ const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.
 assert.equal(fs.existsSync(path.join(root, 'tests/fakes/community/FakeCommunityRoadmapRuntimeLookupRedirect.js')), true);
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityRoadmapAdapterPairFeature.js')), true);
 assert.match(runtime, /createCommunityRoadmapAdapterPairFeature/);
-console.log('Roadmap lookup redirect preparation boundary is isolated to test-only candidate');
+assert.match(runtime, /RoadmapPublicationMessageLookupKind/);
+console.log('Roadmap lookup redirect implementation remains constrained to the approved Pair boundary');

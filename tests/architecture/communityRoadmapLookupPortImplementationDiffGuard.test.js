@@ -11,5 +11,5 @@ for (const file of [
   assert.equal(fs.existsSync(path.join(root, file)), false, `${file} must remain absent`);
 }
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
-assert.doesNotMatch(runtime, /RoadmapPublicationMessageLookupPort/);
+assert.match(runtime, /RoadmapPublicationMessageLookupPort/);
 console.log('Roadmap lookup port implementation boundary passed');
