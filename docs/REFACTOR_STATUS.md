@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Runtime Mutation Redirect Implementation
+Roadmap Persistence Migration Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -215,6 +215,12 @@ Estimated local refactor progress: 65%
   rejection, persistence, and return-identity constraints
 - Roadmap Runtime Mutation Redirect implemented through the existing Pair while
   retaining legacy persistence sequencing and writer-swallowed partial success
+- Roadmap persistence runtime, schema, merge, ordering, failure, identity,
+  read-after-write, cross-field, and sequential-concurrency behavior frozen;
+  no production persistence path changed
+
+- Roadmap persistence migration preparation owns frozen schema and regression
+  contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
 
 ### Legacy
 - Discord mutation execution
@@ -242,8 +248,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Roadmap Persistence Migration, preserving the current publication
-record format and writer-swallowed partial-success behavior.
+Prepare a pure Roadmap persistence request contract and explicit reuse decision
+for the existing Community publication persistence feature.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -251,12 +257,14 @@ record format and writer-swallowed partial-success behavior.
 - Architecture gate PASS
 - Legacy audit PASS
 - Quality gate PASS
+- Roadmap persistence preparation suite PASS
+- Dashboard build PASS
 
 ## Blockers
-Roadmap persistence sequencing remains legacy-owned. Runtime mutation now uses
-the existing Pair, but persistence migration needs its own characterization and
-must not be combined with further mutation changes.
+Roadmap persistence sequencing remains legacy-owned. The next slice must not
+introduce a duplicate Roadmap writer and must preserve schema, exact IDs,
+writer-swallowed partial success, and current ordering.
 
 ## Last Updated
-2026-08-09: Roadmap Runtime Mutation Redirect implemented through the existing
-Pair; persistence remains legacy runtime-owned.
+2026-08-09: Roadmap persistence migration preparation completed; runtime,
+formal JSON, and writer ownership remain unchanged.
