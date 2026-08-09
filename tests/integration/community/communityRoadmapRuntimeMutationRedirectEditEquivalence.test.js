@@ -1,0 +1,5 @@
+const assert = require('node:assert/strict');
+const fixture = require('../../fixtures/community/community-roadmap-runtime-mutation-redirect-cases.json');
+const { createCommunityRoadmapAdapterPairFeature } = require('../../../src/composition/communityRoadmapAdapterPairFeature');
+const { redirectRoadmapMutation } = require('../../fakes/community/FakeCommunityRoadmapRuntimeMutationRedirect');
+(async () => { const payload = { x: 1 }; let writes = 0; const m = { id: 'M', async edit(p) { assert.strictEqual(p, payload); return { id: 'E' }; } }; const pair = createCommunityRoadmapAdapterPairFeature().createAdapterPair({ ensuredChannel: { id: 'C', messages: { async fetch() { return m; } }, async send() { throw new Error('unused'); } } }); await pair.lookupPort.lookupTrackedMessage({ messageId: 'M' }); assert.strictEqual(await redirectRoadmapMutation({ pair, message: m, payload, write: async (value) => { writes += 1; assert.strictEqual(value, m); } }), m); assert.equal(writes, 1); assert.equal(fixture.cases.length, 60); console.log('Roadmap redirect edit candidate preserves exact M'); })().catch((error) => { console.error(error); process.exitCode = 1; });

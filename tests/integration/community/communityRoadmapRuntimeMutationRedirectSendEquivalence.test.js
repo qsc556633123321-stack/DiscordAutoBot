@@ -1,0 +1,4 @@
+const assert = require('node:assert/strict');
+const { createCommunityRoadmapAdapterPairFeature } = require('../../../src/composition/communityRoadmapAdapterPairFeature');
+const { redirectRoadmapMutation } = require('../../fakes/community/FakeCommunityRoadmapRuntimeMutationRedirect');
+(async () => { const payload = { x: 1 }; const s = { id: 'S' }; let writes = 0; const pair = createCommunityRoadmapAdapterPairFeature().createAdapterPair({ ensuredChannel: { id: 'C', messages: { async fetch() { throw new Error('unused'); } }, async send(p) { assert.strictEqual(p, payload); return s; } } }); assert.strictEqual(await redirectRoadmapMutation({ pair, message: null, payload, write: async (value) => { writes += 1; assert.strictEqual(value, s); } }), s); assert.equal(writes, 1); console.log('Roadmap redirect send candidate recovers exact S'); })().catch((error) => { console.error(error); process.exitCode = 1; });
