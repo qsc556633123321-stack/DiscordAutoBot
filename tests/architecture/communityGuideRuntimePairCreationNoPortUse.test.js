@@ -4,5 +4,7 @@ const path = require('node:path');
 const source = fs.readFileSync(path.resolve(__dirname, '..', '..', 'src/systems/communityConcierge.js'), 'utf8');
 
 assert.match(source, /communityGuideAdapterPairFeature\.createAdapterPair\(\{ ensuredChannel: channel \}\)/);
-assert.equal(/lookupPort|mutationPort/.test(source), false);
-console.log('Community guide runtime pair creation no-port-use guard passed');
+assert.equal(source.includes('lookupPort.lookup'), true);
+assert.equal(source.includes('mutationPort.edit'), false);
+assert.equal(source.includes('mutationPort.send'), false);
+console.log('Community guide runtime pair creation lookup-only guard passed');

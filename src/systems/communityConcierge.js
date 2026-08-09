@@ -10,6 +10,7 @@ const {
   fromLegacyPublicationRecord,
   mapLegacyWelcomeDeliveryRequest,
   buildCommunityWelcomeMessage,
+  GuidePublicationMessageLookupStatus,
   GuidePublicationOperationType,
   createGuidePublicationMutationInput,
   buildGuidePublicationMutationPlan
@@ -160,7 +161,8 @@ function buildAboutEmbed(guild) {
 
 async function setupCommunityGuide(guild, options = {}) {
   const channel = await getOrCreateGuideChannel(guild);
-  communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
+  const { lookupPort, getRetainedMessage } =
+    communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const payload = await buildGuidePayload(guild);
   const data = readOnboardingData()[guild.id] || {};
   const publicationState = fromLegacyPublicationRecord(guild.id, data);
@@ -168,7 +170,14 @@ async function setupCommunityGuide(guild, options = {}) {
   const guideMessageId = publicationState.guide.messageId || data.guideMessageId;
   let message = null;
   if (guideMessageId && options.mode !== 'force') {
-    message = await channel.messages.fetch(guideMessageId).catch(() => null);
+    const lookupResult = await lookupPort.lookup({
+      guildId: guild.id,
+      channelId: channel.id,
+      messageId: guideMessageId
+    });
+    if (lookupResult.status === GuidePublicationMessageLookupStatus.MessageAvailable) {
+      message = getRetainedMessage();
+    }
   }
   const mutationInput = createGuidePublicationMutationInput({
     guildId: guild.id,

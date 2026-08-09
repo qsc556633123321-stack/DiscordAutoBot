@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Guide Runtime Lookup Redirect Preparation Refresh
+Guide Runtime Lookup Redirect Only Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -80,6 +80,8 @@ Estimated local refactor progress: 65%
   retaining Session privacy and leaving all runtime I/O legacy-owned
 - Runtime Lookup Redirect final preparation refreshed against the production
   Pair handoff surface; no runtime redirect implemented
+- Runtime Guide lookup redirected through the existing Adapter Pair while
+  preserving legacy edit/send, persistence, and Roadmap continuation
 
 ## Architecture Health
 - Architecture Score: 100 / 100
@@ -148,7 +150,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement Runtime Lookup Redirect Only using the frozen Pair handoff contract.
+Prepare Runtime Mutation Redirect without changing its execution path.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS

@@ -9,7 +9,23 @@ async function withPairSpy(run) {
   const pairs = [];
   require.cache[featurePath].exports = {
     createCommunityGuideAdapterPairFeature() {
-      return { createAdapterPair({ ensuredChannel }) { pairs.push(ensuredChannel); return { lookupPort: {}, mutationPort: {} }; } };
+      return { createAdapterPair({ ensuredChannel }) {
+        pairs.push(ensuredChannel);
+        let retainedMessage = null;
+        return {
+          lookupPort: { async lookup({ messageId }) {
+            try {
+              retainedMessage = await ensuredChannel.messages.fetch(messageId);
+              return { status: retainedMessage ? 'MessageAvailable' : 'MessageUnavailable', messageId };
+            } catch (_) {
+              retainedMessage = null;
+              return { status: 'MessageUnavailable', messageId };
+            }
+          } },
+          mutationPort: {},
+          getRetainedMessage() { return retainedMessage; }
+        };
+      } };
     }
   };
   delete require.cache[runtimePath];
