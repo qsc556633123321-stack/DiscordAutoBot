@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "idDomains": ["undefined", "null", "empty", "zero", "false", "normal", "whitespace", "malformed", "number", "object"],
+  "outcomes": ["available", "null", "undefined", "false", "error", "string", "number", "object", "null-rejection", "undefined-rejection"],
+  "frozenSemantics": {
+    "falsyId": "no fetch, unavailable, send",
+    "truthyId": "one fetch",
+    "fetchRejection": "unavailable, send, no rethrow",
+    "available": "retain exact message, edit",
+    "noRetry": true
+  }
+}
