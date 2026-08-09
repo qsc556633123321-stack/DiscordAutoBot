@@ -8,7 +8,7 @@ const pairFactory = fs.readFileSync(path.join(root, 'src/infrastructure/communit
 const application = fs.readFileSync(path.join(root, 'src/application/community/index.js'), 'utf8');
 
 assert.equal(session.includes('getRetainedMessage()'), true);
-assert.equal(pairFactory.includes('getRetainedMessage'), false);
+assert.equal(pairFactory.includes('getRetainedMessage'), true);
 assert.equal(application.includes('GuidePublicationResourceSession'), false);
 assert.equal(application.includes('discord.js'), false);
 console.log('Community guide Pair retained-message preparation boundary passed');

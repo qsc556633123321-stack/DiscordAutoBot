@@ -1,0 +1,10 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const factory = fs.readFileSync(path.join(root, 'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js'), 'utf8');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+assert.equal(factory.includes('return session.getRetainedMessage();'), true);
+assert.equal(factory.includes('return {\n    lookupPort'), true);
+assert.equal(runtime.includes('getRetainedMessage'), false);
+console.log('Guide Pair retained-message implementation diff guard passed');

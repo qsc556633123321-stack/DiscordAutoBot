@@ -6,7 +6,10 @@ function createGuidePublicationAdapterPair({ ensuredChannel } = {}) {
   const session = createGuidePublicationResourceSession({ ensuredChannel });
   return {
     lookupPort: createGuidePublicationMessageLookupDiscordAdapter({ session }),
-    mutationPort: createGuidePublicationMessageMutationDiscordAdapter({ session })
+    mutationPort: createGuidePublicationMessageMutationDiscordAdapter({ session }),
+    getRetainedMessage() {
+      return session.getRetainedMessage();
+    }
   };
 }
 

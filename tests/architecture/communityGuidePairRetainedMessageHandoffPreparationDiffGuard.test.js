@@ -10,5 +10,5 @@ assert.equal(runtime.includes('channel.messages.fetch'), true);
 assert.equal(runtime.includes('lookupPort.lookup'), false);
 assert.equal(runtime.includes('mutationPort.'), false);
 assert.equal(pairFactory.includes('return {\n    lookupPort'), true);
-assert.equal(pairFactory.includes('getRetainedMessage'), false);
+assert.equal(pairFactory.includes('getRetainedMessage'), true);
 console.log('Community guide Pair retained-message preparation diff guard passed');
