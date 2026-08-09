@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Guide Runtime Persistence Redirect Implementation
+Community Guide End-to-End Migration Closure Audit
 
 ## Overall Progress
 Estimated local refactor progress: 70%
@@ -258,6 +258,9 @@ Estimated local refactor progress: 70%
 - Guide Runtime Persistence redirected through the semantic request and reuse
   feature with per-invocation construction; direct Guide `saveOnboarding` call
   is removed while the zero-consumer helper remains retained for cleanup review
+- Guide end-to-end closure audited: lookup, mutation, and persistence are
+  migrated; tracked publication state remains a classified shared read
+  compatibility dependency, so Guide is closed with that dependency recorded
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -300,10 +303,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Run a Guide End-to-End Migration Closure Audit. Confirm the completed lookup,
-mutation, and persistence runtime boundaries, classify remaining direct Guide
-read/helper ownership, and decide whether a separate `saveOnboarding` cleanup
-preparation slice is justified.
+Prepare the Guide Read Boundary Migration. Characterize and isolate the shared
+tracked-publication-state read without changing Guide runtime behavior.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -321,12 +322,14 @@ preparation slice is justified.
 - Dashboard build PASS
 
 ## Blockers
-Guide read-state helper ownership and retained zero-consumer `saveOnboarding`
-cleanup remain to be audited. The progress increase to 70% reflects completed
-Guide runtime persistence ownership, not deployment readiness; high-risk
-community flows remain outstanding.
+Guide is closed with a shared `readOnboardingData` compatibility dependency.
+The retained zero-consumer `saveOnboarding` helper still needs dedicated
+cleanup preparation. The 70% estimate reflects migrated Guide mutation and
+persistence ownership, not deployment readiness; high-risk community flows
+remain outstanding.
 
 ## Last Updated
-2026-08-10: Guide Runtime Persistence redirected through the semantic request
-and reuse feature. Progress is 70%; Roadmap remains closed and `saveOnboarding`
-is retained with zero known runtime consumers pending cleanup preparation.
+2026-08-10: Guide end-to-end migration closure audit completed. Guide lookup,
+mutation, and persistence are migrated; the tracked-message read remains a
+shared compatibility dependency. Progress remains 70% because this audit did
+not move that last active read ownership boundary.
