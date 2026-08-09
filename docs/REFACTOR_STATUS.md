@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Pair Mutation Surface Implementation
+Roadmap Composition Mutation Wiring Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -207,6 +207,8 @@ Estimated local refactor progress: 65%
   production Pair, composition, runtime, and persistence remain unchanged
 - Roadmap Pair Mutation Surface implemented with one shared Resource Session;
   Composition, runtime mutation, and persistence remain unchanged
+- Roadmap Composition mutation boundary verified as an existing exact Pair
+  pass-through; no Composition production modification is required
 
 ### Legacy
 - Discord mutation execution
@@ -234,8 +236,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Composition Mutation Wiring using the implemented Pair surface, without
-runtime redirect or persistence changes.
+Prepare Runtime Mutation Pair Consumption using the existing Composition and
+Pair surfaces, without mutation redirect or persistence changes.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -245,10 +247,10 @@ runtime redirect or persistence changes.
 - Quality gate PASS
 
 ## Blockers
-Roadmap runtime mutation and persistence sequencing remain legacy-owned. The
-Pair mutation surface is implemented but Composition and runtime have no
-mutation wiring.
+Roadmap runtime mutation and persistence sequencing remain legacy-owned.
+Composition already passes through the mutation-capable Pair, but runtime does
+not yet consume its mutationPort.
 
 ## Last Updated
-2026-08-09: Roadmap Pair Mutation Surface implemented without Composition,
-runtime, or persistence changes.
+2026-08-09: Roadmap Composition Mutation Wiring verified as already satisfied
+by exact Pair pass-through; runtime and persistence remain unchanged.

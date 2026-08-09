@@ -1,0 +1,5 @@
+{
+  "cases": [
+    "exact-pair", "exact-input", "feature-public-surface", "lookup-visible", "mutation-visible", "getter-visible", "same-session", "edit-m", "edit-success-m", "send-s", "send-success-s", "error", "string", "number", "object", "null", "undefined", "feature-zero-io", "pair-zero-io", "lookup-one-fetch", "edit-one-call", "send-one-call", "no-extra-fetch", "no-persistence", "no-direct-mutation-adapter-import", "guide-isolation", "runtime-legacy", "pair-regression", "lookup-regression", "concurrent-pair-a", "concurrent-pair-b", "no-reshape", "no-filter", "no-second-pair", "no-second-session", "no-wrapper", "no-failure-getter", "composition-unchanged", "runtime-consumption-deferred", "no-runtime-wire"
+  ]
+}
