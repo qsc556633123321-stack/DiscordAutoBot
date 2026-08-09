@@ -1,0 +1,14 @@
+[
+  "fresh-failure-absent", "lookup-message", "lookup-unavailable", "lookup-rejection", "edit-success",
+  "edit-different-resolve", "edit-payload-identity", "edit-retained-original", "edit-one-call", "edit-no-fetch",
+  "edit-no-send", "edit-error", "edit-string", "edit-number", "edit-object",
+  "edit-null", "edit-undefined", "edit-failure-present", "edit-failure-identity", "edit-failure-retained-message",
+  "send-success", "send-payload-identity", "send-retained-exact", "send-return-exact", "send-one-call",
+  "send-no-fetch", "send-no-edit", "send-error", "send-string", "send-number",
+  "send-object", "send-null", "send-undefined", "send-failure-present", "send-failure-identity",
+  "send-failure-retained-message", "undefined-presence", "edit-clears-stale", "send-clears-stale", "second-failure-replaces-first",
+  "lookup-does-not-clear-failure", "edit-does-not-clear-retained", "send-replaces-retained", "repeated-edit", "repeated-send",
+  "same-channel-isolation", "different-channel-isolation", "retained-getter-zero-io", "failure-getter-zero-io", "edit-zero-extra-io",
+  "send-zero-extra-io", "no-retry-edit", "no-retry-send", "no-rollback", "no-fallback-send",
+  "no-persistence", "port-edit-id-forecast", "port-send-id-forecast", "missing-retained-edit", "pair-extension-deferred"
+]

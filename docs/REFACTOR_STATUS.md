@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Roadmap Mutation Port Implementation
+Roadmap Resource Session Mutation Semantics Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 65%
@@ -194,6 +194,9 @@ Estimated local refactor progress: 65%
 - Roadmap-specific Application Mutation Port implemented with immutable scalar
   request/success factories and no Adapter, Session mutation, Pair, runtime,
   or persistence wiring
+- Roadmap Resource Session mutation semantics characterized with a test-only
+  candidate: retained Message identity, Send handoff, presence-aware failures,
+  stale-failure clearing, lookup interaction, and zero-extra-I/O constraints
 
 ### Legacy
 - Discord mutation execution
@@ -221,8 +224,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Roadmap Resource Session mutation semantics only, without Adapter,
-Pair mutation surface, or runtime wiring.
+Implement the approved Roadmap Resource Session mutation extension only,
+without Adapter, Pair mutation surface, or runtime wiring.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -232,11 +235,11 @@ Pair mutation surface, or runtime wiring.
 - Quality gate PASS
 
 ## Blockers
-Roadmap runtime mutation remains legacy-owned. The Application Port is
-implemented but exact raw failure handoff, retained Send identity, and Session
-mutation semantics require preparation before any adapter or runtime work.
+Roadmap runtime mutation remains legacy-owned. Session mutation semantics are
+prepared but no production Session extension exists; failure handoff and exact
+resource identity must be implemented before Adapter work.
 
 ## Last Updated
-2026-08-09: Roadmap Application Mutation Port implemented and not wired;
-Adapter, Session mutation, Pair mutation surface, runtime, and persistence
-sequencing remain unchanged.
+2026-08-09: Roadmap Resource Session mutation semantics prepared with no
+production Session change; Adapter, Pair mutation surface, runtime, and
+persistence sequencing remain unchanged.
