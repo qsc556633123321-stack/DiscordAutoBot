@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Shared Community Publication Tracking State Read Boundary Preparation
+Shared Community Publication Tracking State Read Boundary Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 70%
@@ -267,6 +267,8 @@ Estimated local refactor progress: 70%
 - Shared tracking-message read contract prepared: Guide and Roadmap share a
   narrow semantic query, while welcome channel tracking remains a separately
   forecasted consumer
+- Shared Publication Tracking Read Port and compatibility adapter implemented
+  as an isolated, one-read boundary; neither is composed nor runtime-used
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -282,6 +284,9 @@ Estimated local refactor progress: 70%
 - Roadmap Lookup, Mutation, and Persistence are runtime-active through their
   approved boundaries; Guide persistence and shared `saveOnboarding` remain
   legacy-owned
+- Shared publication tracking read Port and compatibility adapter are new
+  Architecture-owned code, but Guide/Roadmap runtime reads and Welcome channel
+  tracking remain legacy-owned until redirect preparation is completed
 
 ### Legacy
 - Discord mutation execution
@@ -309,8 +314,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the Shared Tracking Read Boundary only: add the Application port and
-compatibility adapter without Composition wiring or runtime redirects.
+Prepare a combined Guide + Roadmap shared tracking-read runtime redirect. Freeze
+construction, call ordering, raw-fallback behavior, and failure behavior before
+either runtime consumer is redirected.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -329,13 +335,13 @@ compatibility adapter without Composition wiring or runtime redirects.
 
 ## Blockers
 Guide is closed with a shared `readOnboardingData` compatibility dependency.
-The shared message-query boundary for Guide/Roadmap is now frozen but not
-implemented; welcome's channel query remains legacy-owned. The retained
+The shared message-query boundary for Guide/Roadmap is implemented but not
+runtime-used; welcome's channel query remains legacy-owned. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
 Progress remains 70%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Shared publication tracking message-read boundary prepared without
-a runtime change. The frozen contract preserves raw fallback compatibility and
-keeps welcome channel tracking out of the first narrow query. Progress remains
-70%.
+2026-08-10: Shared publication tracking message-read Port and compatibility
+adapter implemented without composition or a runtime change. The boundary
+preserves raw fallback compatibility and keeps welcome channel tracking out of
+the first narrow query. Progress remains 70%.
