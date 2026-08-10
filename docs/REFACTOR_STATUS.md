@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Shared Community Guide + Roadmap Tracking Read Runtime Redirect Implementation
+Community Guide Migration Closure Re-Audit
 
 ## Overall Progress
 Estimated local refactor progress: 73%
@@ -273,6 +273,8 @@ Estimated local refactor progress: 73%
   ordering, failure, raw-fallback, and Welcome-isolation behavior prepared
 - Combined Guide + Roadmap shared tracking-read runtime redirect implemented
   through the approved Port and compatibility Adapter; Welcome remains legacy-owned
+- Community Guide migration closure re-audited and marked CLOSED: read, lookup,
+  mutation, and persistence now have boundary ownership
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -320,8 +322,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Run a Guide closure re-audit. The Guide shared tracked-message dependency is
-removed, but closure status must be recalculated from current runtime evidence.
+Prepare a Welcome Channel Tracking Read Boundary. Welcome is now the sole active
+runtime consumer of `readOnboardingData`.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -339,13 +341,12 @@ removed, but closure status must be recalculated from current runtime evidence.
 - Dashboard build PASS
 
 ## Blockers
-Guide needs a short closure re-audit after its shared tracked-message
-dependency was removed. Guide and Roadmap now use the shared tracking boundary
-at runtime; welcome's channel query remains legacy-owned. The retained
+Guide is CLOSED. Guide and Roadmap use the shared tracking boundary at runtime;
+Welcome's channel query remains legacy-owned. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
 Progress is 73%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Combined Guide + Roadmap shared tracking-read redirect implemented
-with direct per-invocation construction. One-read, raw-fallback, lookup ordering,
-persistence ordering, and Welcome isolation remain preserved. Progress is 73%.
+2026-08-10: Community Guide closure re-audit confirmed boundary-owned read,
+lookup, mutation, and persistence behavior. Welcome remains the sole active
+`readOnboardingData` runtime consumer. Progress remains 73%.
