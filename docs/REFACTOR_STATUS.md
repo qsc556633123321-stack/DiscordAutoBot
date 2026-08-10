@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Guide Migration Closure Re-Audit
+Community Welcome Channel Tracking Read Boundary Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 73%
@@ -275,6 +275,8 @@ Estimated local refactor progress: 73%
   through the approved Port and compatibility Adapter; Welcome remains legacy-owned
 - Community Guide migration closure re-audited and marked CLOSED: read, lookup,
   mutation, and persistence now have boundary ownership
+- Welcome tracked-channel read contract, compatibility behavior, and a separate
+  shared channel-boundary implementation path prepared without runtime changes
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -322,8 +324,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a Welcome Channel Tracking Read Boundary. Welcome is now the sole active
-runtime consumer of `readOnboardingData`.
+Implement the Shared Channel Read Boundary: an Application Port plus
+compatibility Adapter, without redirecting Welcome runtime yet.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -341,12 +343,13 @@ runtime consumer of `readOnboardingData`.
 - Dashboard build PASS
 
 ## Blockers
-Guide is CLOSED. Guide and Roadmap use the shared tracking boundary at runtime;
-Welcome's channel query remains legacy-owned. The retained
+Guide is CLOSED. Guide and Roadmap use the shared tracking boundary at runtime.
+Welcome's tracked-channel query remains legacy-owned pending the separate
+channel boundary implementation. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
 Progress is 73%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Community Guide closure re-audit confirmed boundary-owned read,
-lookup, mutation, and persistence behavior. Welcome remains the sole active
-`readOnboardingData` runtime consumer. Progress remains 73%.
+2026-08-10: Welcome channel tracking-read contract and compatibility behavior
+prepared without runtime changes. Guide remains CLOSED; Welcome remains the sole
+active `readOnboardingData` runtime consumer. Progress remains 73%.

@@ -1,0 +1,20 @@
+[
+  { "name": "valid-cache-hit" }, { "name": "valid-cache-miss" },
+  { "name": "valid-fetch-success" }, { "name": "valid-fetch-failure" },
+  { "name": "missing-id" }, { "name": "undefined-id" }, { "name": "null-id" },
+  { "name": "empty-id" }, { "name": "false-id" }, { "name": "zero-id" },
+  { "name": "number-id" }, { "name": "true-id" }, { "name": "object-id" },
+  { "name": "array-id" }, { "name": "whitespace-id" }, { "name": "missing-guild" },
+  { "name": "missing-record" }, { "name": "reader-failure" }, { "name": "invalid-json" },
+  { "name": "single-read" }, { "name": "cache-hit" }, { "name": "cache-miss" },
+  { "name": "channel-unavailable" }, { "name": "send-success" }, { "name": "send-failure" },
+  { "name": "no-raw-record" }, { "name": "no-discord-contract" }, { "name": "no-write" },
+  { "name": "guide-closure" }, { "name": "roadmap-regression" }, { "name": "runtime-unchanged" },
+  { "name": "zero-runtime-consumer-forecast" }, { "name": "guide-publication" },
+  { "name": "unsupported-publication" }, { "name": "empty-publication" }, { "name": "null-publication" },
+  { "name": "undefined-publication" }, { "name": "exact-guild-id" }, { "name": "frozen-request" },
+  { "name": "frozen-result" }, { "name": "result-key-only" }, { "name": "legacy-direct-field" },
+  { "name": "fallback-name-search" }, { "name": "fetch-rejection" }, { "name": "dm-rejection" },
+  { "name": "one-reader-call" }, { "name": "no-message-query" }, { "name": "no-persistence" },
+  { "name": "no-composition" }, { "name": "production-diff-zero" }
+]
