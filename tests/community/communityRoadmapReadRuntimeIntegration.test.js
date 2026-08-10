@@ -6,8 +6,11 @@ const { integratedRoadmapDecision } = require('../helpers/createCommunityPublica
 
 const source = fs.readFileSync(path.join(__dirname, '..', '..', 'src/systems/communityConcierge.js'), 'utf8');
 assert.match(source, /async function setupRoadmapPanel/);
-assert.match(source, /const publicationState = fromLegacyPublicationRecord\(guild\.id, data\)/);
-assert.match(source, /publicationState\.roadmap\.messageId \|\| data\.roadmapMessageId/);
+assert.match(source, /createCommunityPublicationTrackingReadRequest/);
+assert.match(source, /createCommunityPublicationTrackingReadCompatibilityAdapter/);
+assert.match(source, /publication: 'roadmap'/);
+assert.match(source, /trackedMessageId: roadmapMessageId/);
+assert.doesNotMatch(source, /publicationState\.roadmap\.messageId \|\| data\.roadmapMessageId/);
 for (const [record, branch] of [[fixture.missingRecord, 'send-new'], [fixture.emptyRecord, 'send-new'], [fixture.validRecord, 'fetch-existing'], [fixture.emptyRoadmapRecord, 'send-new'], [fixture.numericRoadmapRecord, 'fetch-existing'], [fixture.objectRoadmapRecord, 'fetch-existing'], [fixture.arrayRoadmapRecord, 'fetch-existing'], [fixture.trueRoadmapRecord, 'fetch-existing']]) {
   assert.equal(integratedRoadmapDecision(fixture.guildId, record).branch, branch);
 }

@@ -5,9 +5,11 @@ const fixture = require('../fixtures/communityPublicationReadRuntimeIntegrationF
 const { integratedDecision } = require('../helpers/createCommunityPublicationReadRuntimeHarness');
 
 const source = fs.readFileSync(path.join(__dirname, '..', '..', 'src/systems/communityConcierge.js'), 'utf8');
-assert.match(source, /fromLegacyPublicationRecord/);
-assert.match(source, /const publicationState = fromLegacyPublicationRecord\(guild\.id, data\)/);
-assert.match(source, /publicationState\.guide\.messageId \|\| data\.guideMessageId/);
+assert.match(source, /createCommunityPublicationTrackingReadRequest/);
+assert.match(source, /createCommunityPublicationTrackingReadCompatibilityAdapter/);
+assert.match(source, /publication: 'guide'/);
+assert.match(source, /trackedMessageId: guideMessageId/);
+assert.doesNotMatch(source, /publicationState\.guide\.messageId \|\| data\.guideMessageId/);
 for (const [record, branch] of [[fixture.missingRecord, 'send-new'], [fixture.emptyRecord, 'send-new'], [fixture.validRecord, 'fetch-existing'], [fixture.emptyGuideRecord, 'send-new'], [fixture.numericGuideRecord, 'fetch-existing'], [fixture.objectGuideRecord, 'fetch-existing']]) {
   assert.equal(integratedDecision(fixture.guildId, record).branch, branch);
 }

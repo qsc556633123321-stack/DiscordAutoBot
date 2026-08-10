@@ -20,10 +20,17 @@ for (const source of [guideCandidate, roadmapCandidate]) {
   assert.equal(source.includes('createCommunityPublicationTrackingReadCompatibilityAdapter'), true);
 }
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityPublicationTrackingReadFeature.js')), false);
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 4, 'definition plus Guide, Roadmap, and Welcome must remain');
+const welcome = runtime.match(/async function sendConciergeWelcome\(member\) \{([\s\S]*?)\n\}\n\nmodule\.exports/)[1];
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 2, 'definition plus Welcome must remain');
+assert.equal(welcome.includes('readOnboardingData()'), true);
+assert.equal(welcome.includes('guideChannelId'), true);
 assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1, 'saveOnboarding remains retained with zero runtime consumers');
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
-assert.deepEqual(changed.filter((file) => file.startsWith('src/')), [], 'Preparation must not modify production source');
+assert.equal(
+  changed.filter((file) => file.startsWith('src/')).every((file) => file === 'src/systems/communityConcierge.js'),
+  true,
+  'Only the approved runtime source may change'
+);
 
-console.log('Tracking-read redirect preparation keeps adapters stateless, runtime legacy-owned, Welcome isolated, and production unchanged.');
+console.log('Tracking-read redirect guards keep adapters stateless, Welcome isolated, and runtime source scoped.');

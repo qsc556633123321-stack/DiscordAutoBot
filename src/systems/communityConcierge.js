@@ -7,7 +7,6 @@ const {
 } = require('discord.js');
 const permissionTemplates = require('../config/permissionTemplates');
 const {
-  fromLegacyPublicationRecord,
   mapLegacyWelcomeDeliveryRequest,
   buildCommunityWelcomeMessage,
   GuidePublicationMessageLookupStatus,
@@ -29,6 +28,8 @@ const { createGuidePersistenceRequest } = require('../application/community/guid
 const {
   RoadmapPublicationMessageLookupKind
 } = require('../application/community/roadmapPublication/RoadmapPublicationMessageLookupPort');
+const { createCommunityPublicationTrackingReadRequest } = require('../application/community/ports/CommunityPublicationTrackingReadPort');
+const { createCommunityPublicationTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter');
 
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
@@ -179,10 +180,9 @@ async function setupCommunityGuide(guild, options = {}) {
   const { lookupPort, mutationPort, getRetainedMessage, getRetainedMutationFailure } =
     communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const payload = await buildGuidePayload(guild);
-  const data = readOnboardingData()[guild.id] || {};
-  const publicationState = fromLegacyPublicationRecord(guild.id, data);
-  // Preserve the legacy truthy malformed-ID fetch behavior until identity validation is approved.
-  const guideMessageId = publicationState.guide.messageId || data.guideMessageId;
+  const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ readOnboardingData });
+  const trackingReadRequest = createCommunityPublicationTrackingReadRequest({ guildId: guild.id, publication: 'guide' });
+  const { trackedMessageId: guideMessageId } = trackingReadPort.readTrackedMessage(trackingReadRequest);
   let message = null;
   if (guideMessageId && options.mode !== 'force') {
     const lookupResult = await lookupPort.lookup({
@@ -237,10 +237,9 @@ async function setupRoadmapPanel(guild) {
   const channel = await getOrCreateRoadmapChannel(guild);
   const { lookupPort, mutationPort, getRetainedMessage } =
     communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
-  const data = readOnboardingData()[guild.id] || {};
-  const publicationState = fromLegacyPublicationRecord(guild.id, data);
-  // Preserve the legacy truthy malformed-ID fetch behavior until identity validation is approved.
-  const roadmapMessageId = publicationState.roadmap.messageId || data.roadmapMessageId;
+  const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ readOnboardingData });
+  const trackingReadRequest = createCommunityPublicationTrackingReadRequest({ guildId: guild.id, publication: 'roadmap' });
+  const { trackedMessageId: roadmapMessageId } = trackingReadPort.readTrackedMessage(trackingReadRequest);
   const payload = { embeds: [buildRoadmapEmbed()] };
   let message = null;
   if (roadmapMessageId) {

@@ -17,7 +17,11 @@ assert.equal(guideRuntime.includes('mutationPort.edit('), true);
 assert.equal(guideRuntime.includes('mutationPort.send('), true);
 assert.equal(guideRuntime.includes('createGuidePersistenceRequest('), true);
 assert.equal(guideRuntime.includes('communityGuidePersistenceFeature.persist('), true);
-assert.equal((guideRuntime.match(/readOnboardingData\(\)/g) || []).length, 1);
+assert.equal((guideRuntime.match(/readOnboardingData\(\)/g) || []).length, 0);
+assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadRequest'), true);
+assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadCompatibilityAdapter'), true);
+assert.equal(guideRuntime.includes('fromLegacyPublicationRecord'), false);
+assert.equal(guideRuntime.includes('data.guideMessageId'), false);
 assert.equal((source.match(/function saveOnboarding\(/g) || []).length, 1);
 
-console.log('Guide final legacy search classifies ports as allowed and the tracked state read as shared.');
+console.log('Guide final legacy search confirms shared tracking read runtime ownership and preserved publication ports.');

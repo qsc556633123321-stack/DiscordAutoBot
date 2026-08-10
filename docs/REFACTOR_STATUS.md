@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Shared Community Guide + Roadmap Tracking Read Runtime Redirect Preparation
+Shared Community Guide + Roadmap Tracking Read Runtime Redirect Implementation
 
 ## Overall Progress
-Estimated local refactor progress: 70%
+Estimated local refactor progress: 73%
 
 ## Latest Completed
 - Project Architecture V2 established
@@ -271,6 +271,8 @@ Estimated local refactor progress: 70%
   as an isolated, one-read boundary; neither is composed nor runtime-used
 - Combined Guide + Roadmap shared tracking-read redirect construction,
   ordering, failure, raw-fallback, and Welcome-isolation behavior prepared
+- Combined Guide + Roadmap shared tracking-read runtime redirect implemented
+  through the approved Port and compatibility Adapter; Welcome remains legacy-owned
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -289,6 +291,8 @@ Estimated local refactor progress: 70%
 - Shared publication tracking read Port and compatibility adapter are new
   Architecture-owned code, but Guide/Roadmap runtime reads and Welcome channel
   tracking remain legacy-owned until redirect preparation is completed
+- Shared publication tracking read Port and compatibility Adapter are runtime
+  active for Guide/Roadmap; Welcome tracked-channel read remains legacy-owned
 
 ### Legacy
 - Discord mutation execution
@@ -316,9 +320,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the combined Guide + Roadmap shared tracking-read runtime redirect in
-`src/systems/communityConcierge.js` only, after one final implementation-slice
-baseline confirms the frozen construction and ordering contract.
+Run a Guide closure re-audit. The Guide shared tracked-message dependency is
+removed, but closure status must be recalculated from current runtime evidence.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -337,12 +340,12 @@ baseline confirms the frozen construction and ordering contract.
 
 ## Blockers
 Guide is closed with a shared `readOnboardingData` compatibility dependency.
-The shared message-query boundary for Guide/Roadmap is implemented and redirect
-ready but not runtime-used; welcome's channel query remains legacy-owned. The retained
+Guide and Roadmap now use the shared tracked-message boundary at runtime;
+welcome's channel query remains legacy-owned. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
-Progress remains 70%; high-risk community flows remain outstanding.
+Progress is 73%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Combined Guide + Roadmap shared tracking-read redirect prepared
-without a runtime change. Direct per-invocation construction preserves one-read,
-raw-fallback, lookup ordering, and Welcome isolation. Progress remains 70%.
+2026-08-10: Combined Guide + Roadmap shared tracking-read redirect implemented
+with direct per-invocation construction. One-read, raw-fallback, lookup ordering,
+persistence ordering, and Welcome isolation remain preserved. Progress is 73%.

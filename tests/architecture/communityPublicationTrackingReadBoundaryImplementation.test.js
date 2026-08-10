@@ -24,7 +24,22 @@ assert.equal(adapter.includes('Unsupported publication'), false, 'Adapter must r
 assert.equal(adapter.includes('readOnboardingData()'), true);
 assert.equal((adapter.match(/readOnboardingData\(\)/g) || []).length, 1, 'Adapter source must have one read site');
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityPublicationTrackingReadFeature.js')), false);
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 4, 'definition plus Guide, Roadmap, and Welcome remain legacy-owned');
+const guide = runtime.match(/async function setupCommunityGuide\(guild, options = \{\}\) \{([\s\S]*?)\n\}\n\nasync function setupRoadmapPanel/)[1];
+const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
+const welcome = runtime.match(/async function sendConciergeWelcome\(member\) \{([\s\S]*?)\n\}\n\nmodule\.exports/)[1];
+for (const source of [guide, roadmap]) {
+  assert.equal(source.includes('readOnboardingData()'), false, 'Guide and Roadmap must use the shared tracking boundary');
+  assert.equal(source.includes('fromLegacyPublicationRecord'), false, 'Runtime must not map raw tracking state');
+  assert.equal(source.includes('createCommunityPublicationTrackingReadRequest'), true);
+  assert.equal(source.includes('createCommunityPublicationTrackingReadCompatibilityAdapter'), true);
+}
+assert.equal(guide.includes('data.guideMessageId'), false, 'Guide runtime must not retain a raw legacy fallback');
+assert.equal(roadmap.includes('data.roadmapMessageId'), false, 'Roadmap runtime must not retain a raw legacy fallback');
+assert.equal(runtime.includes('fromLegacyPublicationRecord'), false, 'Tracking-state mapping is infrastructure-owned');
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 2, 'only the helper definition and Welcome remain');
+assert.equal(welcome.includes('readOnboardingData()'), true);
+assert.equal(welcome.includes('guideChannelId'), true);
+assert.equal(welcome.includes('readTrackedMessage'), false, 'Welcome remains outside the message-tracking redirect');
 assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1, 'Retained zero-consumer helper must remain');
 
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
@@ -34,8 +49,7 @@ const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding
   .map((line) => line.slice(3).trim());
 const changedProduction = changed.filter((file) => file.startsWith('src/'));
 const allowedProductionChanges = [
-  'src/application/community/ports/CommunityPublicationTrackingReadPort.js',
-  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js'
+  'src/systems/communityConcierge.js'
 ];
 assert.equal(
   changedProduction.every((file) => allowedProductionChanges.includes(file)),
@@ -43,4 +57,4 @@ assert.equal(
   `Only approved production boundary files may change: ${changedProduction.join(', ')}`
 );
 
-console.log('Shared publication tracking read implementation is pure, isolated, not composed, and not runtime-wired.');
+console.log('Shared publication tracking read boundary is pure, isolated, not composed, and runtime-active for Guide and Roadmap.');

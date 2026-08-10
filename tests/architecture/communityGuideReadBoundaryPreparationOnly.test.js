@@ -9,12 +9,19 @@ const candidate = fs.readFileSync(path.join(root, 'tests', 'fakes', 'community',
 const start = runtime.indexOf('async function setupCommunityGuide');
 const end = runtime.indexOf('async function setupRoadmapPanel');
 const guideRuntime = runtime.slice(start, end);
-assert.equal((guideRuntime.match(/readOnboardingData\(\)/g) || []).length, 1);
+assert.equal((guideRuntime.match(/readOnboardingData\(\)/g) || []).length, 0);
+assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadRequest'), true);
+assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadCompatibilityAdapter'), true);
 assert.equal(guideRuntime.includes('createFakeProductionShapeGuideTrackedStateRead'), false);
 assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
 for (const forbidden of ["require('discord.js')", "require('node:fs')", 'saveOnboarding', '.persist(', 'writeFile', 'updatedAt']) {
   assert.equal(candidate.includes(forbidden), false, `Test-only read candidate must not couple to ${forbidden}`);
 }
-const changed = execFileSync('git', ['diff', '--name-only', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.equal(changed.filter((file) => file.startsWith('src/')).length, 0, `Preparation must not modify production source: ${changed.join(', ')}`);
-console.log('Guide read boundary preparation leaves production runtime and saveOnboarding helper unchanged.');
+const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
+  .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
+assert.equal(
+  changed.filter((file) => file.startsWith('src/')).every((file) => file === 'src/systems/communityConcierge.js'),
+  true,
+  `Only the Guide/Roadmap runtime may change: ${changed.join(', ')}`
+);
+console.log('Guide read boundary regression confirms shared runtime ownership and retained saveOnboarding helper.');

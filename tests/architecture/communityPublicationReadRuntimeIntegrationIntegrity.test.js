@@ -16,7 +16,8 @@ for (const file of [
   'tests/architecture/communityPublicationReadRuntimeDiffGuard.test.js',
 ]) assert.equal(fs.existsSync(path.join(root, file)), true, `missing ${file}`);
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
-assert.match(runtime, /fromLegacyPublicationRecord/);
+assert.match(runtime, /CommunityPublicationTrackingReadPort/);
+assert.match(runtime, /CommunityPublicationTrackingReadCompatibilityAdapter/);
+assert.equal(/fromLegacyPublicationRecord\(guild\.id, data\)/.test(runtime), false);
 assert.equal(/toLegacyPublicationPatch|applyPublicationPatch|CommunityPublicationStateStore/.test(runtime), false);
-assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/communityPublicationStateFilesystemAdapter.js')), false);
 console.log('community publication read runtime integration integrity passed');
