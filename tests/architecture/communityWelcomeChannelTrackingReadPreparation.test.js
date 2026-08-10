@@ -37,6 +37,8 @@ const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root
   .filter((file) => file.startsWith('src/'));
 assert.equal(changedProduction.every((file) => [
   'src/systems/communityConcierge.js',
+  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityOnboardingStateReader.js'
 ].includes(file)), true);
 console.log('Welcome channel tracking read is runtime-active through the approved boundary.');

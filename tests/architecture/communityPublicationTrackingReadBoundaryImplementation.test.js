@@ -21,8 +21,8 @@ assert.equal(port.includes('Unsupported publication: ${publication}'), true);
 assert.equal(adapter.includes('fromLegacyPublicationRecord'), true);
 assert.equal(adapter.includes('function fromLegacyPublicationRecord'), false);
 assert.equal(adapter.includes('Unsupported publication'), false, 'Adapter must rely on port validation');
-assert.equal(adapter.includes('readOnboardingData()'), true);
-assert.equal((adapter.match(/readOnboardingData\(\)/g) || []).length, 1, 'Adapter source must have one read site');
+assert.equal(adapter.includes('readOnboardingData'), false);
+assert.equal((adapter.match(/onboardingStateReader\.readOnboardingState\(\)/g) || []).length, 1, 'Adapter source must have one reader read site');
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityPublicationTrackingReadFeature.js')), false);
 const guide = runtime.match(/async function setupCommunityGuide\(guild, options = \{\}\) \{([\s\S]*?)\n\}\n\nasync function setupRoadmapPanel/)[1];
 const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
@@ -52,7 +52,7 @@ const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding
 const changedProduction = changed.filter((file) => file.startsWith('src/'));
 const allowedProductionChanges = [
   'src/systems/communityConcierge.js',
-  'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
+  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityOnboardingStateReader.js'
 ];

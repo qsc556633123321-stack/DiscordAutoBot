@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Tracking Adapter Onboarding State Reader Dependency Migration Preparation
+Community Tracking Adapter + Runtime Onboarding Reader Atomic Migration
 
 ## Overall Progress
 Estimated local refactor progress: 75%
@@ -293,6 +293,8 @@ Estimated local refactor progress: 75%
   non-runtime-wired compatibility reader
 - Tracking adapter dependency migration frozen: both adapters require an atomic
   reader-object plus runtime-injection replacement; no dual-mode contract is approved
+- Message and channel tracking adapters are reader-backed at runtime; Guide,
+  Roadmap, and Welcome each construct the existing reader per invocation
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -340,9 +342,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the approved atomic tracking adapter dependency migration: replace
-both adapter inputs and all three runtime injection sites with the existing
-onboarding-state reader, without changing read semantics.
+Prepare combined dead-helper cleanup for `readOnboardingData` and
+`saveOnboarding`, without mixing it with runtime filesystem ownership changes.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -360,14 +361,13 @@ onboarding-state reader, without changing read semantics.
 - Dashboard build PASS
 
 ## Blockers
-Guide is CLOSED. Guide, Roadmap, and Welcome use approved tracking boundaries at
-runtime. `saveOnboarding` is a zero-consumer deletion candidate;
-`readOnboardingData` remains an injected compatibility reader dependency pending
-tracking adapter dependency migration. `CommunityOnboardingStateReader` is
-implemented but not runtime-used.
-Progress is 75%; high-risk community flows remain outstanding.
+Guide is CLOSED. Guide, Roadmap, and Welcome use approved reader-backed tracking
+boundaries at runtime. `readOnboardingData` and `saveOnboarding` are separate
+zero-consumer cleanup candidates. Runtime still constructs the reader with
+`ONBOARDING_FILE` and `readJson`; filesystem ownership has not moved.
+Progress is 78%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-11: tracking adapter reader dependency migration prepared. The only
-approved implementation is the atomic replacement of both adapter contracts
-and their three runtime injection sites; progress remains 75%.
+2026-08-11: tracking adapters and all three runtime injection sites migrated to
+the existing onboarding-state reader without changing read behavior. Progress
+is 78%.

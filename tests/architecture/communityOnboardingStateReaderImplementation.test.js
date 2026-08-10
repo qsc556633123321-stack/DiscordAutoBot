@@ -11,10 +11,15 @@ for (const forbidden of ['discord.js', 'communityConcierge', 'CommunityPublicati
 }
 assert.equal(fs.existsSync(path.join(root, 'src', 'composition', 'communityOnboardingStateReaderFeature.js')), false);
 assert.equal((runtime.match(/function readOnboardingData\(/g) || []).length, 1);
-assert.equal((runtime.match(/\breadOnboardingData\b/g) || []).length, 4);
+assert.equal((runtime.match(/\breadOnboardingData\b/g) || []).length, 1);
 assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.equal(changedProduction.every((file) => file === 'src/infrastructure/community/CommunityOnboardingStateReader.js'), true);
-console.log('Production onboarding state reader is infrastructure-only, pure delegation, and not runtime-wired.');
+assert.equal(changedProduction.every((file) => [
+  'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
+  'src/systems/communityConcierge.js'
+].includes(file)), true);
+console.log('Production onboarding state reader remains pure delegation and is runtime-active through tracking adapters.');

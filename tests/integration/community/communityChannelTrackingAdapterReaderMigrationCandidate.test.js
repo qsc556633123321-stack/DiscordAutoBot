@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const {
-  createCommunityPublicationChannelTrackingReadCompatibilityAdapter
-} = require('../../../src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter');
+  createFakeCommunityPublicationChannelTrackingReadCompatibilityAdapter
+} = require('../../fakes/community/FakeCommunityPublicationChannelTrackingReadCompatibilityAdapter');
 const {
   createFakeCommunityPublicationChannelTrackingReadReaderAdapter
 } = require('../../fakes/community/FakeCommunityPublicationChannelTrackingReadReaderAdapter');
@@ -9,7 +9,7 @@ const {
 for (const value of ['channel', undefined, null, '', false, 0, 123, true, {}, [], '   ']) {
   let legacyReads = 0;
   let candidateReads = 0;
-  const legacy = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({
+  const legacy = createFakeCommunityPublicationChannelTrackingReadCompatibilityAdapter({
     readOnboardingData() { legacyReads += 1; return { guild: { guideChannelId: value } }; }
   });
   const candidate = createFakeCommunityPublicationChannelTrackingReadReaderAdapter({

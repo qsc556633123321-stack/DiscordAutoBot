@@ -3,9 +3,9 @@ const {
   fromLegacyPublicationRecord
 } = require('../../application/community/ports/CommunityPublicationTrackingReadPort');
 
-function assertReadOnboardingData(readOnboardingData) {
-  if (typeof readOnboardingData !== 'function') {
-    throw new TypeError('CommunityPublicationTrackingReadCompatibilityAdapter requires readOnboardingData');
+function assertOnboardingStateReader(onboardingStateReader) {
+  if (!onboardingStateReader || typeof onboardingStateReader.readOnboardingState !== 'function') {
+    throw new TypeError('CommunityPublicationTrackingReadCompatibilityAdapter requires onboardingStateReader');
   }
 }
 
@@ -16,15 +16,15 @@ function assertPublicationStateMapper(publicationStateMapper) {
 }
 
 function createCommunityPublicationTrackingReadCompatibilityAdapter({
-  readOnboardingData,
+  onboardingStateReader,
   publicationStateMapper = fromLegacyPublicationRecord
 } = {}) {
-  assertReadOnboardingData(readOnboardingData);
+  assertOnboardingStateReader(onboardingStateReader);
   assertPublicationStateMapper(publicationStateMapper);
 
   return {
     readTrackedMessage({ guildId, publication } = {}) {
-      const records = readOnboardingData();
+      const records = onboardingStateReader.readOnboardingState();
       const data = records[guildId] || {};
       const state = publicationStateMapper(guildId, data);
       const trackedMessageId = publication === 'guide'

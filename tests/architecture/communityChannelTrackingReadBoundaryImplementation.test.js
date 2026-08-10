@@ -23,7 +23,8 @@ for (const forbidden of ['node:fs', 'infrastructure', 'communityConcierge', 'sav
 for (const forbidden of ['discord.js', 'communityConcierge', 'saveOnboarding', 'persist', 'writeFile', 'updatedAt', 'fromLegacyPublicationRecord']) {
   assert.equal(adapter.includes(forbidden), false, `Adapter must not depend on ${forbidden}`);
 }
-assert.equal((adapter.match(/readOnboardingData\(\)/g) || []).length, 1);
+assert.equal(adapter.includes('readOnboardingData'), false);
+assert.equal((adapter.match(/onboardingStateReader\.readOnboardingState\(\)/g) || []).length, 1);
 assert.equal(adapter.includes('guideMessageId'), false);
 assert.equal(adapter.includes('roadmapMessageId'), false);
 assert.equal(fs.readFileSync(messagePortPath, 'utf8').includes('readTrackedChannel'), false);
@@ -40,6 +41,8 @@ const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root
   .filter((file) => file.startsWith('src/'));
 assert.equal(changedProduction.every((file) => [
   'src/systems/communityConcierge.js',
+  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityOnboardingStateReader.js'
 ].includes(file)), true);
 console.log('Channel tracking read boundary is pure, isolated, uncomposed, and runtime-active for Welcome.');

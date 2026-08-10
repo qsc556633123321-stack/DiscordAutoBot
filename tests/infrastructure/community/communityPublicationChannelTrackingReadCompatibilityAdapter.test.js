@@ -10,10 +10,7 @@ assert.throws(() => createCommunityPublicationChannelTrackingReadCompatibilityAd
 for (const raw of ['guide-channel', undefined, null, '', false, 0, 123, true, {}, [], '   ']) {
   let reads = 0;
   const adapter = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({
-    readOnboardingData() {
-      reads += 1;
-      return { 'guild-1': { guideChannelId: raw } };
-    }
+    onboardingStateReader: { readOnboardingState() { reads += 1; return { 'guild-1': { guideChannelId: raw } }; } }
   });
   const result = adapter.readTrackedChannel(createCommunityPublicationChannelTrackingReadRequest({ guildId: 'guild-1', publication: 'guide' }));
   assert.equal(reads, 1);
@@ -22,6 +19,6 @@ for (const raw of ['guide-channel', undefined, null, '', false, 0, 123, true, {}
   assert.deepEqual(Object.keys(result), ['trackedChannelId']);
   assert.equal(Object.isFrozen(result), true);
 }
-const missing = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ readOnboardingData: () => ({}) });
+const missing = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ onboardingStateReader: { readOnboardingState: () => ({}) } });
 assert.strictEqual(missing.readTrackedChannel(createCommunityPublicationChannelTrackingReadRequest({ guildId: 'missing', publication: 'guide' })).trackedChannelId, undefined);
 console.log('Channel tracking compatibility adapter preserves raw IDs, missing-guild behavior, and one-read semantics.');

@@ -9,10 +9,7 @@ const {
 function readRoadmap(record) {
   let reads = 0;
   const adapter = createCommunityPublicationTrackingReadCompatibilityAdapter({
-    readOnboardingData() {
-      reads += 1;
-      return { 'guild-roadmap': record };
-    }
+    onboardingStateReader: { readOnboardingState() { reads += 1; return { 'guild-roadmap': record }; } }
   });
   const request = createCommunityPublicationTrackingReadRequest({ guildId: 'guild-roadmap', publication: 'roadmap' });
   return { result: adapter.readTrackedMessage(request), reads };
@@ -33,7 +30,7 @@ for (const [raw, expected] of [
   assert.equal(Object.isFrozen(result), true);
 }
 
-const missingGuild = createCommunityPublicationTrackingReadCompatibilityAdapter({ readOnboardingData() { return {}; } });
+const missingGuild = createCommunityPublicationTrackingReadCompatibilityAdapter({ onboardingStateReader: { readOnboardingState() { return {}; } } });
 const missingResult = missingGuild.readTrackedMessage(
   createCommunityPublicationTrackingReadRequest({ guildId: 'missing', publication: 'roadmap' })
 );

@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const {
-  createCommunityPublicationTrackingReadCompatibilityAdapter
-} = require('../../../src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter');
+  createFakeCommunityPublicationTrackingReadCompatibilityAdapter
+} = require('../../fakes/community/FakeCommunityPublicationTrackingReadCompatibilityAdapter');
 const {
   createFakeCommunityPublicationTrackingReadReaderAdapter
 } = require('../../fakes/community/FakeCommunityPublicationTrackingReadReaderAdapter');
@@ -9,7 +9,7 @@ const {
 function compare(publication, record) {
   let legacyReads = 0;
   let candidateReads = 0;
-  const legacy = createCommunityPublicationTrackingReadCompatibilityAdapter({
+  const legacy = createFakeCommunityPublicationTrackingReadCompatibilityAdapter({
     readOnboardingData() { legacyReads += 1; return { guild: record }; }
   });
   const candidate = createFakeCommunityPublicationTrackingReadReaderAdapter({

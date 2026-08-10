@@ -10,7 +10,8 @@ const {
 } = require('../../../src/application/community');
 
 async function sendWelcomeWithChannelTrackingRead({ member, readOnboardingData, findChannelByName, guideChannelName }) {
-  const trackingReadPort = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ readOnboardingData });
+  const onboardingStateReader = { readOnboardingState: readOnboardingData };
+  const trackingReadPort = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const request = createCommunityPublicationChannelTrackingReadRequest({
     guildId: member.guild.id,
     publication: 'guide'

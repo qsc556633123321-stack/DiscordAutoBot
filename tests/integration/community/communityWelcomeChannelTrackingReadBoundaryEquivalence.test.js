@@ -9,10 +9,7 @@ const {
 function assertLegacyEquivalent(raw, records = { 'guild-1': { guideChannelId: raw } }) {
   let reads = 0;
   const adapter = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({
-    readOnboardingData() {
-      reads += 1;
-      return records;
-    }
+    onboardingStateReader: { readOnboardingState() { reads += 1; return records; } }
   });
   const result = adapter.readTrackedChannel(createCommunityPublicationChannelTrackingReadRequest({ guildId: 'guild-1', publication: 'guide' }));
   const legacy = (records['guild-1'] || {}).guideChannelId;

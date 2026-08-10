@@ -19,5 +19,10 @@ assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community',
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.equal(changedProduction.every((file) => file === 'src/infrastructure/community/CommunityOnboardingStateReader.js'), true);
-console.log('Onboarding state reader preparation freezes legacy delegation while the reader remains unwired.');
+assert.equal(changedProduction.every((file) => [
+  'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
+  'src/systems/communityConcierge.js'
+].includes(file)), true);
+console.log('Onboarding state reader retains its exact delegation while reader-backed adapters are active.');

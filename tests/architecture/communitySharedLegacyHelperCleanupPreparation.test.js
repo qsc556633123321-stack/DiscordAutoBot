@@ -16,5 +16,10 @@ assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.equal(changedProduction.every((file) => file === 'src/infrastructure/community/CommunityOnboardingStateReader.js'), true);
-console.log('Shared legacy helper cleanup preparation keeps runtime ownership unchanged while the reader remains unwired.');
+assert.equal(changedProduction.every((file) => [
+  'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
+  'src/systems/communityConcierge.js'
+].includes(file)), true);
+console.log('Shared legacy helper cleanup preparation confirms both helpers are retained while reader-backed adapters are active.');

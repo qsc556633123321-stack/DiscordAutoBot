@@ -32,7 +32,7 @@ const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding
 assert.equal(
   changed.filter((file) => file.startsWith('src/')).every((file) => [
     'src/systems/communityConcierge.js',
-    'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
+    'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
     'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
     'src/infrastructure/community/CommunityOnboardingStateReader.js'
   ].includes(file)),

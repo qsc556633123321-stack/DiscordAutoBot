@@ -35,13 +35,13 @@ const root = { 'guild-1': { guideMessageId: 'guide-message', roadmapMessageId: '
 for (const publication of ['guide', 'roadmap']) {
   let reads = 0;
   const reader = createFakeCommunityOnboardingStateReaderV2({ filePath: 'onboarding-flows.json', readJson() { reads += 1; return root; } });
-  const adapter = createCommunityPublicationTrackingReadCompatibilityAdapter({ readOnboardingData: () => reader.readOnboardingState() });
+  const adapter = createCommunityPublicationTrackingReadCompatibilityAdapter({ onboardingStateReader: reader });
   assert.equal(adapter.readTrackedMessage({ guildId: 'guild-1', publication }).trackedMessageId, `${publication}-message`);
   assert.equal(reads, 1);
 }
 let channelReads = 0;
 const channelReader = createFakeCommunityOnboardingStateReaderV2({ filePath: 'onboarding-flows.json', readJson() { channelReads += 1; return root; } });
-const channelAdapter = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ readOnboardingData: () => channelReader.readOnboardingState() });
+const channelAdapter = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ onboardingStateReader: channelReader });
 assert.equal(channelAdapter.readTrackedChannel({ guildId: 'guild-1', publication: 'guide' }).trackedChannelId, 'guide-channel');
 assert.equal(channelReads, 1);
 console.log('Onboarding state reader candidate preserves delegated filesystem semantics, raw root identity, and one-read adapter integration.');

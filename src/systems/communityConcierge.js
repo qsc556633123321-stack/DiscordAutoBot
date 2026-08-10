@@ -32,10 +32,9 @@ const { createCommunityPublicationTrackingReadRequest } = require('../applicatio
 const { createCommunityPublicationTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter');
 const { createCommunityPublicationChannelTrackingReadRequest } = require('../application/community/ports/CommunityPublicationChannelTrackingReadPort');
 const { createCommunityPublicationChannelTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter');
-
+const { createCommunityOnboardingStateReader } = require('../infrastructure/community/CommunityOnboardingStateReader');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
-
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');
 const GUIDE_CHANNEL_NAME = '🧭｜伺服器導覽';
@@ -46,13 +45,11 @@ const NATIVE_ONBOARDING_RECOMMENDATIONS = [
   '🧭｜伺服器導覽',
   '📜｜社群規則'
 ];
-
 function throwMutationFailure(getRetainedMutationFailure, operation, result) {
   const handoff = getRetainedMutationFailure();
   if (handoff.hasFailure) throw handoff.failure;
   throw new Error(`Guide ${operation} mutation failed: ${result.kind}/${result.failureKind || 'Unknown'}`);
 }
-
 function ensureFile(filePath, fallback = '{}') {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
   if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, fallback, 'utf8');
@@ -182,7 +179,8 @@ async function setupCommunityGuide(guild, options = {}) {
   const { lookupPort, mutationPort, getRetainedMessage, getRetainedMutationFailure } =
     communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const payload = await buildGuidePayload(guild);
-  const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ readOnboardingData });
+  const onboardingStateReader = createCommunityOnboardingStateReader({ filePath: ONBOARDING_FILE, readJson });
+  const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const trackingReadRequest = createCommunityPublicationTrackingReadRequest({ guildId: guild.id, publication: 'guide' });
   const { trackedMessageId: guideMessageId } = trackingReadPort.readTrackedMessage(trackingReadRequest);
   let message = null;
@@ -239,7 +237,8 @@ async function setupRoadmapPanel(guild) {
   const channel = await getOrCreateRoadmapChannel(guild);
   const { lookupPort, mutationPort, getRetainedMessage } =
     communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
-  const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ readOnboardingData });
+  const onboardingStateReader = createCommunityOnboardingStateReader({ filePath: ONBOARDING_FILE, readJson });
+  const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const trackingReadRequest = createCommunityPublicationTrackingReadRequest({ guildId: guild.id, publication: 'roadmap' });
   const { trackedMessageId: roadmapMessageId } = trackingReadPort.readTrackedMessage(trackingReadRequest);
   const payload = { embeds: [buildRoadmapEmbed()] };
@@ -372,7 +371,8 @@ async function handleConciergeButton(interaction) {
 }
 
 async function sendConciergeWelcome(member) {
-  const trackingReadPort = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ readOnboardingData });
+  const onboardingStateReader = createCommunityOnboardingStateReader({ filePath: ONBOARDING_FILE, readJson });
+  const trackingReadPort = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const trackingReadRequest = createCommunityPublicationChannelTrackingReadRequest({ guildId: member.guild.id, publication: 'guide' });
   const { trackedChannelId: guideChannelId } = trackingReadPort.readTrackedChannel(trackingReadRequest);
   const guideChannel = guideChannelId
