@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Shared Community Publication Tracking State Read Boundary Implementation
+Shared Community Guide + Roadmap Tracking Read Runtime Redirect Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 70%
@@ -269,6 +269,8 @@ Estimated local refactor progress: 70%
   forecasted consumer
 - Shared Publication Tracking Read Port and compatibility adapter implemented
   as an isolated, one-read boundary; neither is composed nor runtime-used
+- Combined Guide + Roadmap shared tracking-read redirect construction,
+  ordering, failure, raw-fallback, and Welcome-isolation behavior prepared
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -314,9 +316,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare a combined Guide + Roadmap shared tracking-read runtime redirect. Freeze
-construction, call ordering, raw-fallback behavior, and failure behavior before
-either runtime consumer is redirected.
+Implement the combined Guide + Roadmap shared tracking-read runtime redirect in
+`src/systems/communityConcierge.js` only, after one final implementation-slice
+baseline confirms the frozen construction and ordering contract.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -335,13 +337,12 @@ either runtime consumer is redirected.
 
 ## Blockers
 Guide is closed with a shared `readOnboardingData` compatibility dependency.
-The shared message-query boundary for Guide/Roadmap is implemented but not
-runtime-used; welcome's channel query remains legacy-owned. The retained
+The shared message-query boundary for Guide/Roadmap is implemented and redirect
+ready but not runtime-used; welcome's channel query remains legacy-owned. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
 Progress remains 70%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Shared publication tracking message-read Port and compatibility
-adapter implemented without composition or a runtime change. The boundary
-preserves raw fallback compatibility and keeps welcome channel tracking out of
-the first narrow query. Progress remains 70%.
+2026-08-10: Combined Guide + Roadmap shared tracking-read redirect prepared
+without a runtime change. Direct per-invocation construction preserves one-read,
+raw-fallback, lookup ordering, and Welcome isolation. Progress remains 70%.
