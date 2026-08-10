@@ -53,7 +53,8 @@ const changedProduction = changed.filter((file) => file.startsWith('src/'));
 const allowedProductionChanges = [
   'src/systems/communityConcierge.js',
   'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
-  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityOnboardingStateReader.js'
 ];
 assert.equal(
   changedProduction.every((file) => allowedProductionChanges.includes(file)),

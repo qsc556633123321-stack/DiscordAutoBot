@@ -33,7 +33,8 @@ assert.equal(
   changed.filter((file) => file.startsWith('src/')).every((file) => [
     'src/systems/communityConcierge.js',
     'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
-    'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
+    'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
+    'src/infrastructure/community/CommunityOnboardingStateReader.js'
   ].includes(file)),
   true,
   'Only the approved runtime source may change'

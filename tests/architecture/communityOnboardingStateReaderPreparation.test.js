@@ -15,9 +15,9 @@ assert.equal(candidate.includes('writeFile'), false);
 assert.equal(candidate.includes('saveOnboarding'), false);
 assert.equal(candidate.includes('persist'), false);
 assert.equal(candidate.includes('Object.freeze'), true);
-assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityOnboardingStateReader.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityOnboardingStateReader.js')), true);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction, [], 'Reader preparation must not modify production source');
-console.log('Onboarding state reader preparation freezes legacy delegation without a production reader or runtime redirect.');
+assert.equal(changedProduction.every((file) => file === 'src/infrastructure/community/CommunityOnboardingStateReader.js'), true);
+console.log('Onboarding state reader preparation freezes legacy delegation while the reader remains unwired.');

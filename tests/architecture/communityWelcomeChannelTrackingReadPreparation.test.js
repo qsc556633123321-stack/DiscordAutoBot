@@ -35,5 +35,8 @@ assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community',
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.equal(changedProduction.every((file) => file === 'src/systems/communityConcierge.js'), true);
+assert.equal(changedProduction.every((file) => [
+  'src/systems/communityConcierge.js',
+  'src/infrastructure/community/CommunityOnboardingStateReader.js'
+].includes(file)), true);
 console.log('Welcome channel tracking read is runtime-active through the approved boundary.');

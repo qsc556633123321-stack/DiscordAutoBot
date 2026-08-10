@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Infrastructure Onboarding State Reader Preparation
+Community Infrastructure Onboarding State Reader Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 75%
@@ -289,6 +289,8 @@ Estimated local refactor progress: 75%
   zero consumers, while `readOnboardingData` remains an injected adapter dependency
 - Infrastructure onboarding-state reader boundary, filesystem compatibility,
   adapter dependency, and migration sequence prepared without runtime changes
+- `CommunityOnboardingStateReader` implemented as an Infrastructure-only,
+  non-runtime-wired compatibility reader
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -336,8 +338,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement `CommunityOnboardingStateReader` in Infrastructure only, before any
-tracking adapter or runtime dependency migration.
+Prepare tracking adapter dependency migration from injected `readOnboardingData`
+to the implemented onboarding-state reader object.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -358,10 +360,11 @@ tracking adapter or runtime dependency migration.
 Guide is CLOSED. Guide, Roadmap, and Welcome use approved tracking boundaries at
 runtime. `saveOnboarding` is a zero-consumer deletion candidate;
 `readOnboardingData` remains an injected compatibility reader dependency pending
-the prepared Infrastructure reader boundary.
+tracking adapter dependency migration. `CommunityOnboardingStateReader` is
+implemented but not runtime-used.
 Progress is 75%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Infrastructure onboarding-state reader preparation completed with
-legacy filesystem behavior and adapter injection semantics frozen. Progress
-remains 75%.
+2026-08-11: `CommunityOnboardingStateReader` implemented with exact delegated
+filesystem compatibility semantics. Adapters and runtime remain unchanged;
+progress remains 75%.

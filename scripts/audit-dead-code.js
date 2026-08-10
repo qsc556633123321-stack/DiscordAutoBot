@@ -26,6 +26,10 @@ const SOURCE_OF_TRUTH = new Set([
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
 ]);
+const APPROVED_UNWIRED_BOUNDARIES = new Set([
+  // This compatibility reader is intentionally implemented before adapter migration.
+  'src/infrastructure/community/CommunityOnboardingStateReader.js',
+]);
 
 function jsFiles(dir) {
   if (!fs.existsSync(dir)) return [];
@@ -66,6 +70,7 @@ for (const file of targetFiles) {
   const name = relative(file);
   const references = incoming.get(path.resolve(file)) || [];
   if (SOURCE_OF_TRUTH.has(name)) classification.D.push({ name, references, reason: 'source of truth' });
+  else if (APPROVED_UNWIRED_BOUNDARIES.has(name)) classification.D.push({ name, references, reason: 'approved unwired boundary' });
   else if (references.length === 0) classification.A.push({ name, references, reason: 'unreferenced' });
   else if (references.every((ref) => ref.startsWith('src/legacy/'))) {
     classification.B.push({ name, references, reason: 'legacy-only' });

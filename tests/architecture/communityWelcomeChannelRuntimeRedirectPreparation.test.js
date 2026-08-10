@@ -27,5 +27,8 @@ assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only t
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.equal(changedProduction.every((file) => file === 'src/systems/communityConcierge.js'), true);
+assert.equal(changedProduction.every((file) => [
+  'src/systems/communityConcierge.js',
+  'src/infrastructure/community/CommunityOnboardingStateReader.js'
+].includes(file)), true);
 console.log('Welcome runtime redirect uses the approved channel tracking boundary without raw state leakage.');
