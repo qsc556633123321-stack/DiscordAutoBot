@@ -339,9 +339,9 @@ removed, but closure status must be recalculated from current runtime evidence.
 - Dashboard build PASS
 
 ## Blockers
-Guide is closed with a shared `readOnboardingData` compatibility dependency.
-Guide and Roadmap now use the shared tracked-message boundary at runtime;
-welcome's channel query remains legacy-owned. The retained
+Guide needs a short closure re-audit after its shared tracked-message
+dependency was removed. Guide and Roadmap now use the shared tracking boundary
+at runtime; welcome's channel query remains legacy-owned. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
 Progress is 73%; high-risk community flows remain outstanding.
 
