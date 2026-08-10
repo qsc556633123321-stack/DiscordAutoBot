@@ -28,14 +28,15 @@ assert.equal(adapter.includes('guideMessageId'), false);
 assert.equal(adapter.includes('roadmapMessageId'), false);
 assert.equal(fs.readFileSync(messagePortPath, 'utf8').includes('readTrackedChannel'), false);
 assert.equal(fs.readFileSync(messageAdapterPath, 'utf8').includes('readTrackedChannel'), false);
-assert.equal(welcome.includes('readOnboardingData()'), true);
-assert.equal(welcome.includes('data.guideChannelId'), true);
-assert.equal(welcome.includes('readTrackedChannel'), false);
-assert.equal(welcome.includes('CommunityPublicationChannelTrackingRead'), false);
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 2, 'definition plus Welcome remain');
+assert.equal(welcome.includes('readOnboardingData()'), false);
+assert.equal(welcome.includes('data.guideChannelId'), false);
+assert.equal(welcome.includes('readTrackedChannel'), true);
+assert.equal(welcome.includes('createCommunityPublicationChannelTrackingReadRequest'), true);
+assert.equal(welcome.includes('createCommunityPublicationChannelTrackingReadCompatibilityAdapter'), true);
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only the compatibility reader definition remains');
 assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction, [], 'Committed boundary files must not be modified by later preparation slices');
-console.log('Channel tracking read boundary is pure, isolated, uncomposed, and not runtime-wired.');
+assert.equal(changedProduction.every((file) => file === 'src/systems/communityConcierge.js'), true);
+console.log('Channel tracking read boundary is pure, isolated, uncomposed, and runtime-active for Welcome.');

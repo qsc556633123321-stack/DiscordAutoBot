@@ -13,10 +13,13 @@ const fakePort = fs.readFileSync(path.join(root, 'tests', 'fakes', 'community', 
 const fakeAdapter = fs.readFileSync(path.join(root, 'tests', 'fakes', 'community', 'FakeCommunityPublicationChannelTrackingReadCompatibilityAdapter.js'), 'utf8');
 
 assert.ok(start >= 0 && end > start, 'Welcome runtime boundaries must exist');
-assert.equal((welcome.match(/readOnboardingData\(\)/g) || []).length, 1);
-assert.equal(welcome.includes('data.guideChannelId'), true);
+assert.equal((welcome.match(/readOnboardingData\(\)/g) || []).length, 0);
+assert.equal(welcome.includes('data.guideChannelId'), false);
 assert.equal(welcome.includes('fromLegacyPublicationRecord'), false);
 assert.equal(welcome.includes('readTrackedMessage'), false);
+assert.equal(welcome.includes('readTrackedChannel'), true);
+assert.equal(welcome.includes('createCommunityPublicationChannelTrackingReadRequest'), true);
+assert.equal(welcome.includes('createCommunityPublicationChannelTrackingReadCompatibilityAdapter'), true);
 assert.equal(welcome.includes('saveOnboarding'), false);
 assert.equal(welcome.includes('persist'), false);
 assert.equal(fakePort.includes('discord.js'), false);
@@ -32,5 +35,5 @@ assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community',
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction, [], 'Later preparation slices must not modify committed production boundaries');
-console.log('Welcome channel tracking read preparation keeps runtime legacy-owned while the approved boundary is implemented.');
+assert.equal(changedProduction.every((file) => file === 'src/systems/communityConcierge.js'), true);
+console.log('Welcome channel tracking read is runtime-active through the approved boundary.');

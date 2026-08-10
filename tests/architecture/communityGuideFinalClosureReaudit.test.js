@@ -29,14 +29,14 @@ assert.equal(guide.includes('mutationPort.edit('), true);
 assert.equal(guide.includes('mutationPort.send('), true);
 assert.equal(guide.includes('createGuidePersistenceRequest('), true);
 assert.equal(guide.includes('communityGuidePersistenceFeature.persist('), true);
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 2, 'only helper definition and Welcome remain');
-assert.equal(welcome.includes('readOnboardingData()'), true);
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only the compatibility reader definition remains');
+assert.equal(welcome.includes('readOnboardingData()'), false);
 assert.equal(welcome.includes('guideChannelId'), true);
 assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
 
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction, [], 'Later preparation slices must not modify committed production boundaries');
+assert.equal(changedProduction.every((file) => file === 'src/systems/communityConcierge.js'), true);
 
 console.log('Guide closure re-audit confirms all Guide read, lookup, mutation, and persistence ownership is boundary-based.');

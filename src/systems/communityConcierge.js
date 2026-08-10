@@ -30,6 +30,8 @@ const {
 } = require('../application/community/roadmapPublication/RoadmapPublicationMessageLookupPort');
 const { createCommunityPublicationTrackingReadRequest } = require('../application/community/ports/CommunityPublicationTrackingReadPort');
 const { createCommunityPublicationTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter');
+const { createCommunityPublicationChannelTrackingReadRequest } = require('../application/community/ports/CommunityPublicationChannelTrackingReadPort');
+const { createCommunityPublicationChannelTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter');
 
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
@@ -370,15 +372,14 @@ async function handleConciergeButton(interaction) {
 }
 
 async function sendConciergeWelcome(member) {
-  const data = readOnboardingData()[member.guild.id] || {};
-  const guideChannel = data.guideChannelId
-    ? member.guild.channels.cache.get(data.guideChannelId) || await member.guild.channels.fetch(data.guideChannelId).catch(() => null)
+  const trackingReadPort = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ readOnboardingData });
+  const trackingReadRequest = createCommunityPublicationChannelTrackingReadRequest({ guildId: member.guild.id, publication: 'guide' });
+  const { trackedChannelId: guideChannelId } = trackingReadPort.readTrackedChannel(trackingReadRequest);
+  const guideChannel = guideChannelId
+    ? member.guild.channels.cache.get(guideChannelId) || await member.guild.channels.fetch(guideChannelId).catch(() => null)
     : findChannelByName(member.guild, GUIDE_CHANNEL_NAME);
   if (!guideChannel) return;
-  const request = mapLegacyWelcomeDeliveryRequest({
-    guildId: member.guild.id,
-    guideChannelId: guideChannel.id
-  });
+  const request = mapLegacyWelcomeDeliveryRequest({ guildId: member.guild.id, guideChannelId: guideChannel.id });
   const payload = buildCommunityWelcomeMessage(request, { guildName: member.guild.name });
   await member.send(payload).catch(() => null);
 }

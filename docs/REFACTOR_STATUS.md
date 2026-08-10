@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome Channel Tracking Read Runtime Redirect Preparation
+Community Welcome Channel Tracking Read Runtime Redirect Implementation
 
 ## Overall Progress
-Estimated local refactor progress: 73%
+Estimated local refactor progress: 75%
 
 ## Latest Completed
 - Project Architecture V2 established
@@ -283,6 +283,8 @@ Estimated local refactor progress: 73%
   without redirecting Welcome runtime
 - Welcome runtime redirect ordering, construction, cache/fetch/name fallback,
   delivery, failure, and single-read compatibility prepared without runtime changes
+- Welcome tracked-channel runtime read redirected through the shared channel
+  tracking Port and compatibility Adapter without changing lookup or delivery behavior
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -330,8 +332,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the Welcome runtime redirect using the shared channel tracking
-boundary, limited to `src/systems/communityConcierge.js`.
+Prepare shared legacy read/write helper cleanup now that `readOnboardingData` and
+`saveOnboarding` have zero runtime consumers.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -349,13 +351,13 @@ boundary, limited to `src/systems/communityConcierge.js`.
 - Dashboard build PASS
 
 ## Blockers
-Guide is CLOSED. Guide and Roadmap use the shared tracking boundary at runtime.
-Welcome's tracked-channel query remains legacy-owned pending the separate
-runtime redirect implementation. The retained
-zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
+Guide is CLOSED. Guide, Roadmap, and Welcome use approved tracking boundaries at
+runtime. The retained zero-consumer `readOnboardingData` and `saveOnboarding`
+helpers still need dedicated cleanup preparation.
 Progress is 73%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Welcome runtime redirect equivalence and ordering prepared without
-runtime changes. Guide remains CLOSED; Welcome remains the sole active
-`readOnboardingData` runtime consumer. Progress remains 73%.
+2026-08-10: Welcome tracked-channel read redirected through the shared channel
+tracking boundary. `readOnboardingData` and `saveOnboarding` have zero runtime
+consumers; cleanup remains a separate preparation task. Progress is reassessed
+at 75%.
