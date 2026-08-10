@@ -32,8 +32,5 @@ assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community',
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction.sort(), [
-  'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
-  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
-].sort(), 'Only the approved boundary sources may change');
+assert.deepEqual(changedProduction, [], 'Later preparation slices must not modify committed production boundaries');
 console.log('Welcome channel tracking read preparation keeps runtime legacy-owned while the approved boundary is implemented.');

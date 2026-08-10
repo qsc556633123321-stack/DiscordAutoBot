@@ -37,9 +37,6 @@ assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction.sort(), [
-  'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
-  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
-].sort(), 'Only the independent Welcome channel tracking boundary may change during this slice');
+assert.deepEqual(changedProduction, [], 'Later preparation slices must not modify committed production boundaries');
 
 console.log('Guide closure re-audit confirms all Guide read, lookup, mutation, and persistence ownership is boundary-based.');

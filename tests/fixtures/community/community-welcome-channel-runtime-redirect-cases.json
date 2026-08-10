@@ -1,0 +1,15 @@
+[
+  { "name": "valid-cache-hit" }, { "name": "valid-cache-miss" }, { "name": "fetch-success" }, { "name": "fetch-failure" },
+  { "name": "undefined" }, { "name": "null" }, { "name": "empty" }, { "name": "false" }, { "name": "zero" },
+  { "name": "number" }, { "name": "true" }, { "name": "object" }, { "name": "array" }, { "name": "whitespace" },
+  { "name": "missing-guild" }, { "name": "reader-fallback" }, { "name": "name-fallback" }, { "name": "no-channel" },
+  { "name": "send-success" }, { "name": "send-failure" }, { "name": "single-read" }, { "name": "no-raw" },
+  { "name": "no-composition" }, { "name": "guide-closed" }, { "name": "roadmap-regression" }, { "name": "zero-consumer-forecast" },
+  { "name": "request-frozen" }, { "name": "result-frozen" }, { "name": "exact-guild-id" }, { "name": "guide-discriminator" },
+  { "name": "cache-no-fetch" }, { "name": "fetch-exact-id" }, { "name": "fetch-no-name-fallback" }, { "name": "falsy-name-lookup" },
+  { "name": "no-channel-no-send" }, { "name": "payload-equivalence" }, { "name": "dm-rejection-swallowed" }, { "name": "reader-one-call" },
+  { "name": "malformed-number" }, { "name": "malformed-true" }, { "name": "malformed-object" }, { "name": "malformed-array" },
+  { "name": "malformed-whitespace" }, { "name": "runtime-unchanged" }, { "name": "message-boundary-unchanged" },
+  { "name": "channel-boundary-unchanged" }, { "name": "save-helper-retained" }, { "name": "welcome-only-reader" },
+  { "name": "no-cleanup" }, { "name": "production-diff-zero" }
+]

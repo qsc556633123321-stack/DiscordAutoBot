@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Shared Community Publication Channel Tracking Read Boundary Implementation
+Community Welcome Channel Tracking Read Runtime Redirect Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 73%
@@ -281,6 +281,8 @@ Estimated local refactor progress: 73%
   shared channel-boundary implementation path prepared without runtime changes
 - Shared channel tracking Application Port and compatibility Adapter implemented
   without redirecting Welcome runtime
+- Welcome runtime redirect ordering, construction, cache/fetch/name fallback,
+  delivery, failure, and single-read compatibility prepared without runtime changes
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -328,8 +330,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Welcome runtime redirect to the implemented shared channel tracking
-boundary, preserving cache/fetch/name fallback and delivery behavior.
+Implement the Welcome runtime redirect using the shared channel tracking
+boundary, limited to `src/systems/communityConcierge.js`.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -349,11 +351,11 @@ boundary, preserving cache/fetch/name fallback and delivery behavior.
 ## Blockers
 Guide is CLOSED. Guide and Roadmap use the shared tracking boundary at runtime.
 Welcome's tracked-channel query remains legacy-owned pending the separate
-runtime redirect. The retained
+runtime redirect implementation. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
 Progress is 73%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Shared channel tracking Port and compatibility Adapter implemented
-without runtime wiring. Guide remains CLOSED; Welcome remains the sole active
+2026-08-10: Welcome runtime redirect equivalence and ordering prepared without
+runtime changes. Guide remains CLOSED; Welcome remains the sole active
 `readOnboardingData` runtime consumer. Progress remains 73%.

@@ -37,8 +37,5 @@ assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction.sort(), [
-  'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
-  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
-].sort());
+assert.deepEqual(changedProduction, [], 'Committed boundary files must not be modified by later preparation slices');
 console.log('Channel tracking read boundary is pure, isolated, uncomposed, and not runtime-wired.');
