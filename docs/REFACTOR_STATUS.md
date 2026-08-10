@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Shared Legacy Onboarding Helper Cleanup Preparation
+Community Infrastructure Onboarding State Reader Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 75%
@@ -287,6 +287,8 @@ Estimated local refactor progress: 75%
   tracking Port and compatibility Adapter without changing lookup or delivery behavior
 - Shared legacy onboarding helper cleanup characterized: `saveOnboarding` has
   zero consumers, while `readOnboardingData` remains an injected adapter dependency
+- Infrastructure onboarding-state reader boundary, filesystem compatibility,
+  adapter dependency, and migration sequence prepared without runtime changes
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -334,8 +336,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare an Infrastructure onboarding-state reader boundary before replacing
-`readOnboardingData` adapter injection; keep `saveOnboarding` deletion separate.
+Implement `CommunityOnboardingStateReader` in Infrastructure only, before any
+tracking adapter or runtime dependency migration.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -355,10 +357,11 @@ Prepare an Infrastructure onboarding-state reader boundary before replacing
 ## Blockers
 Guide is CLOSED. Guide, Roadmap, and Welcome use approved tracking boundaries at
 runtime. `saveOnboarding` is a zero-consumer deletion candidate;
-`readOnboardingData` remains an injected compatibility reader dependency.
+`readOnboardingData` remains an injected compatibility reader dependency pending
+the prepared Infrastructure reader boundary.
 Progress is 75%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Shared onboarding helper cleanup preparation completed without
-runtime changes. `saveOnboarding` has zero consumers; `readOnboardingData` has
-zero direct calls but three adapter injections. Progress remains 75%.
+2026-08-10: Infrastructure onboarding-state reader preparation completed with
+legacy filesystem behavior and adapter injection semantics frozen. Progress
+remains 75%.

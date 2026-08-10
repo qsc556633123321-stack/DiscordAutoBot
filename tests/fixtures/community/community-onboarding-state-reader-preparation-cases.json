@@ -1,0 +1,6 @@
+[
+  "legacy-source-flow", "ensure-file", "missing-file-create", "missing-file-return", "valid-empty-object", "valid-multi-guild", "malformed-json", "empty-file", "read-error", "create-error",
+  "null-root", "array-root", "string-root", "number-root", "boolean-root", "console-error", "no-rewrite-after-parse-failure", "raw-root-identity", "fresh-read", "no-cache",
+  "reader-no-discord", "reader-no-persistence", "reader-no-save-helper", "reader-factory", "reader-method", "reader-dependency-read-json", "reader-file-path", "message-adapter-guide", "message-adapter-roadmap", "channel-adapter-welcome",
+  "guide-single-read", "roadmap-single-read", "welcome-single-read", "no-application-port", "no-composition", "runtime-raw-state-hidden", "save-helper-independent", "production-diff-zero", "guide-closed", "roadmap-regression", "welcome-regression"
+]
