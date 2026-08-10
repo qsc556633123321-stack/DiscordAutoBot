@@ -1,0 +1,10 @@
+[
+  "read-definition", "read-direct-zero", "read-injection-zero", "read-export-zero", "read-dynamic-zero",
+  "save-definition", "save-direct-zero", "save-injection-zero", "save-export-zero", "save-dynamic-zero",
+  "reader-independent", "message-adapter-independent", "channel-adapter-independent", "persistence-independent",
+  "guide-reader-active", "roadmap-reader-active", "welcome-reader-active", "onboarding-file-active", "read-json-active", "ensure-file-active",
+  "historical-test", "architecture-guard", "deletion-simulation", "guide-regression", "roadmap-regression", "welcome-regression",
+  "persistence-regression", "no-filesystem-cleanup", "combined-delete", "production-diff-zero", "module-surface", "no-reexport",
+  "no-computed-access", "no-reflect-access", "no-proxyquire", "no-rewire", "reader-runtime-active", "adapter-reader-backed",
+  "save-private", "read-private"
+]

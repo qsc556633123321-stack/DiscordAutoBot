@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Tracking Adapter + Runtime Onboarding Reader Atomic Migration
+Community Combined Dead Onboarding Helper Cleanup Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 75%
@@ -295,6 +295,8 @@ Estimated local refactor progress: 75%
   reader-object plus runtime-injection replacement; no dual-mode contract is approved
 - Message and channel tracking adapters are reader-backed at runtime; Guide,
   Roadmap, and Welcome each construct the existing reader per invocation
+- `readOnboardingData` and `saveOnboarding` audited as private zero-consumer
+  definitions; combined cleanup is prepared without filesystem restructuring
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -342,8 +344,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare combined dead-helper cleanup for `readOnboardingData` and
-`saveOnboarding`, without mixing it with runtime filesystem ownership changes.
+Implement combined deletion of the private `readOnboardingData` and
+`saveOnboarding` helpers only, while retaining reader construction,
+`ONBOARDING_FILE`, `readJson`, and `ensureFile`.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -362,12 +365,13 @@ Prepare combined dead-helper cleanup for `readOnboardingData` and
 
 ## Blockers
 Guide is CLOSED. Guide, Roadmap, and Welcome use approved reader-backed tracking
-boundaries at runtime. `readOnboardingData` and `saveOnboarding` are separate
-zero-consumer cleanup candidates. Runtime still constructs the reader with
-`ONBOARDING_FILE` and `readJson`; filesystem ownership has not moved.
+boundaries at runtime. `readOnboardingData` and `saveOnboarding` are private
+zero-consumer cleanup candidates approved for one atomic deletion. Runtime still
+constructs the reader with `ONBOARDING_FILE` and `readJson`; filesystem ownership
+has not moved.
 Progress is 78%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-11: tracking adapters and all three runtime injection sites migrated to
-the existing onboarding-state reader without changing read behavior. Progress
-is 78%.
+2026-08-11: combined dead onboarding helper cleanup characterized. Only the two
+private helper definitions are approved for the next implementation; progress
+remains 78%.
