@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome Channel Tracking Read Runtime Redirect Implementation
+Community Shared Legacy Onboarding Helper Cleanup Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 75%
@@ -285,6 +285,8 @@ Estimated local refactor progress: 75%
   delivery, failure, and single-read compatibility prepared without runtime changes
 - Welcome tracked-channel runtime read redirected through the shared channel
   tracking Port and compatibility Adapter without changing lookup or delivery behavior
+- Shared legacy onboarding helper cleanup characterized: `saveOnboarding` has
+  zero consumers, while `readOnboardingData` remains an injected adapter dependency
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -332,8 +334,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare shared legacy read/write helper cleanup now that `readOnboardingData` and
-`saveOnboarding` have zero runtime consumers.
+Prepare an Infrastructure onboarding-state reader boundary before replacing
+`readOnboardingData` adapter injection; keep `saveOnboarding` deletion separate.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -352,12 +354,11 @@ Prepare shared legacy read/write helper cleanup now that `readOnboardingData` an
 
 ## Blockers
 Guide is CLOSED. Guide, Roadmap, and Welcome use approved tracking boundaries at
-runtime. The retained zero-consumer `readOnboardingData` and `saveOnboarding`
-helpers still need dedicated cleanup preparation.
-Progress is 73%; high-risk community flows remain outstanding.
+runtime. `saveOnboarding` is a zero-consumer deletion candidate;
+`readOnboardingData` remains an injected compatibility reader dependency.
+Progress is 75%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Welcome tracked-channel read redirected through the shared channel
-tracking boundary. `readOnboardingData` and `saveOnboarding` have zero runtime
-consumers; cleanup remains a separate preparation task. Progress is reassessed
-at 75%.
+2026-08-10: Shared onboarding helper cleanup preparation completed without
+runtime changes. `saveOnboarding` has zero consumers; `readOnboardingData` has
+zero direct calls but three adapter injections. Progress remains 75%.

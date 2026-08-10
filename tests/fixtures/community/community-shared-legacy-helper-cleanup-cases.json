@@ -1,0 +1,6 @@
+[
+  "reader-direct-zero", "reader-injection-guide", "reader-injection-roadmap", "reader-injection-welcome", "reader-export-zero", "reader-alias-zero", "writer-direct-zero", "writer-injection-zero", "writer-export-zero", "writer-alias-zero",
+  "missing-file", "invalid-json", "read-error", "empty-object", "multi-guild", "guide-read", "roadmap-read", "welcome-read", "single-read-guide", "single-read-roadmap",
+  "single-read-welcome", "generic-persistence", "runtime-filesystem-import", "onboarding-file-owner", "read-json-owner", "write-json-owner", "helper-definition", "helper-alias", "cleanup-order", "reader-candidate",
+  "reader-no-discord", "reader-no-write", "adapter-dependency-message", "adapter-dependency-channel", "guide-closed", "roadmap-regression", "welcome-regression", "save-helper-retained", "production-diff-zero", "implementation-readiness"
+]
