@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Guide Read Boundary Migration Preparation
+Shared Community Publication Tracking State Read Boundary Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 70%
@@ -264,6 +264,9 @@ Estimated local refactor progress: 70%
 - Guide tracked-state read boundary prepared: Guide, Roadmap, and welcome
   consumers share one compatibility reader; a Guide-only content feature is
   not reusable for publication tracking state
+- Shared tracking-message read contract prepared: Guide and Roadmap share a
+  narrow semantic query, while welcome channel tracking remains a separately
+  forecasted consumer
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -306,9 +309,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Shared Publication Tracking State Read Boundary. Freeze a semantic
-query contract for Guide and Roadmap tracked-message IDs before any runtime
-redirect.
+Implement the Shared Tracking Read Boundary only: add the Application port and
+compatibility adapter without Composition wiring or runtime redirects.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -326,13 +328,14 @@ redirect.
 - Dashboard build PASS
 
 ## Blockers
-Guide is closed with a shared `readOnboardingData` compatibility dependency:
-Guide, Roadmap, and welcome still use it. The retained zero-consumer
-`saveOnboarding` helper still needs dedicated cleanup preparation. The 70%
-estimate reflects migrated Guide mutation and persistence ownership, not
-deployment readiness; high-risk community flows remain outstanding.
+Guide is closed with a shared `readOnboardingData` compatibility dependency.
+The shared message-query boundary for Guide/Roadmap is now frozen but not
+implemented; welcome's channel query remains legacy-owned. The retained
+zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
+Progress remains 70%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Guide read boundary migration preparation completed without a
-runtime change. The next boundary is shared because Guide, Roadmap, and
-welcome all consume the same compatibility reader. Progress remains 70%.
+2026-08-10: Shared publication tracking message-read boundary prepared without
+a runtime change. The frozen contract preserves raw fallback compatibility and
+keeps welcome channel tracking out of the first narrow query. Progress remains
+70%.
