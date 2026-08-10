@@ -28,7 +28,11 @@ assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1, 'sav
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
 assert.equal(
-  changed.filter((file) => file.startsWith('src/')).every((file) => file === 'src/systems/communityConcierge.js'),
+  changed.filter((file) => file.startsWith('src/')).every((file) => [
+    'src/systems/communityConcierge.js',
+    'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
+    'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
+  ].includes(file)),
   true,
   'Only the approved runtime source may change'
 );

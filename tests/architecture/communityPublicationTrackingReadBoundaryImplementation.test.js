@@ -49,7 +49,9 @@ const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding
   .map((line) => line.slice(3).trim());
 const changedProduction = changed.filter((file) => file.startsWith('src/'));
 const allowedProductionChanges = [
-  'src/systems/communityConcierge.js'
+  'src/systems/communityConcierge.js',
+  'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
 ];
 assert.equal(
   changedProduction.every((file) => allowedProductionChanges.includes(file)),

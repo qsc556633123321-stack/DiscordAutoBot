@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome Channel Tracking Read Boundary Preparation
+Shared Community Publication Channel Tracking Read Boundary Implementation
 
 ## Overall Progress
 Estimated local refactor progress: 73%
@@ -267,6 +267,8 @@ Estimated local refactor progress: 73%
 - Shared tracking-message read contract prepared: Guide and Roadmap share a
   narrow semantic query, while welcome channel tracking remains a separately
   forecasted consumer
+- Shared channel tracking read Port and compatibility Adapter are
+  Architecture-owned and implemented, but not runtime-used
 - Shared Publication Tracking Read Port and compatibility adapter implemented
   as an isolated, one-read boundary; neither is composed nor runtime-used
 - Combined Guide + Roadmap shared tracking-read redirect construction,
@@ -277,6 +279,8 @@ Estimated local refactor progress: 73%
   mutation, and persistence now have boundary ownership
 - Welcome tracked-channel read contract, compatibility behavior, and a separate
   shared channel-boundary implementation path prepared without runtime changes
+- Shared channel tracking Application Port and compatibility Adapter implemented
+  without redirecting Welcome runtime
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -324,8 +328,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the Shared Channel Read Boundary: an Application Port plus
-compatibility Adapter, without redirecting Welcome runtime yet.
+Prepare the Welcome runtime redirect to the implemented shared channel tracking
+boundary, preserving cache/fetch/name fallback and delivery behavior.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -345,11 +349,11 @@ compatibility Adapter, without redirecting Welcome runtime yet.
 ## Blockers
 Guide is CLOSED. Guide and Roadmap use the shared tracking boundary at runtime.
 Welcome's tracked-channel query remains legacy-owned pending the separate
-channel boundary implementation. The retained
+runtime redirect. The retained
 zero-consumer `saveOnboarding` helper still needs dedicated cleanup preparation.
 Progress is 73%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-10: Welcome channel tracking-read contract and compatibility behavior
-prepared without runtime changes. Guide remains CLOSED; Welcome remains the sole
-active `readOnboardingData` runtime consumer. Progress remains 73%.
+2026-08-10: Shared channel tracking Port and compatibility Adapter implemented
+without runtime wiring. Guide remains CLOSED; Welcome remains the sole active
+`readOnboardingData` runtime consumer. Progress remains 73%.

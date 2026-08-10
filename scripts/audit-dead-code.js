@@ -24,6 +24,7 @@ const SOURCE_OF_TRUTH = new Set([
   'src/infrastructure/community/guidePublication/GuidePublicationAdapterPairFactory.js',
   'src/composition/communityGuideAdapterPairFeature.js',
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
 ]);
 
 function jsFiles(dir) {

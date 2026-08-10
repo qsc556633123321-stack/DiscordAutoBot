@@ -27,10 +27,13 @@ for (const forbidden of ['writeFile', 'saveOnboarding', 'persist', 'updatedAt', 
 assert.equal((fakeAdapter.match(/readOnboardingData\(\)/g) || []).length, 1);
 assert.equal(fakeAdapter.includes('guideMessageId'), false);
 assert.equal(fakeAdapter.includes('roadmapMessageId'), false);
-assert.equal(fs.existsSync(path.join(root, 'src', 'application', 'community', 'ports', 'CommunityPublicationChannelTrackingReadPort.js')), false);
-assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityPublicationChannelTrackingReadCompatibilityAdapter.js')), false);
+assert.equal(fs.existsSync(path.join(root, 'src', 'application', 'community', 'ports', 'CommunityPublicationChannelTrackingReadPort.js')), true);
+assert.equal(fs.existsSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityPublicationChannelTrackingReadCompatibilityAdapter.js')), true);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));
-assert.deepEqual(changedProduction, [], 'Preparation must not change production source');
-console.log('Welcome channel tracking read preparation keeps runtime legacy-owned and candidate boundaries pure.');
+assert.deepEqual(changedProduction.sort(), [
+  'src/application/community/ports/CommunityPublicationChannelTrackingReadPort.js',
+  'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js'
+].sort(), 'Only the approved boundary sources may change');
+console.log('Welcome channel tracking read preparation keeps runtime legacy-owned while the approved boundary is implemented.');
