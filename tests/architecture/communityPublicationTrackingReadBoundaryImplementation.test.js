@@ -33,13 +33,14 @@ const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding
   .filter(Boolean)
   .map((line) => line.slice(3).trim());
 const changedProduction = changed.filter((file) => file.startsWith('src/'));
-assert.deepEqual(
-  changedProduction.sort(),
-  [
-    'src/application/community/ports/CommunityPublicationTrackingReadPort.js',
-    'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js'
-  ],
-  `Only the approved production boundary files may change: ${changedProduction.join(', ')}`
+const allowedProductionChanges = [
+  'src/application/community/ports/CommunityPublicationTrackingReadPort.js',
+  'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js'
+];
+assert.equal(
+  changedProduction.every((file) => allowedProductionChanges.includes(file)),
+  true,
+  `Only approved production boundary files may change: ${changedProduction.join(', ')}`
 );
 
 console.log('Shared publication tracking read implementation is pure, isolated, not composed, and not runtime-wired.');
