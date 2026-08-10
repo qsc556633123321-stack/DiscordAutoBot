@@ -1,0 +1,7 @@
+[
+  "guide-valid", "guide-missing", "guide-legacy-state", "guide-raw-fallback", "roadmap-valid", "roadmap-missing", "roadmap-legacy-state", "roadmap-raw-fallback",
+  "welcome-valid", "welcome-undefined", "welcome-null", "welcome-empty", "welcome-false", "welcome-zero", "welcome-number", "welcome-true", "welcome-object", "welcome-array", "welcome-whitespace",
+  "missing-guild", "reader-throw", "single-read-guide", "single-read-roadmap", "single-read-welcome", "root-no-mutation", "mapper-preserved", "channel-no-mapper", "runtime-guide", "runtime-roadmap", "runtime-welcome",
+  "per-invocation", "no-composition", "no-dual-dependency", "zero-injection-forecast", "save-helper-independent", "production-diff-zero", "message-result-shape", "channel-result-shape", "message-result-frozen", "channel-result-frozen",
+  "message-validation-construction", "channel-validation-construction", "reader-method-binding", "reader-root-identity", "message-falsy-undefined", "message-falsy-null", "message-falsy-empty", "message-falsy-false", "message-falsy-zero", "message-truthy-malformed", "channel-truthy-malformed"
+]

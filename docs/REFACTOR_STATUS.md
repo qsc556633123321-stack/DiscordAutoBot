@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Infrastructure Onboarding State Reader Implementation
+Community Tracking Adapter Onboarding State Reader Dependency Migration Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 75%
@@ -291,6 +291,8 @@ Estimated local refactor progress: 75%
   adapter dependency, and migration sequence prepared without runtime changes
 - `CommunityOnboardingStateReader` implemented as an Infrastructure-only,
   non-runtime-wired compatibility reader
+- Tracking adapter dependency migration frozen: both adapters require an atomic
+  reader-object plus runtime-injection replacement; no dual-mode contract is approved
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -338,8 +340,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare tracking adapter dependency migration from injected `readOnboardingData`
-to the implemented onboarding-state reader object.
+Implement the approved atomic tracking adapter dependency migration: replace
+both adapter inputs and all three runtime injection sites with the existing
+onboarding-state reader, without changing read semantics.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -365,6 +368,6 @@ implemented but not runtime-used.
 Progress is 75%; high-risk community flows remain outstanding.
 
 ## Last Updated
-2026-08-11: `CommunityOnboardingStateReader` implemented with exact delegated
-filesystem compatibility semantics. Adapters and runtime remain unchanged;
-progress remains 75%.
+2026-08-11: tracking adapter reader dependency migration prepared. The only
+approved implementation is the atomic replacement of both adapter contracts
+and their three runtime injection sites; progress remains 75%.
