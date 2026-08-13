@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Concierge Closure Audit
+Community Welcome Final Closure Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 80%
@@ -302,6 +302,8 @@ Estimated local refactor progress: 80%
 - Community Concierge closure audit completed: Guide and Roadmap are CLOSED,
   Welcome tracking is migrated but its channel recovery and DM delivery remain
   Runtime-owned; direct persistence bypass remains zero
+- Welcome final closure preparation completed: cache/fetch/fallback/channel
+  identity and swallowed DM failure contracts are frozen without runtime changes
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -349,8 +351,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Welcome final closure by freezing channel-resolution, fallback, and DM
-delivery failure semantics. Do not move filesystem ownership in that slice.
+Implement the narrow Community Welcome channel-resolution boundary only. Keep
+DM delivery, runtime redirect, filesystem ownership, role/button, and AI owners
+unchanged until separately prepared.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -368,13 +371,14 @@ delivery failure semantics. Do not move filesystem ownership in that slice.
 - Dashboard build PASS
 
 ## Blockers
-Guide and Roadmap are CLOSED. Welcome channel tracking is migrated, but channel
-resolution and DM delivery remain Runtime-owned. `readOnboardingData` and
-`saveOnboarding` are removed. Runtime still constructs the reader with
-`ONBOARDING_FILE`, `readJson`, and `ensureFile`; filesystem ownership has not
-moved. Role quick actions, button dispatch, direct channel setup, and AI text
-generation remain high-risk Runtime owners.
+Guide and Roadmap are CLOSED. Welcome channel tracking is migrated, while its
+channel resolution and DM delivery remain Runtime-owned. `readOnboardingData`
+and `saveOnboarding` are removed. The next approved boundary is channel
+resolution only; its cache/fetch/fallback and identity semantics are frozen.
+Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
+`ensureFile`; filesystem ownership has not moved. Role quick actions, button
+dispatch, direct channel setup, and AI text generation remain high-risk owners.
 
 ## Last Updated
-2026-08-13: Community Concierge closure audit completed. No runtime ownership
+2026-08-13: Welcome final closure preparation completed. No runtime ownership
 moved; local refactor progress remains 80%.

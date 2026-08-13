@@ -1,0 +1,7 @@
+[
+  "tracked-valid", "cache-hit", "cache-miss", "fetch-success", "fetch-failure", "fallback-name", "fallback-missing", "undefined", "null", "empty", "false", "zero",
+  "number", "true", "object", "array", "whitespace", "exact-cache-channel", "exact-fetch-channel", "raw-id-cache", "raw-id-fetch", "no-retry", "no-second-fetch", "no-name-after-fetch-failure",
+  "payload-identity", "dm-success", "dm-failure", "dm-one-send", "no-channel", "no-channel-no-send", "tracking-reader", "tracking-channel-adapter", "guide-closed", "roadmap-closed", "filesystem-data-dir", "filesystem-file",
+  "filesystem-read-json", "filesystem-ensure-file", "reader-guide", "reader-roadmap", "reader-welcome", "role-isolated", "button-isolated", "ai-isolated", "event-isolated", "raw-state-hidden", "persistence-bypass-zero",
+  "legacy-helper-removed", "request-map", "payload-builder", "cache-identity", "fetch-identity", "fetch-rejection-null", "falsy-name-once", "malformed-raw", "production-diff-zero", "architecture-score", "circular-zero", "reverse-zero", "closure-readiness"
+]
