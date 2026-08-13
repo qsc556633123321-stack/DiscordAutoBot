@@ -1,15 +1,15 @@
 # Community Welcome DM Delivery Boundary Decision
 
-## Recommended boundary
+## Recommended Boundary
+`createCommunityWelcomeDmDeliveryAdapter({ member })` in Infrastructure.
 
-Use a narrow Infrastructure-style adapter, conceptually:
+It returns `Object.freeze({ send })`, where `async send(payload)` returns `member.send(payload).catch(() => null)`.
 
-```js
-createCommunityWelcomeDmDeliveryAdapter({ member }).send(payload)
-```
+## Contract
+- Factory validates `typeof member?.send === 'function'` at construction and throws `TypeError('CommunityWelcomeDmDeliveryAdapter requires member.send')` otherwise.
+- `member` and `payload` are passed through exactly, with no lookup, clone, normalization, or serialization.
+- Success exposes the raw send result; failure exposes `null`. Future runtime may continue ignoring that result and therefore retain its `undefined` return.
+- No retry, logging, payload building, channel resolution, tracking, reader, filesystem, Application Port, or Composition feature.
 
-The adapter awaits exactly one `member.send(payload)` and swallows a rejection to
-`null`. It does not retry, log, transform payload, or return a Discord message.
-
-No Application Port or Composition feature is approved: both would expose a
-Discord Member above Infrastructure without reducing the bounded Runtime work.
+## Lifetime
+Per invocation/per delivery, constructed after payload construction and immediately before sending. This mirrors the live-member lifetime and avoids retaining member references.

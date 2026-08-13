@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome Channel Resolver Runtime Redirect Implementation
+Community Welcome DM Delivery Boundary Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 82%
@@ -310,6 +310,8 @@ Estimated local refactor progress: 82%
   test-only candidate; production runtime remains unchanged
 - Welcome channel resolution now routes through the Infrastructure resolver;
   direct DM delivery remains runtime-owned
+- Welcome DM delivery boundary preparation completed with recipient, payload,
+  failure, and no-channel contracts frozen; runtime remains unchanged
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -357,8 +359,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Welcome DM delivery boundary. Keep filesystem ownership,
-role/button, and AI owners unchanged.
+Implement the narrow Welcome DM delivery adapter. Keep runtime redirect,
+filesystem ownership, role/button, and AI owners unchanged.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -377,12 +379,13 @@ role/button, and AI owners unchanged.
 
 ## Blockers
 Guide and Roadmap are CLOSED. Welcome channel tracking is migrated. Its channel
-resolver is runtime-active and channel resolution is migrated; DM delivery
-remains Runtime-owned. `readOnboardingData` and `saveOnboarding` are removed.
+resolver is runtime-active and channel resolution is migrated; DM delivery is
+prepared but remains Runtime-owned. `readOnboardingData` and `saveOnboarding`
+are removed.
 Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
 `ensureFile`; filesystem ownership has not moved. Role quick actions, button
 dispatch, direct channel setup, and AI text generation remain high-risk owners.
 
 ## Last Updated
-2026-08-13: Welcome channel resolution now routes through the resolver; local
-refactor progress is 82% because one production runtime ownership boundary moved.
+2026-08-13: Welcome DM delivery boundary prepared without runtime ownership
+movement; local refactor progress remains 82%.

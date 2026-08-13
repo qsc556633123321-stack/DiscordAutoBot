@@ -1,0 +1,9 @@
+[
+  "success", "success-message-result", "success-undefined-result", "exact-member", "exact-payload", "one-send",
+  "error-rejection", "string-rejection", "number-rejection", "object-rejection", "null-rejection", "undefined-rejection",
+  "no-retry", "no-log", "no-channel", "no-channel-no-send", "resolver-cache", "resolver-fetch", "resolver-fallback",
+  "tracking-one-read", "payload-unchanged", "recipient-unchanged", "no-tracking", "no-resolver", "no-filesystem",
+  "no-payload-builder", "no-application-port", "no-composition", "factory-validation", "member-send-validation",
+  "frozen-surface", "async-send", "raw-message-return", "null-failure-return", "guide-closed", "roadmap-closed",
+  "role-isolated", "button-isolated", "ai-isolated", "production-diff-zero", "reader-unchanged", "tracking-unchanged"
+]
