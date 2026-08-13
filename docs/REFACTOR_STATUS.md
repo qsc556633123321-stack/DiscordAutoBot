@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Combined Dead Onboarding Helper Cleanup Implementation
+Community Concierge Closure Audit
 
 ## Overall Progress
 Estimated local refactor progress: 80%
@@ -299,6 +299,9 @@ Estimated local refactor progress: 80%
   definitions; combined cleanup is prepared without filesystem restructuring
 - `readOnboardingData` and `saveOnboarding` removed after their zero-consumer
   audits; Guide, Roadmap, and Welcome remain reader-backed at runtime
+- Community Concierge closure audit completed: Guide and Roadmap are CLOSED,
+  Welcome tracking is migrated but its channel recovery and DM delivery remain
+  Runtime-owned; direct persistence bypass remains zero
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -346,9 +349,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Run a focused Community Concierge Closure Audit to identify the next bounded
-runtime owner after dead-helper removal, before attempting filesystem ownership
-movement.
+Prepare Welcome final closure by freezing channel-resolution, fallback, and DM
+delivery failure semantics. Do not move filesystem ownership in that slice.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -366,12 +368,13 @@ movement.
 - Dashboard build PASS
 
 ## Blockers
-Guide is CLOSED. Guide, Roadmap, and Welcome use approved reader-backed tracking
-boundaries at runtime. `readOnboardingData` and `saveOnboarding` are removed.
-Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
-`ensureFile`; filesystem ownership has not moved. High-risk community flows
-remain outstanding.
+Guide and Roadmap are CLOSED. Welcome channel tracking is migrated, but channel
+resolution and DM delivery remain Runtime-owned. `readOnboardingData` and
+`saveOnboarding` are removed. Runtime still constructs the reader with
+`ONBOARDING_FILE`, `readJson`, and `ensureFile`; filesystem ownership has not
+moved. Role quick actions, button dispatch, direct channel setup, and AI text
+generation remain high-risk Runtime owners.
 
 ## Last Updated
-2026-08-13: combined dead onboarding helper cleanup implemented. Both private
-helper definitions are removed; local refactor progress is estimated at 80%.
+2026-08-13: Community Concierge closure audit completed. No runtime ownership
+moved; local refactor progress remains 80%.

@@ -21,5 +21,10 @@ assert.equal(runtime.includes('readOnboardingData'), false);
 assert.equal(runtime.includes('saveOnboarding'), false);
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
-assert.deepEqual(changed.filter((file) => file.startsWith('src/')), ['src/systems/communityConcierge.js']);
+const changedSource = changed.filter((file) => file.startsWith('src/'));
+assert.equal(
+  changedSource.length === 0 || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  true,
+  'Preparation and audit runs must be production-clean; implementation may only touch the approved runtime file.'
+);
 console.log('Both private helpers are removed while runtime reader filesystem dependencies remain active.');

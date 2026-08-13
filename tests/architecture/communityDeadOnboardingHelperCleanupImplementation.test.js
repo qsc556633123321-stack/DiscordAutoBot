@@ -31,5 +31,9 @@ for (const [name, source, adapter] of [
 
 const changedSource = execFileSync('git', ['diff', '--name-only', '--', 'src'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(changedSource, ['src/systems/communityConcierge.js']);
+assert.equal(
+  changedSource.length === 0 || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  true,
+  'Only the approved runtime file may change during implementation; later audit slices must keep production clean.'
+);
 console.log('Dead onboarding helper cleanup preserves reader-backed Guide, Roadmap, and Welcome runtime ownership.');

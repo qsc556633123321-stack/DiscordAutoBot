@@ -1,0 +1,8 @@
+[
+  "filesystem-data-dir", "filesystem-onboarding-file", "filesystem-ensure-file", "filesystem-read-json", "filesystem-reader-guide", "filesystem-reader-roadmap", "filesystem-reader-welcome", "filesystem-no-direct-record-read",
+  "tracking-message-guide", "tracking-message-roadmap", "tracking-channel-welcome", "tracking-no-raw-guide", "tracking-no-raw-roadmap", "tracking-no-raw-channel", "tracking-reader-backed", "tracking-per-invocation",
+  "guide-closed", "guide-lookup-port", "guide-mutation-port", "guide-persistence-feature", "guide-force-mode", "guide-failure-identity", "guide-no-direct-message-io", "guide-no-raw-state",
+  "roadmap-closed", "roadmap-lookup-port", "roadmap-mutation-port", "roadmap-persistence-feature", "roadmap-partial-success", "roadmap-no-direct-message-io", "roadmap-no-raw-state", "roadmap-reader-backed",
+  "welcome-not-closed", "welcome-cache-hit", "welcome-fetch-fallback", "welcome-name-fallback", "welcome-no-channel", "welcome-dm-send", "welcome-dm-failure-swallow", "welcome-event-caller",
+  "ai-no-key-fallback", "ai-sdk-failure-fallback", "ai-runtime-client", "role-permission-check", "role-hierarchy-check", "role-add-swallow", "button-custom-id", "button-ephemeral-reply", "event-no-registration", "production-diff-zero"
+]
