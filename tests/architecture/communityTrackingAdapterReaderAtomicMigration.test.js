@@ -22,6 +22,7 @@ const allowed = [
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
   'src/systems/communityConcierge.js'
 ];
 assert.equal(changedProduction.every((file) => allowed.includes(file)), true);

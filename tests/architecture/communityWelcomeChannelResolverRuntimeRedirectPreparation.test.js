@@ -28,9 +28,13 @@ for (const forbidden of ['function createCommunityWelcomeChannelResolver', 'read
 assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', resolverPath], { cwd: root, encoding: 'utf8' }).trim(), '');
 const changedSource = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim()).filter((file) => file.startsWith('src/'));
+const allowedSource = new Set([
+  'src/systems/communityConcierge.js',
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
+]);
 assert.equal(
-  changedSource.length === 0 || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  changedSource.every((file) => allowedSource.has(file)),
   true,
-  'Resolver redirect baseline may be clean or modify only communityConcierge.js'
+  'Welcome infrastructure follow-up slices may modify only approved Welcome source files'
 );
 console.log('Welcome resolver redirect preserves the resolver, tracking, filesystem, and DM boundaries.');

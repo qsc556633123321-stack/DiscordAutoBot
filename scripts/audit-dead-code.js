@@ -29,6 +29,8 @@ const SOURCE_OF_TRUTH = new Set([
 const APPROVED_UNWIRED_BOUNDARIES = new Set([
   // This compatibility reader is intentionally implemented before adapter migration.
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  // This narrow adapter is intentionally implemented before its runtime redirect.
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
 ]);
 
 function jsFiles(dir) {

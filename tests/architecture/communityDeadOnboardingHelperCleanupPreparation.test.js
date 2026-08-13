@@ -24,7 +24,8 @@ const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding
 const changedSource = changed.filter((file) => file.startsWith('src/'));
 const allowedSource = [
   'src/systems/communityConcierge.js',
-  'src/infrastructure/community/CommunityWelcomeChannelResolver.js'
+  'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
 ];
 assert.equal(
   changedSource.every((file) => allowedSource.includes(file)),

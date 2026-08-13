@@ -55,7 +55,8 @@ const allowedProductionChanges = [
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
-  'src/infrastructure/community/CommunityWelcomeChannelResolver.js'
+  'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
 ];
 assert.equal(
   changedProduction.every((file) => allowedProductionChanges.includes(file)),

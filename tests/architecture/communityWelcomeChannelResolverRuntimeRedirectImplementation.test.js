@@ -28,9 +28,13 @@ assert.equal(welcome.includes('member.send(payload).catch(() => null)'), true);
 assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', resolverPath], { cwd: root, encoding: 'utf8' }).trim(), '');
 const changedSource = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim()).filter((file) => file.startsWith('src/'));
+const allowedSource = new Set([
+  'src/systems/communityConcierge.js',
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
+]);
 assert.equal(
-  changedSource.length === 0 || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  changedSource.every((file) => allowedSource.has(file)),
   true,
-  'Runtime redirect implementation may be clean or modify only communityConcierge.js'
+  'Welcome infrastructure follow-up slices may modify only approved Welcome source files'
 );
 console.log('Welcome runtime uses one per-invocation channel resolver and retains only DM delivery directly.');
