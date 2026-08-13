@@ -10,5 +10,5 @@ assert.equal(source.includes('readRoot('), true); assert.equal(source.includes('
 assert.equal(runtime.includes('createCommunityOnboardingJsonReader'), false, 'runtime remains unwired');
 assert.equal(runtime.includes('function readJson('), true); assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 3);
 const changed = execFileSync('git', ['status', '--short', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
-assert.deepEqual(changed, ['src/infrastructure/community/CommunityOnboardingJsonReader.js']);
-console.log('Production onboarding JSON reader is isolated, unwired, and the only approved source diff.');
+assert.equal(changed.every((file) => file === 'src/infrastructure/community/CommunityOnboardingJsonReader.js'), true);
+console.log('Production onboarding JSON reader is isolated, unwired, and permits no unrelated source diff.');

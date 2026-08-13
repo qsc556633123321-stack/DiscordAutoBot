@@ -1,0 +1,3 @@
+[
+  "valid", "empty", "missing", "malformed", "read-error", "mkdir-error", "write-error", "null-root", "array-root", "string-root", "number-root", "boolean-root", "exact-result", "one-read", "fresh-fallback", "guide", "roadmap", "welcome", "tracking-message", "tracking-channel", "no-cache", "no-dual-mode", "no-persistence", "no-composition", "production-diff-zero", "reader-validation-undefined", "reader-validation-null", "reader-validation-empty", "reader-validation-null-method", "reader-throws", "legacy-identity", "candidate-identity", "guide-construction", "roadmap-construction", "welcome-construction", "guide-one-read", "roadmap-one-read", "welcome-one-read", "no-shared-reader", "runtime-unwired", "closed-guide", "closed-roadmap", "closed-welcome"
+]

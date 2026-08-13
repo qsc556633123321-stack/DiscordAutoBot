@@ -1,12 +1,13 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Filesystem Ownership Migration Preparation (Slice #65)
+Community Onboarding StateReader JSON Dependency Migration Preparation (Slice #66)
 
 ## Overall Progress
 Estimated local refactor progress: 85%. This preparation freezes compatibility behavior only; no production filesystem ownership has moved.
 
 ## Latest Completed
+- StateReader JSON dependency migration prepared with an atomic two-file implementation allowlist; production remains unchanged
 - `CommunityOnboardingJsonReader` implemented as a read-only Infrastructure boundary and deliberately left runtime-unwired
 - Community filesystem ownership, missing-file side effects, parse/fallback behavior, logging, and no-cache semantics characterized
 - Future narrow read-only Infrastructure boundary approved: `CommunityOnboardingJsonReader`
@@ -370,8 +371,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the atomic `CommunityOnboardingStateReader` dependency-contract and
-Guide/Roadmap/Welcome construction migration.
+Implement the approved atomic StateReader JSON dependency and Guide/Roadmap/Welcome runtime construction migration.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -402,6 +402,6 @@ button dispatch, direct channel setup, and AI text generation remain high-risk
 owners.
 
 ## Last Updated
-2026-08-14: `CommunityOnboardingJsonReader` was implemented with frozen legacy
-filesystem behavior but remains unused by runtime. Guide, Roadmap, and Welcome
-remain CLOSED; filesystem ownership remains runtime-owned.
+2026-08-14: StateReader JSON dependency migration preparation completed.
+The reader, Guide, Roadmap, and Welcome runtime remain unchanged; the next
+approved slice atomically changes only StateReader and Community Concierge.
