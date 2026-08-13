@@ -11,7 +11,7 @@ const exportsStart = runtime.indexOf('module.exports');
 const welcome = runtime.slice(welcomeStart, exportsStart);
 
 assert.ok(fixtures.length >= 60);
-for (const required of ['createCommunityOnboardingStateReader', 'readTrackedChannel', 'createCommunityWelcomeChannelResolver', 'channelResolver.resolve', 'mapLegacyWelcomeDeliveryRequest', 'buildCommunityWelcomeMessage', 'member.send(payload).catch(() => null)']) {
+for (const required of ['createCommunityOnboardingStateReader', 'readTrackedChannel', 'createCommunityWelcomeChannelResolver', 'channelResolver.resolve', 'mapLegacyWelcomeDeliveryRequest', 'buildCommunityWelcomeMessage', 'createCommunityWelcomeDmDeliveryAdapter', 'await dmDelivery.send(payload)']) {
   assert.equal(welcome.includes(required), true, `Welcome flow must retain ${required}`);
 }
 for (const forbidden of ['readOnboardingData', 'saveOnboarding', 'data.guideChannelId', 'fromLegacyPublicationRecord', 'channels.cache.get', 'channels.fetch', 'findChannelByName(member.guild, GUIDE_CHANNEL_NAME)']) {
@@ -27,4 +27,4 @@ assert.equal(
   true,
   'Closure preparation permits only the approved Welcome runtime redirect.'
 );
-console.log('Welcome final closure preparation keeps direct DM delivery and isolation boundaries frozen after resolver redirect.');
+console.log('Welcome final closure preparation keeps adapter-based DM delivery and isolation boundaries frozen.');

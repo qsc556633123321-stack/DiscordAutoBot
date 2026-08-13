@@ -34,6 +34,7 @@ const { createCommunityPublicationChannelTrackingReadRequest } = require('../app
 const { createCommunityPublicationChannelTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter');
 const { createCommunityOnboardingStateReader } = require('../infrastructure/community/CommunityOnboardingStateReader');
 const { createCommunityWelcomeChannelResolver } = require('../infrastructure/community/CommunityWelcomeChannelResolver');
+const { createCommunityWelcomeDmDeliveryAdapter } = require('../infrastructure/community/CommunityWelcomeDmDeliveryAdapter');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -372,7 +373,8 @@ async function sendConciergeWelcome(member) {
   if (!guideChannel) return;
   const request = mapLegacyWelcomeDeliveryRequest({ guildId: member.guild.id, guideChannelId: guideChannel.id });
   const payload = buildCommunityWelcomeMessage(request, { guildName: member.guild.name });
-  await member.send(payload).catch(() => null);
+  const dmDelivery = createCommunityWelcomeDmDeliveryAdapter({ member });
+  await dmDelivery.send(payload);
 }
 
 module.exports = {

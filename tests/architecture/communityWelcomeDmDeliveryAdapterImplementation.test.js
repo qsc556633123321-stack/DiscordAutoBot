@@ -21,12 +21,13 @@ for (const forbidden of [
   assert.equal(source.includes(forbidden), false, `DM adapter must not depend on ${forbidden}`);
 }
 assert.equal(source.includes('member.send(payload).catch(() => null)'), true);
-assert.equal(welcome.includes('member.send(payload).catch(() => null)'), true);
-assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), false);
+assert.equal(welcome.includes('member.send(payload).catch(() => null)'), false);
+assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), true);
+assert.equal(welcome.includes('await dmDelivery.send(payload)'), true);
 assert.equal(fs.existsSync(sourcePath), true);
 const changedSource = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' })
   .trim()
   .split(/\r?\n/)
   .filter(Boolean);
-assert.deepEqual(changedSource, []);
-console.log('Welcome DM adapter is isolated while the runtime remains direct and legacy-compatible.');
+assert.deepEqual(changedSource, ['src/systems/communityConcierge.js']);
+console.log('Welcome DM adapter is isolated and runtime-active through the approved Welcome redirect.');

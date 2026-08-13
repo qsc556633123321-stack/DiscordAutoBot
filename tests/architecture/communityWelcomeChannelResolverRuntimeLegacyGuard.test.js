@@ -12,5 +12,7 @@ for (const forbidden of ['channels.cache.get', 'channels.fetch', 'findChannelByN
 }
 assert.equal(welcome.includes('createCommunityWelcomeChannelResolver'), true);
 assert.equal(welcome.includes('channelResolver.resolve'), true);
-assert.equal(welcome.includes('member.send(payload).catch(() => null)'), true);
-console.log('Welcome Runtime delegates channel resolution while retaining direct DM delivery.');
+assert.equal(welcome.includes('member.send(payload).catch(() => null)'), false);
+assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), true);
+assert.equal(welcome.includes('await dmDelivery.send(payload)'), true);
+console.log('Welcome Runtime delegates channel resolution and DM delivery through approved boundaries.');

@@ -24,7 +24,9 @@ for (const forbidden of ['channels.cache.get', 'channels.fetch', 'findChannelByN
   assert.equal(welcome.includes(forbidden), false, `Welcome runtime must not directly own ${forbidden}`);
 }
 assert.equal(welcome.includes('findChannelByName });'), true);
-assert.equal(welcome.includes('member.send(payload).catch(() => null)'), true);
+assert.equal(welcome.includes('member.send(payload).catch(() => null)'), false);
+assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), true);
+assert.equal(welcome.includes('await dmDelivery.send(payload)'), true);
 assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', resolverPath], { cwd: root, encoding: 'utf8' }).trim(), '');
 const changedSource = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim()).filter((file) => file.startsWith('src/'));
@@ -37,4 +39,4 @@ assert.equal(
   true,
   'Welcome infrastructure follow-up slices may modify only approved Welcome source files'
 );
-console.log('Welcome runtime uses one per-invocation channel resolver and retains only DM delivery directly.');
+console.log('Welcome runtime uses one per-invocation channel resolver and delegates DM delivery to its adapter.');

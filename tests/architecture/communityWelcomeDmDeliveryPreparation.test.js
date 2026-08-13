@@ -11,13 +11,14 @@ const end = runtime.indexOf('\n}\n\nmodule.exports', start);
 const welcome = runtime.slice(start, end);
 
 assert.ok(start >= 0 && end > start);
-assert.equal(welcome.includes('member.send(payload).catch(() => null)'), true);
-assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), false);
+assert.equal(welcome.includes('member.send(payload).catch(() => null)'), false);
+assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), true);
+assert.equal(welcome.includes('await dmDelivery.send(payload)'), true);
 assert.equal(welcome.includes('readTrackedChannel'), true);
 assert.equal(welcome.includes('createCommunityWelcomeChannelResolver'), true);
 for (const forbidden of ['readTrackedChannel', 'CommunityWelcomeChannelResolver', 'CommunityOnboardingStateReader', 'buildCommunityWelcomeMessage', 'mapLegacyWelcomeDeliveryRequest', 'node:fs', 'node:path', 'ONBOARDING_FILE', 'readJson', 'console.', 'logger']) {
   assert.equal(candidate.includes(forbidden), false, `DM candidate must not own ${forbidden}`);
 }
 assert.equal(candidate.includes('member.send(payload).catch(() => null)'), true);
-assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim(), '');
-console.log('Welcome DM delivery preparation keeps runtime direct, isolates the candidate, and preserves tracking, resolver, payload, and filesystem ownership.');
+assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim(), 'src/systems/communityConcierge.js');
+console.log('Welcome DM delivery boundary stays isolated while runtime ownership is redirected through it.');

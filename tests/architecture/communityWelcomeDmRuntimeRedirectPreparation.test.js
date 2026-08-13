@@ -11,8 +11,9 @@ const end = runtime.indexOf('\n}\n\nmodule.exports', start);
 const welcome = runtime.slice(start, end);
 
 assert.ok(start >= 0 && end > start);
-assert.equal(welcome.includes('member.send(payload).catch(() => null)'), true);
-assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), false);
+assert.equal(welcome.includes('member.send(payload).catch(() => null)'), false);
+assert.equal(welcome.includes('createCommunityWelcomeDmDeliveryAdapter'), true);
+assert.equal(welcome.includes('await dmDelivery.send(payload)'), true);
 assert.equal(welcome.includes('readTrackedChannel'), true);
 assert.equal(welcome.includes('createCommunityWelcomeChannelResolver'), true);
 assert.equal(welcome.indexOf('if (!guideChannel) return') < welcome.indexOf('mapLegacyWelcomeDeliveryRequest'), true);
@@ -27,6 +28,6 @@ assert.equal(candidate.includes('createCommunityWelcomeDmDeliveryAdapter'), true
 assert.equal(candidate.includes('await dmDelivery.send(payload)'), true);
 assert.deepEqual(
   execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim(),
-  ''
+  'src/systems/communityConcierge.js'
 );
-console.log('Welcome DM runtime redirect preparation preserves direct runtime ownership and isolates the test-only candidate.');
+console.log('Welcome DM runtime redirect preparation remains equivalent after the approved runtime handoff.');
