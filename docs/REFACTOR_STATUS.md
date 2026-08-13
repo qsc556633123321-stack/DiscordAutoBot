@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome Channel Resolver Runtime Redirect Preparation
+Community Welcome Channel Resolver Runtime Redirect Implementation
 
 ## Overall Progress
-Estimated local refactor progress: 80%
+Estimated local refactor progress: 82%
 
 ## Latest Completed
 - Project Architecture V2 established
@@ -308,6 +308,8 @@ Estimated local refactor progress: 80%
   non-runtime-used boundary; cache/fetch/fallback semantics remain covered
 - Welcome resolver runtime redirect preparation completed with an equivalent
   test-only candidate; production runtime remains unchanged
+- Welcome channel resolution now routes through the Infrastructure resolver;
+  direct DM delivery remains runtime-owned
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -355,8 +357,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the narrow Welcome channel-resolution runtime redirect. Keep DM
-delivery, filesystem ownership, role/button, and AI owners unchanged.
+Prepare the Welcome DM delivery boundary. Keep filesystem ownership,
+role/button, and AI owners unchanged.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -375,13 +377,12 @@ delivery, filesystem ownership, role/button, and AI owners unchanged.
 
 ## Blockers
 Guide and Roadmap are CLOSED. Welcome channel tracking is migrated. Its channel
-resolver is implemented and redirect-ready, but not runtime-used; channel
-resolution and DM delivery remain Runtime-owned. `readOnboardingData` and
-`saveOnboarding` are removed.
+resolver is runtime-active and channel resolution is migrated; DM delivery
+remains Runtime-owned. `readOnboardingData` and `saveOnboarding` are removed.
 Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
 `ensureFile`; filesystem ownership has not moved. Role quick actions, button
 dispatch, direct channel setup, and AI text generation remain high-risk owners.
 
 ## Last Updated
-2026-08-13: Welcome channel resolver runtime redirect prepared without runtime
-ownership movement; local refactor progress remains 80%.
+2026-08-13: Welcome channel resolution now routes through the resolver; local
+refactor progress is 82% because one production runtime ownership boundary moved.

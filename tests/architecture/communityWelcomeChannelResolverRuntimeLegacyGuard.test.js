@@ -7,9 +7,10 @@ const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConc
 const start = runtime.indexOf('async function sendConciergeWelcome');
 const end = runtime.indexOf('module.exports');
 const welcome = runtime.slice(start, end);
-for (const required of ['channels.cache.get', 'channels.fetch', 'findChannelByName', 'member.send(payload).catch(() => null)']) {
-  assert.equal(welcome.includes(required), true, `Welcome Runtime retains ${required}`);
+for (const forbidden of ['channels.cache.get', 'channels.fetch', 'findChannelByName(member.guild, GUIDE_CHANNEL_NAME)']) {
+  assert.equal(welcome.includes(forbidden), false, `Welcome Runtime no longer owns ${forbidden}`);
 }
-assert.equal(welcome.includes('CommunityWelcomeChannelResolver'), false);
-assert.equal(welcome.includes('.resolve('), false);
-console.log('Welcome Runtime remains legacy-owned for channel resolution and DM delivery.');
+assert.equal(welcome.includes('createCommunityWelcomeChannelResolver'), true);
+assert.equal(welcome.includes('channelResolver.resolve'), true);
+assert.equal(welcome.includes('member.send(payload).catch(() => null)'), true);
+console.log('Welcome Runtime delegates channel resolution while retaining direct DM delivery.');

@@ -13,11 +13,14 @@ assert.equal(source.includes('Object.freeze'), true);
 assert.equal(source.includes('createCommunityWelcomeChannelResolver'), true);
 const changedSource = execFileSync('git', ['diff', '--name-only', '--', 'src'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean);
-const allowedSource = 'src/infrastructure/community/CommunityWelcomeChannelResolver.js';
+const allowedSources = [
+  'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
+  'src/systems/communityConcierge.js'
+];
 assert.equal(fs.existsSync(resolverPath), true, 'Resolver production source must exist');
 assert.equal(
-  changedSource.every((file) => file === allowedSource),
+  changedSource.every((file) => allowedSources.includes(file)),
   true,
-  'Only the resolver production source may be modified by this slice'
+  'Only the resolver implementation or its approved runtime redirect may modify production source'
 );
 console.log('Community Welcome channel resolver remains Infrastructure-only and isolated from runtime, tracking, filesystem, and DM delivery.');

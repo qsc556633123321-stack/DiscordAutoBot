@@ -33,6 +33,7 @@ const { createCommunityPublicationTrackingReadCompatibilityAdapter } = require('
 const { createCommunityPublicationChannelTrackingReadRequest } = require('../application/community/ports/CommunityPublicationChannelTrackingReadPort');
 const { createCommunityPublicationChannelTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter');
 const { createCommunityOnboardingStateReader } = require('../infrastructure/community/CommunityOnboardingStateReader');
+const { createCommunityWelcomeChannelResolver } = require('../infrastructure/community/CommunityWelcomeChannelResolver');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -363,9 +364,11 @@ async function sendConciergeWelcome(member) {
   const trackingReadPort = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const trackingReadRequest = createCommunityPublicationChannelTrackingReadRequest({ guildId: member.guild.id, publication: 'guide' });
   const { trackedChannelId: guideChannelId } = trackingReadPort.readTrackedChannel(trackingReadRequest);
-  const guideChannel = guideChannelId
-    ? member.guild.channels.cache.get(guideChannelId) || await member.guild.channels.fetch(guideChannelId).catch(() => null)
-    : findChannelByName(member.guild, GUIDE_CHANNEL_NAME);
+  const channelResolver = createCommunityWelcomeChannelResolver({ guild: member.guild, findChannelByName });
+  const guideChannel = await channelResolver.resolve({
+    trackedChannelId: guideChannelId,
+    fallbackChannelName: GUIDE_CHANNEL_NAME
+  });
   if (!guideChannel) return;
   const request = mapLegacyWelcomeDeliveryRequest({ guildId: member.guild.id, guideChannelId: guideChannel.id });
   const payload = buildCommunityWelcomeMessage(request, { guildName: member.guild.name });

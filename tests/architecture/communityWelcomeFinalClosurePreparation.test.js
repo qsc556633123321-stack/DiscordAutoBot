@@ -11,10 +11,10 @@ const exportsStart = runtime.indexOf('module.exports');
 const welcome = runtime.slice(welcomeStart, exportsStart);
 
 assert.ok(fixtures.length >= 60);
-for (const required of ['createCommunityOnboardingStateReader', 'readTrackedChannel', 'channels.cache.get', 'channels.fetch', 'findChannelByName', 'mapLegacyWelcomeDeliveryRequest', 'buildCommunityWelcomeMessage', 'member.send(payload).catch(() => null)']) {
+for (const required of ['createCommunityOnboardingStateReader', 'readTrackedChannel', 'createCommunityWelcomeChannelResolver', 'channelResolver.resolve', 'mapLegacyWelcomeDeliveryRequest', 'buildCommunityWelcomeMessage', 'member.send(payload).catch(() => null)']) {
   assert.equal(welcome.includes(required), true, `Welcome flow must retain ${required}`);
 }
-for (const forbidden of ['readOnboardingData', 'saveOnboarding', 'data.guideChannelId', 'fromLegacyPublicationRecord']) {
+for (const forbidden of ['readOnboardingData', 'saveOnboarding', 'data.guideChannelId', 'fromLegacyPublicationRecord', 'channels.cache.get', 'channels.fetch', 'findChannelByName(member.guild, GUIDE_CHANNEL_NAME)']) {
   assert.equal(welcome.includes(forbidden), false, `Welcome flow must not regain ${forbidden}`);
 }
 assert.equal(runtime.includes('function maybeAddRole'), true);
@@ -23,8 +23,8 @@ assert.equal(runtime.includes('async function generateConciergeText'), true);
 const changedSource = execFileSync('git', ['diff', '--name-only', '--', 'src'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean);
 assert.equal(
-  changedSource.length === 0 || (changedSource.length === 1 && changedSource[0] === 'src/infrastructure/community/CommunityWelcomeChannelResolver.js'),
+  changedSource.length === 0 || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
   true,
-  'Preparation stays production-clean; the approved resolver implementation may add only its Infrastructure file.'
+  'Closure preparation permits only the approved Welcome runtime redirect.'
 );
-console.log('Welcome final closure preparation freezes current resolution, DM delivery, and isolation boundaries.');
+console.log('Welcome final closure preparation keeps direct DM delivery and isolation boundaries frozen after resolver redirect.');
