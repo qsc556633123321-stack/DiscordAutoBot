@@ -1,12 +1,14 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome Final Closure
+Community Filesystem Ownership Migration Preparation (Slice #65)
 
 ## Overall Progress
-Estimated local refactor progress: 85%
+Estimated local refactor progress: 85%. This preparation freezes compatibility behavior only; no production filesystem ownership has moved.
 
 ## Latest Completed
+- Community filesystem ownership, missing-file side effects, parse/fallback behavior, logging, and no-cache semantics characterized
+- Future narrow read-only Infrastructure boundary approved: `CommunityOnboardingJsonReader`
 - Project Architecture V2 established
 - Migration framework established
 - Architecture guardrails established
@@ -367,10 +369,13 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare Community Filesystem Ownership migration. It remains the highest-impact
-raw I/O owner outside the now-closed Guide, Roadmap, and Welcome flows.
+Implement the narrow `CommunityOnboardingJsonReader` Infrastructure boundary
+without runtime wiring.
 
 ## Required Checks After Every Slice
+- Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
+- `test:community`, `test:migration`, `test:architecture`, `test:legacy-boundaries`, `quality:gate`, `audit:legacy`, and `dashboard:build` PASS
+- Dependency analysis PASS: Architecture Score 100/100, Circular Dependencies 0, Reverse Layer Dependencies 0
 - Relevant tests PASS
 - Migration tests PASS
 - Architecture gate PASS
@@ -389,9 +394,13 @@ raw I/O owner outside the now-closed Guide, Roadmap, and Welcome flows.
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed.
 Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
-`ensureFile`; filesystem ownership has not moved. Role quick actions, button
-dispatch, direct channel setup, and AI text generation remain high-risk owners.
+`ensureFile`; filesystem ownership has not moved. The future reader dependency
+contract migration must be atomic with the three Guide/Roadmap/Welcome runtime
+construction sites; a dual-mode reader is not approved. Role quick actions,
+button dispatch, direct channel setup, and AI text generation remain high-risk
+owners.
 
 ## Last Updated
-2026-08-14: Community Welcome final closure audit passed; tracking, resolution,
-and delivery are boundary-owned. Local refactor progress is reassessed at 85%.
+2026-08-14: Community Filesystem Ownership Migration Preparation completed.
+Guide, Roadmap, and Welcome remain CLOSED; the filesystem reader remains
+runtime-owned pending the approved narrow Infrastructure boundary.
