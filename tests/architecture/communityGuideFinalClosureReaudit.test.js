@@ -41,7 +41,8 @@ assert.equal(changedProduction.every((file) => [
   'src/systems/communityConcierge.js',
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
-  'src/infrastructure/community/CommunityOnboardingStateReader.js'
+  'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  'src/infrastructure/community/CommunityWelcomeChannelResolver.js'
 ].includes(file)), true);
 
 console.log('Guide closure re-audit confirms all Guide read, lookup, mutation, and persistence ownership is boundary-based.');

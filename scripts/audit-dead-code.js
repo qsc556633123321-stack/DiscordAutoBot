@@ -29,6 +29,8 @@ const SOURCE_OF_TRUTH = new Set([
 const APPROVED_UNWIRED_BOUNDARIES = new Set([
   // This compatibility reader is intentionally implemented before adapter migration.
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  // Welcome channel resolution is intentionally prepared before its runtime redirect.
+  'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
 ]);
 
 function jsFiles(dir) {

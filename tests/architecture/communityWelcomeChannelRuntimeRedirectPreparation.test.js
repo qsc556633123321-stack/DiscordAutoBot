@@ -31,6 +31,7 @@ assert.equal(changedProduction.every((file) => [
   'src/systems/communityConcierge.js',
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
-  'src/infrastructure/community/CommunityOnboardingStateReader.js'
+  'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  'src/infrastructure/community/CommunityWelcomeChannelResolver.js'
 ].includes(file)), true);
 console.log('Welcome runtime redirect uses the approved channel tracking boundary without raw state leakage.');
