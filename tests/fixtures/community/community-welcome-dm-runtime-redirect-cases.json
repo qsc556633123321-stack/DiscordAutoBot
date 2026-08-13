@@ -1,0 +1,8 @@
+[
+  "success", "raw-message-result", "failure-error", "failure-string", "failure-number", "failure-object", "failure-null", "failure-undefined",
+  "exact-member", "exact-payload", "one-send", "no-retry", "no-log", "await", "result-discard-success", "result-discard-failure",
+  "no-channel", "no-channel-no-adapter", "no-channel-no-send", "resolver-cache", "resolver-fetch", "resolver-fallback",
+  "tracking-one-read", "reader-one-read", "payload-order", "adapter-construction-order", "guide-closed", "roadmap-closed",
+  "filesystem-isolated", "role-isolated", "button-isolated", "ai-isolated", "production-diff-zero", "adapter-direct",
+  "runtime-direct", "undefined-return", "member-validation", "payload-opaque", "failure-order", "success-order"
+]

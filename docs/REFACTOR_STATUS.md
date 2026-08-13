@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome DM Delivery Adapter Implementation
+Community Welcome DM Delivery Runtime Redirect Preparation
 
 ## Overall Progress
 Estimated local refactor progress: 82%
@@ -314,6 +314,8 @@ Estimated local refactor progress: 82%
   failure, and no-channel contracts frozen; runtime remains unchanged
 - Welcome DM delivery adapter implemented as an isolated Infrastructure boundary;
   runtime remains direct pending redirect preparation
+- Welcome DM runtime redirect prepared with construction, no-channel, identity,
+  await, result-discard, and failure equivalence coverage; runtime remains direct
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -361,9 +363,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the Welcome DM runtime redirect. Freeze construction timing,
-return-value discard behavior, and the existing no-channel early return before
-changing runtime ownership.
+Implement the prepared Welcome DM runtime redirect in `communityConcierge.js`.
+Keep the channel resolver, tracking reader, payload construction, and implicit
+`undefined` return unchanged.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -390,5 +392,5 @@ Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
 dispatch, direct channel setup, and AI text generation remain high-risk owners.
 
 ## Last Updated
-2026-08-13: Welcome DM delivery adapter implemented without runtime ownership
+2026-08-14: Welcome DM runtime redirect prepared without runtime ownership
 movement; local refactor progress remains 82%.
