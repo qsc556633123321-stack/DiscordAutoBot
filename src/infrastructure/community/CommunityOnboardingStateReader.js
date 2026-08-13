@@ -1,15 +1,15 @@
-function assertReadJson(readJson) {
-  if (typeof readJson !== 'function') {
-    throw new TypeError('CommunityOnboardingStateReader requires readJson');
+function assertOnboardingJsonReader(onboardingJsonReader) {
+  if (typeof onboardingJsonReader?.readRoot !== 'function') {
+    throw new TypeError('CommunityOnboardingStateReader requires onboardingJsonReader.readRoot');
   }
 }
 
-function createCommunityOnboardingStateReader({ filePath, readJson } = {}) {
-  assertReadJson(readJson);
+function createCommunityOnboardingStateReader({ onboardingJsonReader } = {}) {
+  assertOnboardingJsonReader(onboardingJsonReader);
 
   return Object.freeze({
     readOnboardingState() {
-      return readJson(filePath, {});
+      return onboardingJsonReader.readRoot({});
     }
   });
 }

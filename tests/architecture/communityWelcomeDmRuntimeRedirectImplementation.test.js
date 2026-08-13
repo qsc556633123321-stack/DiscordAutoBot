@@ -24,8 +24,10 @@ const changedSource = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 
   .trim().split(/\r?\n/).filter(Boolean);
 assert.equal(
   changedSource.length === 0
-    || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+    || (changedSource.length === 2
+      && changedSource[0] === 'src/infrastructure/community/CommunityOnboardingStateReader.js'
+      && changedSource[1] === 'src/systems/communityConcierge.js'),
   true,
-  'DM redirect implementation may be clean or modify only communityConcierge.js'
+  'DM redirect implementation may be clean or include only the approved StateReader atomic migration'
 );
 console.log('Welcome runtime delegates DM delivery through the adapter with the approved ordering and no direct send.');

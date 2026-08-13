@@ -11,9 +11,10 @@ const fixture = JSON.parse(fs.readFileSync(path.join(root, 'tests', 'fixtures', 
 for (const identifier of ['DATA_DIR', 'ONBOARDING_FILE', 'function ensureFile(', 'function readJson(']) assert.equal(runtime.includes(identifier), true, `Current runtime ownership must retain ${identifier}`);
 assert.equal(runtime.includes('function writeJson('), false, 'legacy writeJson helper remains removed');
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3);
-assert.equal(reader.includes('filePath, readJson'), true); assert.equal(reader.includes('readOnboardingState()'), true);
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 3);
+assert.equal(reader.includes('filePath, readJson'), false); assert.equal(reader.includes('onboardingJsonReader.readRoot'), true);
 for (const forbidden of ['discord.js', 'saveOnboarding', 'mergeRecord', 'updatedAt', 'communityConcierge']) assert.equal(candidate.includes(forbidden), false, `test-only candidate must not introduce ${forbidden}`);
 assert.ok(fixture.length >= 50);
-const productionChanges = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim();
-assert.equal(productionChanges, '', 'Preparation slice must not change production source');
-console.log('Community filesystem ownership preparation preserves runtime ownership and production source boundaries.');
+const productionChanges = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
+assert.deepEqual(productionChanges, ['src/infrastructure/community/CommunityOnboardingStateReader.js', 'src/systems/communityConcierge.js']);
+console.log('Community filesystem ownership migration preserves the approved atomic source boundary.');

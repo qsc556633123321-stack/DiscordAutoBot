@@ -7,8 +7,8 @@ const source = fs.readFileSync(path.join(root, 'src', 'infrastructure', 'communi
 const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConcierge.js'), 'utf8');
 for (const forbidden of ['discord.js', 'application/', 'domain/', 'composition/', 'communityConcierge', 'CommunityOnboardingStateReader', 'mergeRecord', 'updatedAt', 'saveOnboarding']) assert.equal(source.includes(forbidden), false, `Reader must not depend on ${forbidden}`);
 assert.equal(source.includes('readRoot('), true); assert.equal(source.includes('writeRoot'), false); assert.equal(source.includes('persist'), false); assert.equal(source.includes('cache'), false); assert.equal(source.includes('memo'), false);
-assert.equal(runtime.includes('createCommunityOnboardingJsonReader'), false, 'runtime remains unwired');
-assert.equal(runtime.includes('function readJson('), true); assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 3);
-const changed = execFileSync('git', ['status', '--short', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
-assert.equal(changed.every((file) => file === 'src/infrastructure/community/CommunityOnboardingJsonReader.js'), true);
-console.log('Production onboarding JSON reader is isolated, unwired, and permits no unrelated source diff.');
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3, 'runtime constructs one reader per closed flow');
+assert.equal(runtime.includes('function readJson('), true); assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
+const changed = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
+assert.deepEqual(changed, ['src/infrastructure/community/CommunityOnboardingStateReader.js', 'src/systems/communityConcierge.js']);
+console.log('Production onboarding JSON reader is isolated and permits only the approved atomic migration source diff.');

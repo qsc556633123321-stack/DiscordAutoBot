@@ -4,9 +4,9 @@ const { createFakeCommunityOnboardingStateReaderJsonDependency } = require('../.
 const { createFakeCommunityStateReaderJsonRuntimeConstruction } = require('../../fakes/community/FakeCommunityStateReaderJsonRuntimeConstruction');
 
 for (const value of [{ guild: {} }, {}, null, [], 'text', 0, false]) {
-  const legacy = createCommunityOnboardingStateReader({ filePath: 'onboarding.json', readJson() { return value; } });
+  const production = createCommunityOnboardingStateReader({ onboardingJsonReader: { readRoot(fallback) { assert.deepEqual(fallback, {}); return value; } } });
   const candidate = createFakeCommunityOnboardingStateReaderJsonDependency({ onboardingJsonReader: { readRoot(fallback) { assert.deepEqual(fallback, {}); return value; } } });
-  assert.equal(candidate.readOnboardingState(), legacy.readOnboardingState(), 'candidate preserves exact root identity');
+  assert.equal(candidate.readOnboardingState(), production.readOnboardingState(), 'candidate preserves exact root identity');
 }
 
 {

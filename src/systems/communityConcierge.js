@@ -33,6 +33,7 @@ const { createCommunityPublicationTrackingReadCompatibilityAdapter } = require('
 const { createCommunityPublicationChannelTrackingReadRequest } = require('../application/community/ports/CommunityPublicationChannelTrackingReadPort');
 const { createCommunityPublicationChannelTrackingReadCompatibilityAdapter } = require('../infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter');
 const { createCommunityOnboardingStateReader } = require('../infrastructure/community/CommunityOnboardingStateReader');
+const { createCommunityOnboardingJsonReader } = require('../infrastructure/community/CommunityOnboardingJsonReader');
 const { createCommunityWelcomeChannelResolver } = require('../infrastructure/community/CommunityWelcomeChannelResolver');
 const { createCommunityWelcomeDmDeliveryAdapter } = require('../infrastructure/community/CommunityWelcomeDmDeliveryAdapter');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
@@ -169,7 +170,8 @@ async function setupCommunityGuide(guild, options = {}) {
   const { lookupPort, mutationPort, getRetainedMessage, getRetainedMutationFailure } =
     communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const payload = await buildGuidePayload(guild);
-  const onboardingStateReader = createCommunityOnboardingStateReader({ filePath: ONBOARDING_FILE, readJson });
+  const onboardingJsonReader = createCommunityOnboardingJsonReader({ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE });
+  const onboardingStateReader = createCommunityOnboardingStateReader({ onboardingJsonReader });
   const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const trackingReadRequest = createCommunityPublicationTrackingReadRequest({ guildId: guild.id, publication: 'guide' });
   const { trackedMessageId: guideMessageId } = trackingReadPort.readTrackedMessage(trackingReadRequest);
@@ -227,7 +229,8 @@ async function setupRoadmapPanel(guild) {
   const channel = await getOrCreateRoadmapChannel(guild);
   const { lookupPort, mutationPort, getRetainedMessage } =
     communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
-  const onboardingStateReader = createCommunityOnboardingStateReader({ filePath: ONBOARDING_FILE, readJson });
+  const onboardingJsonReader = createCommunityOnboardingJsonReader({ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE });
+  const onboardingStateReader = createCommunityOnboardingStateReader({ onboardingJsonReader });
   const trackingReadPort = createCommunityPublicationTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const trackingReadRequest = createCommunityPublicationTrackingReadRequest({ guildId: guild.id, publication: 'roadmap' });
   const { trackedMessageId: roadmapMessageId } = trackingReadPort.readTrackedMessage(trackingReadRequest);
@@ -361,7 +364,8 @@ async function handleConciergeButton(interaction) {
 }
 
 async function sendConciergeWelcome(member) {
-  const onboardingStateReader = createCommunityOnboardingStateReader({ filePath: ONBOARDING_FILE, readJson });
+  const onboardingJsonReader = createCommunityOnboardingJsonReader({ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE });
+  const onboardingStateReader = createCommunityOnboardingStateReader({ onboardingJsonReader });
   const trackingReadPort = createCommunityPublicationChannelTrackingReadCompatibilityAdapter({ onboardingStateReader });
   const trackingReadRequest = createCommunityPublicationChannelTrackingReadRequest({ guildId: member.guild.id, publication: 'guide' });
   const { trackedChannelId: guideChannelId } = trackingReadPort.readTrackedChannel(trackingReadRequest);

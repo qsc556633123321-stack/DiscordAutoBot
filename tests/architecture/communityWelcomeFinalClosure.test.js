@@ -36,5 +36,8 @@ assert.equal(welcome.indexOf('channelResolver.resolve') < welcome.indexOf('if (!
 assert.equal(welcome.indexOf('if (!guideChannel) return') < welcome.indexOf('mapLegacyWelcomeDeliveryRequest'), true);
 assert.equal(welcome.indexOf('buildCommunityWelcomeMessage') < welcome.indexOf('createCommunityWelcomeDmDeliveryAdapter'), true);
 assert.equal(welcome.indexOf('createCommunityWelcomeDmDeliveryAdapter') < welcome.indexOf('await dmDelivery.send(payload)'), true);
-assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim(), '');
+assert.deepEqual(
+  execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean),
+  ['src/infrastructure/community/CommunityOnboardingStateReader.js', 'src/systems/communityConcierge.js']
+);
 console.log('Welcome final closure has no direct tracking, resolution, or DM delivery ownership.');

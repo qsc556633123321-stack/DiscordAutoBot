@@ -1,12 +1,13 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Onboarding StateReader JSON Dependency Migration Preparation (Slice #66)
+Community StateReader JSON Dependency Atomic Migration (Slice #46)
 
 ## Overall Progress
-Estimated local refactor progress: 85%. This preparation freezes compatibility behavior only; no production filesystem ownership has moved.
+Estimated local refactor progress: 87%. StateReader and all three runtime construction sites now depend on the Infrastructure JSON reader; runtime path/helper cleanup remains.
 
 ## Latest Completed
+- StateReader JSON dependency atomically migrated for Guide, Roadmap, and Welcome; JsonReader is runtime-active
 - StateReader JSON dependency migration prepared with an atomic two-file implementation allowlist; production remains unchanged
 - `CommunityOnboardingJsonReader` implemented as a read-only Infrastructure boundary and deliberately left runtime-unwired
 - Community filesystem ownership, missing-file side effects, parse/fallback behavior, logging, and no-cache semantics characterized
@@ -371,7 +372,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the approved atomic StateReader JSON dependency and Guide/Roadmap/Welcome runtime construction migration.
+Prepare runtime filesystem ownership cleanup for the now-dead `ensureFile` and `readJson` helpers.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -394,14 +395,12 @@ Implement the approved atomic StateReader JSON dependency and Guide/Roadmap/Welc
 ## Blockers
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed.
-Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
-`ensureFile`; filesystem ownership has not moved. The future reader dependency
-contract migration must be atomic with the three Guide/Roadmap/Welcome runtime
-construction sites; a dual-mode reader is not approved. Role quick actions,
-button dispatch, direct channel setup, and AI text generation remain high-risk
-owners.
+Runtime still owns `DATA_DIR` and `ONBOARDING_FILE`, but Guide, Roadmap, and
+Welcome now construct `CommunityOnboardingJsonReader` and a JsonReader-backed
+StateReader. `ensureFile` and `readJson` are dead cleanup candidates. Role
+quick actions, button dispatch, direct channel setup, and AI text generation
+remain high-risk owners.
 
 ## Last Updated
-2026-08-14: StateReader JSON dependency migration preparation completed.
-The reader, Guide, Roadmap, and Welcome runtime remain unchanged; the next
-approved slice atomically changes only StateReader and Community Concierge.
+2026-08-14: StateReader JSON dependency atomically migrated. Guide, Roadmap,
+and Welcome remain CLOSED; runtime filesystem path/helper cleanup is next.
