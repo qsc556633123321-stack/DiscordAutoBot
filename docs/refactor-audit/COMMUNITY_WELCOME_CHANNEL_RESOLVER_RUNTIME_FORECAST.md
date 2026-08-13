@@ -1,6 +1,6 @@
 # Community Welcome Channel Resolver Runtime Forecast
 
-The future redirect may replace only the direct resolution expression with:
+After the approved redirect, the channel-resolution portion of `sendConciergeWelcome` will be:
 
 ```js
 const channelResolver = createCommunityWelcomeChannelResolver({
@@ -13,6 +13,4 @@ const guideChannel = await channelResolver.resolve({
 });
 ```
 
-Tracking read, semantic request mapping, payload build, `member.send`, failure
-handling, and return behavior remain unchanged. This forecast is not runtime
-wiring and requires a separate redirect preparation slice.
+The runtime will still own the tracking read, no-channel return, semantic request mapping, payload building, and `member.send(payload).catch(() => null)`. This document is a forecast only; this preparation slice does not alter production runtime.

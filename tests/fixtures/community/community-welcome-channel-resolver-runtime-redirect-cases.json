@@ -1,0 +1,13 @@
+[
+  "cache-hit", "cache-hit-identity", "cache-hit-no-fetch", "cache-hit-no-fallback",
+  "cache-miss", "fetch-success", "fetch-identity", "fetch-exact-id",
+  "fetch-error", "fetch-string", "fetch-number", "fetch-object", "fetch-null", "fetch-undefined",
+  "undefined", "null", "empty", "false", "zero",
+  "number", "true", "object", "array", "whitespace",
+  "fallback-channel", "fallback-missing", "fallback-identity", "fallback-exact-name",
+  "no-retry", "no-second-fetch", "no-name-after-fetch-failure", "no-channel", "no-channel-no-send",
+  "semantic-request", "semantic-request-guild-id", "semantic-request-channel-id", "payload", "dm-direct",
+  "dm-error", "tracking-one-read", "tracking-request", "resolver-unchanged",
+  "filesystem-isolated", "role-isolated", "button-isolated", "ai-isolated", "guide-closed", "roadmap-closed",
+  "production-diff-zero", "reader-unchanged", "tracking-unchanged", "resolver-diff-zero"
+]
