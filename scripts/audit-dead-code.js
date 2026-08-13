@@ -27,6 +27,8 @@ const SOURCE_OF_TRUTH = new Set([
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
 ]);
 const APPROVED_UNWIRED_BOUNDARIES = new Set([
+  // This read-only filesystem boundary is intentionally implemented before StateReader migration.
+  'src/infrastructure/community/CommunityOnboardingJsonReader.js',
   // This compatibility reader is intentionally implemented before adapter migration.
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
   // This narrow adapter is intentionally implemented before its runtime redirect.

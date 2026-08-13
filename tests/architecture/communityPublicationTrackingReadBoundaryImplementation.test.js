@@ -55,6 +55,7 @@ const allowedProductionChanges = [
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  'src/infrastructure/community/CommunityOnboardingJsonReader.js',
   'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
   'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
 ];

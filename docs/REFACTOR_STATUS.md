@@ -7,6 +7,7 @@ Community Filesystem Ownership Migration Preparation (Slice #65)
 Estimated local refactor progress: 85%. This preparation freezes compatibility behavior only; no production filesystem ownership has moved.
 
 ## Latest Completed
+- `CommunityOnboardingJsonReader` implemented as a read-only Infrastructure boundary and deliberately left runtime-unwired
 - Community filesystem ownership, missing-file side effects, parse/fallback behavior, logging, and no-cache semantics characterized
 - Future narrow read-only Infrastructure boundary approved: `CommunityOnboardingJsonReader`
 - Project Architecture V2 established
@@ -369,8 +370,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement the narrow `CommunityOnboardingJsonReader` Infrastructure boundary
-without runtime wiring.
+Prepare the atomic `CommunityOnboardingStateReader` dependency-contract and
+Guide/Roadmap/Welcome construction migration.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -401,6 +402,6 @@ button dispatch, direct channel setup, and AI text generation remain high-risk
 owners.
 
 ## Last Updated
-2026-08-14: Community Filesystem Ownership Migration Preparation completed.
-Guide, Roadmap, and Welcome remain CLOSED; the filesystem reader remains
-runtime-owned pending the approved narrow Infrastructure boundary.
+2026-08-14: `CommunityOnboardingJsonReader` was implemented with frozen legacy
+filesystem behavior but remains unused by runtime. Guide, Roadmap, and Welcome
+remain CLOSED; filesystem ownership remains runtime-owned.

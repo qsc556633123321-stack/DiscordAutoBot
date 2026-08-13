@@ -22,6 +22,7 @@ const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root
   .filter((file) => file.startsWith('src/'));
 assert.equal(changedProduction.every((file) => [
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
+  'src/infrastructure/community/CommunityOnboardingJsonReader.js',
   'src/infrastructure/community/CommunityPublicationTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/systems/communityConcierge.js'

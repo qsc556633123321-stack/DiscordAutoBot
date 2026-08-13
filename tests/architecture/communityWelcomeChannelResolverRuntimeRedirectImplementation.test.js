@@ -32,7 +32,8 @@ const changedSource = execFileSync('git', ['status', '--short'], { cwd: root, en
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim()).filter((file) => file.startsWith('src/'));
 const allowedSource = new Set([
   'src/systems/communityConcierge.js',
-  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
+  'src/infrastructure/community/CommunityOnboardingJsonReader.js'
 ]);
 assert.equal(
   changedSource.every((file) => allowedSource.has(file)),

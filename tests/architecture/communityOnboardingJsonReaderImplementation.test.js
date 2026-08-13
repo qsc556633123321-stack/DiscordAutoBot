@@ -1,0 +1,14 @@
+const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const source = fs.readFileSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityOnboardingJsonReader.js'), 'utf8');
+const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConcierge.js'), 'utf8');
+for (const forbidden of ['discord.js', 'application/', 'domain/', 'composition/', 'communityConcierge', 'CommunityOnboardingStateReader', 'mergeRecord', 'updatedAt', 'saveOnboarding']) assert.equal(source.includes(forbidden), false, `Reader must not depend on ${forbidden}`);
+assert.equal(source.includes('readRoot('), true); assert.equal(source.includes('writeRoot'), false); assert.equal(source.includes('persist'), false); assert.equal(source.includes('cache'), false); assert.equal(source.includes('memo'), false);
+assert.equal(runtime.includes('createCommunityOnboardingJsonReader'), false, 'runtime remains unwired');
+assert.equal(runtime.includes('function readJson('), true); assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 3);
+const changed = execFileSync('git', ['status', '--short', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
+assert.deepEqual(changed, ['src/infrastructure/community/CommunityOnboardingJsonReader.js']);
+console.log('Production onboarding JSON reader is isolated, unwired, and the only approved source diff.');
