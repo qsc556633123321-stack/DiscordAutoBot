@@ -26,8 +26,14 @@ for (const forbidden of [
 }
 assert.equal(candidate.includes('createCommunityWelcomeDmDeliveryAdapter'), true);
 assert.equal(candidate.includes('await dmDelivery.send(payload)'), true);
-assert.deepEqual(
-  execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim(),
-  'src/systems/communityConcierge.js'
+const changedSource = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' })
+  .trim()
+  .split(/\r?\n/)
+  .filter(Boolean);
+assert.equal(
+  changedSource.length === 0
+    || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  true,
+  'Runtime redirect preparation may be clean or modify only communityConcierge.js'
 );
 console.log('Welcome DM runtime redirect preparation remains equivalent after the approved runtime handoff.');

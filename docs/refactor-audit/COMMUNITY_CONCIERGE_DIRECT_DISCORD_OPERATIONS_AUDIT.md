@@ -15,7 +15,7 @@
 - One `permissionOverwrites.set` site.
 - One `member.roles.add` site.
 - Five `interaction.reply` sites in button handling.
-- One `member.send` site for welcome delivery.
+- No direct `member.send` site remains for welcome delivery; the DM adapter owns it.
 
 Guide and Roadmap message edit/send operations are deliberately excluded from
 the direct count: those calls use their existing mutation ports. This audit

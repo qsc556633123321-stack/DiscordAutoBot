@@ -29,5 +29,10 @@ const changedSource = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 
   .trim()
   .split(/\r?\n/)
   .filter(Boolean);
-assert.deepEqual(changedSource, ['src/systems/communityConcierge.js']);
+assert.equal(
+  changedSource.length === 0
+    || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  true,
+  'DM adapter runtime integration may be clean or modify only communityConcierge.js'
+);
 console.log('Welcome DM adapter is isolated and runtime-active through the approved Welcome redirect.');

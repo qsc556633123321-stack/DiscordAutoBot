@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Welcome DM Runtime Redirect Implementation
+Community Welcome Final Closure
 
 ## Overall Progress
-Estimated local refactor progress: 84%
+Estimated local refactor progress: 85%
 
 ## Latest Completed
 - Project Architecture V2 established
@@ -318,6 +318,8 @@ Estimated local refactor progress: 84%
   await, result-discard, and failure equivalence coverage; runtime remains direct
 - Welcome DM runtime delivery redirected through the isolated Infrastructure
   adapter while retaining tracking, resolver, payload, and filesystem ownership
+- Community Welcome migration closure audited and marked CLOSED: tracking,
+  channel resolution, and DM delivery are boundary-owned at runtime
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -365,9 +367,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Run the Welcome Final Closure Audit. Tracking, channel resolution, and DM
-delivery are migrated; assess the remaining filesystem and unrelated owners
-without changing runtime behavior.
+Prepare Community Filesystem Ownership migration. It remains the highest-impact
+raw I/O owner outside the now-closed Guide, Roadmap, and Welcome flows.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -385,13 +386,12 @@ without changing runtime behavior.
 - Dashboard build PASS
 
 ## Blockers
-Guide and Roadmap are CLOSED. Welcome channel tracking and channel resolution
-are migrated; DM delivery is runtime-active through its adapter. `readOnboardingData` and `saveOnboarding`
+Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed.
 Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
 `ensureFile`; filesystem ownership has not moved. Role quick actions, button
 dispatch, direct channel setup, and AI text generation remain high-risk owners.
 
 ## Last Updated
-2026-08-14: Welcome DM delivery redirected through the Infrastructure adapter;
-Welcome awaits final closure audit. Local refactor progress is reassessed at 84%.
+2026-08-14: Community Welcome final closure audit passed; tracking, resolution,
+and delivery are boundary-owned. Local refactor progress is reassessed at 85%.

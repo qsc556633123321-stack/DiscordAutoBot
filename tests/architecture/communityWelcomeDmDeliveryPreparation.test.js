@@ -20,5 +20,14 @@ for (const forbidden of ['readTrackedChannel', 'CommunityWelcomeChannelResolver'
   assert.equal(candidate.includes(forbidden), false, `DM candidate must not own ${forbidden}`);
 }
 assert.equal(candidate.includes('member.send(payload).catch(() => null)'), true);
-assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim(), 'src/systems/communityConcierge.js');
+const changedSource = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' })
+  .trim()
+  .split(/\r?\n/)
+  .filter(Boolean);
+assert.equal(
+  changedSource.length === 0
+    || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  true,
+  'DM delivery preparation may be clean or modify only communityConcierge.js'
+);
 console.log('Welcome DM delivery boundary stays isolated while runtime ownership is redirected through it.');

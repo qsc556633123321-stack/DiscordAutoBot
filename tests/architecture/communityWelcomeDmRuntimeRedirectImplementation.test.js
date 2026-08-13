@@ -22,5 +22,10 @@ assert.equal(welcome.indexOf('createCommunityWelcomeDmDeliveryAdapter') < welcom
 assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', adapterPath], { cwd: root, encoding: 'utf8' }).trim(), '');
 const changedSource = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(changedSource, ['src/systems/communityConcierge.js']);
+assert.equal(
+  changedSource.length === 0
+    || (changedSource.length === 1 && changedSource[0] === 'src/systems/communityConcierge.js'),
+  true,
+  'DM redirect implementation may be clean or modify only communityConcierge.js'
+);
 console.log('Welcome runtime delegates DM delivery through the adapter with the approved ordering and no direct send.');
