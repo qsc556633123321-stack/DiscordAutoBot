@@ -14,7 +14,7 @@ assert.match(runtime, /buildCommunityWelcomeMessage/);
 assert.match(runtime, /channels\.cache\.get/);
 assert.match(runtime, /channels\.fetch/);
 assert.match(runtime, /await member\.send\(payload\)\.catch\(\(\) => null\)/);
-assert.match(runtime, /function saveOnboarding/);
+assert.doesNotMatch(runtime, /function saveOnboarding/);
 assert.match(event, /sendConciergeWelcome/);
 assert.match(result, /Delivered/);
 assert.match(reasons, /GuideDestinationUnavailable/);

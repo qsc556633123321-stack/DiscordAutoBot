@@ -23,7 +23,7 @@ for (const forbidden of ['data.guideChannelId', 'fromLegacyPublicationRecord', '
   assert.equal(candidate.includes(forbidden), false, `Candidate must not own ${forbidden}`);
 }
 assert.equal(fs.existsSync(path.join(root, 'src', 'composition', 'communityPublicationChannelTrackingReadFeature.js')), false);
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only the compatibility reader definition remains');
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 0, 'dead compatibility reader helper is removed');
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));

@@ -21,7 +21,7 @@ const required = [
 for (const file of required) assert.equal(fs.existsSync(path.join(root, file)), true, `missing ${file}`);
 
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
-assert.match(runtime, /function saveOnboarding/);
+assert.doesNotMatch(runtime, /function saveOnboarding/);
 assert.match(runtime, /createCommunityPublicationStateFeature/);
 assert.match(runtime, /persistCommunityPublicationRecord\.execute/);
 assert.equal(/function writeJson\(/.test(runtime), false, 'legacy runtime must no longer own the writer');

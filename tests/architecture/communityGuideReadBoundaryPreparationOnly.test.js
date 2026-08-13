@@ -13,7 +13,7 @@ assert.equal((guideRuntime.match(/readOnboardingData\(\)/g) || []).length, 0);
 assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadRequest'), true);
 assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadCompatibilityAdapter'), true);
 assert.equal(guideRuntime.includes('createFakeProductionShapeGuideTrackedStateRead'), false);
-assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 0);
 for (const forbidden of ["require('discord.js')", "require('node:fs')", 'saveOnboarding', '.persist(', 'writeFile', 'updatedAt']) {
   assert.equal(candidate.includes(forbidden), false, `Test-only read candidate must not couple to ${forbidden}`);
 }
@@ -24,4 +24,4 @@ assert.equal(
   true,
   `Only the Guide/Roadmap runtime may change: ${changed.join(', ')}`
 );
-console.log('Guide read boundary regression confirms shared runtime ownership and retained saveOnboarding helper.');
+console.log('Guide read boundary regression confirms shared runtime ownership after helper cleanup.');

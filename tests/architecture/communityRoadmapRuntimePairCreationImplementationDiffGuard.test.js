@@ -10,6 +10,6 @@ assert.match(roadmap, /const channel = await getOrCreateRoadmapChannel\(guild\);
 assert.match(roadmap, /lookupPort\.lookupTrackedMessage\(\{ messageId: roadmapMessageId \}\)/);
 assert.match(roadmap, /mutationPort\.edit\(/);
 assert.match(roadmap, /mutationPort\.send\(/);
-assert.match(roadmap, /saveOnboarding\(guild\.id/);
+assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id/);
 assert.doesNotMatch(roadmap, /RoadmapPublicationMessageMutationAdapter|getRetainedMutationFailure/);
 console.log('Roadmap runtime Pair creation implementation diff guard passed');

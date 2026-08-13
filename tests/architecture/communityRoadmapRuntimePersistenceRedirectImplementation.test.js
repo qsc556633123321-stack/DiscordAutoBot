@@ -14,6 +14,6 @@ assert.match(roadmap, /communityRoadmapPersistenceFeature\.persist\(persistenceR
 assert.ok(roadmap.indexOf('communityRoadmapPersistenceFeature.persist') > roadmap.indexOf('mutationPort.send'));
 assert.doesNotMatch(roadmap, /await\s+communityRoadmapPersistenceFeature\.persist|Promise\.resolve|queueMicrotask|nextTick|setImmediate/);
 assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId|persistCommunityPublicationRecord\.execute|roadmapChannelId.*patch|roadmapMessageId.*patch/);
-assert.match(guide, /saveOnboarding\(guild\.id, \{\s+guideChannelId: channel\.id,\s+guideMessageId: message\.id/s);
+assert.doesNotMatch(guide, /saveOnboarding\(guild\.id, \{\s+guideChannelId: channel\.id,\s+guideMessageId: message\.id/s);
 
 console.log('Roadmap runtime persistence redirect uses semantic synchronous persistence and preserves Guide legacy ownership.');

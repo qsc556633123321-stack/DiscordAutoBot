@@ -10,6 +10,6 @@ assert.match(runtime, /mutationPlan\.operation === GuidePublicationOperationType
 assert.match(runtime, /mutationPlan\.operation === GuidePublicationOperationType\.SendNewMessage/);
 assert.match(runtime, /await message\.edit\(payload\)/);
 assert.match(runtime, /message = await channel\.send\(payload\)/);
-assert.match(runtime, /saveOnboarding\(guild\.id/);
+assert.doesNotMatch(runtime, /saveOnboarding\(guild\.id/);
 assert.equal(/GuidePublicationPort|discordGuidePublicationAdapter|communityGuidePublicationFeature/.test(runtime), false);
 console.log('community Guide mutation Plan branch runtime boundary passed');

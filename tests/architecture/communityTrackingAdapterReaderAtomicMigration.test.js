@@ -13,7 +13,7 @@ for (const source of [messageAdapter, channelAdapter]) {
 }
 assert.equal(channelAdapter.includes('fromLegacyPublicationRecord'), false);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3, 'Guide, Roadmap, and Welcome construct one reader each');
-assert.equal((runtime.match(/\breadOnboardingData\b/g) || []).length, 1, 'only the retained helper definition remains');
+assert.equal((runtime.match(/\breadOnboardingData\b/g) || []).length, 0, 'the zero-consumer helper is removed');
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityTrackingAdapterReaderFeature.js')), false);
 assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src/infrastructure/community/CommunityOnboardingStateReader.js'], { cwd: root, encoding: 'utf8' }).trim(), '');
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })

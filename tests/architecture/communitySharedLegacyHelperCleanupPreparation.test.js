@@ -11,8 +11,8 @@ assert.equal(candidate.includes('node:fs'), false);
 assert.equal(candidate.includes('discord.js'), false);
 assert.equal(candidate.includes('writeFile'), false);
 assert.equal(candidate.includes('saveOnboarding'), false);
-assert.equal((runtime.match(/function readOnboardingData\(/g) || []).length, 1);
-assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
+assert.equal((runtime.match(/function readOnboardingData\(/g) || []).length, 0);
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 0);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));

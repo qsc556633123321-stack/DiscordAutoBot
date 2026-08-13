@@ -14,6 +14,6 @@ assert.match(guide, /communityGuidePersistenceFeature\.persist\(persistenceReque
 assert.doesNotMatch(guide, /saveOnboarding\(|persistCommunityPublicationRecord\.execute|mapGuidePersistenceRequestToGenericInput|await\s+communityGuidePersistenceFeature\.persist|Promise\.resolve/);
 assert.ok(guide.indexOf('communityGuidePersistenceFeature.persist') > guide.indexOf('retainedMessage'));
 assert.doesNotMatch(roadmap, /GuidePersistenceRequest|createCommunityGuidePersistenceFeature/);
-assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 0);
 assert.equal((runtime.match(/saveOnboarding\(guild\.id/g) || []).length, 0);
 console.log('Guide runtime persistence redirect is semantic, synchronous, and leaves Roadmap and helper definition untouched.');

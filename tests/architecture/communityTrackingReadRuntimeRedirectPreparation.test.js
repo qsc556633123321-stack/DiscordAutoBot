@@ -21,12 +21,12 @@ for (const source of [guideCandidate, roadmapCandidate]) {
 }
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityPublicationTrackingReadFeature.js')), false);
 const welcome = runtime.match(/async function sendConciergeWelcome\(member\) \{([\s\S]*?)\n\}\n\nmodule\.exports/)[1];
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only the compatibility reader definition remains');
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 0, 'dead compatibility reader helper is removed');
 assert.equal(welcome.includes('readOnboardingData()'), false);
 assert.equal(welcome.includes('guideChannelId'), true);
 assert.equal(welcome.includes('readTrackedChannel'), true);
 assert.equal(welcome.includes('data.guideChannelId'), false);
-assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1, 'saveOnboarding remains retained with zero runtime consumers');
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 0, 'saveOnboarding is removed after zero-consumer cleanup');
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
 assert.equal(

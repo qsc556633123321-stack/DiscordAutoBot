@@ -12,7 +12,7 @@ assert.match(runtime, /await member\.send\(payload\)\.catch\(\(\) => null\)/);
 assert.match(runtime, /channels\.cache\.get\(data\.guideChannelId\)/);
 assert.match(runtime, /channels\.fetch\(data\.guideChannelId\)/);
 assert.match(runtime, /if \(!guideChannel\) return/);
-assert.match(runtime, /function saveOnboarding\(guildId, patch\)/);
+assert.doesNotMatch(runtime, /function saveOnboarding\(guildId, patch\)/);
 assert.equal(/CommunityWelcomeDeliveryResult|CommunityWelcomeDeliveryFailureReason|DeliveryPort|Discord.*Adapter/.test(runtime), false);
 for (const file of [
   'src/application/community/welcome/CommunityWelcomeDeliveryPort.js',

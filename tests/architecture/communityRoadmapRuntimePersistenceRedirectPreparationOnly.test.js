@@ -9,6 +9,6 @@ const guide = runtime.match(/async function setupCommunityGuide\(guild, options 
 
 assert.match(roadmap, /communityRoadmapPersistenceFeature\.persist\(persistenceRequest\)/);
 assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId|roadmapChannelId.*patch/);
-assert.match(guide, /saveOnboarding\(guild\.id, \{\s+guideChannelId: channel\.id,\s+guideMessageId: message\.id/s);
+assert.doesNotMatch(guide, /saveOnboarding\(guild\.id, \{\s+guideChannelId: channel\.id,\s+guideMessageId: message\.id/s);
 
 console.log('Roadmap persistence redirect preserves the Guide legacy boundary.');

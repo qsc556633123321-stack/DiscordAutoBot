@@ -29,10 +29,10 @@ assert.equal(guide.includes('mutationPort.edit('), true);
 assert.equal(guide.includes('mutationPort.send('), true);
 assert.equal(guide.includes('createGuidePersistenceRequest('), true);
 assert.equal(guide.includes('communityGuidePersistenceFeature.persist('), true);
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only the compatibility reader definition remains');
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 0, 'dead compatibility reader helper is removed');
 assert.equal(welcome.includes('readOnboardingData()'), false);
 assert.equal(welcome.includes('guideChannelId'), true);
-assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 0);
 
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())

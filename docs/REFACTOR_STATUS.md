@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Combined Dead Onboarding Helper Cleanup Preparation
+Community Combined Dead Onboarding Helper Cleanup Implementation
 
 ## Overall Progress
-Estimated local refactor progress: 75%
+Estimated local refactor progress: 80%
 
 ## Latest Completed
 - Project Architecture V2 established
@@ -297,6 +297,8 @@ Estimated local refactor progress: 75%
   Roadmap, and Welcome each construct the existing reader per invocation
 - `readOnboardingData` and `saveOnboarding` audited as private zero-consumer
   definitions; combined cleanup is prepared without filesystem restructuring
+- `readOnboardingData` and `saveOnboarding` removed after their zero-consumer
+  audits; Guide, Roadmap, and Welcome remain reader-backed at runtime
 
 - Roadmap persistence migration preparation owns frozen schema and regression
   contracts only; runtime sequencing and `saveOnboarding` remain legacy-owned
@@ -344,9 +346,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Implement combined deletion of the private `readOnboardingData` and
-`saveOnboarding` helpers only, while retaining reader construction,
-`ONBOARDING_FILE`, `readJson`, and `ensureFile`.
+Run a focused Community Concierge Closure Audit to identify the next bounded
+runtime owner after dead-helper removal, before attempting filesystem ownership
+movement.
 
 ## Required Checks After Every Slice
 - Relevant tests PASS
@@ -365,13 +367,11 @@ Implement combined deletion of the private `readOnboardingData` and
 
 ## Blockers
 Guide is CLOSED. Guide, Roadmap, and Welcome use approved reader-backed tracking
-boundaries at runtime. `readOnboardingData` and `saveOnboarding` are private
-zero-consumer cleanup candidates approved for one atomic deletion. Runtime still
-constructs the reader with `ONBOARDING_FILE` and `readJson`; filesystem ownership
-has not moved.
-Progress is 78%; high-risk community flows remain outstanding.
+boundaries at runtime. `readOnboardingData` and `saveOnboarding` are removed.
+Runtime still constructs the reader with `ONBOARDING_FILE`, `readJson`, and
+`ensureFile`; filesystem ownership has not moved. High-risk community flows
+remain outstanding.
 
 ## Last Updated
-2026-08-11: combined dead onboarding helper cleanup characterized. Only the two
-private helper definitions are approved for the next implementation; progress
-remains 78%.
+2026-08-13: combined dead onboarding helper cleanup implemented. Both private
+helper definitions are removed; local refactor progress is estimated at 80%.

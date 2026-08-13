@@ -34,8 +34,8 @@ assert.equal(welcome.includes('data.guideChannelId'), false);
 assert.equal(welcome.includes('readTrackedChannel'), true);
 assert.equal(welcome.includes('createCommunityPublicationChannelTrackingReadRequest'), true);
 assert.equal(welcome.includes('createCommunityPublicationChannelTrackingReadCompatibilityAdapter'), true);
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only the compatibility reader definition remains');
-assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1);
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 0, 'dead compatibility reader helper is removed');
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 0);
 const changedProduction = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim())
   .filter((file) => file.startsWith('src/'));

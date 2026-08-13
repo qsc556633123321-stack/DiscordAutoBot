@@ -36,13 +36,13 @@ for (const source of [guide, roadmap]) {
 assert.equal(guide.includes('data.guideMessageId'), false, 'Guide runtime must not retain a raw legacy fallback');
 assert.equal(roadmap.includes('data.roadmapMessageId'), false, 'Roadmap runtime must not retain a raw legacy fallback');
 assert.equal(runtime.includes('fromLegacyPublicationRecord'), false, 'Tracking-state mapping is infrastructure-owned');
-assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 1, 'only the compatibility reader definition remains');
+assert.equal((runtime.match(/readOnboardingData\(\)/g) || []).length, 0, 'dead compatibility reader helper is removed');
 assert.equal(welcome.includes('readOnboardingData()'), false);
 assert.equal(welcome.includes('guideChannelId'), true);
 assert.equal(welcome.includes('readTrackedMessage'), false, 'Welcome remains outside the message-tracking redirect');
 assert.equal(welcome.includes('readTrackedChannel'), true, 'Welcome uses the channel-tracking redirect');
 assert.equal(welcome.includes('data.guideChannelId'), false);
-assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 1, 'Retained zero-consumer helper must remain');
+assert.equal((runtime.match(/function saveOnboarding\(/g) || []).length, 0, 'Zero-consumer helper must be removed');
 
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim()

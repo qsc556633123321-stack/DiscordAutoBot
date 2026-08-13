@@ -46,7 +46,7 @@ assert.match(runtime, /async function setupCommunityGuide/);
 assert.match(runtime, /channel\.messages\.fetch/);
 assert.match(runtime, /await message\.edit\(payload\)/);
 assert.match(runtime, /await channel\.send\(payload\)/);
-assert.match(runtime, /saveOnboarding/);
+assert.doesNotMatch(runtime, /saveOnboarding/);
 assert.equal(fs.existsSync(path.join(root, 'src', 'application', 'community', 'communityGuideMutation.js')), false);
 assert.equal(fs.existsSync(path.join(root, 'src', 'services', 'community', 'communityGuideMutationService.js')), false);
 

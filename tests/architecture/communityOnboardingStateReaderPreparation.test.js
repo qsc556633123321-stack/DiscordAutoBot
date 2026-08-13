@@ -9,7 +9,8 @@ const candidate = fs.readFileSync(path.join(root, 'tests', 'fakes', 'community',
 
 assert.match(runtime, /function ensureFile\(filePath, fallback = '\{\}'\)/);
 assert.match(runtime, /function readJson\(filePath, fallback = \{\}\)/);
-assert.match(runtime, /return readJson\(ONBOARDING_FILE, \{\}\)/);
+assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 3);
+assert.equal(runtime.includes('readOnboardingData'), false);
 assert.equal(candidate.includes('discord.js'), false);
 assert.equal(candidate.includes('writeFile'), false);
 assert.equal(candidate.includes('saveOnboarding'), false);

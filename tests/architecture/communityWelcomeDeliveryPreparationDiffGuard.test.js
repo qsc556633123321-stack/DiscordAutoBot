@@ -6,7 +6,7 @@ const root = path.resolve(__dirname, '..', '..');
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
 assert.match(runtime, /async function sendConciergeWelcome\(member\)/);
 assert.match(runtime, /member\.send\(payload\)/);
-assert.match(runtime, /saveOnboarding\(guildId, patch\)/);
+assert.doesNotMatch(runtime, /saveOnboarding\(guildId, patch\)/);
 assert.match(runtime, /mapLegacyWelcomeDeliveryRequest/);
 assert.match(runtime, /buildCommunityWelcomeMessage/);
 assert.equal(/CommunityWelcomeDeliveryResult|CommunityWelcomeDeliveryFailureReason|DeliveryPort/.test(runtime), false);

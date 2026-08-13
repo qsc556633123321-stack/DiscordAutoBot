@@ -66,18 +66,6 @@ function readJson(filePath, fallback = {}) {
   }
 }
 
-function readOnboardingData() {
-  return readJson(ONBOARDING_FILE, {});
-}
-
-function saveOnboarding(guildId, patch) {
-  const feature = createCommunityPublicationStateFeature({
-    filePath: ONBOARDING_FILE,
-    dataDirectory: DATA_DIR
-  });
-  return feature.persistCommunityPublicationRecord.execute({ guildId, patch }).record;
-}
-
 async function generateConciergeText(kind, context, fallback) {
   if (!process.env.OPENAI_API_KEY) return fallback;
   try {

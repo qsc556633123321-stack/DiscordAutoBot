@@ -22,6 +22,6 @@ assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadReques
 assert.equal(guideRuntime.includes('createCommunityPublicationTrackingReadCompatibilityAdapter'), true);
 assert.equal(guideRuntime.includes('fromLegacyPublicationRecord'), false);
 assert.equal(guideRuntime.includes('data.guideMessageId'), false);
-assert.equal((source.match(/function saveOnboarding\(/g) || []).length, 1);
+assert.equal((source.match(/function saveOnboarding\(/g) || []).length, 0);
 
 console.log('Guide final legacy search confirms shared tracking read runtime ownership and preserved publication ports.');

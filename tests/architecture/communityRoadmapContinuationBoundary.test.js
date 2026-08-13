@@ -8,6 +8,6 @@ const roadmap = source.slice(source.indexOf('async function setupRoadmapPanel'),
 assert.match(guide, /lookupPort\.lookup\(/);
 assert.match(guide, /mutationPort\.edit\(/);
 assert.match(guide, /mutationPort\.send\(/);
-assert.match(roadmap, /saveOnboarding\(guild\.id/);
+assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id/);
 assert.doesNotMatch(guide, /roadmapMessageId/);
 console.log('Community Guide/Roadmap ownership boundary passed');

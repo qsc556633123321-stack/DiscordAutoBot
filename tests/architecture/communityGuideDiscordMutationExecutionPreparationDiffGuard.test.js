@@ -6,5 +6,5 @@ const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.
 assert.match(runtime, /buildGuidePublicationMutationPlan/);
 assert.match(runtime, /await message\.edit\(payload\)/);
 assert.match(runtime, /message = await channel\.send\(payload\)/);
-assert.match(runtime, /saveOnboarding\(guild\.id/);
+assert.doesNotMatch(runtime, /saveOnboarding\(guild\.id/);
 console.log('community Guide Discord mutation execution preparation diff guard passed');

@@ -6,7 +6,7 @@ const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.
 
 assert.match(runtime, /await message\.edit\(payload\)/);
 assert.match(runtime, /message = await channel\.send\(payload\)/);
-assert.match(runtime, /saveOnboarding\(guild\.id/);
+assert.doesNotMatch(runtime, /saveOnboarding\(guild\.id/);
 assert.equal(fs.existsSync(path.join(root, 'src/infrastructure/community/discordGuidePublicationAdapter.js')), false);
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityGuideDiscordMutationFeature.js')), false);
 console.log('Guide Discord mutation Application port diff guard passed');

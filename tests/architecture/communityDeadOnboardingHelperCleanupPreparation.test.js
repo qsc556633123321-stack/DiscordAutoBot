@@ -17,11 +17,9 @@ for (const source of [reader, messageAdapter, channelAdapter]) {
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3);
 assert.equal((runtime.match(/function readJson\(/g) || []).length, 1);
 assert.equal((runtime.match(/function ensureFile\(/g) || []).length, 1);
-const simulated = runtime.replace(/function readOnboardingData\(\) \{[\s\S]*?\n\}\n\nfunction saveOnboarding\([\s\S]*?\n\}\n\n/, '');
-assert.equal(simulated.includes('readOnboardingData'), false);
-assert.equal(simulated.includes('saveOnboarding'), false);
-assert.equal((simulated.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3);
+assert.equal(runtime.includes('readOnboardingData'), false);
+assert.equal(runtime.includes('saveOnboarding'), false);
 const changed = execFileSync('git', ['status', '--short'], { cwd: root, encoding: 'utf8' })
   .trim().split(/\r?\n/).filter(Boolean).map((line) => line.slice(3).trim());
-assert.equal(changed.filter((file) => file.startsWith('src/')).length, 0, 'Preparation must not change production source');
-console.log('Both private helpers are deletion-ready while runtime reader filesystem dependencies remain active.');
+assert.deepEqual(changed.filter((file) => file.startsWith('src/')), ['src/systems/communityConcierge.js']);
+console.log('Both private helpers are removed while runtime reader filesystem dependencies remain active.');

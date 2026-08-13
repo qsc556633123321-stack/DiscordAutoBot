@@ -9,6 +9,6 @@ const request = fs.readFileSync(path.join(root, 'src', 'application', 'community
 assert.equal(/createGuidePublicationExecutionRequest/.test(runtime), false, 'runtime must not integrate Execution Request');
 assert.match(runtime, /await message\.edit\(payload\)/);
 assert.match(runtime, /message = await channel\.send\(payload\)/);
-assert.match(runtime, /saveOnboarding\(guild\.id/);
+assert.doesNotMatch(runtime, /saveOnboarding\(guild\.id/);
 assert.equal(/Port|Adapter|Repository|Composition/.test(request), false, 'Request contract must remain a pure data shape');
 console.log('Community Guide execution post-persistence diff guard passed.');

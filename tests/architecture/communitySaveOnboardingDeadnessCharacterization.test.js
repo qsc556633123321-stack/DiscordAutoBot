@@ -8,8 +8,8 @@ const source = fs.readFileSync(runtimePath, 'utf8');
 const exported = source.slice(source.indexOf('module.exports'));
 const occurrences = source.match(/\bsaveOnboarding\b/g) || [];
 
-assert.equal((source.match(/function saveOnboarding\(/g) || []).length, 1);
-assert.equal(occurrences.length, 1, 'saveOnboarding has no invocation, injection, or alias in production runtime');
+assert.equal((source.match(/function saveOnboarding\(/g) || []).length, 0);
+assert.equal(occurrences.length, 0, 'saveOnboarding is removed from production runtime');
 assert.equal(exported.includes('saveOnboarding'), false);
 assert.equal(source.includes('saveOnboarding(guild.id'), false);
-console.log('saveOnboarding is a retained zero-consumer definition and a direct deletion candidate after cleanup approval.');
+console.log('saveOnboarding is removed after zero-consumer cleanup approval.');
