@@ -46,6 +46,7 @@ assert.equal(changedProduction.every((file) => [
   'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
   'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
   'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
+  'src/application/community/CommunityConciergeButtonActionResolver.js',
   'src/application/community/communityRoleQuickActionUseCase.js',
   'src/application/community/ports/CommunityRoleMutationGateway.js',
   'src/composition/communityRoleQuickActionFeature.js',

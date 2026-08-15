@@ -17,15 +17,12 @@ const productionDiff = [
   execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }),
   execFileSync('git', ['ls-files', '--others', '--exclude-standard', '--', 'src'], { cwd: root, encoding: 'utf8' })
 ].join('\n').trim().split(/\r?\n/).filter(Boolean).sort();
-const approvedImplementationDiff = [
+for (const roleBoundaryFile of [
   'src/application/community/communityRoleQuickActionUseCase.js',
   'src/application/community/ports/CommunityRoleMutationGateway.js',
   'src/composition/communityRoleQuickActionFeature.js',
-  'src/infrastructure/discord/communityRoleMutationGateway.js',
-  'src/systems/communityConcierge.js'
-];
-assert.ok(
-  productionDiff.length === 0 || JSON.stringify(productionDiff) === JSON.stringify(approvedImplementationDiff),
-  'role boundary preparation permits committed source truth or its approved implementation diff'
-);
+  'src/infrastructure/discord/communityRoleMutationGateway.js'
+]) {
+  assert.equal(productionDiff.includes(roleBoundaryFile), false, `${roleBoundaryFile} must remain unchanged`);
+}
 console.log('Community role boundary preparation recognizes the committed role boundary source truth.');

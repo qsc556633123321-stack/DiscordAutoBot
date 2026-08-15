@@ -34,6 +34,7 @@ const { createDefaultCommunityOnboardingJsonReader } = require('../infrastructur
 const { createCommunityWelcomeChannelResolver } = require('../infrastructure/community/CommunityWelcomeChannelResolver');
 const { createCommunityWelcomeDmDeliveryAdapter } = require('../infrastructure/community/CommunityWelcomeDmDeliveryAdapter');
 const { createCommunityRoleQuickActionFeature } = require('../composition/communityRoleQuickActionFeature');
+const { resolveCommunityConciergeButtonAction } = require('../application/community/CommunityConciergeButtonActionResolver');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
 const GUIDE_CHANNEL_NAME = '🧭｜伺服器導覽';
@@ -246,9 +247,9 @@ function quickLinks(guild, kind) {
 }
 
 async function handleConciergeButton(interaction) {
-  const id = interaction.customId;
+  const action = resolveCommunityConciergeButtonAction(interaction.customId);
   const guild = interaction.guild;
-  if (id === 'concierge_games') {
+  if (action === 'games') {
     const roleQuickActionFeature = createCommunityRoleQuickActionFeature({
       resolveGuild: () => guild,
       resolveMember: () => interaction.member
@@ -276,7 +277,7 @@ async function handleConciergeButton(interaction) {
     return true;
   }
 
-  if (id === 'concierge_night') {
+  if (action === 'night') {
     const links = quickLinks(guild, 'night');
     await interaction.reply({
       embeds: [
@@ -294,7 +295,7 @@ async function handleConciergeButton(interaction) {
     return true;
   }
 
-  if (id === 'concierge_bot') {
+  if (action === 'bot') {
     await interaction.reply({
       embeds: [
         new EmbedBuilder()
@@ -316,8 +317,8 @@ async function handleConciergeButton(interaction) {
     return true;
   }
 
-  if (id === 'concierge_invest' || id === 'concierge_dev') {
-    const kind = id === 'concierge_invest' ? 'invest' : 'dev';
+  if (action === 'invest' || action === 'dev') {
+    const kind = action;
     const title = kind === 'invest' ? '📈 投資入口' : '🧑‍💻 AI / 開發入口';
     const roleName = kind === 'invest' ? '📈 股票投資' : '🛠 開發/AI';
     const roleQuickActionFeature = createCommunityRoleQuickActionFeature({
@@ -343,7 +344,7 @@ async function handleConciergeButton(interaction) {
     return true;
   }
 
-  if (id === 'concierge_roadmap') {
+  if (action === 'roadmap') {
     await interaction.reply({ embeds: [buildRoadmapEmbed()], ephemeral: true });
     return true;
   }

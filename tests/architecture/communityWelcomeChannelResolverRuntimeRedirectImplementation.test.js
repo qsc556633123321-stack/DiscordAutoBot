@@ -36,6 +36,7 @@ const allowedSource = new Set([
   'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
   'src/infrastructure/community/CommunityOnboardingJsonReader.js',
   'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
+  'src/application/community/CommunityConciergeButtonActionResolver.js',
   'src/application/community/communityRoleQuickActionUseCase.js',
   'src/application/community/ports/CommunityRoleMutationGateway.js',
   'src/composition/communityRoleQuickActionFeature.js',

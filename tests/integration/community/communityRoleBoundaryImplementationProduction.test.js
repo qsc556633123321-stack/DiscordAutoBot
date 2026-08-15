@@ -8,6 +8,6 @@ for (const action of ['games', 'invest', 'dev']) assert.equal(roleBlock.includes
 assert.equal((roleBlock.match(/createCommunityRoleQuickActionFeature/g) || []).length, 2);
 assert.equal(roleBlock.includes('member.roles.add'), false);
 assert.equal(roleBlock.includes('roles.cache.find'), false);
-for (const customId of ['concierge_night', 'concierge_bot', 'concierge_roadmap']) assert.equal(roleBlock.includes(customId), true);
+for (const action of ['night', 'bot', 'roadmap']) assert.equal(roleBlock.includes(`action === '${action}'`), true);
 assert.equal((roleBlock.match(/interaction\.reply\(/g) || []).length >= 5, true);
 console.log('Production Concierge role redirects preserve action routing and leave non-role presentation branches intact.');

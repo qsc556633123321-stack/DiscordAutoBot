@@ -28,6 +28,7 @@ assert.ok(
     'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
     'src/systems/communityConcierge.js',
     'src/application/community/communityRoleQuickActionUseCase.js',
+    'src/application/community/CommunityConciergeButtonActionResolver.js',
     'src/application/community/ports/CommunityRoleMutationGateway.js',
     'src/composition/communityRoleQuickActionFeature.js',
     'src/infrastructure/discord/communityRoleMutationGateway.js'

@@ -5,6 +5,9 @@ const {
   dispatchCommunityConciergeButton,
   matchesCommunityConciergeButton
 } = require('../../fakes/community/FakeCommunityConciergeButtonDispatchCandidate');
+const {
+  resolveCommunityConciergeButtonAction
+} = require('../../../src/application/community/CommunityConciergeButtonActionResolver');
 
 void (async () => {
   const root = path.resolve(__dirname, '..', '..', '..');
@@ -19,11 +22,18 @@ void (async () => {
   }
   assert.equal(matchesCommunityConciergeButton('unknown'), false);
   assert.equal(matchesCommunityConciergeButton('CONCIERGE_games'), false);
-  assert.match(runtime, /id === 'concierge_games'/);
-  assert.match(runtime, /id === 'concierge_night'/);
-  assert.match(runtime, /id === 'concierge_bot'/);
-  assert.match(runtime, /id === 'concierge_invest' \|\| id === 'concierge_dev'/);
-  assert.match(runtime, /id === 'concierge_roadmap'/);
+  assert.match(runtime, /resolveCommunityConciergeButtonAction\(interaction\.customId\)/);
+  for (const [id, action] of Object.entries({
+    concierge_games: 'games',
+    concierge_invest: 'invest',
+    concierge_dev: 'dev',
+    concierge_night: 'night',
+    concierge_bot: 'bot',
+    concierge_roadmap: 'roadmap'
+  })) {
+    assert.equal(resolveCommunityConciergeButtonAction(id), action);
+    assert.equal(runtime.includes(id), false);
+  }
   assert.match(runtime, /return false;/);
 
   const interaction = { customId: 'concierge_unknown', replied: false, deferred: false };
