@@ -23,9 +23,12 @@ const productionDiff = [
   execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }),
   execFileSync('git', ['ls-files', '--others', '--exclude-standard', '--', 'src'], { cwd: root, encoding: 'utf8' })
 ].join('\n').trim().split(/\r?\n/).filter(Boolean).sort();
-assert.deepEqual(productionDiff, [
-  'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
-  'src/systems/communityConcierge.js'
-]);
+assert.ok(
+  productionDiff.length === 0 || JSON.stringify(productionDiff) === JSON.stringify([
+    'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
+    'src/systems/communityConcierge.js'
+  ]),
+  'default-path boundary guard permits committed source truth or its approved in-progress implementation diff'
+);
 
 console.log('JsonReader default-path preparation transitions to the approved final runtime path ownership.');

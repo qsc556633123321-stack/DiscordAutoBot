@@ -1,12 +1,15 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Filesystem Ownership Final Closure (Slice #78)
+Community Role Boundary Preparation (Slice #79)
 
 ## Overall Progress
-Estimated local refactor progress: 90%. The Infrastructure default JsonReader factory is runtime-active for Guide, Roadmap, and Welcome, so the final Community runtime filesystem-path ownership has been removed.
+Estimated local refactor progress: 90%. Community role quick-action ownership is characterized and ready for a narrow boundary implementation; this preparation slice does not move runtime ownership.
 
 ## Latest Completed
+- Community role quick-action boundary prepared: add-only Concierge role intents,
+  hierarchy checks, swallowed mutation rejection, button coupling, and
+  presentation ownership are frozen without production changes
 - Community filesystem ownership is closed: Guide, Roadmap, and Welcome now
   construct their JsonReader through the Infrastructure default-path factory;
   runtime `node:path`, `DATA_DIR`, and `ONBOARDING_FILE` ownership is removed
@@ -382,7 +385,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Role Boundary Preparation: characterize the next isolated role runtime boundary before any production migration.
+Community Role Boundary Implementation: introduce the narrow Application use
+case and Infrastructure mutation adapter while retaining the Concierge button
+wrapper and all existing response behavior.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -406,8 +411,9 @@ Role Boundary Preparation: characterize the next isolated role runtime boundary 
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed. Runtime no longer owns onboarding filesystem paths or direct
 JsonReader construction; Infrastructure owns the defaults, while the existing
-JsonReader retains compatibility behavior. Role quick actions, button dispatch,
-direct channel setup, and AI text generation remain high-risk owners.
+JsonReader retains compatibility behavior. Role quick actions remain
+Runtime-owned but are characterized for an independent boundary implementation.
+Button dispatch, direct channel setup, and AI text generation remain high-risk owners.
 
 Four stale architecture guards now validate committed source truth instead of
 requiring the previous atomic migration to remain as an uncommitted `git diff`.
@@ -433,4 +439,4 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Closed Community filesystem ownership. Guide, Roadmap, and Welcome remain CLOSED; runtime path constants and direct JsonReader construction are removed in favor of the Infrastructure default factory.
+2026-08-15: Prepared the Community role quick-action boundary. No production runtime ownership moved; Guide, Roadmap, Welcome, and filesystem closure remain intact.
