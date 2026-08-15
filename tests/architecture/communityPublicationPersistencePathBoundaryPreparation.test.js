@@ -24,6 +24,9 @@ assert.equal(candidate.includes('discord.js'), false);
 const welcome = runtime.slice(runtime.indexOf('async function sendConciergeWelcome'));
 assert.equal(welcome.includes('createCommunityPublicationStateFeature'), false);
 const productionDiff = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(productionDiff, ['src/systems/communityConcierge.js']);
+assert.ok(
+  productionDiff.length === 0 || (productionDiff.length === 1 && productionDiff[0] === 'src/systems/communityConcierge.js'),
+  'persistence-path preparation guard permits committed source truth or its approved in-progress runtime diff'
+);
 
 console.log('Publication persistence path preparation freezes current runtime ownership and the existing default adapter path boundary.');

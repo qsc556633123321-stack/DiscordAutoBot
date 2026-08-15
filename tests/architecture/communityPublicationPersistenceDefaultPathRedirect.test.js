@@ -21,6 +21,9 @@ const welcome = runtime.slice(runtime.indexOf('async function sendConciergeWelco
 assert.equal(welcome.includes('createCommunityPublicationStateFeature'), false);
 assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', adapterPath], { cwd: root, encoding: 'utf8' }).trim(), '');
 const productionDiff = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(productionDiff, ['src/systems/communityConcierge.js']);
+assert.ok(
+  productionDiff.length === 0 || (productionDiff.length === 1 && productionDiff[0] === 'src/systems/communityConcierge.js'),
+  'default-path redirect guard permits committed source truth or its approved in-progress runtime diff'
+);
 
 console.log('Publication persistence runtime uses adapter defaults while JsonReader paths remain runtime-owned.');

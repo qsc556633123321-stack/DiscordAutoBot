@@ -1,12 +1,13 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Publication Persistence Runtime Default-Path Redirect (Slice #76)
+Community JsonReader Default-Path Boundary Preparation (Slice #77)
 
 ## Overall Progress
-Estimated local refactor progress: 89%. Guide and Roadmap no longer own explicit persistence paths at runtime; three JsonReader constructions still own the remaining runtime path constants.
+Estimated local refactor progress: 89%. JsonReader default-path behavior is characterized and ready for a narrow atomic redirect; no runtime ownership moved in this preparation slice.
 
 ## Latest Completed
+- JsonReader default-path boundary prepared with exact path, no-I/O construction, override, and closed-flow equivalence coverage
 - Guide and Roadmap publication persistence runtime construction redirected to
   the existing filesystem adapter defaults; explicit runtime persistence paths
   are removed without changing persistence semantics
@@ -378,8 +379,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the JsonReader default-path boundary for the remaining Guide, Roadmap,
-and Welcome runtime path consumers.
+Redirect Guide, Roadmap, and Welcome JsonReader construction through an Infrastructure default factory and remove final runtime path constants.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -434,6 +434,4 @@ Guide/Roadmap persistence still consumes them. Filesystem ownership is
 PARTIALLY MIGRATED, not MIGRATED.
 
 ## Last Updated
-2026-08-15: Redirected Guide/Roadmap persistence to default infrastructure
-paths. Guide, Roadmap, and Welcome remain CLOSED; runtime path ownership is
-partially migrated because JsonReader still consumes the onboarding paths.
+2026-08-15: Prepared the JsonReader default-path boundary. Guide, Roadmap, and Welcome remain CLOSED; runtime path ownership remains partially migrated until the three reader constructions are atomically redirected.
