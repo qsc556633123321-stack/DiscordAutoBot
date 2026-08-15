@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Migration Guard Maintenance (Slice #68)
+Community Historical Guard Maintenance (Slice #72)
 
 ## Overall Progress
 Estimated local refactor progress: 87%. StateReader and all three runtime construction sites now depend on the Infrastructure JSON reader; runtime path/helper cleanup remains.
@@ -406,7 +406,24 @@ requiring the previous atomic migration to remain as an uncommitted `git diff`.
 Filesystem cleanup preparation can be retried once this maintenance slice's
 full verification completes.
 
+The fifth stale implementation-time diff guard in
+`communityFilesystemOwnershipPreparation.test.js` is repaired. Filesystem
+cleanup remains NOT IMPLEMENTED; its preparation is READY TO RETRY after this
+maintenance slice's full verification passes.
+
+The sixth stale post-commit diff guard in
+`communityStateReaderJsonDependencyPreparation.test.js` is repaired. Six
+historical migration/preparation guards now validate committed source truth.
+Filesystem cleanup remains NOT IMPLEMENTED and its preparation can proceed
+only after this maintenance slice's full verification succeeds.
+
+All required maintenance, preparation, migration, closure, architecture,
+legacy-boundary, quality, audit, dashboard, and dependency checks now pass.
+`test:community-runtime-filesystem-cleanup-preparation` is not yet defined;
+the documented dependency gates are green. Filesystem cleanup preparation is
+READY TO RETRY, while the cleanup itself remains NOT IMPLEMENTED.
+
 ## Last Updated
-2026-08-15: Repaired four stale post-commit migration guards. Guide, Roadmap,
-and Welcome remain CLOSED; filesystem cleanup preparation may be retried after
-the maintenance verification gate passes.
+2026-08-15: Repaired six stale post-commit migration/preparation guards. Guide,
+Roadmap, and Welcome remain CLOSED; filesystem cleanup is not implemented and
+its preparation is ready for a third retry.
