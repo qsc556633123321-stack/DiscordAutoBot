@@ -1,12 +1,12 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Role Concierge Presentation Implementation (Slice #88)
+Community Channel Setup Boundary Preparation (Slice #89)
 
 ## Overall Progress
 Estimated local refactor progress: 95%. Community Concierge exact-ID mapping,
-prefix dispatch, role workflow, and non-role payload construction are migrated;
-Runtime retains replies, dynamic link resolution, and role presentation.
+prefix dispatch, role workflow, and role/non-role payload construction are
+migrated; Runtime retains replies, dynamic link resolution, and channel setup.
 
 ## Latest Completed
 - Community role quick-action workflow migrated: semantic action mapping is
@@ -41,6 +41,10 @@ Runtime retains replies, dynamic link resolution, and role presentation.
 - Community role Concierge presentation migrated: Games, Invest, and Dev
   payload construction is Module-owned while role workflow, quick-link lookup,
   reply, return, routing, and error-wrapper ownership remain unchanged
+- Community Channel Setup boundary prepared: Concierge Guide/Roadmap category
+  and channel ensure behavior, duplicate rules, permission asymmetry,
+  failure/partial-success behavior, and persistence handoffs are frozen with a
+  test-only candidate; no production runtime ownership moved
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -406,7 +410,7 @@ Runtime retains replies, dynamic link resolution, and role presentation.
   active for Guide/Roadmap; Welcome tracked-channel read remains legacy-owned
 
 ### Legacy
-- Community Concierge role presentation: ACTIVE in the runtime
+- Community Concierge channel setup: ACTIVE in the runtime
 - Discord mutation execution
 - Some community mutation flows
 - Roles
@@ -432,9 +436,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Channel Setup Boundary Preparation: characterize the remaining
-high-risk channel creation, permissions, duplicate avoidance, retry,
-persistence, and partial-failure behavior before any migration.
+Community Channel Setup Boundary Implementation: add only the approved narrow
+Infrastructure compatibility adapter and redirect Concierge ensure helpers
+without altering create, duplicate, failure, or publication behavior.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -486,7 +490,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Migrated the Community role Concierge presentation payloads for
-Games, Invest, and Dev into a dedicated Module builder. Runtime still owns the
-role workflow, dynamic quick links, replies, returns, and error wrapper.
-Overall progress is 95%.
+2026-08-15: Prepared the Community Channel Setup boundary for Concierge Guide
+and Roadmap ensure operations. Direct Discord setup ownership remains Runtime-
+owned; exact create, duplicate, permission, failure, and persistence-handoff
+compatibility are frozen. Overall progress remains 95%.
