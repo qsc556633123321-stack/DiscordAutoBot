@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Channel Setup Boundary Implementation (Slice #90)
+Community AI Text Generation Boundary Preparation (Slice #91)
 
 ## Overall Progress
 Estimated local refactor progress: 96%. Community Concierge exact-ID mapping,
@@ -50,6 +50,9 @@ text generation.
   category, Guide, and Roadmap ensure behavior, including Guide parent and
   best-effort overwrite repair; Concierge retains publication and persistence
   ordering without direct channel mutation calls
+- Community AI Text Generation boundary prepared: direct Concierge OpenAI key,
+  request, response, fallback, and silent-failure contracts are frozen with a
+  test-only transport candidate; no production runtime ownership moved
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -441,9 +444,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community AI Text Generation Boundary Preparation: characterize the existing
-fallback, API-key, OpenAI failure, and response-normalization contract before
-moving any runtime ownership.
+Community AI Text Generation Boundary Implementation: add only the approved
+narrow Infrastructure transport adapter and redirect Concierge without changing
+the prompt, request, fallback, response parsing, or caller behavior.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -497,7 +500,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Implemented the Community Channel Setup boundary. The Concierge
-runtime delegates Guide and Roadmap category/channel ensure behavior to the
-Infrastructure compatibility adapter while publication, persistence, Welcome,
-and AI behavior remain unchanged. Overall progress is estimated at 96%.
+2026-08-15: Prepared the Community AI Text Generation boundary. OpenAI key,
+lazy construction, request, response, fallback, and silent failure semantics
+are frozen with test-only coverage; production runtime ownership remains
+unchanged. Overall progress remains 96%.

@@ -1,0 +1,14 @@
+[
+  { "name": "key-undefined", "apiKey": null, "expected": "fallback" },
+  { "name": "key-empty", "apiKey": "", "expected": "fallback" },
+  { "name": "key-whitespace", "apiKey": "   ", "content": "generated", "expected": "generated" },
+  { "name": "success", "apiKey": "key", "content": "  generated  ", "expected": "generated" },
+  { "name": "empty-content", "apiKey": "key", "content": "", "expected": "fallback" },
+  { "name": "whitespace-content", "apiKey": "key", "content": "   ", "expected": "fallback" },
+  { "name": "missing-choices", "apiKey": "key", "response": {}, "expected": "fallback" },
+  { "name": "empty-choices", "apiKey": "key", "response": { "choices": [] }, "expected": "fallback" },
+  { "name": "missing-message", "apiKey": "key", "response": { "choices": [{}] }, "expected": "fallback" },
+  { "name": "null-content", "apiKey": "key", "response": { "choices": [{ "message": { "content": null } }] }, "expected": "fallback" },
+  { "name": "request-rejection", "apiKey": "key", "reject": "sentinel", "expected": "fallback" },
+  { "name": "loader-rejection", "apiKey": "key", "loaderReject": "sentinel", "expected": "fallback" }
+]
