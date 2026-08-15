@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Role Boundary Implementation (Slice #80)
+Community Button Dispatch Boundary Preparation (Slice #81)
 
 ## Overall Progress
 Estimated local refactor progress: 91%. Community role quick-action mutation ownership has moved to Application and Infrastructure while Runtime retains the existing presentation and legacy dispatcher wrapper.
@@ -13,6 +13,9 @@ Estimated local refactor progress: 91%. Community role quick-action mutation own
 - Role Quick Action Workflow: MIGRATED. Direct Runtime Role Mutation: REMOVED.
   Role presentation remains Runtime-owned; button dispatch remains
   Runtime/Legacy-owned.
+- Community Concierge button dispatch prepared: legacy `concierge_` prefix
+  ownership, handler return handling, generic error reply, role isolation, and
+  non-role presentation boundaries are frozen; no production source moved
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -391,8 +394,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Button Dispatch Boundary Preparation: characterize the legacy Concierge button
-routing and error wrapper before moving any interaction ownership.
+Community Concierge Semantic Button Resolver Implementation Preparation:
+characterize exact-ID-to-action mapping without moving legacy prefix matching,
+interaction error handling, or presentation ownership.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -444,4 +448,6 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Migrated Community role quick-action intent and Discord mutation ownership. Guide, Roadmap, Welcome, and filesystem closure remain intact.
+2026-08-15: Prepared the Community Concierge button-dispatch boundary. Role
+quick-action ownership remains migrated; Guide, Roadmap, Welcome, and
+filesystem closure remain intact.
