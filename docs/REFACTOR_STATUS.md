@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Historical Guard Maintenance (Slice #72)
+Community Runtime Filesystem Ownership Cleanup Preparation Retry #3 (Slice #73)
 
 ## Overall Progress
 Estimated local refactor progress: 87%. StateReader and all three runtime construction sites now depend on the Infrastructure JSON reader; runtime path/helper cleanup remains.
@@ -419,11 +419,13 @@ only after this maintenance slice's full verification succeeds.
 
 All required maintenance, preparation, migration, closure, architecture,
 legacy-boundary, quality, audit, dashboard, and dependency checks now pass.
-`test:community-runtime-filesystem-cleanup-preparation` is not yet defined;
-the documented dependency gates are green. Filesystem cleanup preparation is
-READY TO RETRY, while the cleanup itself remains NOT IMPLEMENTED.
+The dedicated filesystem cleanup preparation gate now freezes current helper,
+path, construction, and closed-flow truth. Full path ownership cannot move yet
+because Guide/Roadmap persistence also consumes the runtime path constants.
+Filesystem cleanup preparation is complete; only narrow dead-helper cleanup is
+approved next, while full filesystem ownership remains partial.
 
 ## Last Updated
-2026-08-15: Repaired six stale post-commit migration/preparation guards. Guide,
-Roadmap, and Welcome remain CLOSED; filesystem cleanup is not implemented and
-its preparation is ready for a third retry.
+2026-08-15: Completed filesystem ownership cleanup preparation. Guide, Roadmap,
+and Welcome remain CLOSED; narrow dead-helper cleanup is the next approved
+implementation, while path ownership remains shared with persistence.
