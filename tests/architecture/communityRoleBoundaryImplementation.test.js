@@ -1,0 +1,15 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const app = fs.readFileSync(path.join(root, 'src/application/community/communityRoleQuickActionUseCase.js'), 'utf8');
+const adapter = fs.readFileSync(path.join(root, 'src/infrastructure/discord/communityRoleMutationGateway.js'), 'utf8');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+for (const forbidden of ['discord.js', 'GuildMember', 'member.roles.add', 'interaction.', 'infrastructure/']) assert.equal(app.includes(forbidden), false, `Application must not own ${forbidden}`);
+for (const forbidden of ['interaction.reply', 'customId', 'EmbedBuilder']) assert.equal(adapter.includes(forbidden), false, `Adapter must not own ${forbidden}`);
+assert.equal(adapter.includes('member.roles.add'), true);
+assert.equal(runtime.includes('member.roles.add'), false);
+assert.equal(runtime.includes('roles.cache.find'), false);
+assert.equal(runtime.includes('async function handleConciergeButton'), true);
+assert.equal(runtime.includes('interaction.reply'), true);
+console.log('Community role boundary moves mutation ownership to Infrastructure while Runtime retains presentation.');

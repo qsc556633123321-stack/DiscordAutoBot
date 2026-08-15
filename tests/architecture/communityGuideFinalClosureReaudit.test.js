@@ -45,7 +45,11 @@ assert.equal(changedProduction.every((file) => [
   'src/infrastructure/community/CommunityOnboardingJsonReader.js',
   'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
   'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
-  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
+  'src/application/community/communityRoleQuickActionUseCase.js',
+  'src/application/community/ports/CommunityRoleMutationGateway.js',
+  'src/composition/communityRoleQuickActionFeature.js',
+  'src/infrastructure/discord/communityRoleMutationGateway.js'
 ].includes(file)), true);
 
 console.log('Guide closure re-audit confirms all Guide read, lookup, mutation, and persistence ownership is boundary-based.');

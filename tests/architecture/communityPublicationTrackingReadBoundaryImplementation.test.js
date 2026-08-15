@@ -25,7 +25,7 @@ assert.equal(adapter.includes('readOnboardingData'), false);
 assert.equal((adapter.match(/onboardingStateReader\.readOnboardingState\(\)/g) || []).length, 1, 'Adapter source must have one reader read site');
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityPublicationTrackingReadFeature.js')), false);
 const guide = runtime.match(/async function setupCommunityGuide\(guild, options = \{\}\) \{([\s\S]*?)\n\}\n\nasync function setupRoadmapPanel/)[1];
-const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
+const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function handleConciergeButton/)[1];
 const welcome = runtime.match(/async function sendConciergeWelcome\(member\) \{([\s\S]*?)\n\}\n\nmodule\.exports/)[1];
 for (const source of [guide, roadmap]) {
   assert.equal(source.includes('readOnboardingData()'), false, 'Guide and Roadmap must use the shared tracking boundary');

@@ -5,7 +5,7 @@ const path = require('node:path');
 const runtimePath = path.resolve(__dirname, '../../src/systems/communityConcierge.js');
 const runtimeSource = fs.readFileSync(runtimePath, 'utf8');
 const roadmapRuntime = runtimeSource.match(
-  /async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/
+  /async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function handleConciergeButton/
 )[1];
 
 assert.match(roadmapRuntime, /mutationPort\.edit\(\{ messageId: message\.id, payload \}\)/);

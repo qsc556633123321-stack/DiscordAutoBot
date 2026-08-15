@@ -1,7 +1,6 @@
 const {
   ChannelType,
-  EmbedBuilder,
-  PermissionFlagsBits
+  EmbedBuilder
 } = require('discord.js');
 const permissionTemplates = require('../config/permissionTemplates');
 const {
@@ -34,6 +33,7 @@ const { createCommunityOnboardingStateReader } = require('../infrastructure/comm
 const { createDefaultCommunityOnboardingJsonReader } = require('../infrastructure/community/CommunityOnboardingJsonReaderFactory');
 const { createCommunityWelcomeChannelResolver } = require('../infrastructure/community/CommunityWelcomeChannelResolver');
 const { createCommunityWelcomeDmDeliveryAdapter } = require('../infrastructure/community/CommunityWelcomeDmDeliveryAdapter');
+const { createCommunityRoleQuickActionFeature } = require('../composition/communityRoleQuickActionFeature');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
 const GUIDE_CHANNEL_NAME = '🧭｜伺服器導覽';
@@ -237,14 +237,6 @@ async function setupRoadmapPanel(guild) {
   return { channel, message };
 }
 
-async function maybeAddRole(member, roleName) {
-  if (!member?.guild?.members?.me?.permissions.has(PermissionFlagsBits.ManageRoles)) return false;
-  const role = member.guild.roles.cache.find((item) => item.name === roleName);
-  if (!role || !role.editable || member.guild.members.me.roles.highest.comparePositionTo(role) <= 0) return false;
-  await member.roles.add(role, 'Community concierge quick role').catch(() => null);
-  return true;
-}
-
 function quickLinks(guild, kind) {
   if (kind === 'games') return listChannelsByPatterns(guild, [/找隊友|組隊|目前語音|遊戲提議|聊天/i]);
   if (kind === 'invest') return listChannelsByPatterns(guild, [/台股|盤勢|股票|投資/i]);
@@ -257,7 +249,15 @@ async function handleConciergeButton(interaction) {
   const id = interaction.customId;
   const guild = interaction.guild;
   if (id === 'concierge_games') {
-    const added = await maybeAddRole(interaction.member, '🎮 遊戲玩家');
+    const roleQuickActionFeature = createCommunityRoleQuickActionFeature({
+      resolveGuild: () => guild,
+      resolveMember: () => interaction.member
+    });
+    const { added } = await roleQuickActionFeature.communityRoleQuickAction.execute({
+      guildId: guild?.id,
+      memberId: interaction.member?.id,
+      action: 'games'
+    });
     const links = quickLinks(guild, 'games');
     await interaction.reply({
       embeds: [
@@ -320,7 +320,15 @@ async function handleConciergeButton(interaction) {
     const kind = id === 'concierge_invest' ? 'invest' : 'dev';
     const title = kind === 'invest' ? '📈 投資入口' : '🧑‍💻 AI / 開發入口';
     const roleName = kind === 'invest' ? '📈 股票投資' : '🛠 開發/AI';
-    const added = await maybeAddRole(interaction.member, roleName);
+    const roleQuickActionFeature = createCommunityRoleQuickActionFeature({
+      resolveGuild: () => guild,
+      resolveMember: () => interaction.member
+    });
+    const { added } = await roleQuickActionFeature.communityRoleQuickAction.execute({
+      guildId: guild?.id,
+      memberId: interaction.member?.id,
+      action: kind
+    });
     const links = quickLinks(guild, kind);
     await interaction.reply({
       embeds: [

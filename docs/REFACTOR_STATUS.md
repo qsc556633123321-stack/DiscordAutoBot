@@ -1,12 +1,18 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Role Boundary Preparation (Slice #79)
+Community Role Boundary Implementation (Slice #80)
 
 ## Overall Progress
-Estimated local refactor progress: 90%. Community role quick-action ownership is characterized and ready for a narrow boundary implementation; this preparation slice does not move runtime ownership.
+Estimated local refactor progress: 91%. Community role quick-action mutation ownership has moved to Application and Infrastructure while Runtime retains the existing presentation and legacy dispatcher wrapper.
 
 ## Latest Completed
+- Community role quick-action workflow migrated: semantic action mapping is
+  Application-owned and Discord lookup/add mutation is Infrastructure-owned;
+  Concierge presentation and legacy dispatch behavior remain unchanged
+- Role Quick Action Workflow: MIGRATED. Direct Runtime Role Mutation: REMOVED.
+  Role presentation remains Runtime-owned; button dispatch remains
+  Runtime/Legacy-owned.
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -385,9 +391,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Role Boundary Implementation: introduce the narrow Application use
-case and Infrastructure mutation adapter while retaining the Concierge button
-wrapper and all existing response behavior.
+Button Dispatch Boundary Preparation: characterize the legacy Concierge button
+routing and error wrapper before moving any interaction ownership.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -411,9 +416,9 @@ wrapper and all existing response behavior.
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed. Runtime no longer owns onboarding filesystem paths or direct
 JsonReader construction; Infrastructure owns the defaults, while the existing
-JsonReader retains compatibility behavior. Role quick actions remain
-Runtime-owned but are characterized for an independent boundary implementation.
-Button dispatch, direct channel setup, and AI text generation remain high-risk owners.
+JsonReader retains compatibility behavior. Role presentation and button dispatch
+remain Runtime/Legacy-owned; direct channel setup and AI text generation remain
+high-risk owners.
 
 Four stale architecture guards now validate committed source truth instead of
 requiring the previous atomic migration to remain as an uncommitted `git diff`.
@@ -439,4 +444,4 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the Community role quick-action boundary. No production runtime ownership moved; Guide, Roadmap, Welcome, and filesystem closure remain intact.
+2026-08-15: Migrated Community role quick-action intent and Discord mutation ownership. Guide, Roadmap, Welcome, and filesystem closure remain intact.

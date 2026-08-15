@@ -10,7 +10,7 @@ for (const relativePath of [
   assert.equal(fs.existsSync(path.join(root, relativePath)), false);
 }
 const runtime = fs.readFileSync(path.join(root, 'systems/communityConcierge.js'), 'utf8');
-const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
+const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function handleConciergeButton/)[1];
 assert.match(roadmap, /communityRoadmapPersistenceFeature\.persist\(persistenceRequest\)/);
 assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId/);
 console.log('Roadmap reuse feature preparation remains compatible with the runtime redirect');

@@ -1,0 +1,13 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..', '..');
+const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
+const roleBlock = runtime.slice(runtime.indexOf('async function handleConciergeButton'), runtime.indexOf('async function sendConciergeWelcome'));
+for (const action of ['games', 'invest', 'dev']) assert.equal(roleBlock.includes(`action: '${action}'`) || roleBlock.includes('action: kind'), true);
+assert.equal((roleBlock.match(/createCommunityRoleQuickActionFeature/g) || []).length, 2);
+assert.equal(roleBlock.includes('member.roles.add'), false);
+assert.equal(roleBlock.includes('roles.cache.find'), false);
+for (const customId of ['concierge_night', 'concierge_bot', 'concierge_roadmap']) assert.equal(roleBlock.includes(customId), true);
+assert.equal((roleBlock.match(/interaction\.reply\(/g) || []).length >= 5, true);
+console.log('Production Concierge role redirects preserve action routing and leave non-role presentation branches intact.');

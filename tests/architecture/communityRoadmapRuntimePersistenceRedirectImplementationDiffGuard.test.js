@@ -20,7 +20,7 @@ for (const relativePath of [
   assert.equal(fs.existsSync(path.join(root, relativePath)), false);
 }
 const runtime = fs.readFileSync(path.join(root, 'src/systems/communityConcierge.js'), 'utf8');
-const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
+const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function handleConciergeButton/)[1];
 assert.doesNotMatch(roadmap, /saveOnboarding\(guild\.id, \{\s+roadmapChannelId/);
 assert.doesNotMatch(roadmap, /readFile|writeFile|JSON\.stringify|repository|filesystem/);
 console.log('Roadmap runtime persistence redirect has no duplicate persistence ownership.');

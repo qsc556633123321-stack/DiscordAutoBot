@@ -24,11 +24,15 @@ const productionDiff = [
   execFileSync('git', ['ls-files', '--others', '--exclude-standard', '--', 'src'], { cwd: root, encoding: 'utf8' })
 ].join('\n').trim().split(/\r?\n/).filter(Boolean).sort();
 assert.ok(
-  productionDiff.length === 0 || JSON.stringify(productionDiff) === JSON.stringify([
+  productionDiff.every((file) => [
     'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
-    'src/systems/communityConcierge.js'
-  ]),
-  'default-path boundary guard permits committed source truth or its approved in-progress implementation diff'
+    'src/systems/communityConcierge.js',
+    'src/application/community/communityRoleQuickActionUseCase.js',
+    'src/application/community/ports/CommunityRoleMutationGateway.js',
+    'src/composition/communityRoleQuickActionFeature.js',
+    'src/infrastructure/discord/communityRoleMutationGateway.js'
+  ].includes(file)),
+  'default-path boundary guard permits committed truth and approved later Community vertical-slice source files'
 );
 
 console.log('JsonReader default-path preparation transitions to the approved final runtime path ownership.');
