@@ -15,7 +15,10 @@ const changedSource = execFileSync('git', ['diff', '--name-only', '--', 'src'], 
   .trim().split(/\r?\n/).filter(Boolean);
 const allowedSources = [
   'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
-  'src/systems/communityConcierge.js'
+  'src/systems/communityConcierge.js',
+  'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',
+  'src/modules/interactions/buttonInteractionHandler.js',
+  'src/legacy/interactions/legacyInteractionRuntime.js'
 ];
 assert.equal(fs.existsSync(resolverPath), true, 'Resolver production source must exist');
 assert.equal(

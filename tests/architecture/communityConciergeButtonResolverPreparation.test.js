@@ -4,11 +4,14 @@ const path = require('node:path');
 
 const root = path.resolve(__dirname, '..', '..');
 const legacy = fs.readFileSync(path.join(root, 'src', 'legacy', 'interactions', 'legacyInteractionRuntime.js'), 'utf8');
+const dispatchHandler = fs.readFileSync(path.join(root, 'src', 'modules', 'interactions', 'buttonHandlers', 'communityConciergeButtons.js'), 'utf8');
 const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConcierge.js'), 'utf8');
 const resolver = fs.readFileSync(path.join(root, 'src', 'application', 'community', 'CommunityConciergeButtonActionResolver.js'), 'utf8');
-assert.equal((legacy.match(/customId\.startsWith\('concierge_'\)/g) || []).length, 1);
-assert.match(legacy, /console\.error\('Concierge button failed:', error\)/);
-assert.match(legacy, /!interaction\.replied && !interaction\.deferred/);
+assert.equal(legacy.includes("startsWith('concierge_')"), false);
+assert.equal(legacy.includes('handleConciergeButton'), false);
+assert.match(dispatchHandler, /customId\.startsWith\(CONCIERGE_PREFIX\)/);
+assert.match(dispatchHandler, /console\.error\('Concierge button failed:', error\)/);
+assert.match(dispatchHandler, /!interaction\.replied && !interaction\.deferred/);
 assert.equal((runtime.match(/member\.roles\.add\(/g) || []).length, 0);
 assert.match(runtime, /resolveCommunityConciergeButtonAction\(interaction\.customId\)/);
 for (const customId of ['concierge_games', 'concierge_invest', 'concierge_dev', 'concierge_night', 'concierge_bot', 'concierge_roadmap']) {
@@ -22,4 +25,4 @@ for (const name of ['setupCommunityGuide', 'setupRoadmapPanel', 'sendConciergeWe
 for (const forbidden of ['discord.js', 'interaction', 'Guild', 'GuildMember', 'EmbedBuilder', 'CommunityRoleQuickAction', 'quickLinks', 'buildRoadmapEmbed', 'reply(', 'console.', 'node:fs', 'database']) {
   assert.equal(resolver.includes(forbidden), false);
 }
-console.log('Concierge button resolver implementation preserves legacy dispatch, runtime presentation, and Application mapping ownership.');
+console.log('Concierge button resolver implementation preserves modern dispatch, runtime presentation, and Application mapping ownership.');

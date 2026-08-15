@@ -12,10 +12,13 @@ const {
 void (async () => {
   const root = path.resolve(__dirname, '..', '..', '..');
   const legacy = fs.readFileSync(path.join(root, 'src', 'legacy', 'interactions', 'legacyInteractionRuntime.js'), 'utf8');
+  const handler = fs.readFileSync(path.join(root, 'src', 'modules', 'interactions', 'buttonHandlers', 'communityConciergeButtons.js'), 'utf8');
   const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConcierge.js'), 'utf8');
 
-  assert.match(legacy, /interaction\.customId\.startsWith\('concierge_'\)/);
-  assert.match(legacy, /await handleConciergeButton\(interaction\)/);
+  assert.equal(legacy.includes("startsWith('concierge_')"), false);
+  assert.equal(legacy.includes('handleConciergeButton'), false);
+  assert.match(handler, /customId\.startsWith\(CONCIERGE_PREFIX\)/);
+  assert.match(handler, /await handleConciergeButton\(interaction\)/);
   assert.match(legacy, /return;\s*\n\s*}\s*\n\s*\n\s*if \(interaction\.customId\.startsWith\('game_suggest_'/);
   for (const id of ['concierge_games', 'concierge_invest', 'concierge_dev', 'concierge_night', 'concierge_bot', 'concierge_roadmap']) {
     assert.equal(matchesCommunityConciergeButton(id), true);

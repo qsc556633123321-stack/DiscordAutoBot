@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Concierge Semantic Button Resolver Implementation (Slice #83)
+Community Button Dispatch Boundary Implementation (Slice #84)
 
 ## Overall Progress
-Estimated local refactor progress: 92%. Community Concierge exact-ID mapping is now Application-owned, while Runtime retains semantic presentation and the legacy dispatcher wrapper.
+Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and prefix dispatch are migrated, while Runtime retains semantic presentation.
 
 ## Latest Completed
 - Community role quick-action workflow migrated: semantic action mapping is
@@ -21,7 +21,11 @@ Estimated local refactor progress: 92%. Community Concierge exact-ID mapping is 
   equivalence before the production migration
 - Community Concierge semantic button resolver migrated: pure Application
   resolution now owns the six exact customId mappings; Runtime retains semantic
-  presentation, while legacy prefix dispatch and error handling remain active
+  presentation, while prefix dispatch and compatible error handling moved to the
+  modern button family
+- Community Concierge button dispatch migrated: the modern Concierge family now
+  owns the exact prefix matcher and compatible error wrapper; the legacy
+  Concierge branch is removed while global fallback remains active
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -157,6 +161,8 @@ Estimated local refactor progress: 92%. Community Concierge exact-ID mapping is 
 ### New Architecture
 - Community Concierge exact-ID mapping: MIGRATED to the pure Application
   resolver; semantic action resolution is Application-owned
+- Community Concierge prefix dispatch and error wrapper: MIGRATED to the modern
+  button family; legacy Concierge branch is removed
 - Community role quick-action workflow: MIGRATED to Application and
   Infrastructure; direct runtime role mutation remains removed
 - Guide publication planning
@@ -379,8 +385,6 @@ Estimated local refactor progress: 92%. Community Concierge exact-ID mapping is 
   active for Guide/Roadmap; Welcome tracked-channel read remains legacy-owned
 
 ### Legacy
-- Community Concierge prefix dispatch and generic error wrapper: ACTIVE in the
-  legacy interaction runtime
 - Community Concierge semantic presentation: ACTIVE in the runtime
 - Discord mutation execution
 - Some community mutation flows
@@ -407,9 +411,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Button Dispatch Boundary Implementation: move the separately frozen
-dispatch boundary while retaining legacy `concierge_` prefix matching, generic
-error handling, and ignored handler return behavior.
+Community Non-role Concierge Presentation Preparation: characterize one narrow
+presentation branch without moving role workflow, prefix dispatch, or the
+global legacy fallback.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -461,7 +465,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Migrated Community Concierge exact-ID mapping into a pure
-Application resolver. Role quick-action ownership remains migrated; Guide,
-Roadmap, Welcome, filesystem, legacy prefix dispatch, and runtime presentation
+2026-08-15: Migrated Community Concierge prefix dispatch and its compatible
+error wrapper into the modern button family. Exact-ID mapping and role workflow
+remain migrated; Guide, Roadmap, Welcome, filesystem, and runtime presentation
 ownership remain intact.

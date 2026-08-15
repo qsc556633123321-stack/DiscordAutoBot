@@ -31,7 +31,10 @@ assert.ok(
     'src/application/community/CommunityConciergeButtonActionResolver.js',
     'src/application/community/ports/CommunityRoleMutationGateway.js',
     'src/composition/communityRoleQuickActionFeature.js',
-    'src/infrastructure/discord/communityRoleMutationGateway.js'
+    'src/infrastructure/discord/communityRoleMutationGateway.js',
+    'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',
+    'src/modules/interactions/buttonInteractionHandler.js',
+    'src/legacy/interactions/legacyInteractionRuntime.js'
   ].includes(file)),
   'default-path boundary guard permits committed truth and approved later Community vertical-slice source files'
 );

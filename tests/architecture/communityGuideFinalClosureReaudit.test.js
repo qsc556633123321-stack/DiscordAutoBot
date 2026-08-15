@@ -50,7 +50,10 @@ assert.equal(changedProduction.every((file) => [
   'src/application/community/communityRoleQuickActionUseCase.js',
   'src/application/community/ports/CommunityRoleMutationGateway.js',
   'src/composition/communityRoleQuickActionFeature.js',
-  'src/infrastructure/discord/communityRoleMutationGateway.js'
+  'src/infrastructure/discord/communityRoleMutationGateway.js',
+  'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',
+  'src/modules/interactions/buttonInteractionHandler.js',
+  'src/legacy/interactions/legacyInteractionRuntime.js'
 ].includes(file)), true);
 
 console.log('Guide closure re-audit confirms all Guide read, lookup, mutation, and persistence ownership is boundary-based.');

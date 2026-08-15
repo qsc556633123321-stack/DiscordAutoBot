@@ -80,7 +80,6 @@ const {
   showGameSuggestionModal,
   rejectSuggestion
 } = require('../../systems/gameSuggestionSystem');
-const { handleConciergeButton } = require('../../systems/communityConcierge');
 const {
   buildSummaryEmbed,
   deleteDedupePlan,
@@ -1705,18 +1704,6 @@ module.exports = {
       } catch (error) {
         console.error('Dedupe layout failed:', error);
         await interaction.editReply({ content: `Dedupe 執行失敗：${error.message}`, embeds: [], components: [] });
-      }
-      return;
-    }
-
-    if (interaction.customId.startsWith('concierge_')) {
-      try {
-        await handleConciergeButton(interaction);
-      } catch (error) {
-        console.error('Concierge button failed:', error);
-        if (!interaction.replied && !interaction.deferred) {
-          await interaction.reply({ content: '處理互動導覽時發生錯誤，請稍後再試。', ephemeral: true });
-        }
       }
       return;
     }

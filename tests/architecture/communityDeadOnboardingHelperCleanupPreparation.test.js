@@ -25,7 +25,10 @@ const changedSource = changed.filter((file) => file.startsWith('src/'));
 const allowedSource = [
   'src/systems/communityConcierge.js',
   'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
-  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js'
+  'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
+  'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',
+  'src/modules/interactions/buttonInteractionHandler.js',
+  'src/legacy/interactions/legacyInteractionRuntime.js'
 ];
 assert.equal(
   changedSource.every((file) => allowedSource.includes(file)),

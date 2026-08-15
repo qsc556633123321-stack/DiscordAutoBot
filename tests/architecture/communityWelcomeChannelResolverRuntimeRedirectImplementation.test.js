@@ -40,7 +40,10 @@ const allowedSource = new Set([
   'src/application/community/communityRoleQuickActionUseCase.js',
   'src/application/community/ports/CommunityRoleMutationGateway.js',
   'src/composition/communityRoleQuickActionFeature.js',
-  'src/infrastructure/discord/communityRoleMutationGateway.js'
+  'src/infrastructure/discord/communityRoleMutationGateway.js',
+  'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',
+  'src/modules/interactions/buttonInteractionHandler.js',
+  'src/legacy/interactions/legacyInteractionRuntime.js'
 ]);
 assert.equal(
   changedSource.every((file) => allowedSource.has(file)),

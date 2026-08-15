@@ -1,5 +1,6 @@
 ﻿// fallbackAllowed: controlled legacy compatibility path
 const adminButtons = require('./buttonHandlers/adminButtons');
+const communityConciergeButtons = require('./buttonHandlers/communityConciergeButtons');
 const gameButtons = require('./buttonHandlers/gameButtons');
 const panelButtons = require('./buttonHandlers/panelButtons');
 const roleButtons = require('./buttonHandlers/roleButtons');
@@ -7,6 +8,7 @@ const voiceButtons = require('./buttonHandlers/voiceButtons');
 const legacyDispatcher = require('../../legacy/interactions/legacyInteractionDispatcher');
 
 const buttonHandlers = [
+  communityConciergeButtons,
   roleButtons,
   gameButtons,
   voiceButtons,
