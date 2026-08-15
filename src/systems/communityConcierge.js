@@ -1,4 +1,3 @@
-const fs = require('node:fs');
 const path = require('node:path');
 const {
   ChannelType,
@@ -53,22 +52,6 @@ function throwMutationFailure(getRetainedMutationFailure, operation, result) {
   if (handoff.hasFailure) throw handoff.failure;
   throw new Error(`Guide ${operation} mutation failed: ${result.kind}/${result.failureKind || 'Unknown'}`);
 }
-function ensureFile(filePath, fallback = '{}') {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (!fs.existsSync(filePath)) fs.writeFileSync(filePath, fallback, 'utf8');
-}
-
-function readJson(filePath, fallback = {}) {
-  ensureFile(filePath, JSON.stringify(fallback, null, 2));
-  try {
-    const parsed = JSON.parse(fs.readFileSync(filePath, 'utf8') || '{}');
-    return parsed && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : fallback;
-  } catch (error) {
-    console.error(`Read ${path.basename(filePath)} failed:`, error);
-    return fallback;
-  }
-}
-
 async function generateConciergeText(kind, context, fallback) {
   if (!process.env.OPENAI_API_KEY) return fallback;
   try {

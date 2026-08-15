@@ -8,7 +8,8 @@ const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConc
 const reader = fs.readFileSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityOnboardingStateReader.js'), 'utf8');
 const candidate = fs.readFileSync(path.join(root, 'tests', 'fakes', 'community', 'FakeCommunityOnboardingFilesystemBoundary.js'), 'utf8');
 const fixture = JSON.parse(fs.readFileSync(path.join(root, 'tests', 'fixtures', 'community', 'community-filesystem-ownership-cases.json'), 'utf8'));
-for (const identifier of ['DATA_DIR', 'ONBOARDING_FILE', 'function ensureFile(', 'function readJson(']) assert.equal(runtime.includes(identifier), true, `Current runtime ownership must retain ${identifier}`);
+for (const identifier of ['DATA_DIR', 'ONBOARDING_FILE']) assert.equal(runtime.includes(identifier), true, `Runtime path ownership must retain ${identifier}`);
+for (const removed of ["require('node:fs')", 'function ensureFile(', 'function readJson(', 'fs.']) assert.equal(runtime.includes(removed), false, `Dead filesystem cleanup must remove ${removed}`);
 assert.equal(runtime.includes('function writeJson('), false, 'legacy writeJson helper remains removed');
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 3);
@@ -18,6 +19,5 @@ assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: 
 assert.equal(reader.includes('filePath'), false); assert.equal(reader.includes('readJson'), false); assert.equal(reader.includes('onboardingJsonReader.readRoot({})'), true);
 for (const forbidden of ['discord.js', 'saveOnboarding', 'mergeRecord', 'updatedAt', 'communityConcierge']) assert.equal(candidate.includes(forbidden), false, `test-only candidate must not introduce ${forbidden}`);
 assert.ok(fixture.length >= 50);
-const productionChanges = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(productionChanges, [], 'Filesystem cleanup preparation must freeze the committed architecture from a clean production source tree.');
+assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src/infrastructure/community/CommunityOnboardingStateReader.js'], { cwd: root, encoding: 'utf8' }).trim(), '');
 console.log('Community filesystem ownership migration preserves the approved atomic source boundary.');

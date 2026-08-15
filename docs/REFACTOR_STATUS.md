@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Runtime Filesystem Ownership Cleanup Preparation Retry #3 (Slice #73)
+Community Runtime Dead Filesystem Helper Cleanup (Slice #74)
 
 ## Overall Progress
-Estimated local refactor progress: 87%. StateReader and all three runtime construction sites now depend on the Infrastructure JSON reader; runtime path/helper cleanup remains.
+Estimated local refactor progress: 88%. Dead community filesystem helpers and the direct runtime `node:fs` dependency are removed; onboarding path ownership remains shared with publication persistence.
 
 ## Latest Completed
 - StateReader JSON dependency atomically migrated for Guide, Roadmap, and Welcome; JsonReader is runtime-active
@@ -372,7 +372,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare runtime filesystem ownership cleanup for the now-dead `ensureFile` and `readJson` helpers.
+Prepare the publication persistence path boundary before attempting full runtime onboarding-path ownership migration.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -419,13 +419,12 @@ only after this maintenance slice's full verification succeeds.
 
 All required maintenance, preparation, migration, closure, architecture,
 legacy-boundary, quality, audit, dashboard, and dependency checks now pass.
-The dedicated filesystem cleanup preparation gate now freezes current helper,
-path, construction, and closed-flow truth. Full path ownership cannot move yet
-because Guide/Roadmap persistence also consumes the runtime path constants.
-Filesystem cleanup preparation is complete; only narrow dead-helper cleanup is
-approved next, while full filesystem ownership remains partial.
+Dead `ensureFile` / `readJson` helpers and the runtime `node:fs` dependency are
+removed. `node:path`, `DATA_DIR`, and `ONBOARDING_FILE` remain because
+Guide/Roadmap persistence still consumes them. Filesystem ownership is
+PARTIALLY MIGRATED, not MIGRATED.
 
 ## Last Updated
-2026-08-15: Completed filesystem ownership cleanup preparation. Guide, Roadmap,
-and Welcome remain CLOSED; narrow dead-helper cleanup is the next approved
-implementation, while path ownership remains shared with persistence.
+2026-08-15: Removed dead community filesystem helpers and runtime `node:fs`.
+Guide, Roadmap, and Welcome remain CLOSED; runtime path ownership remains
+active because persistence still consumes the onboarding path constants.

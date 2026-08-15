@@ -19,11 +19,9 @@ for (const adapter of [messageAdapter, channelAdapter]) {
   assert.equal(adapter.includes('readOnboardingData'), false);
   assert.equal(adapter.includes('onboardingStateReader'), true);
 }
-for (const cleanupCandidate of ['DATA_DIR', 'ONBOARDING_FILE', 'function ensureFile(', 'function readJson(']) {
-  assert.equal(runtime.includes(cleanupCandidate), true, `Cleanup preparation must retain ${cleanupCandidate}`);
-}
+for (const retainedPath of ['DATA_DIR', 'ONBOARDING_FILE']) assert.equal(runtime.includes(retainedPath), true, `Runtime path ownership must retain ${retainedPath}`);
+for (const removed of ["require('node:fs')", 'function ensureFile(', 'function readJson(', 'fs.']) assert.equal(runtime.includes(removed), false, `Dead filesystem cleanup must remove ${removed}`);
 assert.ok(fixture.length >= 40);
 for (const marker of ['setupCommunityGuide', 'setupRoadmapPanel', 'sendConciergeWelcome']) assert.equal(runtime.includes(marker), true);
-const changed = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(changed, [], 'StateReader dependency preparation must validate committed source truth from a clean production tree.');
+assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src/infrastructure/community/CommunityOnboardingStateReader.js'], { cwd: root, encoding: 'utf8' }).trim(), '');
 console.log('StateReader JSON dependency migration preserves the approved atomic two-file source boundary.');

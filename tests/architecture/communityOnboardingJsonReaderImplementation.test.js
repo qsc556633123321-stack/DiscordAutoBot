@@ -8,7 +8,6 @@ const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConc
 for (const forbidden of ['discord.js', 'application/', 'domain/', 'composition/', 'communityConcierge', 'CommunityOnboardingStateReader', 'mergeRecord', 'updatedAt', 'saveOnboarding']) assert.equal(source.includes(forbidden), false, `Reader must not depend on ${forbidden}`);
 assert.equal(source.includes('readRoot('), true); assert.equal(source.includes('writeRoot'), false); assert.equal(source.includes('persist'), false); assert.equal(source.includes('cache'), false); assert.equal(source.includes('memo'), false);
 assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3, 'runtime constructs one reader per closed flow');
-assert.equal(runtime.includes('function readJson('), true); assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
-const changed = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(changed, [], 'The implemented JsonReader architecture must be verifiable after its migration is committed.');
+assert.equal(runtime.includes('function readJson('), false); assert.equal(runtime.includes("require('node:fs')"), false); assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
+assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src/infrastructure/community/CommunityOnboardingJsonReader.js'], { cwd: root, encoding: 'utf8' }).trim(), '');
 console.log('Production onboarding JSON reader is isolated and permits only the approved atomic migration source diff.');

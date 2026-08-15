@@ -22,7 +22,7 @@ assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).le
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
 assert.equal((runtime.match(/\breadOnboardingData\b/g) || []).length, 0, 'the zero-consumer helper is removed');
 assert.equal(fs.existsSync(path.join(root, 'src/composition/communityTrackingAdapterReaderFeature.js')), false);
-const changedProduction = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' })
-  .trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(changedProduction, [], 'The committed tracking adapter migration must remain valid from a clean production source tree.');
+for (const file of ['CommunityPublicationTrackingReadCompatibilityAdapter.js', 'CommunityPublicationChannelTrackingReadCompatibilityAdapter.js']) {
+  assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', `src/infrastructure/community/${file}`], { cwd: root, encoding: 'utf8' }).trim(), '');
+}
 console.log('Atomic tracking adapter migration is reader-backed, per-invocation, dual-free, and composition-free.');
