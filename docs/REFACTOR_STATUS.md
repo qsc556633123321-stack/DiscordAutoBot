@@ -1,12 +1,15 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Runtime Dead Filesystem Helper Cleanup (Slice #74)
+Community Publication Persistence Path Boundary Preparation (Slice #75)
 
 ## Overall Progress
-Estimated local refactor progress: 88%. Dead community filesystem helpers and the direct runtime `node:fs` dependency are removed; onboarding path ownership remains shared with publication persistence.
+Estimated local refactor progress: 88%. Publication persistence path ownership is characterized and ready for a narrow runtime redirect; no runtime ownership moved in this preparation slice.
 
 ## Latest Completed
+- Publication persistence path boundary prepared: Guide and Roadmap share the
+  existing generic filesystem adapter defaults, while JsonReader path ownership
+  remains a separate later boundary
 - StateReader JSON dependency atomically migrated for Guide, Roadmap, and Welcome; JsonReader is runtime-active
 - StateReader JSON dependency migration prepared with an atomic two-file implementation allowlist; production remains unchanged
 - `CommunityOnboardingJsonReader` implemented as a read-only Infrastructure boundary and deliberately left runtime-unwired
@@ -372,7 +375,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Prepare the publication persistence path boundary before attempting full runtime onboarding-path ownership migration.
+Redirect Guide and Roadmap publication persistence construction to the existing
+default adapter paths, without changing JsonReader construction.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -397,7 +401,9 @@ Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding
 are removed.
 Runtime still owns `DATA_DIR` and `ONBOARDING_FILE`, but Guide, Roadmap, and
 Welcome now construct `CommunityOnboardingJsonReader` and a JsonReader-backed
-StateReader. `ensureFile` and `readJson` are dead cleanup candidates. Role
+StateReader. `ensureFile` and `readJson` are removed. Guide/Roadmap
+persistence explicitly passes the same paths that its infrastructure adapter
+already owns as defaults. Role
 quick actions, button dispatch, direct channel setup, and AI text generation
 remain high-risk owners.
 
@@ -425,6 +431,6 @@ Guide/Roadmap persistence still consumes them. Filesystem ownership is
 PARTIALLY MIGRATED, not MIGRATED.
 
 ## Last Updated
-2026-08-15: Removed dead community filesystem helpers and runtime `node:fs`.
-Guide, Roadmap, and Welcome remain CLOSED; runtime path ownership remains
-active because persistence still consumes the onboarding path constants.
+2026-08-15: Prepared the publication persistence path boundary. Guide,
+Roadmap, and Welcome remain CLOSED; runtime path ownership remains active
+because persistence and JsonReader still consume the onboarding path constants.
