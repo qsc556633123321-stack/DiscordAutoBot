@@ -1,12 +1,13 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Channel Setup Boundary Preparation (Slice #89)
+Community Channel Setup Boundary Implementation (Slice #90)
 
 ## Overall Progress
-Estimated local refactor progress: 95%. Community Concierge exact-ID mapping,
-prefix dispatch, role workflow, and role/non-role payload construction are
-migrated; Runtime retains replies, dynamic link resolution, and channel setup.
+Estimated local refactor progress: 96%. Community Concierge exact-ID mapping,
+prefix dispatch, role workflow, role/non-role payload construction, and channel
+setup are migrated; Runtime retains replies, dynamic link resolution, and AI
+text generation.
 
 ## Latest Completed
 - Community role quick-action workflow migrated: semantic action mapping is
@@ -45,6 +46,10 @@ migrated; Runtime retains replies, dynamic link resolution, and channel setup.
   and channel ensure behavior, duplicate rules, permission asymmetry,
   failure/partial-success behavior, and persistence handoffs are frozen with a
   test-only candidate; no production runtime ownership moved
+- Community Channel Setup boundary migrated: Infrastructure now owns exact
+  category, Guide, and Roadmap ensure behavior, including Guide parent and
+  best-effort overwrite repair; Concierge retains publication and persistence
+  ordering without direct channel mutation calls
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -410,7 +415,7 @@ migrated; Runtime retains replies, dynamic link resolution, and channel setup.
   active for Guide/Roadmap; Welcome tracked-channel read remains legacy-owned
 
 ### Legacy
-- Community Concierge channel setup: ACTIVE in the runtime
+- Community Concierge AI text generation: ACTIVE in the runtime
 - Discord mutation execution
 - Some community mutation flows
 - Roles
@@ -436,9 +441,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Channel Setup Boundary Implementation: add only the approved narrow
-Infrastructure compatibility adapter and redirect Concierge ensure helpers
-without altering create, duplicate, failure, or publication behavior.
+Community AI Text Generation Boundary Preparation: characterize the existing
+fallback, API-key, OpenAI failure, and response-normalization contract before
+moving any runtime ownership.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -464,7 +469,9 @@ are removed. Runtime no longer owns onboarding filesystem paths or direct
 JsonReader construction; Infrastructure owns the defaults, while the existing
 JsonReader retains compatibility behavior. Role presentation remains
 Module-owned; non-role payload construction and button prefix dispatch are
-migrated. Direct channel setup and AI text generation remain high-risk owners.
+migrated. Direct channel setup is Infrastructure-owned and covered by exact
+create, parent, overwrite, and failure compatibility tests. AI text generation
+remains a direct runtime owner.
 
 Four stale architecture guards now validate committed source truth instead of
 requiring the previous atomic migration to remain as an uncommitted `git diff`.
@@ -490,7 +497,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the Community Channel Setup boundary for Concierge Guide
-and Roadmap ensure operations. Direct Discord setup ownership remains Runtime-
-owned; exact create, duplicate, permission, failure, and persistence-handoff
-compatibility are frozen. Overall progress remains 95%.
+2026-08-15: Implemented the Community Channel Setup boundary. The Concierge
+runtime delegates Guide and Roadmap category/channel ensure behavior to the
+Infrastructure compatibility adapter while publication, persistence, Welcome,
+and AI behavior remain unchanged. Overall progress is estimated at 96%.

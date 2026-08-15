@@ -15,6 +15,7 @@ const changedSource = execFileSync('git', ['diff', '--name-only', '--', 'src'], 
   .trim().split(/\r?\n/).filter(Boolean);
 const allowedSources = [
   'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
+  'src/infrastructure/community/CommunityChannelSetupCompatibilityAdapter.js',
   'src/systems/communityConcierge.js',
   'src/modules/community/CommunityNonRoleConciergePresentation.js',
   'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',

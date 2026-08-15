@@ -35,6 +35,7 @@ const { createCommunityOnboardingStateReader } = require('../infrastructure/comm
 const { createDefaultCommunityOnboardingJsonReader } = require('../infrastructure/community/CommunityOnboardingJsonReaderFactory');
 const { createCommunityWelcomeChannelResolver } = require('../infrastructure/community/CommunityWelcomeChannelResolver');
 const { createCommunityWelcomeDmDeliveryAdapter } = require('../infrastructure/community/CommunityWelcomeDmDeliveryAdapter');
+const { createCommunityChannelSetupCompatibilityAdapter } = require('../infrastructure/community/CommunityChannelSetupCompatibilityAdapter');
 const { createCommunityRoleQuickActionFeature } = require('../composition/communityRoleQuickActionFeature');
 const { resolveCommunityConciergeButtonAction } = require('../application/community/CommunityConciergeButtonActionResolver');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
@@ -79,50 +80,6 @@ function findChannelByName(guild, name, type = ChannelType.GuildText) {
   return guild.channels.cache.find((channel) => channel.type === type && channel.name === name) || null;
 }
 
-async function getOrCreateCategory(guild, name) {
-  let category = guild.channels.cache.find((channel) => channel.type === ChannelType.GuildCategory && channel.name === name);
-  if (!category) {
-    category = await guild.channels.create({
-      name,
-      type: ChannelType.GuildCategory,
-      reason: 'Community concierge setup'
-    });
-  }
-  return category;
-}
-
-async function getOrCreateGuideChannel(guild) {
-  const category = await getOrCreateCategory(guild, '📌｜社群入口');
-  let channel = findChannelByName(guild, GUIDE_CHANNEL_NAME);
-  if (!channel) {
-    channel = await guild.channels.create({
-      name: GUIDE_CHANNEL_NAME,
-      type: ChannelType.GuildText,
-      parent: category.id,
-      permissionOverwrites: permissionTemplates.onboardingVisible(guild),
-      reason: 'Community guide setup'
-    });
-  } else if (channel.parentId !== category.id) {
-    await channel.setParent(category.id, { lockPermissions: false, reason: 'Move guide channel to entry category' });
-  }
-  await channel.permissionOverwrites.set(permissionTemplates.onboardingVisible(guild), 'Keep guide channel onboarding visible').catch(() => null);
-  return channel;
-}
-
-async function getOrCreateRoadmapChannel(guild) {
-  const category = await getOrCreateCategory(guild, '🎮｜遊戲中心');
-  let channel = findChannelByName(guild, ROADMAP_CHANNEL_NAME);
-  if (!channel) {
-    channel = await guild.channels.create({
-      name: ROADMAP_CHANNEL_NAME,
-      type: ChannelType.GuildText,
-      parent: category.id,
-      reason: 'Community roadmap setup'
-    });
-  }
-  return channel;
-}
-
 async function buildGuidePayload(guild) {
   return createCommunityGuideReadCompatibilityAdapter({
     guild,
@@ -149,7 +106,14 @@ function buildAboutEmbed(guild) {
 }
 
 async function setupCommunityGuide(guild, options = {}) {
-  const channel = await getOrCreateGuideChannel(guild);
+  const channelSetupAdapter = createCommunityChannelSetupCompatibilityAdapter({
+    guild,
+    onboardingVisible: permissionTemplates.onboardingVisible
+  });
+  const channel = await channelSetupAdapter.ensureGuideChannel({
+    categoryName: '📌｜社群入口',
+    channelName: GUIDE_CHANNEL_NAME
+  });
   const { lookupPort, mutationPort, getRetainedMessage, getRetainedMutationFailure } =
     communityGuideAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const payload = await buildGuidePayload(guild);
@@ -209,7 +173,14 @@ async function setupCommunityGuide(guild, options = {}) {
 }
 
 async function setupRoadmapPanel(guild) {
-  const channel = await getOrCreateRoadmapChannel(guild);
+  const channelSetupAdapter = createCommunityChannelSetupCompatibilityAdapter({
+    guild,
+    onboardingVisible: permissionTemplates.onboardingVisible
+  });
+  const channel = await channelSetupAdapter.ensureRoadmapChannel({
+    categoryName: '🎮｜遊戲中心',
+    channelName: ROADMAP_CHANNEL_NAME
+  });
   const { lookupPort, mutationPort, getRetainedMessage } =
     communityRoadmapAdapterPairFeature.createAdapterPair({ ensuredChannel: channel });
   const onboardingJsonReader = createDefaultCommunityOnboardingJsonReader();
