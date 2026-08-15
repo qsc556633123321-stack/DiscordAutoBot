@@ -1,12 +1,15 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Publication Persistence Path Boundary Preparation (Slice #75)
+Community Publication Persistence Runtime Default-Path Redirect (Slice #76)
 
 ## Overall Progress
-Estimated local refactor progress: 88%. Publication persistence path ownership is characterized and ready for a narrow runtime redirect; no runtime ownership moved in this preparation slice.
+Estimated local refactor progress: 89%. Guide and Roadmap no longer own explicit persistence paths at runtime; three JsonReader constructions still own the remaining runtime path constants.
 
 ## Latest Completed
+- Guide and Roadmap publication persistence runtime construction redirected to
+  the existing filesystem adapter defaults; explicit runtime persistence paths
+  are removed without changing persistence semantics
 - Publication persistence path boundary prepared: Guide and Roadmap share the
   existing generic filesystem adapter defaults, while JsonReader path ownership
   remains a separate later boundary
@@ -375,8 +378,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Redirect Guide and Roadmap publication persistence construction to the existing
-default adapter paths, without changing JsonReader construction.
+Prepare the JsonReader default-path boundary for the remaining Guide, Roadmap,
+and Welcome runtime path consumers.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -402,8 +405,8 @@ are removed.
 Runtime still owns `DATA_DIR` and `ONBOARDING_FILE`, but Guide, Roadmap, and
 Welcome now construct `CommunityOnboardingJsonReader` and a JsonReader-backed
 StateReader. `ensureFile` and `readJson` are removed. Guide/Roadmap
-persistence explicitly passes the same paths that its infrastructure adapter
-already owns as defaults. Role
+persistence now uses its infrastructure adapter defaults; only JsonReader
+construction retains the runtime path dependency. Role
 quick actions, button dispatch, direct channel setup, and AI text generation
 remain high-risk owners.
 
@@ -431,6 +434,6 @@ Guide/Roadmap persistence still consumes them. Filesystem ownership is
 PARTIALLY MIGRATED, not MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the publication persistence path boundary. Guide,
-Roadmap, and Welcome remain CLOSED; runtime path ownership remains active
-because persistence and JsonReader still consume the onboarding path constants.
+2026-08-15: Redirected Guide/Roadmap persistence to default infrastructure
+paths. Guide, Roadmap, and Welcome remain CLOSED; runtime path ownership is
+partially migrated because JsonReader still consumes the onboarding paths.

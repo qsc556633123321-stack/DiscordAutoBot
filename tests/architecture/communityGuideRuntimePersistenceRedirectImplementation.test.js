@@ -7,7 +7,8 @@ const guide = runtime.match(/async function setupCommunityGuide\(guild, options 
 const roadmap = runtime.match(/async function setupRoadmapPanel\(guild\) \{([\s\S]*?)\n\}\n\nasync function maybeAddRole/)[1];
 assert.match(runtime, /createGuidePersistenceRequest/);
 assert.match(runtime, /createCommunityGuidePersistenceFeature/);
-assert.match(guide, /createCommunityPublicationStateFeature\(\{\s*filePath: ONBOARDING_FILE,\s*dataDirectory: DATA_DIR/);
+assert.match(guide, /createCommunityPublicationStateFeature\(\)/);
+assert.doesNotMatch(guide, /createCommunityPublicationStateFeature\(\{\s*filePath: ONBOARDING_FILE,\s*dataDirectory: DATA_DIR/);
 assert.match(guide, /createCommunityGuidePersistenceFeature\(\{\s*communityPublicationStateFeature/);
 assert.match(guide, /createGuidePersistenceRequest\(\{\s*guildId: guild\.id,\s*channelId: channel\.id,\s*messageId: message\.id/);
 assert.match(guide, /communityGuidePersistenceFeature\.persist\(persistenceRequest\)/);

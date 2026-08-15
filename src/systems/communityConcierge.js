@@ -201,7 +201,7 @@ async function setupCommunityGuide(guild, options = {}) {
   } else {
     throw new Error(`Unsupported Guide publication operation: ${mutationPlan.operation}`);
   }
-  const communityPublicationStateFeature = createCommunityPublicationStateFeature({ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR });
+  const communityPublicationStateFeature = createCommunityPublicationStateFeature();
   const communityGuidePersistenceFeature = createCommunityGuidePersistenceFeature({ communityPublicationStateFeature });
   const persistenceRequest = createGuidePersistenceRequest({ guildId: guild.id, channelId: channel.id, messageId: message.id, nativeTaskRecommendations: NATIVE_ONBOARDING_RECOMMENDATIONS, nativeTaskExcludedChannels: ['🎮｜目前語音房', '🎮｜遊戲中心'] });
   communityGuidePersistenceFeature.persist(persistenceRequest);
@@ -233,7 +233,7 @@ async function setupRoadmapPanel(guild) {
   }
   if (message) await mutationPort.edit({ messageId: message.id, payload });
   else { const sendResult = await mutationPort.send({ payload }); const retainedMessage = getRetainedMessage(); if (!retainedMessage || typeof retainedMessage.id !== 'string' || !retainedMessage.id || retainedMessage.id !== sendResult.messageId) throw new Error('Roadmap send mutation retained-message invariant failed'); message = retainedMessage; }
-  const communityPublicationStateFeature = createCommunityPublicationStateFeature({ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR });
+  const communityPublicationStateFeature = createCommunityPublicationStateFeature();
   const communityRoadmapPersistenceFeature = createCommunityRoadmapPersistenceFeature({ communityPublicationStateFeature });
   const persistenceRequest = createRoadmapPublicationPersistenceRequest({ guildId: guild.id, channelId: channel.id, messageId: message.id });
   communityRoadmapPersistenceFeature.persist(persistenceRequest);

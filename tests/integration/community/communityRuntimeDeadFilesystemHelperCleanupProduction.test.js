@@ -7,5 +7,6 @@ const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConc
 for (const flow of ['setupCommunityGuide', 'setupRoadmapPanel', 'sendConciergeWelcome']) assert.equal(runtime.includes(flow), true);
 assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3);
-assert.equal((runtime.match(/createCommunityPublicationStateFeature\(\{ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR \}\)/g) || []).length, 2, 'Guide and Roadmap persistence retain exact path construction');
+assert.equal((runtime.match(/createCommunityPublicationStateFeature\(\{ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR \}\)/g) || []).length, 0, 'Guide and Roadmap no longer own explicit persistence paths');
+assert.equal((runtime.match(/createCommunityPublicationStateFeature\(\)/g) || []).length, 2, 'Guide and Roadmap construct default-path persistence exactly once each');
 console.log('Dead filesystem helper cleanup preserves Guide, Roadmap, Welcome reader construction and persistence path contracts.');
