@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Button Dispatch Boundary Preparation (Slice #81)
+Community Concierge Semantic Button Resolver Preparation (Slice #82)
 
 ## Overall Progress
 Estimated local refactor progress: 91%. Community role quick-action mutation ownership has moved to Application and Infrastructure while Runtime retains the existing presentation and legacy dispatcher wrapper.
@@ -16,6 +16,9 @@ Estimated local refactor progress: 91%. Community role quick-action mutation own
 - Community Concierge button dispatch prepared: legacy `concierge_` prefix
   ownership, handler return handling, generic error reply, role isolation, and
   non-role presentation boundaries are frozen; no production source moved
+- Community Concierge semantic button resolver prepared: six exact-ID to
+  action mappings, null-only unknown behavior, input compatibility, and branch
+  equivalence are frozen with no production resolver yet added
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -394,9 +397,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Concierge Semantic Button Resolver Implementation Preparation:
-characterize exact-ID-to-action mapping without moving legacy prefix matching,
-interaction error handling, or presentation ownership.
+Community Concierge Semantic Button Resolver Implementation: add the pure
+Application resolver and consume it in `handleConciergeButton` while retaining
+legacy prefix/error ownership and all presentation behavior.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -448,6 +451,6 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the Community Concierge button-dispatch boundary. Role
-quick-action ownership remains migrated; Guide, Roadmap, Welcome, and
-filesystem closure remain intact.
+2026-08-15: Prepared the Community Concierge semantic button resolver. Role
+quick-action ownership remains migrated; Guide, Roadmap, Welcome, filesystem,
+legacy prefix dispatch, and runtime presentation ownership remain intact.
