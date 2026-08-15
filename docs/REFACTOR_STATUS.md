@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community StateReader JSON Dependency Atomic Migration (Slice #46)
+Community Migration Guard Maintenance (Slice #68)
 
 ## Overall Progress
 Estimated local refactor progress: 87%. StateReader and all three runtime construction sites now depend on the Infrastructure JSON reader; runtime path/helper cleanup remains.
@@ -401,6 +401,12 @@ StateReader. `ensureFile` and `readJson` are dead cleanup candidates. Role
 quick actions, button dispatch, direct channel setup, and AI text generation
 remain high-risk owners.
 
+Four stale architecture guards now validate committed source truth instead of
+requiring the previous atomic migration to remain as an uncommitted `git diff`.
+Filesystem cleanup preparation can be retried once this maintenance slice's
+full verification completes.
+
 ## Last Updated
-2026-08-14: StateReader JSON dependency atomically migrated. Guide, Roadmap,
-and Welcome remain CLOSED; runtime filesystem path/helper cleanup is next.
+2026-08-15: Repaired four stale post-commit migration guards. Guide, Roadmap,
+and Welcome remain CLOSED; filesystem cleanup preparation may be retried after
+the maintenance verification gate passes.

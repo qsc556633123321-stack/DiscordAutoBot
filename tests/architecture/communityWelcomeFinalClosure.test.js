@@ -38,6 +38,7 @@ assert.equal(welcome.indexOf('buildCommunityWelcomeMessage') < welcome.indexOf('
 assert.equal(welcome.indexOf('createCommunityWelcomeDmDeliveryAdapter') < welcome.indexOf('await dmDelivery.send(payload)'), true);
 assert.deepEqual(
   execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean),
-  ['src/infrastructure/community/CommunityOnboardingStateReader.js', 'src/systems/communityConcierge.js']
+  [],
+  'Welcome closure must remain true from a clean committed production source tree.'
 );
 console.log('Welcome final closure has no direct tracking, resolution, or DM delivery ownership.');

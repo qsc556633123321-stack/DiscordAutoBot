@@ -10,5 +10,5 @@ assert.equal(source.includes('readRoot('), true); assert.equal(source.includes('
 assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3, 'runtime constructs one reader per closed flow');
 assert.equal(runtime.includes('function readJson('), true); assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
 const changed = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(changed, ['src/infrastructure/community/CommunityOnboardingStateReader.js', 'src/systems/communityConcierge.js']);
+assert.deepEqual(changed, [], 'The implemented JsonReader architecture must be verifiable after its migration is committed.');
 console.log('Production onboarding JSON reader is isolated and permits only the approved atomic migration source diff.');

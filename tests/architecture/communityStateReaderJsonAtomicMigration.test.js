@@ -15,5 +15,5 @@ for (const file of ['CommunityOnboardingJsonReader.js', 'CommunityPublicationTra
   assert.equal(execFileSync('git', ['diff', '--name-only', 'HEAD', '--', `src/infrastructure/community/${file}`], { cwd: root, encoding: 'utf8' }).trim(), '');
 }
 const changed = execFileSync('git', ['diff', '--name-only', 'HEAD', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean);
-assert.deepEqual(changed, ['src/infrastructure/community/CommunityOnboardingStateReader.js', 'src/systems/communityConcierge.js']);
+assert.deepEqual(changed, [], 'The committed migration must remain valid from a clean production source tree.');
 console.log('StateReader JSON dependency migration is atomic, dual-free, and isolates unchanged boundaries.');
