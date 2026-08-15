@@ -6,11 +6,12 @@ const path = require('node:path');
 const root = path.resolve(__dirname, '..', '..');
 const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConcierge.js'), 'utf8');
 const stateReader = fs.readFileSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityOnboardingStateReader.js'), 'utf8');
-for (const identifier of ['const DATA_DIR = path.join(__dirname, \'..\', \'data\');', 'const ONBOARDING_FILE = path.join(DATA_DIR, \'onboarding-flows.json\');']) {
-  assert.equal(runtime.includes(identifier), true, `Runtime path ownership must retain ${identifier}`);
+for (const identifier of ['DATA_DIR', 'ONBOARDING_FILE', "require('node:path')"]) {
+  assert.equal(runtime.includes(identifier), false, `Runtime path ownership must remove ${identifier}`);
 }
 for (const removed of ["require('node:fs')", 'function ensureFile(', 'function readJson(', 'fs.']) assert.equal(runtime.includes(removed), false, `Dead filesystem cleanup must remove ${removed}`);
-assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3);
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 0);
+assert.equal((runtime.match(/createDefaultCommunityOnboardingJsonReader\(\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ onboardingJsonReader \}\)/g) || []).length, 3);
 assert.equal(stateReader.includes('onboardingJsonReader.readRoot({})'), true);
 for (const flow of ['setupCommunityGuide', 'setupRoadmapPanel', 'sendConciergeWelcome']) assert.equal(runtime.includes(flow), true);

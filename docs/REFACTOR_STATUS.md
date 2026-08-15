@@ -1,12 +1,15 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community JsonReader Default-Path Boundary Preparation (Slice #77)
+Community Filesystem Ownership Final Closure (Slice #78)
 
 ## Overall Progress
-Estimated local refactor progress: 89%. JsonReader default-path behavior is characterized and ready for a narrow atomic redirect; no runtime ownership moved in this preparation slice.
+Estimated local refactor progress: 90%. The Infrastructure default JsonReader factory is runtime-active for Guide, Roadmap, and Welcome, so the final Community runtime filesystem-path ownership has been removed.
 
 ## Latest Completed
+- Community filesystem ownership is closed: Guide, Roadmap, and Welcome now
+  construct their JsonReader through the Infrastructure default-path factory;
+  runtime `node:path`, `DATA_DIR`, and `ONBOARDING_FILE` ownership is removed
 - JsonReader default-path boundary prepared with exact path, no-I/O construction, override, and closed-flow equivalence coverage
 - Guide and Roadmap publication persistence runtime construction redirected to
   the existing filesystem adapter defaults; explicit runtime persistence paths
@@ -379,7 +382,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Redirect Guide, Roadmap, and Welcome JsonReader construction through an Infrastructure default factory and remove final runtime path constants.
+Role Boundary Preparation: characterize the next isolated role runtime boundary before any production migration.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -401,14 +404,10 @@ Redirect Guide, Roadmap, and Welcome JsonReader construction through an Infrastr
 
 ## Blockers
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
-are removed.
-Runtime still owns `DATA_DIR` and `ONBOARDING_FILE`, but Guide, Roadmap, and
-Welcome now construct `CommunityOnboardingJsonReader` and a JsonReader-backed
-StateReader. `ensureFile` and `readJson` are removed. Guide/Roadmap
-persistence now uses its infrastructure adapter defaults; only JsonReader
-construction retains the runtime path dependency. Role
-quick actions, button dispatch, direct channel setup, and AI text generation
-remain high-risk owners.
+are removed. Runtime no longer owns onboarding filesystem paths or direct
+JsonReader construction; Infrastructure owns the defaults, while the existing
+JsonReader retains compatibility behavior. Role quick actions, button dispatch,
+direct channel setup, and AI text generation remain high-risk owners.
 
 Four stale architecture guards now validate committed source truth instead of
 requiring the previous atomic migration to remain as an uncommitted `git diff`.
@@ -428,10 +427,10 @@ only after this maintenance slice's full verification succeeds.
 
 All required maintenance, preparation, migration, closure, architecture,
 legacy-boundary, quality, audit, dashboard, and dependency checks now pass.
-Dead `ensureFile` / `readJson` helpers and the runtime `node:fs` dependency are
-removed. `node:path`, `DATA_DIR`, and `ONBOARDING_FILE` remain because
-Guide/Roadmap persistence still consumes them. Filesystem ownership is
-PARTIALLY MIGRATED, not MIGRATED.
+Dead `ensureFile` / `readJson` helpers, the runtime `node:fs` dependency, and
+the remaining runtime `node:path` / onboarding path constants are removed.
+Guide/Roadmap persistence and all JsonReader construction use their approved
+Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the JsonReader default-path boundary. Guide, Roadmap, and Welcome remain CLOSED; runtime path ownership remains partially migrated until the three reader constructions are atomically redirected.
+2026-08-15: Closed Community filesystem ownership. Guide, Roadmap, and Welcome remain CLOSED; runtime path constants and direct JsonReader construction are removed in favor of the Infrastructure default factory.

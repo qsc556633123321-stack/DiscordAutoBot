@@ -13,8 +13,9 @@ const adapterPath = 'src/infrastructure/community/communityPublicationStateFiles
 
 assert.equal((runtime.match(/createCommunityPublicationStateFeature\(\{ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR \}\)/g) || []).length, 0);
 assert.equal((runtime.match(/createCommunityPublicationStateFeature\(\)/g) || []).length, 2);
-assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3);
-for (const retained of ["require('node:path')", "const DATA_DIR = path.join(__dirname, '..', 'data');", "const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');"]) assert.equal(runtime.includes(retained), true);
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 0);
+assert.equal((runtime.match(/createDefaultCommunityOnboardingJsonReader\(\)/g) || []).length, 3);
+for (const removed of ["require('node:path')", 'DATA_DIR', 'ONBOARDING_FILE']) assert.equal(runtime.includes(removed), false);
 assert.equal(DEFAULT_DATA_DIRECTORY, path.join(root, 'src', 'data'));
 assert.equal(DEFAULT_ONBOARDING_FILE, path.join(root, 'src', 'data', 'onboarding-flows.json'));
 const welcome = runtime.slice(runtime.indexOf('async function sendConciergeWelcome'));
@@ -26,4 +27,4 @@ assert.ok(
   'default-path redirect guard permits committed source truth or its approved in-progress runtime diff'
 );
 
-console.log('Publication persistence runtime uses adapter defaults while JsonReader paths remain runtime-owned.');
+console.log('Publication persistence runtime uses adapter defaults while JsonReader paths are Infrastructure-owned.');

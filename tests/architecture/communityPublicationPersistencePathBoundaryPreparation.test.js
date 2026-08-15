@@ -10,8 +10,9 @@ const reader = fs.readFileSync(path.join(root, 'src', 'infrastructure', 'communi
 const candidate = fs.readFileSync(path.join(root, 'tests', 'fakes', 'community', 'FakeDefaultCommunityPublicationPersistenceFeature.js'), 'utf8');
 
 for (const removed of ["require('node:fs')", 'function ensureFile(', 'function readJson(']) assert.equal(runtime.includes(removed), false);
-for (const retained of ["require('node:path')", "const DATA_DIR = path.join(__dirname, '..', 'data');", "const ONBOARDING_FILE = path.join(DATA_DIR, 'onboarding-flows.json');"]) assert.equal(runtime.includes(retained), true);
-assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3);
+for (const removed of ["require('node:path')", 'DATA_DIR', 'ONBOARDING_FILE']) assert.equal(runtime.includes(removed), false);
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 0);
+assert.equal((runtime.match(/createDefaultCommunityOnboardingJsonReader\(\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ onboardingJsonReader \}\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityPublicationStateFeature\(\{ filePath: ONBOARDING_FILE, dataDirectory: DATA_DIR \}\)/g) || []).length, 0);
 assert.equal((runtime.match(/createCommunityPublicationStateFeature\(\)/g) || []).length, 2);
@@ -29,4 +30,4 @@ assert.ok(
   'persistence-path preparation guard permits committed source truth or its approved in-progress runtime diff'
 );
 
-console.log('Publication persistence path preparation freezes current runtime ownership and the existing default adapter path boundary.');
+console.log('Publication persistence path preparation preserves adapter defaults after JsonReader path ownership moves to Infrastructure.');

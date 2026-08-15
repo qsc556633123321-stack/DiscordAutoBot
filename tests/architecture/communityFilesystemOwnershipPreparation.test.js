@@ -8,12 +8,12 @@ const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConc
 const reader = fs.readFileSync(path.join(root, 'src', 'infrastructure', 'community', 'CommunityOnboardingStateReader.js'), 'utf8');
 const candidate = fs.readFileSync(path.join(root, 'tests', 'fakes', 'community', 'FakeCommunityOnboardingFilesystemBoundary.js'), 'utf8');
 const fixture = JSON.parse(fs.readFileSync(path.join(root, 'tests', 'fixtures', 'community', 'community-filesystem-ownership-cases.json'), 'utf8'));
-for (const identifier of ['DATA_DIR', 'ONBOARDING_FILE']) assert.equal(runtime.includes(identifier), true, `Runtime path ownership must retain ${identifier}`);
+for (const identifier of ['DATA_DIR', 'ONBOARDING_FILE', "require('node:path')"]) assert.equal(runtime.includes(identifier), false, `Runtime path ownership must remove ${identifier}`);
 for (const removed of ["require('node:fs')", 'function ensureFile(', 'function readJson(', 'fs.']) assert.equal(runtime.includes(removed), false, `Dead filesystem cleanup must remove ${removed}`);
 assert.equal(runtime.includes('function writeJson('), false, 'legacy writeJson helper remains removed');
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3);
-assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 3);
-assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3);
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 0);
+assert.equal((runtime.match(/createDefaultCommunityOnboardingJsonReader\(\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ onboardingJsonReader \}\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
 assert.equal(reader.includes('filePath'), false); assert.equal(reader.includes('readJson'), false); assert.equal(reader.includes('onboardingJsonReader.readRoot({})'), true);

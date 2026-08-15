@@ -17,7 +17,8 @@ assert.equal(stateReader.includes('onboardingJsonReader.readRoot({})'), true);
 for (const legacyContract of ['filePath', 'readJson']) {
   assert.equal(stateReader.includes(legacyContract), false, `StateReader must not retain ${legacyContract}`);
 }
-assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3);
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 0);
+assert.equal((runtime.match(/createDefaultCommunityOnboardingJsonReader\(\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(/g) || []).length, 3, 'Guide, Roadmap, and Welcome construct one reader each');
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
 assert.equal((runtime.match(/\breadOnboardingData\b/g) || []).length, 0, 'the zero-consumer helper is removed');

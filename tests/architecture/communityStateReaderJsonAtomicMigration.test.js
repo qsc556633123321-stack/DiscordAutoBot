@@ -8,7 +8,8 @@ const stateReader = fs.readFileSync(path.join(root, 'src', 'infrastructure', 'co
 const runtime = fs.readFileSync(path.join(root, 'src', 'systems', 'communityConcierge.js'), 'utf8');
 for (const forbidden of ['filePath', 'readJson', 'if (onboardingJsonReader)', 'catch', 'console.']) assert.equal(stateReader.includes(forbidden), false, `StateReader must not retain ${forbidden}`);
 assert.equal(stateReader.includes('onboardingJsonReader.readRoot({})'), true);
-assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(\{ dataDirectory: DATA_DIR, filePath: ONBOARDING_FILE \}\)/g) || []).length, 3);
+assert.equal((runtime.match(/createCommunityOnboardingJsonReader\(/g) || []).length, 0);
+assert.equal((runtime.match(/createDefaultCommunityOnboardingJsonReader\(\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ onboardingJsonReader \}\)/g) || []).length, 3);
 assert.equal((runtime.match(/createCommunityOnboardingStateReader\(\{ filePath: ONBOARDING_FILE, readJson \}\)/g) || []).length, 0);
 for (const file of ['CommunityOnboardingJsonReader.js', 'CommunityPublicationTrackingReadCompatibilityAdapter.js', 'CommunityPublicationChannelTrackingReadCompatibilityAdapter.js']) {
