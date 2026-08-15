@@ -1,10 +1,10 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Role Presentation Boundary Preparation (Slice #87)
+Community Role Concierge Presentation Implementation (Slice #88)
 
 ## Overall Progress
-Estimated local refactor progress: 94%. Community Concierge exact-ID mapping,
+Estimated local refactor progress: 95%. Community Concierge exact-ID mapping,
 prefix dispatch, role workflow, and non-role payload construction are migrated;
 Runtime retains replies, dynamic link resolution, and role presentation.
 
@@ -38,6 +38,9 @@ Runtime retains replies, dynamic link resolution, and role presentation.
   payloads, `added` result use, quick-link ownership, error propagation, and
   implementation limits are frozen with a test-only candidate; no production
   role presentation ownership moved
+- Community role Concierge presentation migrated: Games, Invest, and Dev
+  payload construction is Module-owned while role workflow, quick-link lookup,
+  reply, return, routing, and error-wrapper ownership remain unchanged
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -178,9 +181,9 @@ Runtime retains replies, dynamic link resolution, and role presentation.
 - Community Concierge non-role payload construction: MIGRATED to the Module
   presentation builder; runtime retains `interaction.reply`, `quickLinks`, and
   shared roadmap embed ownership
-- Community Concierge role payload construction: PREPARED only; runtime still
-  owns Games, Invest, and Dev Embed payloads while the role workflow remains
-  migrated
+- Community Concierge role payload construction: MIGRATED to a dedicated Module
+  builder; runtime retains role workflow execution, `quickLinks`, replies,
+  returns, routing, and the outer error wrapper
 - Community role quick-action workflow: MIGRATED to Application and
   Infrastructure; direct runtime role mutation remains removed
 - Guide publication planning
@@ -429,9 +432,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Role Presentation Implementation: move only the Games, Invest, and
-Dev payload construction into the approved Module builder while retaining
-workflow execution, quick links, reply, return, and error-wrapper ownership.
+Community Channel Setup Boundary Preparation: characterize the remaining
+high-risk channel creation, permissions, duplicate avoidance, retry,
+persistence, and partial-failure behavior before any migration.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -456,7 +459,7 @@ Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding
 are removed. Runtime no longer owns onboarding filesystem paths or direct
 JsonReader construction; Infrastructure owns the defaults, while the existing
 JsonReader retains compatibility behavior. Role presentation remains
-Runtime-owned; non-role payload construction and button prefix dispatch are
+Module-owned; non-role payload construction and button prefix dispatch are
 migrated. Direct channel setup and AI text generation remain high-risk owners.
 
 Four stale architecture guards now validate committed source truth instead of
@@ -483,7 +486,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the Community role Concierge presentation boundary for
-Games, Invest, and Dev. Runtime remains the presentation owner; the role
-workflow, dispatch, and non-role builder were not changed. Overall progress is
-94%.
+2026-08-15: Migrated the Community role Concierge presentation payloads for
+Games, Invest, and Dev into a dedicated Module builder. Runtime still owns the
+role workflow, dynamic quick links, replies, returns, and error wrapper.
+Overall progress is 95%.

@@ -33,6 +33,7 @@ assert.ok(
     'src/composition/communityRoleQuickActionFeature.js',
     'src/infrastructure/discord/communityRoleMutationGateway.js',
     'src/modules/community/CommunityNonRoleConciergePresentation.js',
+    'src/modules/community/CommunityRoleConciergePresentation.js',
     'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',
     'src/modules/interactions/buttonInteractionHandler.js',
     'src/legacy/interactions/legacyInteractionRuntime.js'

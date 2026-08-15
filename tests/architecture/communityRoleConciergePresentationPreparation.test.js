@@ -8,19 +8,16 @@ const runtimePath = path.join(root, 'src', 'systems', 'communityConcierge.js');
 const candidatePath = path.join(root, 'tests', 'fakes', 'community', 'FakeCommunityRoleConciergePresentation.js');
 const runtime = fs.readFileSync(runtimePath, 'utf8');
 const candidate = fs.readFileSync(candidatePath, 'utf8');
-const srcDiff = [...new Set([
-  ...childProcess.execFileSync('git', ['diff', '--name-only', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean),
-  ...childProcess.execFileSync('git', ['ls-files', '--others', '--exclude-standard', '--', 'src'], { cwd: root, encoding: 'utf8' }).trim().split(/\r?\n/).filter(Boolean)
-])].sort();
-
-assert.deepEqual(srcDiff, []);
+const builderPath = path.join(root, 'src', 'modules', 'community', 'CommunityRoleConciergePresentation.js');
+assert.equal(fs.existsSync(builderPath), true);
 for (const action of ['games', 'invest', 'dev']) {
   assert.match(runtime, new RegExp(`action === '${action}'`));
   assert.match(candidate, new RegExp(`action === '${action}'`));
 }
 assert.match(runtime, /createCommunityRoleQuickActionFeature/);
 assert.match(runtime, /function quickLinks\(guild, kind\)/);
-assert.match(runtime, /await interaction\.reply\(/);
+assert.match(runtime, /buildCommunityRoleConciergePresentationPayload/);
+assert.match(runtime, /await interaction\.reply\(payload\)/);
 assert.doesNotMatch(runtime, /member\.roles\.add/);
 for (const forbidden of ['interaction.reply', 'createCommunityRoleQuickActionFeature', 'resolveCommunityConciergeButtonAction', 'member.roles.add', 'node:fs']) {
   assert.doesNotMatch(candidate, new RegExp(forbidden.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
@@ -28,4 +25,4 @@ for (const forbidden of ['interaction.reply', 'createCommunityRoleQuickActionFea
 assert.match(candidate, /require\(['"]discord\.js['"]\)/);
 assert.doesNotMatch(candidate, /catch\s*\(/);
 assert.match(candidate, /return null/);
-console.log('Role Concierge presentation preparation freezes a payload-only Module candidate while production Runtime ownership remains unchanged.');
+console.log('Role Concierge presentation preparation remains valid after the approved Module payload redirect.');

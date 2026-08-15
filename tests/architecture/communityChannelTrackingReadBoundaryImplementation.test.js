@@ -45,6 +45,7 @@ assert.equal(changedProduction.every((file) => [
   'src/infrastructure/community/CommunityPublicationChannelTrackingReadCompatibilityAdapter.js',
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
   'src/infrastructure/community/CommunityOnboardingJsonReader.js',
-  'src/infrastructure/community/CommunityWelcomeChannelResolver.js'
+  'src/infrastructure/community/CommunityWelcomeChannelResolver.js',
+  'src/modules/community/CommunityRoleConciergePresentation.js'
 ].includes(file)), true);
 console.log('Channel tracking read boundary is pure, isolated, uncomposed, and runtime-active for Welcome.');

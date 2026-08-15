@@ -15,6 +15,7 @@ const { createCommunityAboutModel } = require('../domain/community/communityAbou
 const { createCommunityRoadmapFeature } = require('../composition/communityRoadmapFeature');
 const { createCommunityRoadmapEmbed } = require('../modules/community/communityRoadmapEmbed');
 const { buildCommunityNonRoleConciergePresentationPayload } = require('../modules/community/CommunityNonRoleConciergePresentation');
+const { buildCommunityRoleConciergePresentationPayload } = require('../modules/community/CommunityRoleConciergePresentation');
 const { createCommunityGuideReadCompatibilityAdapter } = require('../composition/community/createCommunityGuideReadFeature');
 const { createCommunityPublicationStateFeature } = require('../composition/communityPublicationStateFeature');
 const { createCommunityRoadmapPersistenceFeature } = require('../composition/communityRoadmapPersistenceFeature');
@@ -261,20 +262,8 @@ async function handleConciergeButton(interaction) {
       action: 'games'
     });
     const links = quickLinks(guild, 'games');
-    await interaction.reply({
-      embeds: [
-        new EmbedBuilder()
-          .setColor(0x5865f2)
-          .setTitle('🎮 遊戲入口')
-          .setDescription('目前你可以先看組隊招募、目前語音房，或用 `/suggest-game` 提議新增遊戲分類。')
-          .addFields(
-            { name: '目前熱門方向', value: 'TFT、LOL、APEX、VALORANT', inline: false },
-            { name: '推薦前往', value: links.join('\n') || '目前還沒有找到遊戲入口頻道。', inline: false },
-            { name: '身分組', value: added ? '已幫你加入 🎮 遊戲玩家。' : '如果還看不到遊戲分類，請按「領取身分組」。', inline: false }
-          )
-      ],
-      ephemeral: true
-    });
+    const payload = buildCommunityRoleConciergePresentationPayload({ action: 'games', added, links });
+    await interaction.reply(payload);
     return true;
   }
 
@@ -293,8 +282,6 @@ async function handleConciergeButton(interaction) {
 
   if (action === 'invest' || action === 'dev') {
     const kind = action;
-    const title = kind === 'invest' ? '📈 投資入口' : '🧑‍💻 AI / 開發入口';
-    const roleName = kind === 'invest' ? '📈 股票投資' : '🛠 開發/AI';
     const roleQuickActionFeature = createCommunityRoleQuickActionFeature({
       resolveGuild: () => guild,
       resolveMember: () => interaction.member
@@ -305,16 +292,8 @@ async function handleConciergeButton(interaction) {
       action: kind
     });
     const links = quickLinks(guild, kind);
-    await interaction.reply({
-      embeds: [
-        new EmbedBuilder()
-          .setColor(kind === 'invest' ? 0x27ae60 : 0x9b59b6)
-          .setTitle(title)
-          .setDescription(added ? `已幫你加入 ${roleName}。` : `你可以先領取 ${roleName} 身分組解鎖相關分類。`)
-          .addFields({ name: '推薦前往', value: links.join('\n') || '目前還沒有找到相關入口。', inline: false })
-      ],
-      ephemeral: true
-    });
+    const payload = buildCommunityRoleConciergePresentationPayload({ action: kind, added, links });
+    await interaction.reply(payload);
     return true;
   }
 
