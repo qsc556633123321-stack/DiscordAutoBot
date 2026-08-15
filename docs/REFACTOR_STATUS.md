@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Button Dispatch Boundary Implementation (Slice #84)
+Community Non-role Concierge Presentation Preparation (Slice #85)
 
 ## Overall Progress
 Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and prefix dispatch are migrated, while Runtime retains semantic presentation.
@@ -11,8 +11,8 @@ Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and
   Application-owned and Discord lookup/add mutation is Infrastructure-owned;
   Concierge presentation and legacy dispatch behavior remain unchanged
 - Role Quick Action Workflow: MIGRATED. Direct Runtime Role Mutation: REMOVED.
-  Role presentation remains Runtime-owned; button dispatch remains
-  Runtime/Legacy-owned.
+  Role presentation remains Runtime-owned; button prefix dispatch is migrated
+  to the modern button family.
 - Community Concierge button dispatch prepared: legacy `concierge_` prefix
   ownership, handler return handling, generic error reply, role isolation, and
   non-role presentation boundaries are frozen; no production source moved
@@ -26,6 +26,9 @@ Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and
 - Community Concierge button dispatch migrated: the modern Concierge family now
   owns the exact prefix matcher and compatible error wrapper; the legacy
   Concierge branch is removed while global fallback remains active
+- Community non-role Concierge presentation prepared: Night, Bot, and Roadmap
+  payload/reply/return contracts are characterized with a payload-only
+  test candidate; no production runtime ownership moved
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -411,9 +414,10 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Non-role Concierge Presentation Preparation: characterize one narrow
-presentation branch without moving role workflow, prefix dispatch, or the
-global legacy fallback.
+Community Non-role Concierge Presentation Implementation: add one narrow
+Presentation/Module payload builder and redirect only the Night, Bot, and
+Roadmap payload literals while retaining runtime reply ownership and the
+existing error wrapper.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -437,8 +441,9 @@ global legacy fallback.
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed. Runtime no longer owns onboarding filesystem paths or direct
 JsonReader construction; Infrastructure owns the defaults, while the existing
-JsonReader retains compatibility behavior. Role presentation and button dispatch
-remain Runtime/Legacy-owned; direct channel setup and AI text generation remain
+JsonReader retains compatibility behavior. Role presentation and the Night,
+Bot, and Roadmap presentation branches remain Runtime-owned; button prefix
+dispatch is migrated. Direct channel setup and AI text generation remain
 high-risk owners.
 
 Four stale architecture guards now validate committed source truth instead of
@@ -465,7 +470,6 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Migrated Community Concierge prefix dispatch and its compatible
-error wrapper into the modern button family. Exact-ID mapping and role workflow
-remain migrated; Guide, Roadmap, Welcome, filesystem, and runtime presentation
-ownership remain intact.
+2026-08-15: Prepared the Community non-role Concierge presentation boundary.
+Night, Bot, and Roadmap payload equivalence and error pass-through are frozen;
+no production runtime source moved. Overall progress remains 93%.
