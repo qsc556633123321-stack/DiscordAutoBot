@@ -1,10 +1,12 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Non-role Concierge Presentation Preparation (Slice #85)
+Community Non-role Concierge Presentation Implementation (Slice #86)
 
 ## Overall Progress
-Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and prefix dispatch are migrated, while Runtime retains semantic presentation.
+Estimated local refactor progress: 94%. Community Concierge exact-ID mapping,
+prefix dispatch, role workflow, and non-role payload construction are migrated;
+Runtime retains replies, dynamic link resolution, and role presentation.
 
 ## Latest Completed
 - Community role quick-action workflow migrated: semantic action mapping is
@@ -29,6 +31,9 @@ Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and
 - Community non-role Concierge presentation prepared: Night, Bot, and Roadmap
   payload/reply/return contracts are characterized with a payload-only
   test candidate; no production runtime ownership moved
+- Community non-role Concierge presentation migrated: Night, Bot, and Roadmap
+  payload construction is Module-owned while reply, return, quick-link lookup,
+  shared roadmap builder, and error-wrapper ownership remain unchanged
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -166,6 +171,9 @@ Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and
   resolver; semantic action resolution is Application-owned
 - Community Concierge prefix dispatch and error wrapper: MIGRATED to the modern
   button family; legacy Concierge branch is removed
+- Community Concierge non-role payload construction: MIGRATED to the Module
+  presentation builder; runtime retains `interaction.reply`, `quickLinks`, and
+  shared roadmap embed ownership
 - Community role quick-action workflow: MIGRATED to Application and
   Infrastructure; direct runtime role mutation remains removed
 - Guide publication planning
@@ -388,7 +396,7 @@ Estimated local refactor progress: 93%. Community Concierge exact-ID mapping and
   active for Guide/Roadmap; Welcome tracked-channel read remains legacy-owned
 
 ### Legacy
-- Community Concierge semantic presentation: ACTIVE in the runtime
+- Community Concierge role presentation: ACTIVE in the runtime
 - Discord mutation execution
 - Some community mutation flows
 - Roles
@@ -414,10 +422,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Non-role Concierge Presentation Implementation: add one narrow
-Presentation/Module payload builder and redirect only the Night, Bot, and
-Roadmap payload literals while retaining runtime reply ownership and the
-existing error wrapper.
+Community Role Presentation Boundary Preparation: characterize the role-branch
+payloads without modifying the migrated role workflow, prefix dispatch, or
+runtime reply ownership.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -441,10 +448,9 @@ existing error wrapper.
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed. Runtime no longer owns onboarding filesystem paths or direct
 JsonReader construction; Infrastructure owns the defaults, while the existing
-JsonReader retains compatibility behavior. Role presentation and the Night,
-Bot, and Roadmap presentation branches remain Runtime-owned; button prefix
-dispatch is migrated. Direct channel setup and AI text generation remain
-high-risk owners.
+JsonReader retains compatibility behavior. Role presentation remains
+Runtime-owned; non-role payload construction and button prefix dispatch are
+migrated. Direct channel setup and AI text generation remain high-risk owners.
 
 Four stale architecture guards now validate committed source truth instead of
 requiring the previous atomic migration to remain as an uncommitted `git diff`.
@@ -470,6 +476,6 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the Community non-role Concierge presentation boundary.
-Night, Bot, and Roadmap payload equivalence and error pass-through are frozen;
-no production runtime source moved. Overall progress remains 93%.
+2026-08-15: Migrated Community non-role Concierge presentation payloads into a
+single Module builder. Runtime reply, quick-link, shared roadmap builder, and
+modern error-wrapper behavior remain intact. Overall progress is 94%.

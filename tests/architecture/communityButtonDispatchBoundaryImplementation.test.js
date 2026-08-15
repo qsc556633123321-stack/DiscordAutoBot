@@ -25,7 +25,6 @@ for (const closedFlow of ['setupCommunityGuide', 'setupRoadmapPanel', 'sendConci
 assert.match(resolver, /concierge_games/);
 for (const unchanged of [
   'src/application/community/CommunityConciergeButtonActionResolver.js',
-  'src/systems/communityConcierge.js',
   'src/application/community/communityRoleQuickActionUseCase.js',
   'src/application/community/ports/CommunityRoleMutationGateway.js',
   'src/composition/communityRoleQuickActionFeature.js',

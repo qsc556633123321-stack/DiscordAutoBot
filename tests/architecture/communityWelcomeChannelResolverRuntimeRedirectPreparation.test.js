@@ -33,6 +33,7 @@ const changedSource = execFileSync('git', ['status', '--short'], { cwd: root, en
 const allowedSource = new Set([
   'src/systems/communityConcierge.js',
   'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
+  'src/modules/community/CommunityNonRoleConciergePresentation.js',
   'src/modules/interactions/buttonHandlers/communityConciergeButtons.js',
   'src/modules/interactions/buttonInteractionHandler.js',
   'src/legacy/interactions/legacyInteractionRuntime.js'
