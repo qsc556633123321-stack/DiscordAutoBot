@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community Non-role Concierge Presentation Implementation (Slice #86)
+Community Role Presentation Boundary Preparation (Slice #87)
 
 ## Overall Progress
 Estimated local refactor progress: 94%. Community Concierge exact-ID mapping,
@@ -34,6 +34,10 @@ Runtime retains replies, dynamic link resolution, and role presentation.
 - Community non-role Concierge presentation migrated: Night, Bot, and Roadmap
   payload construction is Module-owned while reply, return, quick-link lookup,
   shared roadmap builder, and error-wrapper ownership remain unchanged
+- Community role Concierge presentation prepared: Games, Invest, and Dev
+  payloads, `added` result use, quick-link ownership, error propagation, and
+  implementation limits are frozen with a test-only candidate; no production
+  role presentation ownership moved
 - Community role quick-action boundary prepared: add-only Concierge role intents,
   hierarchy checks, swallowed mutation rejection, button coupling, and
   presentation ownership are frozen without production changes
@@ -174,6 +178,9 @@ Runtime retains replies, dynamic link resolution, and role presentation.
 - Community Concierge non-role payload construction: MIGRATED to the Module
   presentation builder; runtime retains `interaction.reply`, `quickLinks`, and
   shared roadmap embed ownership
+- Community Concierge role payload construction: PREPARED only; runtime still
+  owns Games, Invest, and Dev Embed payloads while the role workflow remains
+  migrated
 - Community role quick-action workflow: MIGRATED to Application and
   Infrastructure; direct runtime role mutation remains removed
 - Guide publication planning
@@ -422,9 +429,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community Role Presentation Boundary Preparation: characterize the role-branch
-payloads without modifying the migrated role workflow, prefix dispatch, or
-runtime reply ownership.
+Community Role Presentation Implementation: move only the Games, Invest, and
+Dev payload construction into the approved Module builder while retaining
+workflow execution, quick links, reply, return, and error-wrapper ownership.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -476,6 +483,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Migrated Community non-role Concierge presentation payloads into a
-single Module builder. Runtime reply, quick-link, shared roadmap builder, and
-modern error-wrapper behavior remain intact. Overall progress is 94%.
+2026-08-15: Prepared the Community role Concierge presentation boundary for
+Games, Invest, and Dev. Runtime remains the presentation owner; the role
+workflow, dispatch, and non-role builder were not changed. Overall progress is
+94%.
