@@ -36,10 +36,12 @@ const { createDefaultCommunityOnboardingJsonReader } = require('../infrastructur
 const { createCommunityWelcomeChannelResolver } = require('../infrastructure/community/CommunityWelcomeChannelResolver');
 const { createCommunityWelcomeDmDeliveryAdapter } = require('../infrastructure/community/CommunityWelcomeDmDeliveryAdapter');
 const { createCommunityChannelSetupCompatibilityAdapter } = require('../infrastructure/community/CommunityChannelSetupCompatibilityAdapter');
+const { createCommunityConciergeTextGenerationAdapter } = require('../infrastructure/community/CommunityConciergeTextGenerationAdapter');
 const { createCommunityRoleQuickActionFeature } = require('../composition/communityRoleQuickActionFeature');
 const { resolveCommunityConciergeButtonAction } = require('../application/community/CommunityConciergeButtonActionResolver');
 const communityGuideAdapterPairFeature = createCommunityGuideAdapterPairFeature();
 const communityRoadmapAdapterPairFeature = createCommunityRoadmapAdapterPairFeature();
+const communityConciergeTextGenerationAdapter = createCommunityConciergeTextGenerationAdapter();
 const GUIDE_CHANNEL_NAME = '🧭｜伺服器導覽';
 const ROADMAP_CHANNEL_NAME = '🚧｜社群開發日誌';
 const NATIVE_ONBOARDING_RECOMMENDATIONS = [
@@ -54,26 +56,19 @@ function throwMutationFailure(getRetainedMutationFailure, operation, result) {
   throw new Error(`Guide ${operation} mutation failed: ${result.kind}/${result.failureKind || 'Unknown'}`);
 }
 async function generateConciergeText(kind, context, fallback) {
-  if (!process.env.OPENAI_API_KEY) return fallback;
-  try {
-    const { default: OpenAI } = await import('openai');
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content: '你是 Discord 社群管家。使用繁體中文，像真人社群朋友，溫暖、自然、短句，不要客服機器人感。最多 60 字。'
-        },
-        { role: 'user', content: JSON.stringify({ kind, context }) }
-      ],
-      temperature: 0.85,
-      max_tokens: 120
-    });
-    return response.choices?.[0]?.message?.content?.trim() || fallback;
-  } catch (error) {
-    return fallback;
-  }
+  const request = {
+    model: 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'system',
+        content: '你是 Discord 社群管家。使用繁體中文，像真人社群朋友，溫暖、自然、短句，不要客服機器人感。最多 60 字。'
+      },
+      { role: 'user', content: JSON.stringify({ kind, context }) }
+    ],
+    temperature: 0.85,
+    max_tokens: 120
+  };
+  return communityConciergeTextGenerationAdapter.generate({ request, fallback });
 }
 
 function findChannelByName(guild, name, type = ChannelType.GuildText) {

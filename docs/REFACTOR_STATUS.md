@@ -1,15 +1,19 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community AI Text Generation Boundary Preparation (Slice #91)
+Community AI Text Generation Boundary Implementation (Slice #92)
 
 ## Overall Progress
-Estimated local refactor progress: 96%. Community Concierge exact-ID mapping,
-prefix dispatch, role workflow, role/non-role payload construction, and channel
-setup are migrated; Runtime retains replies, dynamic link resolution, and AI
-text generation.
+Estimated local refactor progress: 97%. Community Concierge exact-ID mapping,
+prefix dispatch, role workflow, role/non-role payload construction, channel
+setup, and AI transport are migrated; Runtime retains replies, dynamic link
+resolution, and prompt/request semantics.
 
 ## Latest Completed
+- Community Concierge AI text transport migrated: Infrastructure now owns
+  per-call API-key lookup, lazy OpenAI loading, client/request transport,
+  response normalization, and silent fallback. Runtime retains the exact
+  Traditional-Chinese prompt, request construction, and compatibility helper.
 - Community role quick-action workflow migrated: semantic action mapping is
   Application-owned and Discord lookup/add mutation is Infrastructure-owned;
   Concierge presentation and legacy dispatch behavior remain unchanged
@@ -186,6 +190,9 @@ text generation.
 
 ## Current Ownership
 ### New Architecture
+- Community Concierge AI transport: MIGRATED to Infrastructure. Direct Runtime
+  OpenAI SDK/client/request/response parsing is removed; prompt/request
+  semantics and `generateConciergeText` compatibility API remain Runtime-owned.
 - Community Concierge exact-ID mapping: MIGRATED to the pure Application
   resolver; semantic action resolution is Application-owned
 - Community Concierge prefix dispatch and error wrapper: MIGRATED to the modern
@@ -444,9 +451,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Community AI Text Generation Boundary Implementation: add only the approved
-narrow Infrastructure transport adapter and redirect Concierge without changing
-the prompt, request, fallback, response parsing, or caller behavior.
+Deployment Readiness Preparation: assess the completed local migration surface,
+rollback path, runtime boundaries, and production replacement blockers without
+deploying to Vultr.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -473,8 +480,9 @@ JsonReader construction; Infrastructure owns the defaults, while the existing
 JsonReader retains compatibility behavior. Role presentation remains
 Module-owned; non-role payload construction and button prefix dispatch are
 migrated. Direct channel setup is Infrastructure-owned and covered by exact
-create, parent, overwrite, and failure compatibility tests. AI text generation
-remains a direct runtime owner.
+create, parent, overwrite, and failure compatibility tests. AI text-generation
+transport is Infrastructure-owned; Runtime retains only prompt/request semantics
+and the public compatibility helper.
 
 Four stale architecture guards now validate committed source truth instead of
 requiring the previous atomic migration to remain as an uncommitted `git diff`.
@@ -500,7 +508,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-15: Prepared the Community AI Text Generation boundary. OpenAI key,
-lazy construction, request, response, fallback, and silent failure semantics
-are frozen with test-only coverage; production runtime ownership remains
-unchanged. Overall progress remains 96%.
+2026-08-16: Migrated the Community AI Text Generation transport boundary.
+Infrastructure owns current API-key lookup, lazy OpenAI loading, client/request
+transport, response normalization, and silent fallback; Runtime retains exact
+prompt/request semantics. Overall progress is estimated at 97%.

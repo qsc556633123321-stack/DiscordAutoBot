@@ -33,6 +33,7 @@ const changedSource = execFileSync('git', ['status', '--short'], { cwd: root, en
 const allowedSource = new Set([
   'src/systems/communityConcierge.js',
   'src/infrastructure/community/CommunityChannelSetupCompatibilityAdapter.js',
+  'src/infrastructure/community/CommunityConciergeTextGenerationAdapter.js',
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
   'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
   'src/infrastructure/community/CommunityOnboardingJsonReader.js',

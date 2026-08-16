@@ -27,6 +27,7 @@ assert.ok(
   productionDiff.every((file) => [
     'src/infrastructure/community/CommunityOnboardingJsonReaderFactory.js',
     'src/infrastructure/community/CommunityChannelSetupCompatibilityAdapter.js',
+    'src/infrastructure/community/CommunityConciergeTextGenerationAdapter.js',
     'src/systems/communityConcierge.js',
     'src/application/community/communityRoleQuickActionUseCase.js',
     'src/application/community/CommunityConciergeButtonActionResolver.js',
