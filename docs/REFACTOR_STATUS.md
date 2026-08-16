@@ -1,15 +1,20 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Community AI Text Generation Boundary Implementation (Slice #92)
+Deployment Readiness Preparation (Slice #93)
 
 ## Overall Progress
-Estimated local refactor progress: 97%. Community Concierge exact-ID mapping,
-prefix dispatch, role workflow, role/non-role payload construction, channel
-setup, and AI transport are migrated; Runtime retains replies, dynamic link
-resolution, and prompt/request semantics.
+Estimated local refactor progress: 97%. This readiness preparation adds no
+production migration. Community Concierge exact-ID mapping, prefix dispatch,
+role workflow, role/non-role payload construction, channel setup, AI transport,
+and filesystem ownership remain migrated; Runtime retains intentional thin
+orchestration and prompt/request semantics.
 
 ## Latest Completed
+- Refactored Community deployment readiness prepared: local build, test,
+  dependency, startup, data, environment, Discord-intent, backup, rollback,
+  and smoke evidence is documented. Vultr replacement remains blocked pending a
+  read-only server audit and data-preservation verification.
 - Community Concierge AI text transport migrated: Infrastructure now owns
   per-call API-key lookup, lazy OpenAI loading, client/request transport,
   response normalization, and silent fallback. Runtime retains the exact
@@ -441,7 +446,8 @@ resolution, and prompt/request semantics.
 - Refactored production deployment: Not started
 
 ## Deployment Readiness
-Not ready for production replacement yet.
+BLOCKED pending manual Vultr server audit, live-data preservation verification,
+environment/intent/permission confirmation, and deployment-manager discovery.
 
 Target for first refactored Vultr deployment:
 - Guide publication runtime integration complete
@@ -451,9 +457,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Deployment Readiness Preparation: assess the completed local migration surface,
-rollback path, runtime boundaries, and production replacement blockers without
-deploying to Vultr.
+Vultr Server Audit: perform a read-only inspection of the actual service
+manager, release/data paths, Node runtime, environment presence, backup method,
+and Discord configuration before any deployment execution preparation.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -508,7 +514,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-16: Migrated the Community AI Text Generation transport boundary.
-Infrastructure owns current API-key lookup, lazy OpenAI loading, client/request
-transport, response normalization, and silent fallback; Runtime retains exact
-prompt/request semantics. Overall progress is estimated at 97%.
+2026-08-16: Prepared deployment readiness for the refactored Community
+candidate. Local checks are green, structural refactor is stopped, and Vultr
+replacement is blocked pending a manual server/data/configuration audit. Overall
+progress remains 97%.
