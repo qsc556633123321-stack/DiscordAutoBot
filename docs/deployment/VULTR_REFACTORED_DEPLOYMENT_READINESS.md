@@ -5,6 +5,11 @@
 GitHub `main` at `70ff72a` is a validated replacement candidate, but not a
 deployment-ready server release. The repository cannot establish server state.
 
+Operations Slice #94 could not open an approved Vultr SSH session from this
+workspace. No production command was run. The first manual, read-only server
+audit group is documented in `VULTR_MANUAL_READ_ONLY_AUDIT_COMMANDS.md`; server
+evidence is still required before this status can change.
+
 ## Ready From Repository Evidence
 
 - `npm ci` succeeds with the committed lockfile.

@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Deployment Readiness Preparation (Slice #93)
+Deployment Readiness Preparation / Vultr Server Audit Pending (Slices #93-94)
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -15,6 +15,11 @@ orchestration and prompt/request semantics.
   dependency, startup, data, environment, Discord-intent, backup, rollback,
   and smoke evidence is documented. Vultr replacement remains blocked pending a
   read-only server audit and data-preservation verification.
+- Vultr production read-only audit is pending: this workspace has no approved
+  SSH target/session, so no production command, write, restart, login, or
+  deployment occurred. The first safe manual audit group is documented in
+  `docs/deployment/VULTR_MANUAL_READ_ONLY_AUDIT_COMMANDS.md`; readiness remains
+  BLOCKED until actual server evidence is captured.
 - Community Concierge AI text transport migrated: Infrastructure now owns
   per-call API-key lookup, lazy OpenAI loading, client/request transport,
   response normalization, and silent fallback. Runtime retains the exact
@@ -515,6 +520,7 @@ Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
 2026-08-16: Prepared deployment readiness for the refactored Community
-candidate. Local checks are green, structural refactor is stopped, and Vultr
-replacement is blocked pending a manual server/data/configuration audit. Overall
-progress remains 97%.
+candidate. Structural refactor is stopped. Vultr server access was not available
+to this workspace for Operations Slice #94, so no production action occurred;
+replacement remains blocked pending the documented manual read-only server/data/
+configuration audit. Overall progress remains 97%.
