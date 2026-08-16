@@ -474,8 +474,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Resume Feature Development: the refactored Bot is validated in real production;
-prioritize product value rather than automatically reopening structural refactor.
+Production Observation / Stability Window: monitor PM2 `index` logs, restart
+count, Discord ready continuity, and ordinary community interactions while the
+legacy checkout and verified backup remain available for rollback.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
