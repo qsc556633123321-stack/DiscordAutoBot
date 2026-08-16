@@ -11,10 +11,11 @@ and filesystem ownership remain migrated; Runtime retains intentional thin
 orchestration and prompt/request semantics.
 
 ## Product Feature Progress
-- Game Role Feature: FOUNDATION. Pure registry-derived role identity,
-  inheritance, and access decisions are implemented locally only. Discord role
-  provisioning, selection UI, category permission wiring, and existing-guild
-  migration are intentionally not implemented or deployed.
+- Game Role Feature: PROVISIONING_IMPLEMENTED_NOT_DEPLOYED. Registry-derived
+  exact-match preview and sequential role provisioning with created-ID-only
+  rollback are implemented, but are not runtime-wired. Selection UI, category
+  permission wiring, and existing-guild execution remain intentionally
+  undeployed.
 
 ## Latest Completed
 - Refactored Community deployment readiness prepared: local build, test,
@@ -480,9 +481,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Game Role Provisioning: create and resolve only registry-derived Discord roles
-with duplicate, rollback, and existing-guild safeguards before any selector UI
-or category permission wiring.
+Existing Guild Role Provisioning Execution: run the new read-only preview
+against the production guild, obtain explicit human confirmation, then execute
+the role creation boundary in a separately approved deployment slice.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
