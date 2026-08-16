@@ -1,0 +1,13 @@
+{
+  "target": {
+    "gameCenter": ["game"],
+    "specificGameCategory": "game:<gameId>"
+  },
+  "livePermissionMatrixChanged": false,
+  "examples": [
+    { "roles": ["member"], "gameCenter": false, "valorant": false },
+    { "roles": ["game"], "gameCenter": true, "valorant": false },
+    { "roles": ["game:valorant"], "gameCenter": true, "valorant": true, "apex": false },
+    { "roles": ["game:valorant", "game:apex"], "gameCenter": true, "valorant": true, "apex": true }
+  ]
+}

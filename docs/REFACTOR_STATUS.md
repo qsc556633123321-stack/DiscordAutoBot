@@ -10,6 +10,12 @@ role workflow, role/non-role payload construction, channel setup, AI transport,
 and filesystem ownership remain migrated; Runtime retains intentional thin
 orchestration and prompt/request semantics.
 
+## Product Feature Progress
+- Game Role Feature: FOUNDATION. Pure registry-derived role identity,
+  inheritance, and access decisions are implemented locally only. Discord role
+  provisioning, selection UI, category permission wiring, and existing-guild
+  migration are intentionally not implemented or deployed.
+
 ## Latest Completed
 - Refactored Community deployment readiness prepared: local build, test,
   dependency, startup, data, environment, Discord-intent, backup, rollback,
@@ -474,9 +480,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Production Observation / Stability Window: monitor PM2 `index` logs, restart
-count, Discord ready continuity, and ordinary community interactions while the
-legacy checkout and verified backup remain available for rollback.
+Game Role Provisioning: create and resolve only registry-derived Discord roles
+with duplicate, rollback, and existing-guild safeguards before any selector UI
+or category permission wiring.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
