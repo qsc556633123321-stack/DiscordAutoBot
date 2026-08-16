@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Deployment Readiness / Production Backup Pending (Slices #93-95)
+Production Deployment Reconciled / Feature Work Ready (Slices #93-96)
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -23,8 +23,13 @@ orchestration and prompt/request semantics.
 - Vultr manual read-only audit reconciled: production is a dirty legacy PM2
   checkout at `/opt/DiscordAutoBot`; `src/data`, `src/legacy/data`, and `.env`
   are live state/configuration that must be preserved. Dashboard/API is not
-  deployed. The next approved operation is backup execution, not staging or
-  cutover.
+  deployed. This audit established the deployment safeguards that were used for
+  the later successful side-by-side cutover.
+- The refactored Bot is deployed and production-smoke validated at
+  `b484f77565d29db76ba867c7c6de61d23708987b`. Backup, independent staging,
+  shared live-state preservation, PM2 cutover, and TempVoice smoke passed;
+  legacy code and backup remain available for rollback. Structural refactor is
+  stopped and the repository is complete enough for feature work.
 - Community Concierge AI text transport migrated: Infrastructure now owns
   per-call API-key lookup, lazy OpenAI loading, client/request transport,
   response normalization, and silent fallback. Runtime retains the exact
@@ -452,14 +457,14 @@ orchestration and prompt/request semantics.
 ## Deployment Status
 - Local refactor: In progress
 - GitHub: Current development source
-- Vultr production: Pre-refactor legacy version
-- Refactored production deployment: Not started
+- Vultr production: Refactored Discord Bot deployed at `b484f77565d29db76ba867c7c6de61d23708987b`
+- Refactored production deployment: Complete; dashboard/API remains intentionally undeployed
 
 ## Deployment Readiness
-READY_FOR_BACKUP. Manual server facts confirm PM2, compatible Node, sufficient
-disk, a Bot-only deployment scope, and a dirty legacy checkout. Backup of
-`.env`, `src/data`, `src/legacy/data`, and PM2 metadata must complete before
-staging or cutover.
+DEPLOYED. The refactored Discord Bot passed independent staging validation,
+PM2 cutover, Discord ready, and real TempVoice smoke. Keep the legacy release
+and verified backup through a stability window; dashboard/API remains outside
+the deployed scope.
 
 Target for first refactored Vultr deployment:
 - Guide publication runtime integration complete
@@ -469,9 +474,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Production Backup Execution: create and verify a protected snapshot of the
-legacy release, `.env`, `src/data`, `src/legacy/data`, and PM2 metadata before
-any refactored release staging.
+Resume Feature Development: the refactored Bot is validated in real production;
+prioritize product value rather than automatically reopening structural refactor.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -527,7 +531,7 @@ Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
 2026-08-16: Prepared deployment readiness for the refactored Community
-candidate. Structural refactor is stopped. Operations Slice #95 reconciled
-manual read-only Vultr evidence; no production action occurred. Readiness is
-READY_FOR_BACKUP, with backup execution required before staging or cutover.
-Overall progress remains 97%.
+candidate. Structural refactor is stopped. Operations Slice #96 reconciled the
+successful manually verified production deployment; no server action occurred
+from this workspace. Refactored Bot deployment is complete and feature work is
+ready. Overall progress remains 97%.

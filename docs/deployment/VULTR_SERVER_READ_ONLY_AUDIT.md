@@ -1,10 +1,11 @@
 # Vultr Server Read-Only Audit
 
-## Audit Status
+## Audit Status: COMPLETE
 
-Manual server evidence was reconciled locally on 2026-08-16. This document
-records read-only observations only. No SSH command was executed by this
-workspace, and no production mutation occurred during this slice.
+Manual server evidence was reconciled locally on 2026-08-16 and subsequently
+used for the verified refactored production cutover. This workspace did not SSH
+to or mutate Vultr during the reconciliation slices; deployment facts are
+recorded from manually verified operations evidence.
 
 ## Host Runtime
 
@@ -65,7 +66,8 @@ introduced in a later, separate deployment.
 
 ## Operational Decision
 
-The legacy checkout remains the rollback target. Use a separate release
-directory, preserve the shared `.env` and both live-state directories, stop
-the old Bot before starting the replacement, and maintain exactly one online
-Discord client for the token.
+The side-by-side deployment was completed successfully. The legacy checkout
+remains the rollback target at `/opt/DiscordAutoBot`; the running refactored
+release is recorded in `VULTR_REFACTORED_DEPLOYMENT_RESULT.md`. The shared
+`.env` and live-state preservation model was verified, and the cutover kept
+exactly one Discord client online.

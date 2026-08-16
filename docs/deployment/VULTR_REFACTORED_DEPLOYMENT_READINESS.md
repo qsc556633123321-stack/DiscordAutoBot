@@ -1,14 +1,16 @@
 # Refactored Vultr Deployment Readiness
 
-## Status: READY_FOR_BACKUP
+## Status: DEPLOYED
 
-GitHub `main` is a validated replacement candidate, but not a deployment-ready
-server release. Operations Slice #95 reconciled verified manual server evidence:
-PM2 manages the Bot, the current checkout is dirty, live JSON state is inside
-the checkout, the dashboard is not deployed, and disk capacity is sufficient.
+The refactored Discord Bot release `b484f77565d29db76ba867c7c6de61d23708987b`
+is deployed at
+`/opt/DiscordAutoBot-releases/b484f77565d29db76ba867c7c6de61d23708987b`.
+Backup, independent staging, live-state symlink verification, local server
+validation, PM2 cutover, and production smoke checks passed.
 
-The next safe action is a separately approved production backup. No backup,
-staging, cutover, restart, or server write has occurred.
+The first production replacement scope is Discord Bot only. Dashboard/API is
+not deployed. The legacy checkout and verified backup remain available for
+rollback.
 
 ## Ready From Repository Evidence
 
@@ -19,16 +21,14 @@ staging, cutover, restart, or server write has occurred.
 - No database schema change or data schema migration was introduced by the
   Community refactor.
 
-## Required Before Deployment
+## Remaining Operational Follow-up
 
-- Verified backup and preservation method for mutable `src/data/`, especially
-  `onboarding-flows.json`, plus `src/legacy/data` and `.env`.
-- Confirmation of Developer Portal privileged intents and live Bot role
-  permissions/position.
-- Explicit decision whether Dashboard/Supabase is deployed; apply its separate
-  environment and schema checks only when it is enabled.
+- Retain the legacy checkout and backup through an agreed stability window.
+- Observe PM2 `index` logs and restarts during normal community activity.
+- Address the recorded non-blocking Discord.js `ephemeral` option deprecation
+  in a separate, small maintenance slice.
 
-## Prohibited Until Cleared
+## Deployment Guard
 
-Do not stage, restart the Bot, replace files, or run slash-command deployment
-until the backup is completed and verified.
+Do not remove the legacy checkout or backup without an explicitly approved
+retention decision. Do not deploy the dashboard/API as part of Bot follow-up.
