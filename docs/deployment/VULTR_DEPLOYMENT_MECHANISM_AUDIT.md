@@ -1,13 +1,19 @@
 # Vultr Deployment Mechanism Audit
 
-Repository evidence confirms `npm start` is the main Bot start command and
-`npm run dashboard:start` is a separate Dashboard/API command. It contains no
-authoritative PM2 ecosystem file, systemd unit, Dockerfile, docker-compose
-file, screen/tmux procedure, or Vultr deployment script.
+## Status: VERIFIED BY MANUAL READ-ONLY AUDIT
 
-**Status: UNKNOWN - NEED SERVER INSPECTION.**
+| Item | Production fact |
+| --- | --- |
+| Service manager | PM2 (`/usr/bin/pm2`) |
+| Application | `discord-bot`, PM2 id `0`, fork mode, online |
+| Script | `/opt/DiscordAutoBot/src/index.js` |
+| Working directory | `/opt/DiscordAutoBot` |
+| Interpreter | node |
+| User | root |
+| Watch | disabled |
+| Error log | `/root/.pm2/logs/discord-bot-error.log` |
+| Output log | `/root/.pm2/logs/discord-bot-out.log` |
 
-Before a replacement, inspect the server manually to identify the service
-manager, release directory, active command, Node binary, environment-file
-location, log destination, restart policy, and any volume/mount containing
-`src/data/`. Do not infer these details from local development commands.
+No dedicated Discord Bot systemd service was found. The checkout is dirty, so
+an in-place `git pull` is unsafe. Use the documented side-by-side release and
+PM2 cutover plans instead.

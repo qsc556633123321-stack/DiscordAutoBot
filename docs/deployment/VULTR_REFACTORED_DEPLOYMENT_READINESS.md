@@ -1,14 +1,14 @@
 # Refactored Vultr Deployment Readiness
 
-## Status: BLOCKED
+## Status: READY_FOR_BACKUP
 
-GitHub `main` at `70ff72a` is a validated replacement candidate, but not a
-deployment-ready server release. The repository cannot establish server state.
+GitHub `main` is a validated replacement candidate, but not a deployment-ready
+server release. Operations Slice #95 reconciled verified manual server evidence:
+PM2 manages the Bot, the current checkout is dirty, live JSON state is inside
+the checkout, the dashboard is not deployed, and disk capacity is sufficient.
 
-Operations Slice #94 could not open an approved Vultr SSH session from this
-workspace. No production command was run. The first manual, read-only server
-audit group is documented in `VULTR_MANUAL_READ_ONLY_AUDIT_COMMANDS.md`; server
-evidence is still required before this status can change.
+The next safe action is a separately approved production backup. No backup,
+staging, cutover, restart, or server write has occurred.
 
 ## Ready From Repository Evidence
 
@@ -21,10 +21,8 @@ evidence is still required before this status can change.
 
 ## Required Before Deployment
 
-- Read-only audit of the Vultr process manager, release layout, Node version,
-  logs, `.env`, and live data location.
 - Verified backup and preservation method for mutable `src/data/`, especially
-  `onboarding-flows.json`.
+  `onboarding-flows.json`, plus `src/legacy/data` and `.env`.
 - Confirmation of Developer Portal privileged intents and live Bot role
   permissions/position.
 - Explicit decision whether Dashboard/Supabase is deployed; apply its separate
@@ -32,5 +30,5 @@ evidence is still required before this status can change.
 
 ## Prohibited Until Cleared
 
-Do not SSH for deployment, restart the Bot, replace files, or run slash-command
-deployment from this readiness slice.
+Do not stage, restart the Bot, replace files, or run slash-command deployment
+until the backup is completed and verified.

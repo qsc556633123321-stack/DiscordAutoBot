@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Deployment Readiness Preparation / Vultr Server Audit Pending (Slices #93-94)
+Deployment Readiness / Production Backup Pending (Slices #93-95)
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -13,13 +13,18 @@ orchestration and prompt/request semantics.
 ## Latest Completed
 - Refactored Community deployment readiness prepared: local build, test,
   dependency, startup, data, environment, Discord-intent, backup, rollback,
-  and smoke evidence is documented. Vultr replacement remains blocked pending a
-  read-only server audit and data-preservation verification.
-- Vultr production read-only audit is pending: this workspace has no approved
-  SSH target/session, so no production command, write, restart, login, or
-  deployment occurred. The first safe manual audit group is documented in
-  `docs/deployment/VULTR_MANUAL_READ_ONLY_AUDIT_COMMANDS.md`; readiness remains
-  BLOCKED until actual server evidence is captured.
+  and smoke evidence is documented. The read-only server audit is now complete;
+  data backup and preservation execution remain required before replacement.
+- Vultr production read-only audit completed through manually verified evidence:
+  no production command, write, restart, login, or deployment occurred from
+  this workspace. The first manual audit command group remains documented in
+  `docs/deployment/VULTR_MANUAL_READ_ONLY_AUDIT_COMMANDS.md` for repeatable
+  verification.
+- Vultr manual read-only audit reconciled: production is a dirty legacy PM2
+  checkout at `/opt/DiscordAutoBot`; `src/data`, `src/legacy/data`, and `.env`
+  are live state/configuration that must be preserved. Dashboard/API is not
+  deployed. The next approved operation is backup execution, not staging or
+  cutover.
 - Community Concierge AI text transport migrated: Infrastructure now owns
   per-call API-key lookup, lazy OpenAI loading, client/request transport,
   response normalization, and silent fallback. Runtime retains the exact
@@ -451,8 +456,10 @@ orchestration and prompt/request semantics.
 - Refactored production deployment: Not started
 
 ## Deployment Readiness
-BLOCKED pending manual Vultr server audit, live-data preservation verification,
-environment/intent/permission confirmation, and deployment-manager discovery.
+READY_FOR_BACKUP. Manual server facts confirm PM2, compatible Node, sufficient
+disk, a Bot-only deployment scope, and a dirty legacy checkout. Backup of
+`.env`, `src/data`, `src/legacy/data`, and PM2 metadata must complete before
+staging or cutover.
 
 Target for first refactored Vultr deployment:
 - Guide publication runtime integration complete
@@ -462,9 +469,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Vultr Server Audit: perform a read-only inspection of the actual service
-manager, release/data paths, Node runtime, environment presence, backup method,
-and Discord configuration before any deployment execution preparation.
+Production Backup Execution: create and verify a protected snapshot of the
+legacy release, `.env`, `src/data`, `src/legacy/data`, and PM2 metadata before
+any refactored release staging.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -520,7 +527,7 @@ Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
 2026-08-16: Prepared deployment readiness for the refactored Community
-candidate. Structural refactor is stopped. Vultr server access was not available
-to this workspace for Operations Slice #94, so no production action occurred;
-replacement remains blocked pending the documented manual read-only server/data/
-configuration audit. Overall progress remains 97%.
+candidate. Structural refactor is stopped. Operations Slice #95 reconciled
+manual read-only Vultr evidence; no production action occurred. Readiness is
+READY_FOR_BACKUP, with backup execution required before staging or cutover.
+Overall progress remains 97%.
