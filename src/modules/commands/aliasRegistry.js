@@ -9,7 +9,8 @@ const ACTIVE_COMMANDS = Object.freeze({
   'memberguard-release': '../../presentation/commands/memberguardReleaseCommand'
 });
 const ROUTE_ONLY_COMMANDS = Object.freeze({
-  'game-role-preview': '../../presentation/commands/gameRoleProvisioningPreviewCommand'
+  'game-role-preview': '../../presentation/commands/gameRoleProvisioningPreviewCommand',
+  'game-role-provision': '../../presentation/commands/gameRoleProvisioningExecutionCommand'
 });
 
 function loadCommandMap(commandMap) {

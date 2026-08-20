@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Game Role Preview Ready (Feature Slice #3)
+Production Deployment Reconciled / Game Role Execution Command Ready (Feature Slice #4)
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -11,13 +11,18 @@ and filesystem ownership remain migrated; Runtime retains intentional thin
 orchestration and prompt/request semantics.
 
 ## Product Feature Progress
-- Game Role Feature: PREVIEW_RUNTIME_WIRED_NOT_DEPLOYED. Registry-derived
-  exact-match preview is available through the Administrator-only, read-only
-  /admin game-role-preview command. Sequential provisioning remains uncalled;
-  selection UI, category permission wiring, and existing-guild execution remain
-  intentionally undeployed.
+- Game Role Feature: EXECUTION_COMMAND_READY_NOT_DEPLOYED. The production
+  preview was manually observed as Existing 0, Would Create 10, Conflicts 0;
+  the Administrator-only /admin game-role-provision command now requires the
+  exact CREATE_GAME_ROLES confirmation and a fresh conflict-free preview.
+  Provisioning remains undeployed and unexecuted; selection UI and category
+  permission wiring remain intentionally out of scope.
 
 ## Latest Completed
+- Game Role Provisioning Execution Command is ready for separately approved
+  deployment. It reuses the existing preview and provisioning use case, blocks
+  on conflicts or no missing roles, and never directly mutates Discord roles,
+  members, or permissions from the command layer.
 - Game Role Provisioning Preview is runtime-wired as an explicit,
   Administrator-only /admin game-role-preview command. It reuses the
   registry-derived preview use case, renders existing/would-create/conflict
@@ -485,9 +490,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Production Preview Deployment: deploy the read-only /admin game-role-preview
-through the separately approved operations process, run it against the formal
-guild, and record conflicts before any role-provisioning execution work.
+Production Provisioning Execution Deployment: deploy /admin game-role-provision
+through the separately approved operations process, then run it manually with
+confirm:CREATE_GAME_ROLES and record the resulting role inventory.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -542,6 +547,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-16: Feature Slice #3 added a read-only Game Role Provisioning Preview
-command. No production deployment, Discord mutation, or Vultr action occurred.
-Overall structural refactor progress remains 97%.
+2026-08-20: Feature Slice #4 added a confirmation-gated Game Role Provisioning
+Execution command. Manual production preview evidence remains Existing 0, Would
+Create 10, Conflicts 0; no provisioning deployment or Discord mutation occurred
+from this workspace. Overall structural refactor progress remains 97%.
