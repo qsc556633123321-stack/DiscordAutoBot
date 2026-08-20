@@ -1,4 +1,4 @@
-const { loadAliases } = require('./aliasRegistry');
+const { loadRouteCommands } = require('./aliasRegistry');
 
 const ROUTES = Object.freeze({
   community: {
@@ -38,7 +38,8 @@ const ROUTES = Object.freeze({
     lock: { target: 'lock' },
     unlock: { target: 'unlock' },
     ticket: { target: 'setup-ticket' },
-    logs: { target: 'analyze-server' }
+    logs: { target: 'analyze-server' },
+    'game-role-preview': { target: 'game-role-preview' }
   },
   dev: {
     'audit-commands': { target: 'dev-audit-commands' },
@@ -67,13 +68,13 @@ async function route(interaction) {
   const subcommand = interaction.options.getSubcommand();
   const routeConfig = ROUTES[group]?.[subcommand];
   if (!routeConfig) throw new Error(`Unknown command route: ${group}/${subcommand}`);
-  const command = loadAliases().get(routeConfig.target);
+  const command = loadRouteCommands().get(routeConfig.target);
   if (!command) throw new Error(`Missing legacy command handler: ${routeConfig.target}`);
   return command.execute(withDefaults(interaction, routeConfig.defaults));
 }
 
 async function routeAlias(name, interaction) {
-  const command = loadAliases().get(name);
+  const command = loadRouteCommands().get(name);
   if (!command) throw new Error(`Missing legacy alias handler: ${name}`);
   return command.execute(interaction);
 }

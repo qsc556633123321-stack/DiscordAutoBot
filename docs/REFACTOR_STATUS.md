@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Feature Work Ready (Slices #93-96)
+Production Deployment Reconciled / Game Role Preview Ready (Feature Slice #3)
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -11,13 +11,17 @@ and filesystem ownership remain migrated; Runtime retains intentional thin
 orchestration and prompt/request semantics.
 
 ## Product Feature Progress
-- Game Role Feature: PROVISIONING_IMPLEMENTED_NOT_DEPLOYED. Registry-derived
-  exact-match preview and sequential role provisioning with created-ID-only
-  rollback are implemented, but are not runtime-wired. Selection UI, category
-  permission wiring, and existing-guild execution remain intentionally
-  undeployed.
+- Game Role Feature: PREVIEW_RUNTIME_WIRED_NOT_DEPLOYED. Registry-derived
+  exact-match preview is available through the Administrator-only, read-only
+  /admin game-role-preview command. Sequential provisioning remains uncalled;
+  selection UI, category permission wiring, and existing-guild execution remain
+  intentionally undeployed.
 
 ## Latest Completed
+- Game Role Provisioning Preview is runtime-wired as an explicit,
+  Administrator-only /admin game-role-preview command. It reuses the
+  registry-derived preview use case, renders existing/would-create/conflict
+  results, and has no role, member, permission, startup, or deployment mutation.
 - Refactored Community deployment readiness prepared: local build, test,
   dependency, startup, data, environment, Discord-intent, backup, rollback,
   and smoke evidence is documented. The read-only server audit is now complete;
@@ -481,9 +485,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Existing Guild Role Provisioning Execution: run the new read-only preview
-against the production guild, obtain explicit human confirmation, then execute
-the role creation boundary in a separately approved deployment slice.
+Production Preview Deployment: deploy the read-only /admin game-role-preview
+through the separately approved operations process, run it against the formal
+guild, and record conflicts before any role-provisioning execution work.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -538,8 +542,6 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-16: Prepared deployment readiness for the refactored Community
-candidate. Structural refactor is stopped. Operations Slice #96 reconciled the
-successful manually verified production deployment; no server action occurred
-from this workspace. Refactored Bot deployment is complete and feature work is
-ready. Overall progress remains 97%.
+2026-08-16: Feature Slice #3 added a read-only Game Role Provisioning Preview
+command. No production deployment, Discord mutation, or Vultr action occurred.
+Overall structural refactor progress remains 97%.

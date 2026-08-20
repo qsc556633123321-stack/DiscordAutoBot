@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
-const { loadAliases } = require('./aliasRegistry');
+const { loadAliases, loadRouteCommands } = require('./aliasRegistry');
 const { ROUTES, route, routeAlias } = require('./commandRouter');
 
 const TYPE_METHODS = {
@@ -45,8 +45,9 @@ function buildMainCommand(name, routes, aliases) {
 
 function getCommandRegistry({ includeAliases = true } = {}) {
   const aliases = loadAliases();
+  const routeCommands = loadRouteCommands();
   const commands = new Map();
-  for (const [name, routes] of Object.entries(ROUTES)) commands.set(name, buildMainCommand(name, routes, aliases));
+  for (const [name, routes] of Object.entries(ROUTES)) commands.set(name, buildMainCommand(name, routes, routeCommands));
   if (includeAliases) {
     for (const [name, command] of aliases) {
       commands.set(name, { data: command.data, execute: (interaction) => routeAlias(name, interaction), alias: true });
