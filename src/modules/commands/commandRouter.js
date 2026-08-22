@@ -2,6 +2,7 @@ const { loadRouteCommands } = require('./aliasRegistry');
 
 const ROUTES = Object.freeze({
   community: {
+    games: { target: 'game-role-selection' },
     rebuild: { target: 'rebuild-community-v3' },
     'repair-permissions': { target: 'repair-channel-permissions' },
     'check-guest': { target: 'check-guest-visibility' },

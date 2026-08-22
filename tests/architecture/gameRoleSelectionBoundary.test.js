@@ -1,0 +1,16 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const application = fs.readFileSync(path.join(root, 'src/application/games/gameRoleSelectionUseCase.js'), 'utf8');
+const domain = fs.readFileSync(path.join(root, 'src/domain/games/gameRoleSelectionPolicy.js'), 'utf8');
+const command = fs.readFileSync(path.join(root, 'src/presentation/commands/gameRoleSelectionCommand.js'), 'utf8');
+const handler = fs.readFileSync(path.join(root, 'src/modules/interactions/selectHandlers/gameRoleSelectionSelectMenu.js'), 'utf8');
+const gateway = fs.readFileSync(path.join(root, 'src/infrastructure/discord/discordGameRoleSelectionGateway.js'), 'utf8');
+assert.equal(/discord\.js|GuildMember|interaction\./.test(application), false);
+assert.equal(/discord\.js|node:fs|infrastructure/.test(domain), false);
+assert.equal(/member\.roles\.(add|remove)|guild\.roles\.(create|delete)|permissionOverwrites/.test(command), false);
+assert.equal(handler.includes('deferIfNeeded'), true);
+assert.equal(handler.includes('ephemeral: true'), false);
+assert.equal(/\.\.\/\.\.\/domain\//.test(gateway), false);
+console.log('Game role selection architecture boundary tests passed.');

@@ -1,0 +1,11 @@
+const assert = require('node:assert/strict');
+const { deriveGameRoleSelectionPlan } = require('../../../src/domain/games/gameRoleSelectionPolicy');
+const plan = deriveGameRoleSelectionPlan({ currentRoleKeys: ['game:valorant', 'game:apex', 'game', 'member'], selectedGameIds: ['valorant', 'minecraft'] });
+assert.equal(plan.ok, true);
+assert.deepEqual(plan.addRoleKeys, ['game:minecraft']);
+assert.deepEqual(plan.removeRoleKeys, ['game:apex']);
+assert.deepEqual(plan.unchangedRoleKeys, ['game:valorant']);
+const zero = deriveGameRoleSelectionPlan({ currentRoleKeys: ['game:valorant'], selectedGameIds: [] });
+assert.deepEqual(zero.removeRoleKeys, ['game:valorant']);
+assert.equal(deriveGameRoleSelectionPlan({ selectedGameIds: ['unknown'] }).code, 'UNKNOWN_GAME_ID');
+console.log('Game role selection policy tests passed.');

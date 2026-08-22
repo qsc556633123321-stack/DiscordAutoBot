@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Game Role Execution Command Ready (Feature Slice #4)
+Production Deployment Reconciled / Game Role Selection UI Ready (Feature Slice #5)
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -11,14 +11,16 @@ and filesystem ownership remain migrated; Runtime retains intentional thin
 orchestration and prompt/request semantics.
 
 ## Product Feature Progress
-- Game Role Feature: EXECUTION_COMMAND_READY_NOT_DEPLOYED. The production
-  preview was manually observed as Existing 0, Would Create 10, Conflicts 0;
-  the Administrator-only /admin game-role-provision command now requires the
-  exact CREATE_GAME_ROLES confirmation and a fresh conflict-free preview.
-  Provisioning remains undeployed and unexecuted; selection UI and category
-  permission wiring remain intentionally out of scope.
+- Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
+  Production manually created 10 specific roles with no rollback. The new
+  /community games selector is gated by the parent game role and changes only
+  the caller's specific game roles. Category permission wiring remains out of scope.
 
 ## Latest Completed
+- Game Role Selection UI is ready for separately approved deployment. Its
+  registry-derived multi-select preserves parent/member/non-game roles, blocks
+  missing canonical roles before mutation, and acknowledges before lookup or
+  mutation through the modern select-menu handler.
 - Game Role Provisioning Execution Command is ready for separately approved
   deployment. It reuses the existing preview and provisioning use case, blocks
   on conflicts or no missing roles, and never directly mutates Discord roles,
@@ -490,9 +492,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Production Provisioning Execution Deployment: deploy /admin game-role-provision
-through the separately approved operations process, then run it manually with
-confirm:CREATE_GAME_ROLES and record the resulting role inventory.
+Game Role Selection UI Production Deployment: deploy /community games through
+the separately approved operations process, perform a self-service smoke, then
+consider Game Category Permission Wiring separately.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -547,7 +549,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-20: Feature Slice #4 added a confirmation-gated Game Role Provisioning
-Execution command. Manual production preview evidence remains Existing 0, Would
-Create 10, Conflicts 0; no provisioning deployment or Discord mutation occurred
-from this workspace. Overall structural refactor progress remains 97%.
+2026-08-22: Feature Slice #5 added a registry-derived Game Role Selection UI.
+Manual production evidence confirms the 10 specific roles are provisioned. No
+deployment, PM2 action, or Discord mutation occurred from this workspace.
+Overall structural refactor progress remains 97%.

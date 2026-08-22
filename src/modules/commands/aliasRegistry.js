@@ -10,7 +10,8 @@ const ACTIVE_COMMANDS = Object.freeze({
 });
 const ROUTE_ONLY_COMMANDS = Object.freeze({
   'game-role-preview': '../../presentation/commands/gameRoleProvisioningPreviewCommand',
-  'game-role-provision': '../../presentation/commands/gameRoleProvisioningExecutionCommand'
+  'game-role-provision': '../../presentation/commands/gameRoleProvisioningExecutionCommand',
+  'game-role-selection': '../../presentation/commands/gameRoleSelectionCommand'
 });
 
 function loadCommandMap(commandMap) {

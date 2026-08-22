@@ -1,0 +1,12 @@
+const assert = require('node:assert/strict');
+const { renderGameRoleSelector, renderGameRoleSelectionResult } = require('../../../src/presentation/games/gameRoleSelectionRenderer');
+const selector = renderGameRoleSelector({ selectedGameIds: ['valorant', 'apex'] });
+const menu = selector.components[0].components[0].toJSON();
+assert.equal(menu.options.length, 10);
+assert.equal(menu.max_values, 10);
+assert.equal(menu.min_values, 0);
+assert.equal(menu.options.find((option) => option.value === 'valorant').default, true);
+assert.equal(renderGameRoleSelector({ gameRegistry: Array.from({ length: 26 }, (_, index) => ({ id: 'game_' + index, displayName: 'Game ' + index })) }).components, undefined);
+assert.match(renderGameRoleSelectionResult({ ok: false, code: 'PARENT_GAME_ROLE_REQUIRED' }).content, /遊戲玩家/);
+assert.match(renderGameRoleSelectionResult({ ok: true, addedRoleKeys: [], removedRoleKeys: [], unchangedRoleKeys: [] }).content, /沒有需要更新/);
+console.log('Game role selection renderer tests passed.');
