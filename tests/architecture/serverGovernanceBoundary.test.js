@@ -1,0 +1,12 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const domain = fs.readFileSync(path.join(root, 'src/domain/community/channelGovernance.js'), 'utf8');
+const application = fs.readFileSync(path.join(root, 'src/application/community/createServerGovernancePlanUseCase.js'), 'utf8');
+const infrastructure = fs.readFileSync(path.join(root, 'src/infrastructure/discord/discordGuildChannelInventoryAdapter.js'), 'utf8');
+assert.equal(/discord\.js|node:fs|writeFile|\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(domain), false);
+assert.equal(/discord\.js|interaction\.|\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(application), false);
+assert.equal(/\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(infrastructure), false);
+assert.equal(/ARCHIVE|MOVE_TO_ARCHIVE|SOFT_DELETE/.test(domain), false);
+console.log('Server governance architecture boundary tests passed.');

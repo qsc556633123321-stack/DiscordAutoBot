@@ -33,6 +33,8 @@ const APPROVED_UNWIRED_BOUNDARIES = new Set([
   'src/infrastructure/community/CommunityOnboardingStateReader.js',
   // This narrow adapter is intentionally implemented before its runtime redirect.
   'src/infrastructure/community/CommunityWelcomeDmDeliveryAdapter.js',
+  // Server Governance v1 Phase 1 is intentionally read-only and has no command/runtime wiring yet.
+  'src/infrastructure/discord/discordGuildChannelInventoryAdapter.js',
 ]);
 
 function jsFiles(dir) {

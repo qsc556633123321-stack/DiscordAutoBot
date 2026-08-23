@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Game Role Selection UI Ready (Feature Slice #5)
+Production Deployment Reconciled / Server Governance v1 Phase 1 Model Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -11,6 +11,9 @@ and filesystem ownership remain migrated; Runtime retains intentional thin
 orchestration and prompt/request semantics.
 
 ## Product Feature Progress
+- Server Governance v1: PHASE_1_MODEL_READY. The pure model, read-only inventory
+  contract, and planner produce reviewable actions only; they are not connected
+  to a command or Discord mutation runtime.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -492,9 +495,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Game Role Selection UI Production Deployment: deploy /community games through
-the separately approved operations process, perform a self-service smoke, then
-consider Game Category Permission Wiring separately.
+Server Governance v1 Phase 2 — Desired Guild Structure + Full Preview.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -549,7 +550,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-22: Feature Slice #5 added a registry-derived Game Role Selection UI.
-Manual production evidence confirms the 10 specific roles are provisioned. No
-deployment, PM2 action, or Discord mutation occurred from this workspace.
-Overall structural refactor progress remains 97%.
+2026-08-23: Server Governance v1 Phase 1 added a pure channel governance
+model, read-only inventory adapter, and planner. No deployment, PM2 action, or
+Discord mutation occurred from this workspace. Overall structural refactor
+progress remains 97%.

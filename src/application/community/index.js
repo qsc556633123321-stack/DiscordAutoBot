@@ -51,6 +51,11 @@ const {
   createGuidePersistenceRequest,
   mapGuidePersistenceRequestToGenericInput
 } = require('./guidePublication/GuidePersistenceRequest');
+const { createServerGovernancePlan, createServerGovernancePlanUseCase } = require('./createServerGovernancePlanUseCase');
+const { assertGuildChannelInventoryPort } = require('./ports/GuildChannelInventoryPort');
+const { buildServerGovernanceDesiredState } = require('../../domain/community/serverGovernanceDesiredState');
+const { canRoleKeysAccessResource } = require('../../domain/community/serverGovernanceAccessPolicy');
+const { GAME_LAYOUT_PROFILES, getGameLayoutProfile } = require('../../domain/games/gameLayoutProfiles');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -96,4 +101,11 @@ module.exports = {
   mapRoadmapPublicationPersistenceRequestToGenericInput,
   createGuidePersistenceRequest,
   mapGuidePersistenceRequestToGenericInput,
+  createServerGovernancePlan,
+  createServerGovernancePlanUseCase,
+  assertGuildChannelInventoryPort,
+  buildServerGovernanceDesiredState,
+  canRoleKeysAccessResource,
+  GAME_LAYOUT_PROFILES,
+  getGameLayoutProfile,
 };
