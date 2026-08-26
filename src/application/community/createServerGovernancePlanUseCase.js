@@ -43,4 +43,34 @@ function createServerGovernancePlanUseCase({ inventoryPort, desiredState } = {})
   assertGuildChannelInventoryPort(inventoryPort);
   return Object.freeze({ async previewGuildGovernance({ guildId } = {}) { return createServerGovernancePlan({ inventory: await inventoryPort.readGuildInventory({ guildId }), desiredState }); } });
 }
-module.exports = { createServerGovernancePlan, createServerGovernancePlanUseCase };
+
+function buildProjectedTree(resources = []) {
+  const byParent = new Map();
+  for (const resource of resources) {
+    const children = byParent.get(resource.parentKey) || [];
+    children.push(resource);
+    byParent.set(resource.parentKey, children);
+  }
+  const build = (parentKey = null) => (byParent.get(parentKey) || []).map((resource) => Object.freeze({ key: resource.key, displayName: resource.displayName, type: resource.type, children: Object.freeze(build(resource.key)) }));
+  return Object.freeze(build());
+}
+
+function buildFullGuildGovernancePreview({ inventory = [], desiredState = { resources: [] } } = {}) {
+  const plan = createServerGovernancePlan({ inventory, desiredState });
+  const byAction = Object.fromEntries(Object.values(GovernanceAction).map((action) => [action, []]));
+  for (const action of plan.actions) byAction[action.action].push(action);
+  const protectedActions = byAction.KEEP.filter((action) => action.reason === 'protected_runtime_or_ticket');
+  const summary = Object.freeze({
+    keep: byAction.KEEP.length, create: byAction.CREATE.length, move: byAction.MOVE.length, rename: byAction.RENAME.length,
+    permissionChange: byAction.PERMISSION_CHANGE.length, safeDelete: byAction.SAFE_DELETE.length, reviewDelete: byAction.REVIEW_DELETE.length,
+    review: byAction.REVIEW.length, conflict: byAction.CONFLICT.length, protected: protectedActions.length,
+    totals: Object.freeze({ currentResources: inventory.length, desiredResources: desiredState.resources.length, actions: plan.actions.length })
+  });
+  return Object.freeze({ plan, summary, projectedTree: buildProjectedTree(desiredState.resources), permissionPreview: Object.freeze(desiredState.resources.filter((resource) => resource.accessProfile).map((resource) => Object.freeze({ key: resource.key, accessProfile: resource.accessProfile, accessRoleKey: resource.accessRoleKey }))) });
+}
+
+function createFullGuildGovernancePreviewUseCase({ inventoryPort, desiredState } = {}) {
+  assertGuildChannelInventoryPort(inventoryPort);
+  return Object.freeze({ async previewFullGuildGovernance({ guildId } = {}) { return buildFullGuildGovernancePreview({ inventory: await inventoryPort.readGuildInventory({ guildId }), desiredState }); } });
+}
+module.exports = { buildFullGuildGovernancePreview, buildProjectedTree, createFullGuildGovernancePreviewUseCase, createServerGovernancePlan, createServerGovernancePlanUseCase };

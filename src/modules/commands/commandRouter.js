@@ -41,7 +41,8 @@ const ROUTES = Object.freeze({
     ticket: { target: 'setup-ticket' },
     logs: { target: 'analyze-server' },
     'game-role-preview': { target: 'game-role-preview' },
-    'game-role-provision': { target: 'game-role-provision' }
+    'game-role-provision': { target: 'game-role-provision' },
+    'server-governance-preview': { target: 'server-governance-preview' }
   },
   dev: {
     'audit-commands': { target: 'dev-audit-commands' },

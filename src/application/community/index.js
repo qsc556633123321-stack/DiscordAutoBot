@@ -51,9 +51,9 @@ const {
   createGuidePersistenceRequest,
   mapGuidePersistenceRequestToGenericInput
 } = require('./guidePublication/GuidePersistenceRequest');
-const { createServerGovernancePlan, createServerGovernancePlanUseCase } = require('./createServerGovernancePlanUseCase');
+const { buildFullGuildGovernancePreview, buildProjectedTree, createFullGuildGovernancePreviewUseCase, createServerGovernancePlan, createServerGovernancePlanUseCase } = require('./createServerGovernancePlanUseCase');
 const { assertGuildChannelInventoryPort } = require('./ports/GuildChannelInventoryPort');
-const { buildServerGovernanceDesiredState } = require('../../domain/community/serverGovernanceDesiredState');
+const { buildFullGuildDesiredState, buildServerGovernanceDesiredState } = require('../../domain/community/serverGovernanceDesiredState');
 const { canRoleKeysAccessResource } = require('../../domain/community/serverGovernanceAccessPolicy');
 const { GAME_LAYOUT_PROFILES, getGameLayoutProfile } = require('../../domain/games/gameLayoutProfiles');
 
@@ -103,8 +103,12 @@ module.exports = {
   mapGuidePersistenceRequestToGenericInput,
   createServerGovernancePlan,
   createServerGovernancePlanUseCase,
+  buildFullGuildGovernancePreview,
+  buildProjectedTree,
+  createFullGuildGovernancePreviewUseCase,
   assertGuildChannelInventoryPort,
   buildServerGovernanceDesiredState,
+  buildFullGuildDesiredState,
   canRoleKeysAccessResource,
   GAME_LAYOUT_PROFILES,
   getGameLayoutProfile,

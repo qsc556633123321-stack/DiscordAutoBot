@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1 Phase 1 Model Ready
+Production Deployment Reconciled / Server Governance v1 Phase 2 Full Preview Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -14,6 +14,9 @@ orchestration and prompt/request semantics.
 - Server Governance v1: PHASE_1_MODEL_READY. The pure model, read-only inventory
   contract, and planner produce reviewable actions only; they are not connected
   to a command or Discord mutation runtime.
+- Server Governance v1: PHASE_2_FULL_PREVIEW_READY. The admin-only preview is
+  read-only, produces a full canonical tree and explicit delete/review sections,
+  and has no execution or permission reconciliation wiring.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -495,7 +498,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Server Governance v1 Phase 2 — Desired Guild Structure + Full Preview.
+Server Governance v1 Phase 3 — Safe Execution Engine + Permission Reconciliation.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -550,7 +553,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-23: Server Governance v1 Phase 1 added a pure channel governance
-model, read-only inventory adapter, and planner. No deployment, PM2 action, or
+2026-08-27: Server Governance v1 Phase 2 added the full desired guild structure
+and an administrator-only read-only preview. No deployment, PM2 action, or
 Discord mutation occurred from this workspace. Overall structural refactor
 progress remains 97%.

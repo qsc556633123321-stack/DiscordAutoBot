@@ -1,0 +1,14 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const application = fs.readFileSync(path.join(root, 'src/application/community/createServerGovernancePlanUseCase.js'), 'utf8');
+const command = fs.readFileSync(path.join(root, 'src/presentation/commands/serverGovernancePreviewCommand.js'), 'utf8');
+const feature = fs.readFileSync(path.join(root, 'src/composition/serverGovernancePreviewFeature.js'), 'utf8');
+const forbiddenMutation = /channels\.create|channel\.setName\(|channel\.setParent\(|permissionOverwrites\.(edit|set)|roles\.(add|remove)|channel\.delete\(/;
+assert.equal(/discord\.js|interaction\./.test(application), false);
+assert.equal(forbiddenMutation.test(application), false);
+assert.equal(forbiddenMutation.test(command), false);
+assert.equal(forbiddenMutation.test(feature), false);
+assert.equal(command.includes('PermissionFlagsBits.Administrator'), true);
+console.log('Server governance preview architecture boundary tests passed.');
