@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1 Phase 2 Full Preview Ready
+Production Deployment Reconciled / Server Governance v1 Phase 3 Execution Engine Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -17,6 +17,10 @@ orchestration and prompt/request semantics.
 - Server Governance v1: PHASE_2_FULL_PREVIEW_READY. The admin-only preview is
   read-only, produces a full canonical tree and explicit delete/review sections,
   and has no execution or permission reconciliation wiring.
+- Server Governance v1: PHASE_3_EXECUTION_ENGINE_READY. The plan-consuming
+  execution engine, stale-plan preflight, permission reconciliation, dry-run,
+  and Discord mutation gateway are covered locally, but no execution command is
+  wired and the feature is not deployed.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -498,7 +502,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Server Governance v1 Phase 3 — Safe Execution Engine + Permission Reconciliation.
+Server Governance v1 Phase 4 — Integration, Production-shaped Dry Run & Major Release Candidate.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -553,7 +557,7 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-27: Server Governance v1 Phase 2 added the full desired guild structure
-and an administrator-only read-only preview. No deployment, PM2 action, or
-Discord mutation occurred from this workspace. Overall structural refactor
-progress remains 97%.
+2026-08-27: Server Governance v1 Phase 3 added a plan-consuming execution
+engine, preflight/stale protection, permission reconciliation, and dry-run
+contracts. No deployment, PM2 action, Discord API call, or Discord mutation
+occurred from this workspace. Overall structural refactor progress remains 97%.

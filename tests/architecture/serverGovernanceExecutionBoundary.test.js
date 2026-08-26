@@ -1,0 +1,13 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const domain = fs.readFileSync(path.join(root, 'src/domain/community/serverGovernanceExecutionPolicy.js'), 'utf8');
+const application = fs.readFileSync(path.join(root, 'src/application/community/serverGovernanceExecutionUseCase.js'), 'utf8');
+const infrastructure = fs.readFileSync(path.join(root, 'src/infrastructure/discord/discordGuildStructureMutationGateway.js'), 'utf8');
+assert.equal(/discord\.js|node:fs|permissionOverwrites|channels\.create/.test(domain), false);
+assert.equal(/discord\.js|interaction\.|channels\.create|permissionOverwrites|\.setName\(|\.setParent\(|\.delete\(/.test(application), false);
+assert.equal(/ARCHIVE|MOVE_TO_ARCHIVE|SOFT_DELETE/.test(domain), false);
+assert.equal(/permissionOverwrites\.set|channels\.create/.test(infrastructure), true);
+assert.equal(application.includes('UNAPPROVED_REVIEW_ACTIONS'), true);
+console.log('Server governance execution architecture boundary tests passed.');
