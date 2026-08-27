@@ -11,5 +11,5 @@ assert.equal(/serverGovernance|rebuild|organize|permissionOverwrites/.test(ready
 for (const commandName of ['auto-organize', 'deep-cleanup', 'rebuild-server', 'factory-reset-server', 'ai-reorganize-server', 'restore-active-channels', 'apply-role-permissions']) {
   assert.equal(collisionAudit.includes(commandName), true);
 }
-assert.equal(collisionAudit.includes('PHASE_4_REWORK_REQUIRED'), true);
+assert.equal(collisionAudit.includes('## Release Gate: `PASS`'), true);
 console.log('Server governance release-candidate architecture boundary tests passed.');

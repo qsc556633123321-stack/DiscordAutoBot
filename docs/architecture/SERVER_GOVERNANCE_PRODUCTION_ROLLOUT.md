@@ -1,9 +1,9 @@
 # Server Governance Production Rollout
 
-This procedure is blocked while the legacy collision audit is
-`PHASE_4_REWORK_REQUIRED`. It does not authorize deployment.
+This document is a future procedure; it does not authorize deployment.
 
-1. Add and validate the legacy mutation collision guard with execution disabled.
+1. Deploy with `SERVER_GOVERNANCE_ENABLED=true` and
+   `SERVER_GOVERNANCE_EXECUTION_ENABLED=false`.
 2. Run production preview and dry-run.
 3. Review projected tree, permissions, and safe deletes.
 4. Adjust GitHub desired state if needed.

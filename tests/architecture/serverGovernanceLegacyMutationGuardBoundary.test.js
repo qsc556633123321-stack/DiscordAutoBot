@@ -1,0 +1,15 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const policy = fs.readFileSync(path.join(root, 'src/application/community/serverGovernanceLegacyMutationPolicy.js'), 'utf8');
+const configuration = fs.readFileSync(path.join(root, 'src/core/serverGovernanceConfiguration.js'), 'utf8');
+const registry = fs.readFileSync(path.join(root, 'src/modules/commands/aliasRegistry.js'), 'utf8');
+const buttons = fs.readFileSync(path.join(root, 'src/modules/interactions/buttonInteractionHandler.js'), 'utf8');
+const ready = fs.readFileSync(path.join(root, 'src/events/ready.js'), 'utf8');
+assert.equal(policy.includes('process.env'), false);
+assert.equal(configuration.includes("environment?.SERVER_GOVERNANCE_ENABLED === 'true'"), true);
+assert.equal(registry.includes('createGovernanceGuardedLegacyCommand(command)'), true);
+assert.equal(buttons.includes('guardLegacyMutationInteraction'), true);
+assert.equal(/serverGovernance|rebuild|organize|permissionOverwrites/.test(ready), false);
+console.log('Server governance legacy mutation guard architecture boundary tests passed.');

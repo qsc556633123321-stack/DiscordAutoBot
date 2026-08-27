@@ -1,5 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
+const { createGovernanceGuardedLegacyCommand } = require('./serverGovernanceLegacyMutationGuard');
 
 const LEGACY_COMMANDS_DIR = path.join(__dirname, '..', '..', 'legacy', 'commands');
 const ACTIVE_COMMANDS = Object.freeze({
@@ -30,7 +31,9 @@ function loadAliases() {
   const aliases = new Map();
   for (const file of fs.readdirSync(LEGACY_COMMANDS_DIR).filter((name) => name.endsWith('.js'))) {
     const command = require(path.join(LEGACY_COMMANDS_DIR, file));
-    if (command.data?.name && typeof command.execute === 'function') aliases.set(command.data.name, command);
+    if (command.data?.name && typeof command.execute === 'function') {
+      aliases.set(command.data.name, createGovernanceGuardedLegacyCommand(command));
+    }
   }
   for (const [name, command] of loadCommandMap(ACTIVE_COMMANDS)) aliases.set(name, command);
   return aliases;

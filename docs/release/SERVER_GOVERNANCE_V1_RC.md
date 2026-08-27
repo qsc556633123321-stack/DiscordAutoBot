@@ -1,14 +1,13 @@
 # Server Governance v1 Release Candidate
 
-Status: `PHASE_4_REWORK_REQUIRED`.
+Status: `RC_READY_NOT_DEPLOYED`.
 
-The production-shaped fixture, projected quality checks, permission matrix, and
-administrator-only zero-write dry-run are locally ready. This is not a release
-candidate for deployment: active legacy mutation commands can still conflict
-with the governance desired state. They must be disabled or hard-guarded before
-any major governance rollout.
+The production-shaped fixture, projected quality checks, permission matrix,
+administrator-only zero-write dry-run, and centralized legacy collision guard
+are locally ready. Governance mode prevents legacy structural commands and
+stored confirmation buttons from mutating governed resources.
 
-The release policy reserves `SERVER_GOVERNANCE_EXECUTION_ENABLED=false` as the
-future deployment default. No reconcile command is exposed in this slice, so an
-execution path is unavailable regardless of environment. Preview and dry-run
-are administrator-only and read-only.
+First-major-release flags: `SERVER_GOVERNANCE_ENABLED=true` and
+`SERVER_GOVERNANCE_EXECUTION_ENABLED=false`. No reconcile command is exposed
+in this slice, so an execution path is unavailable regardless of environment.
+Preview and dry-run are administrator-only and read-only.
