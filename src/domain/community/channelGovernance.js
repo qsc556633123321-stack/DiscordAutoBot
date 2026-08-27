@@ -2,12 +2,13 @@ const ChannelOwnership = Object.freeze({ MANAGED_CANONICAL: 'MANAGED_CANONICAL',
 const ChannelLifecycle = Object.freeze({ PERSISTENT: 'persistent', RUNTIME: 'runtime', TEMPORARY: 'temporary', DEPRECATED: 'deprecated', UNKNOWN: 'unknown' });
 const ChannelPurpose = Object.freeze({ ENTRY: 'entry', RULES: 'rules', WELCOME: 'welcome', ANNOUNCEMENT: 'announcement', GENERAL_CHAT: 'general_chat', COMMUNITY_CHAT: 'community_chat', GAME_CENTER: 'game_center', GAME_CHAT: 'game_chat', GAME_LFG: 'game_lfg', GAME_INFO: 'game_info', GAME_VOICE_ENTRY: 'game_voice_entry', INTEREST: 'interest', EVENT: 'event', ADMIN: 'admin', BOT_LOG: 'bot_log', TICKET: 'ticket', RUNTIME_VOICE: 'runtime_voice', UNKNOWN: 'unknown' });
 const GovernanceAction = Object.freeze({ KEEP: 'KEEP', CREATE: 'CREATE', MOVE: 'MOVE', RENAME: 'RENAME', PERMISSION_CHANGE: 'PERMISSION_CHANGE', SAFE_DELETE: 'SAFE_DELETE', REVIEW_DELETE: 'REVIEW_DELETE', REVIEW: 'REVIEW', CONFLICT: 'CONFLICT' });
-const PermissionProfile = Object.freeze({ PUBLIC_ENTRY: 'public_entry', PUBLIC_READONLY: 'public_readonly', MEMBER_DISCUSSION: 'member_discussion', GAME_CENTER: 'game_center', SPECIFIC_GAME: 'specific_game', READONLY_INFO: 'readonly_info', VOICE_ENTRY: 'voice_entry', ADMIN: 'admin', BOT_INTERNAL: 'bot_internal' });
+const PermissionProfile = Object.freeze({ PUBLIC_ENTRY: 'public_entry', PUBLIC_READONLY: 'public_readonly', MEMBER_DISCUSSION: 'member_discussion', GAME_CENTER: 'game_center', GAME_READONLY: 'game_readonly', SPECIFIC_GAME: 'specific_game', READONLY_INFO: 'readonly_info', VOICE_ENTRY: 'voice_entry', ADMIN: 'admin', BOT_INTERNAL: 'bot_internal' });
 const PERMISSION_PROFILE_CAPABILITIES = Object.freeze({
   [PermissionProfile.PUBLIC_ENTRY]: Object.freeze({ ViewChannel: true, SendMessages: true, Connect: false, Speak: false }),
   [PermissionProfile.PUBLIC_READONLY]: Object.freeze({ ViewChannel: true, SendMessages: false, Connect: false, Speak: false }),
   [PermissionProfile.MEMBER_DISCUSSION]: Object.freeze({ ViewChannel: true, SendMessages: true, Connect: false, Speak: false }),
   [PermissionProfile.GAME_CENTER]: Object.freeze({ ViewChannel: true, SendMessages: true, Connect: false, Speak: false }),
+  [PermissionProfile.GAME_READONLY]: Object.freeze({ ViewChannel: true, SendMessages: false, Connect: false, Speak: false }),
   [PermissionProfile.SPECIFIC_GAME]: Object.freeze({ ViewChannel: true, SendMessages: true, Connect: false, Speak: false }),
   [PermissionProfile.READONLY_INFO]: Object.freeze({ ViewChannel: true, SendMessages: false, Connect: false, Speak: false }),
   [PermissionProfile.VOICE_ENTRY]: Object.freeze({ ViewChannel: true, SendMessages: false, Connect: true, Speak: true }),

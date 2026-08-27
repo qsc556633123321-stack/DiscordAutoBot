@@ -6,7 +6,11 @@ const { buildFullGuildDesiredState } = require('../../../src/domain/community/se
 
 const desired = buildFullGuildDesiredState();
 const byKey = new Map(desired.resources.map((resource) => [resource.key, resource]));
-for (const key of ['category:entry', 'category:community', 'category:game_center', 'category:interests', 'category:events', 'category:support', 'category:admin']) assert.equal(byKey.has(key), true);
+for (const key of ['category:entry', 'category:community', 'category:game_center', 'category:interests', 'category:support', 'category:admin']) assert.equal(byKey.has(key), true);
+assert.equal(byKey.has('category:events'), false);
+assert.equal(desired.resources.filter((resource) => resource.type === 'category').length, 16);
+assert.equal(desired.resources.filter((resource) => resource.type !== 'category').length, 43);
+for (const key of ['channel:community_chat', 'channel:community_lfg', 'channel:community_info', 'channel:game_lobby', 'channel:ticket_help', 'channel:giveaway', 'channel:polls', 'channel:events']) assert.equal(byKey.has(key), false);
 for (const game of GAME_REGISTRY) {
   const category = byKey.get(`category:game:${game.id}`);
   assert.equal(category.accessRoleKey, `game:${game.id}`);
@@ -16,6 +20,7 @@ for (const game of GAME_REGISTRY) {
 }
 assert.equal(byKey.get('channel:dev').accessRoleKey, 'dev');
 assert.equal(byKey.get('channel:admin_logs').accessProfile, 'bot_internal');
+assert.equal(byKey.get('channel:game_database').accessProfile, 'game_readonly');
 assert.equal(desired.resources.some((resource) => ['runtime', 'temporary'].includes(resource.lifecycle)), false);
 const compact = buildFullGuildDesiredState({ gameRegistry: [{ id: 'compact_game', displayName: 'Compact', emoji: '🎮', layoutProfile: 'compact' }] });
 assert.equal(compact.resources.filter((resource) => resource.parentKey === 'category:game:compact_game').length, 2);

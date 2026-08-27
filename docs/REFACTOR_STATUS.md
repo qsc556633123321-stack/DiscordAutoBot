@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1 Phase 4.1 Release Candidate Ready
+Production Deployment Reconciled / Server Governance v1 Final Product RC Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -21,12 +21,14 @@ orchestration and prompt/request semantics.
   execution engine, stale-plan preflight, permission reconciliation, dry-run,
   and Discord mutation gateway are covered locally, but no execution command is
   wired and the feature is not deployed.
-- Server Governance v1: RC_READY_NOT_DEPLOYED. Production-shaped fixture,
+- Server Governance v1: SERVER_GOVERNANCE_V1_FINAL_RC_READY. Production-shaped fixture,
   zero-write dry-run, projected-tree quality, permission matrix, collision
   audit, centralized legacy mutation guard, and an administrator-only dry-run
   command are ready locally. Governance mode blocks conflicting legacy slash
   commands and stored confirmation buttons while preserving TempVoice, ticket,
   onboarding, game-role selection, and moderation operations.
+  Final product review reduces the desired state to 16 categories and 43
+  persistent channels without changing runtime protection or execution policy.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -563,6 +565,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-08-28: Server Governance v1 final product review simplified the desired
+state to 16 categories and 43 persistent channels, preserving role isolation,
+TempVoice strategy, and safety policies. The RC remains not deployed.
 2026-08-28: Server Governance v1 Phase 4.1 added a centralized governance-mode
 guard for legacy structural slash commands and stored confirmation buttons.
 `SERVER_GOVERNANCE_ENABLED` defaults false; governance mode blocks conflicts,
