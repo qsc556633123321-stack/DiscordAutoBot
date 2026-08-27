@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1 Phase 3 Execution Engine Ready
+Production Deployment Reconciled / Server Governance v1 Phase 4 Rework Required
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -21,6 +21,11 @@ orchestration and prompt/request semantics.
   execution engine, stale-plan preflight, permission reconciliation, dry-run,
   and Discord mutation gateway are covered locally, but no execution command is
   wired and the feature is not deployed.
+- Server Governance v1: PHASE_4_REWORK_REQUIRED. Production-shaped fixture,
+  zero-write dry-run, projected-tree quality, permission matrix, collision
+  audit, and an administrator-only dry-run command are ready locally. A major
+  rollout remains blocked because active legacy mutation commands can conflict
+  with governed resources.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -502,7 +507,8 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Server Governance v1 Phase 4 — Integration, Production-shaped Dry Run & Major Release Candidate.
+Server Governance v1 Phase 4.1: add a narrow legacy mutation collision guard
+before any governance release review.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -557,7 +563,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
-2026-08-27: Server Governance v1 Phase 3 added a plan-consuming execution
-engine, preflight/stale protection, permission reconciliation, and dry-run
-contracts. No deployment, PM2 action, Discord API call, or Discord mutation
-occurred from this workspace. Overall structural refactor progress remains 97%.
+2026-08-27: Server Governance v1 Phase 4 completed local production-shaped
+dry-run, projected-tree quality, permission, and startup/collision checks. The
+release remains `PHASE_4_REWORK_REQUIRED`: active legacy mutation commands need
+an explicit shared guard before a governance release. No deployment, PM2 action,
+Discord API call, or Discord mutation occurred from this workspace. Overall
+structural refactor progress remains 97%.

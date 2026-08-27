@@ -56,6 +56,11 @@ const { assertGuildChannelInventoryPort } = require('./ports/GuildChannelInvento
 const { buildFullGuildDesiredState, buildServerGovernanceDesiredState } = require('../../domain/community/serverGovernanceDesiredState');
 const { canRoleKeysAccessResource } = require('../../domain/community/serverGovernanceAccessPolicy');
 const { GAME_LAYOUT_PROFILES, getGameLayoutProfile } = require('../../domain/games/gameLayoutProfiles');
+const {
+  buildGovernancePermissionMatrix,
+  buildProjectedGuildStats,
+  validateProjectedGuildQuality
+} = require('../../domain/community/serverGovernanceReleaseCandidate');
 
 module.exports = {
   fromLegacyPublicationRecord,
@@ -112,4 +117,7 @@ module.exports = {
   canRoleKeysAccessResource,
   GAME_LAYOUT_PROFILES,
   getGameLayoutProfile,
+  buildGovernancePermissionMatrix,
+  buildProjectedGuildStats,
+  validateProjectedGuildQuality,
 };

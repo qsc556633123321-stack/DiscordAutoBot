@@ -42,7 +42,8 @@ const ROUTES = Object.freeze({
     logs: { target: 'analyze-server' },
     'game-role-preview': { target: 'game-role-preview' },
     'game-role-provision': { target: 'game-role-provision' },
-    'server-governance-preview': { target: 'server-governance-preview' }
+    'server-governance-preview': { target: 'server-governance-preview' },
+    'server-governance-dry-run': { target: 'server-governance-dry-run' }
   },
   dev: {
     'audit-commands': { target: 'dev-audit-commands' },

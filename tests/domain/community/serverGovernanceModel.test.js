@@ -12,7 +12,7 @@ assert.deepEqual(Object.keys(PERMISSION_PROFILE_CAPABILITIES.public_entry), ['Vi
 assert.equal(getGameLayoutProfile('full').length, 4);
 assert.equal(getGameLayoutProfile('compact').length, 2);
 assert.equal(getGameLayoutProfile('voice_only').length, 1);
-assert.equal(GAME_REGISTRY.every((game) => game.layoutProfile === 'full'), true);
+assert.deepEqual(GAME_REGISTRY.reduce((total, game) => ({ ...total, [game.layoutProfile]: (total[game.layoutProfile] || 0) + 1 }), {}), { full: 4, compact: 3, voice_only: 3 });
 const specific = createGovernedResource({ key: 'category:game:valorant', displayName: '🎮｜VALORANT', type: 'category', purpose: ChannelPurpose.GAME_CENTER, owner: ChannelOwnership.MANAGED_CANONICAL, accessProfile: PermissionProfile.SPECIFIC_GAME, accessRoleKey: 'game:valorant', lifecycle: ChannelLifecycle.PERSISTENT, deletePolicy: 'managed_only' });
 assert.equal(canRoleKeysAccessResource(['game'], specific), false);
 assert.equal(canRoleKeysAccessResource(['game:valorant'], specific), true);

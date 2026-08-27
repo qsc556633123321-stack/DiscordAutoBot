@@ -1,5 +1,6 @@
 const assert = require('node:assert/strict');
 const GAME_REGISTRY = require('../../../src/domain/games/gameRegistry');
+const { getGameLayoutProfile } = require('../../../src/domain/games/gameLayoutProfiles');
 const { canRoleKeysAccessResource } = require('../../../src/domain/community/serverGovernanceAccessPolicy');
 const { buildFullGuildDesiredState } = require('../../../src/domain/community/serverGovernanceDesiredState');
 
@@ -11,7 +12,7 @@ for (const game of GAME_REGISTRY) {
   assert.equal(category.accessRoleKey, `game:${game.id}`);
   assert.equal(canRoleKeysAccessResource(['game'], category), false);
   assert.equal(canRoleKeysAccessResource([`game:${game.id}`], category), true);
-  assert.equal(desired.resources.filter((resource) => resource.parentKey === category.key).length, game.layoutProfile === 'full' ? 4 : 0);
+  assert.equal(desired.resources.filter((resource) => resource.parentKey === category.key).length, getGameLayoutProfile(game.layoutProfile).length);
 }
 assert.equal(byKey.get('channel:dev').accessRoleKey, 'dev');
 assert.equal(byKey.get('channel:admin_logs').accessProfile, 'bot_internal');
