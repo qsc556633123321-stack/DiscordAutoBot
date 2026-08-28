@@ -6,7 +6,7 @@ void (async () => {
     classifyResource: () => ({ canonicalKey: 'channel:general', purpose: 'general_chat', owner: 'MANAGED_CANONICAL', lifecycle: 'persistent' })
   });
   const inventory = await adapter.readGuildInventory({ guildId: 'g1' });
-  assert.deepEqual(Object.keys(inventory[0]), ['id', 'name', 'type', 'parentId', 'parentCanonicalKey', 'position', 'permissionSummary', 'managed', 'runtime', 'canonicalKey', 'purpose', 'owner', 'lifecycle', 'accessProfile', 'accessRoleKey', 'replacementKey']);
+  assert.deepEqual(Object.keys(inventory[0]), ['id', 'name', 'type', 'parentId', 'parentCanonicalKey', 'position', 'permissionSummary', 'managed', 'runtime', 'canonicalKey', 'purpose', 'owner', 'lifecycle', 'accessProfile', 'accessRoleKey', 'replacementKey', 'migrationReviewReason']);
   assert.equal(inventory[0].type, 'text');
   console.log('Discord guild channel inventory adapter tests passed.');
 })();

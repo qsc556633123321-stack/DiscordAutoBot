@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1 Final Product RC Ready
+Production Deployment Reconciled / Server Governance v1.1 Production Identity Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -29,6 +29,11 @@ orchestration and prompt/request semantics.
   onboarding, game-role selection, and moderation operations.
   Final product review reduces the desired state to 16 categories and 43
   persistent channels without changing runtime protection or execution policy.
+- Server Governance v1.1: SERVER_GOVERNANCE_V1_PRODUCTION_IDENTITY_READY_NOT_DEPLOYED.
+  Logical owner/admin/mod resolution, parent-aware game channel identity, and
+  compact/voice-only review handling remove false production-shaped identity
+  conflicts while retaining UNKNOWN and deletion safeguards. Execution remains
+  disabled.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -565,6 +570,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-08-28: Server Governance v1.1 reconciles guild-owner and Administrator
+principals plus parent-aware game identities in local dry-run fixtures. No
+Discord or Vultr mutation occurred; execution remains disabled.
 2026-08-28: Server Governance v1 final product review simplified the desired
 state to 16 categories and 43 persistent channels, preserving role isolation,
 TempVoice strategy, and safety policies. The RC remains not deployed.

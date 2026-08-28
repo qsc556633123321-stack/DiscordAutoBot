@@ -1,7 +1,8 @@
 const { ChannelType, PermissionFlagsBits } = require('discord.js');
 function toInventoryType(channel) { return channel?.type === ChannelType.GuildCategory ? 'category' : channel?.type === ChannelType.GuildVoice ? 'voice' : 'text'; }
+function toIdentityResource(channel) { return { id: channel.id, name: channel.name, type: toInventoryType(channel), parentId: channel.parentId || null }; }
 
-function createDiscordGuildStructureMutationGateway({ resolveGuild, classifyResource = () => ({}), roleNames = {} } = {}) {
+function createDiscordGuildStructureMutationGateway({ resolveGuild, classifyResource = () => ({}), classifyInventory, roleNames = {}, resolveRolesByKey } = {}) {
   if (typeof resolveGuild !== 'function') throw new TypeError('DiscordGuildStructureMutationGateway requires resolveGuild');
   async function guildFor(guildId) {
     const guild = await resolveGuild(guildId);
@@ -9,6 +10,7 @@ function createDiscordGuildStructureMutationGateway({ resolveGuild, classifyReso
     return guild;
   }
   function roleMap(guild) {
+    if (typeof resolveRolesByKey === 'function') return resolveRolesByKey(guild);
     const byKey = {};
     for (const [key, name] of Object.entries(roleNames)) {
       const role = key === 'everyone' ? guild.roles.everyone : guild.roles.cache.find((candidate) => candidate.name === name);
@@ -17,9 +19,12 @@ function createDiscordGuildStructureMutationGateway({ resolveGuild, classifyReso
     return byKey;
   }
   function channelInventory(guild) {
-    return [...guild.channels.cache.values()].map((channel) => {
-      const classified = classifyResource(channel) || {};
-      return { id: channel.id, name: channel.name, type: toInventoryType(channel), parentId: channel.parentId || null, parentCanonicalKey: classified.parentCanonicalKey || null, canonicalKey: classified.canonicalKey || null, purpose: classified.purpose || 'unknown', owner: classified.owner || 'UNKNOWN', lifecycle: classified.lifecycle || 'unknown', permissionSummary: [...(channel.permissionOverwrites?.cache?.values?.() || [])].map((overwrite) => ({ id: overwrite.id, type: overwrite.type, allow: overwrite.allow?.bitfield?.toString?.() || '', deny: overwrite.deny?.bitfield?.toString?.() || '' })) };
+    const channels = [...guild.channels.cache.values()];
+    const stableClassifications = Object.fromEntries(channels.map((channel) => [channel.id, classifyResource(channel) || {}]));
+    const resolvedClassifications = typeof classifyInventory === 'function' ? classifyInventory(channels.map(toIdentityResource), stableClassifications) || {} : {};
+    return channels.map((channel) => {
+      const classified = { ...(stableClassifications[channel.id] || {}), ...(resolvedClassifications[channel.id] || {}) };
+      return { id: channel.id, name: channel.name, type: toInventoryType(channel), parentId: channel.parentId || null, parentCanonicalKey: classified.parentCanonicalKey || null, canonicalKey: classified.canonicalKey || null, purpose: classified.purpose || 'unknown', owner: classified.owner || 'UNKNOWN', lifecycle: classified.lifecycle || 'unknown', accessProfile: classified.accessProfile || null, accessRoleKey: classified.accessRoleKey || null, replacementKey: classified.replacementKey || null, migrationReviewReason: classified.migrationReviewReason || null, permissionSummary: [...(channel.permissionOverwrites?.cache?.values?.() || [])].map((overwrite) => ({ id: overwrite.id, type: overwrite.type, allow: overwrite.allow?.bitfield?.toString?.() || '', deny: overwrite.deny?.bitfield?.toString?.() || '' })) };
     });
   }
   function resolveChannel(guild, resourceId) {
@@ -29,13 +34,19 @@ function createDiscordGuildStructureMutationGateway({ resolveGuild, classifyReso
   }
   function resolveParent(guild, parentKey) {
     if (!parentKey) return null;
-    const parent = [...guild.channels.cache.values()].find((channel) => classifyResource(channel)?.canonicalKey === parentKey);
+    const channels = [...guild.channels.cache.values()];
+    const stableClassifications = Object.fromEntries(channels.map((channel) => [channel.id, classifyResource(channel) || {}]));
+    const resolvedClassifications = typeof classifyInventory === 'function' ? classifyInventory(channels.map(toIdentityResource), stableClassifications) || {} : {};
+    const parent = channels.find((channel) => ({ ...(stableClassifications[channel.id] || {}), ...(resolvedClassifications[channel.id] || {}) }).canonicalKey === parentKey);
     if (!parent) throw Object.assign(new Error(`Parent not found: ${parentKey}`), { code: 'PARENT_NOT_FOUND' });
     return parent.id;
   }
   function overwritePayload(guild, permission) {
     const roles = roleMap(guild);
-    return permission.overwrites.map((directive) => ({ id: roles[directive.roleKey], allow: directive.allow, deny: directive.deny })).filter((overwrite) => overwrite.id);
+    return permission.overwrites.flatMap((directive) => {
+      const principals = Array.isArray(roles[directive.roleKey]) ? roles[directive.roleKey] : [roles[directive.roleKey]];
+      return principals.filter(Boolean).map((id) => ({ id, allow: directive.allow, deny: directive.deny }));
+    });
   }
   return Object.freeze({
     async readExecutionSnapshot({ guildId }) {

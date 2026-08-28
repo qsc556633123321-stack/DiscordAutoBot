@@ -40,7 +40,10 @@ function preflightGovernanceExecution({ approvedPlan, snapshot, requiredRoleKeys
   const reasons = [];
   if (!snapshot?.guildExists) reasons.push('GUILD_NOT_FOUND');
   for (const permission of ['ManageChannels', 'ManageRoles', 'ViewChannel']) if (!snapshot?.permissions?.[permission]) reasons.push(`MISSING_${permission.toUpperCase()}`);
-  for (const roleKey of requiredRoleKeys) if (!snapshot?.rolesByKey?.[roleKey]) reasons.push(`MISSING_ROLE:${roleKey}`);
+  for (const roleKey of requiredRoleKeys) {
+    const principal = snapshot?.rolesByKey?.[roleKey];
+    if (!principal || (Array.isArray(principal) && principal.length === 0)) reasons.push(`MISSING_ROLE:${roleKey}`);
+  }
   if ((approvedPlan?.blockedActions || []).length) reasons.push('UNAPPROVED_REVIEW_ACTIONS');
   const inventory = new Map((snapshot?.inventory || []).map((resource) => [resource.id, resource]));
   for (const operation of approvedPlan?.operations || []) {

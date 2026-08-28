@@ -13,6 +13,10 @@ const entry = createGovernedResource({ key: 'category:entry', displayName: 'Entr
 assert.equal(buildPermissionReconciliation(entry).overwrites.some((item) => item.roleKey === 'guest' && item.allow.includes('ViewChannel')), true);
 const readonly = createGovernedResource({ key: 'channel:games:info', displayName: 'Info', type: 'text', parentKey: 'category:games', purpose: ChannelPurpose.GAME_INFO, owner: ChannelOwnership.MANAGED_CANONICAL, accessProfile: PermissionProfile.READONLY_INFO, lifecycle: ChannelLifecycle.PERSISTENT, deletePolicy: 'managed_only' });
 assert.equal(buildPermissionReconciliation(readonly).overwrites.find((item) => item.roleKey === 'member').deny.includes('SendMessages'), true);
+const gameReadonly = createGovernedResource({ key: 'channel:games:database', displayName: 'Database', type: 'text', parentKey: 'category:games', purpose: ChannelPurpose.GAME_INFO, owner: ChannelOwnership.MANAGED_CANONICAL, accessProfile: PermissionProfile.GAME_READONLY, lifecycle: ChannelLifecycle.PERSISTENT, deletePolicy: 'managed_only' });
+const gameReadonlyPlan = buildPermissionReconciliation(gameReadonly);
+assert.equal(gameReadonlyPlan.overwrites.find((item) => item.roleKey === 'game').allow.includes('ViewChannel'), true);
+assert.equal(gameReadonlyPlan.overwrites.some((item) => item.roleKey === 'member'), false);
 assert.equal(isAutomaticDeleteAllowed({ owner: ChannelOwnership.UNKNOWN }), false);
 assert.equal(isAutomaticDeleteAllowed({ owner: ChannelOwnership.MANAGED_RUNTIME, lifecycle: ChannelLifecycle.RUNTIME, purpose: ChannelPurpose.RUNTIME_VOICE }), false);
 assert.equal(isAutomaticDeleteAllowed({ owner: ChannelOwnership.MANAGED_CANONICAL, lifecycle: ChannelLifecycle.PERSISTENT, purpose: ChannelPurpose.GAME_INFO }), true);

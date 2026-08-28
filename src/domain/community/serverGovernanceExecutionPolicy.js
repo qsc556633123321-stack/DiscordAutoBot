@@ -56,6 +56,7 @@ function roleDirectives(resource = {}) {
     return Object.freeze([denyEveryone, allow(resource.accessRoleKey, access), ...adminDirectives]);
   }
   if (resource.accessProfile === PermissionProfile.GAME_CENTER) return Object.freeze([denyEveryone, allow('game', ['ViewChannel', 'SendMessages']), ...adminDirectives]);
+  if (resource.accessProfile === PermissionProfile.GAME_READONLY) return Object.freeze([denyEveryone, allow('game', ['ViewChannel']), ...adminDirectives]);
   if (resource.accessRoleKey) return Object.freeze([denyEveryone, allow(resource.accessRoleKey, ['ViewChannel', 'SendMessages']), ...adminDirectives]);
   return Object.freeze([denyEveryone, allow('member', ['ViewChannel', 'SendMessages']), ...adminDirectives]);
 }

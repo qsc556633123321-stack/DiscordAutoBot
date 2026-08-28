@@ -3,8 +3,10 @@ const { assertGuildChannelInventoryPort } = require('./ports/GuildChannelInvento
 
 function matchResource(resource, desired) {
   if (resource.canonicalKey === desired.key) return 'canonical';
-  if (resource.type === desired.type && resource.name === desired.displayName) return 'exact';
-  if (resource.type === desired.type && desired.legacyNames.includes(resource.name)) return 'legacy';
+  if (resource.canonicalKey) return null;
+  const parentMatches = resource.type === 'category' || resource.parentCanonicalKey === desired.parentKey;
+  if (parentMatches && resource.type === desired.type && resource.name === desired.displayName) return 'exact';
+  if (parentMatches && resource.type === desired.type && desired.legacyNames.includes(resource.name)) return 'legacy';
   if (resource.type === desired.type && resource.purpose === desired.purpose && resource.parentCanonicalKey === desired.parentKey) return 'structural';
   return null;
 }
@@ -32,6 +34,7 @@ function createServerGovernancePlan({ inventory = [], desiredState = { resources
   inventory.forEach((resource, index) => {
     if (consumed.has(index)) return;
     if (isProtectedResource(resource)) actions.push(createGovernanceAction(GovernanceAction.KEEP, { resourceId: resource.id, reason: 'protected_runtime_or_ticket' }));
+    else if (resource.migrationReviewReason) actions.push(createGovernanceAction(GovernanceAction.REVIEW_DELETE, { resourceId: resource.id, reason: resource.migrationReviewReason }));
     else if (resource.owner === ChannelOwnership.MANAGED_CANONICAL && resource.lifecycle === 'deprecated' && resource.replacementKey) actions.push(createGovernanceAction(GovernanceAction.SAFE_DELETE, { resourceId: resource.id, targetKey: resource.replacementKey, reason: 'managed_deprecated_replacement_complete' }));
     else if (resource.owner === ChannelOwnership.MANAGED_CANONICAL) actions.push(createGovernanceAction(GovernanceAction.REVIEW_DELETE, { resourceId: resource.id, reason: 'managed_resource_without_replacement_evidence' }));
     else actions.push(createGovernanceAction(GovernanceAction.REVIEW, { resourceId: resource.id, reason: 'unknown_or_user_managed_resource' }));
