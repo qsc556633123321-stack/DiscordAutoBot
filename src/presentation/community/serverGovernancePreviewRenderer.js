@@ -30,7 +30,8 @@ function renderServerGovernancePreview(preview = {}) {
     `Current Resources: ${totals.currentResources || 0}`, `Desired Resources: ${totals.desiredResources || 0}`,
     `KEEP: ${summary.keep || 0} | CREATE: ${summary.create || 0} | MOVE: ${summary.move || 0} | RENAME: ${summary.rename || 0}`,
     `PERMISSION CHANGE: ${summary.permissionChange || 0} | SAFE DELETE: ${summary.safeDelete || 0} | REVIEW DELETE: ${summary.reviewDelete || 0}`,
-    `REVIEW: ${summary.review || 0} | CONFLICT: ${summary.conflict || 0} | PROTECTED: ${summary.protected || 0}`
+    `REVIEW: ${summary.review || 0} | CONFLICT: ${summary.conflict || 0} | PROTECTED: ${summary.protected || 0}`,
+    `DECISIONS — Undecided: ${preview.reviewManifest?.decisionCounts?.UNDECIDED || 0} | Keep: ${preview.reviewManifest?.decisionCounts?.KEEP || 0} | Delete: ${preview.reviewManifest?.decisionCounts?.DELETE || 0} | Adopt: ${preview.reviewManifest?.decisionCounts?.ADOPT_CANONICAL || 0} | Ignored: ${preview.reviewManifest?.decisionCounts?.IGNORE_GOVERNANCE || 0} | Stale: ${preview.reviewManifest?.decisionCounts?.STALE || 0}`
   ].join('\n'))];
   const actions = preview.plan?.actions || [];
   const group = (name) => actions.filter((action) => action.action === name);

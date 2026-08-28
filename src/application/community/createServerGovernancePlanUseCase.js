@@ -59,7 +59,7 @@ function buildProjectedTree(resources = []) {
   return Object.freeze(build());
 }
 
-function buildFullGuildGovernancePreview({ inventory = [], desiredState = { resources: [] } } = {}) {
+function buildFullGuildGovernancePreview({ inventory = [], desiredState = { resources: [] }, decisions = [] } = {}) {
   const plan = createServerGovernancePlan({ inventory, desiredState });
   const byAction = Object.fromEntries(Object.values(GovernanceAction).map((action) => [action, []]));
   for (const action of plan.actions) byAction[action.action].push(action);
@@ -70,7 +70,7 @@ function buildFullGuildGovernancePreview({ inventory = [], desiredState = { reso
     review: byAction.REVIEW.length, conflict: byAction.CONFLICT.length, protected: protectedActions.length,
     totals: Object.freeze({ currentResources: inventory.length, desiredResources: desiredState.resources.length, actions: plan.actions.length })
   });
-  return Object.freeze({ plan, summary, reviewManifest: buildGovernanceReviewManifest({ plan, inventory }), projectedTree: buildProjectedTree(desiredState.resources), permissionPreview: Object.freeze(desiredState.resources.filter((resource) => resource.accessProfile).map((resource) => Object.freeze({ key: resource.key, accessProfile: resource.accessProfile, accessRoleKey: resource.accessRoleKey }))) });
+  return Object.freeze({ plan, summary, reviewManifest: buildGovernanceReviewManifest({ plan, inventory, decisions, desiredState }), projectedTree: buildProjectedTree(desiredState.resources), permissionPreview: Object.freeze(desiredState.resources.filter((resource) => resource.accessProfile).map((resource) => Object.freeze({ key: resource.key, accessProfile: resource.accessProfile, accessRoleKey: resource.accessRoleKey }))) });
 }
 
 function createFullGuildGovernancePreviewUseCase({ inventoryPort, desiredState } = {}) {

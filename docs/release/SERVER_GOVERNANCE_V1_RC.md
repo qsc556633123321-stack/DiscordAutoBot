@@ -11,3 +11,10 @@ First-major-release flags: `SERVER_GOVERNANCE_ENABLED=true` and
 `SERVER_GOVERNANCE_EXECUTION_ENABLED=false`. No reconcile command is exposed
 in this slice, so an execution path is unavailable regardless of environment.
 Preview and dry-run are administrator-only and read-only.
+
+## v1.3 Review Workflow
+
+`SERVER_GOVERNANCE_V13_DECISION_WORKFLOW_READY` adds persistent, per-guild
+human review decisions while keeping execution disabled. Review completion is
+not deployment or execution approval. The next planned major development phase
+is v1.4: approved plan compilation and final execution safety.

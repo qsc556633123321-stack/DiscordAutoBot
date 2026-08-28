@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1.2 Review Ready
+Production Deployment Reconciled / Server Governance v1.3 Decision Workflow Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -39,6 +39,11 @@ orchestration and prompt/request semantics.
   and `REVIEW_DELETE` item, including identity, ownership, lifecycle,
   recommendation, and `UNDECIDED` approval state. No approval persistence or
   execution wiring exists.
+- Server Governance v1.3: SERVER_GOVERNANCE_V13_DECISION_WORKFLOW_READY.
+  Per-guild review decisions, fingerprints, stale/orphan safeguards, audit
+  records, preview integration, and administrator-only review controls are
+  complete locally. Decisions create only future planning intent; governance
+  execution and deployment remain disabled.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -520,7 +525,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Server Governance v1.2 human review of the production preview manifest; keep execution disabled.
+Server Governance v1.4 approved plan compilation and final execution safety; keep execution disabled and do not deploy.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -575,6 +580,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-08-28: Server Governance v1.3 adds persistent human review decisions,
+fingerprint-based stale protection, and a read-only decision workflow. No
+Discord structural mutation, Vultr action, or governance execution occurred.
 2026-08-28: Server Governance v1.2 adds a local, read-only review manifest for
 opaque governance review actions. All approvals remain undecided, no Discord
 or Vultr mutation occurred, and governance execution remains disabled.
