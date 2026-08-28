@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1.1 Production Identity Ready
+Production Deployment Reconciled / Server Governance v1.2 Review Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -34,6 +34,11 @@ orchestration and prompt/request semantics.
   compact/voice-only review handling remove false production-shaped identity
   conflicts while retaining UNKNOWN and deletion safeguards. Execution remains
   disabled.
+- Server Governance v1.2: SERVER_GOVERNANCE_V12_REVIEW_READY_NOT_DEPLOYED.
+  The read-only preview now emits a human-review manifest for every `REVIEW`
+  and `REVIEW_DELETE` item, including identity, ownership, lifecycle,
+  recommendation, and `UNDECIDED` approval state. No approval persistence or
+  execution wiring exists.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -515,7 +520,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Server Governance v1 production preview deployment with execution disabled.
+Server Governance v1.2 human review of the production preview manifest; keep execution disabled.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -570,6 +575,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-08-28: Server Governance v1.2 adds a local, read-only review manifest for
+opaque governance review actions. All approvals remain undecided, no Discord
+or Vultr mutation occurred, and governance execution remains disabled.
 2026-08-28: Server Governance v1.1 reconciles guild-owner and Administrator
 principals plus parent-aware game identities in local dry-run fixtures. No
 Discord or Vultr mutation occurred; execution remains disabled.

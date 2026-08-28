@@ -1,4 +1,5 @@
 const { ChannelOwnership, GovernanceAction, createGovernanceAction, isProtectedResource } = require('../../domain/community/channelGovernance');
+const { buildGovernanceReviewManifest } = require('../../domain/community/serverGovernanceReviewManifest');
 const { assertGuildChannelInventoryPort } = require('./ports/GuildChannelInventoryPort');
 
 function matchResource(resource, desired) {
@@ -69,7 +70,7 @@ function buildFullGuildGovernancePreview({ inventory = [], desiredState = { reso
     review: byAction.REVIEW.length, conflict: byAction.CONFLICT.length, protected: protectedActions.length,
     totals: Object.freeze({ currentResources: inventory.length, desiredResources: desiredState.resources.length, actions: plan.actions.length })
   });
-  return Object.freeze({ plan, summary, projectedTree: buildProjectedTree(desiredState.resources), permissionPreview: Object.freeze(desiredState.resources.filter((resource) => resource.accessProfile).map((resource) => Object.freeze({ key: resource.key, accessProfile: resource.accessProfile, accessRoleKey: resource.accessRoleKey }))) });
+  return Object.freeze({ plan, summary, reviewManifest: buildGovernanceReviewManifest({ plan, inventory }), projectedTree: buildProjectedTree(desiredState.resources), permissionPreview: Object.freeze(desiredState.resources.filter((resource) => resource.accessProfile).map((resource) => Object.freeze({ key: resource.key, accessProfile: resource.accessProfile, accessRoleKey: resource.accessRoleKey }))) });
 }
 
 function createFullGuildGovernancePreviewUseCase({ inventoryPort, desiredState } = {}) {

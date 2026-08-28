@@ -1,0 +1,50 @@
+const assert = require('node:assert/strict');
+const { GovernanceAction, ChannelLifecycle, ChannelOwnership, ChannelPurpose } = require('../../../src/domain/community/channelGovernance');
+const { buildFullGuildDesiredState } = require('../../../src/domain/community/serverGovernanceDesiredState');
+const { createServerGovernancePlan, buildFullGuildGovernancePreview } = require('../../../src/application/community/createServerGovernancePlanUseCase');
+const { preflightGovernanceExecution } = require('../../../src/application/community/serverGovernanceExecutionUseCase');
+const { createProductionReviewSnapshot } = require('../../fixtures/community/server-governance-production-review-snapshot');
+
+const desiredState = buildFullGuildDesiredState();
+const snapshot = createProductionReviewSnapshot(desiredState);
+const plan = createServerGovernancePlan(snapshot);
+const preview = buildFullGuildGovernancePreview(snapshot);
+const counts = (action) => plan.actions.filter((item) => item.action === action).length;
+
+assert.equal(snapshot.inventory.length, 132);
+assert.equal(desiredState.resources.length, 59);
+assert.equal(counts(GovernanceAction.KEEP), 50);
+assert.equal(counts(GovernanceAction.CREATE), 6);
+assert.equal(counts(GovernanceAction.MOVE), 0);
+assert.equal(counts(GovernanceAction.RENAME), 3);
+assert.equal(counts(GovernanceAction.PERMISSION_CHANGE), 3);
+assert.equal(counts(GovernanceAction.SAFE_DELETE), 0);
+assert.equal(counts(GovernanceAction.REVIEW_DELETE), 12);
+assert.equal(counts(GovernanceAction.REVIEW), 67);
+assert.equal(counts(GovernanceAction.CONFLICT), 0);
+assert.equal(preview.summary.protected, 0);
+assert.equal(preview.reviewManifest.entries.length, 79);
+for (const entry of preview.reviewManifest.entries) {
+  assert.equal(Boolean(entry.resourceId), true);
+  assert.equal(Boolean(entry.resourceName), true);
+  assert.equal(Boolean(entry.resourceType), true);
+  assert.equal(Boolean(entry.reason), true);
+  assert.equal(Boolean(entry.recommendedAction), true);
+  assert.equal(entry.approvalState, 'UNDECIDED');
+}
+assert.equal(preview.reviewManifest.byReason.legacy_split_compact_game_layout_requires_review, 6);
+assert.equal(preview.reviewManifest.byReason.legacy_channel_not_in_voice_only_layout_requires_review, 6);
+assert.equal(preview.reviewManifest.byResourceType.category, 12);
+assert.equal(preview.reviewManifest.byResourceType.text, 62);
+assert.equal(preview.reviewManifest.byResourceType.voice, 5);
+assert.equal(preview.reviewManifest.entries.filter((entry) => entry.ownership === ChannelOwnership.USER_MANAGED).every((entry) => entry.recommendedAction === 'IGNORE_GOVERNANCE'), true);
+assert.equal(preview.reviewManifest.entries.filter((entry) => entry.action === GovernanceAction.REVIEW_DELETE && entry.reason.includes('compact')).every((entry) => entry.recommendedAction === 'MIGRATE'), true);
+assert.equal(preview.reviewManifest.entries.filter((entry) => entry.action === GovernanceAction.REVIEW_DELETE && entry.reason.includes('voice_only')).every((entry) => entry.recommendedAction === 'DELETE'), true);
+const runtime = { id: 'runtime', name: 'Temp Voice', type: 'voice', purpose: ChannelPurpose.RUNTIME_VOICE, owner: ChannelOwnership.MANAGED_RUNTIME, lifecycle: ChannelLifecycle.RUNTIME };
+const ticket = { id: 'ticket', name: 'ticket-1', type: 'text', purpose: ChannelPurpose.TICKET, owner: ChannelOwnership.SYSTEM_PROTECTED, lifecycle: ChannelLifecycle.RUNTIME };
+const protectedPlan = createServerGovernancePlan({ inventory: [runtime, ticket], desiredState: { resources: [] } });
+assert.equal(protectedPlan.actions.every((action) => action.action === GovernanceAction.KEEP), true);
+const preflight = preflightGovernanceExecution({ approvedPlan: { operations: [], blockedActions: preview.plan.actions.filter((action) => [GovernanceAction.REVIEW, GovernanceAction.REVIEW_DELETE].includes(action.action)) }, snapshot: { guildExists: true, permissions: { ManageChannels: true, ManageRoles: true, ViewChannel: true }, rolesByKey: {}, inventory: snapshot.inventory }, requiredRoleKeys: [] });
+assert.equal(preflight.ok, false);
+assert.equal(preflight.reasons.includes('UNAPPROVED_REVIEW_ACTIONS'), true);
+console.log('Server governance review-resolution tests passed.');
