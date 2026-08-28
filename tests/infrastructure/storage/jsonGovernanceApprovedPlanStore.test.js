@@ -1,0 +1,16 @@
+const assert = require('node:assert/strict');
+const { createJsonGovernanceApprovedPlanStore } = require('../../../src/infrastructure/storage/jsonGovernanceApprovedPlanStore');
+let root = {};
+const store = createJsonGovernanceApprovedPlanStore({ filePath: 'memory.json', store: { readJson: () => structuredClone(root), updateJson: (_path, updater) => { root = updater(structuredClone(root)); return root; } } });
+const first = { guildId: 'guild', planFingerprint: 'first', compiledAt: '2026-01-01T00:00:00.000Z' };
+const second = { guildId: 'guild', planFingerprint: 'second', compiledAt: '2026-01-02T00:00:00.000Z' };
+store.savePlan({ plan: first, actorId: 'admin' });
+store.savePlan({ plan: second, actorId: 'admin' });
+assert.equal(store.loadLatestPlan({ guildId: 'guild' }).plan.planFingerprint, 'second');
+assert.equal(store.listPlans({ guildId: 'guild' }).filter((record) => record.storageStatus === 'SUPERSEDED').length, 1);
+assert.equal(store.listAudit({ guildId: 'guild' }).some((event) => event.event === 'PLAN_SUPERSEDED'), true);
+store.recordVerification({ guildId: 'guild', planFingerprint: 'second', actorId: 'admin', result: { status: 'VALID', blockers: [] } });
+store.recordVerification({ guildId: 'guild', planFingerprint: 'second', actorId: 'admin', result: { status: 'BLOCKED', blockers: ['PLAN_STALE'] } });
+assert.equal(store.listAudit({ guildId: 'guild' }).some((event) => event.event === 'PLAN_VERIFICATION_PASSED'), true);
+assert.equal(store.listAudit({ guildId: 'guild' }).some((event) => event.event === 'PLAN_VERIFICATION_FAILED'), true);
+console.log('JSON governance approved-plan store tests passed.');

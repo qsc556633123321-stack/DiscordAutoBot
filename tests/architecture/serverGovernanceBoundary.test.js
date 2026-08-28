@@ -7,6 +7,9 @@ const reviewManifest = fs.readFileSync(path.join(root, 'src/domain/community/ser
 const reviewDecisionPolicy = fs.readFileSync(path.join(root, 'src/domain/community/serverGovernanceReviewDecisionPolicy.js'), 'utf8');
 const reviewDecisionUseCase = fs.readFileSync(path.join(root, 'src/application/community/serverGovernanceReviewDecisionUseCase.js'), 'utf8');
 const reviewDecisionStore = fs.readFileSync(path.join(root, 'src/infrastructure/storage/jsonGovernanceReviewDecisionStore.js'), 'utf8');
+const approvedPlanDomain = fs.readFileSync(path.join(root, 'src/domain/community/serverGovernanceApprovedPlan.js'), 'utf8');
+const approvedPlanUseCase = fs.readFileSync(path.join(root, 'src/application/community/serverGovernanceApprovedPlanUseCase.js'), 'utf8');
+const approvedPlanStore = fs.readFileSync(path.join(root, 'src/infrastructure/storage/jsonGovernanceApprovedPlanStore.js'), 'utf8');
 const application = fs.readFileSync(path.join(root, 'src/application/community/createServerGovernancePlanUseCase.js'), 'utf8');
 const infrastructure = fs.readFileSync(path.join(root, 'src/infrastructure/discord/discordGuildChannelInventoryAdapter.js'), 'utf8');
 assert.equal(/discord\.js|node:fs|writeFile|\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(domain), false);
@@ -14,6 +17,9 @@ assert.equal(/discord\.js|node:fs|writeFile|\.delete\(|\.setName\(|\.setParent\(
 assert.equal(/discord\.js|node:fs|writeFile|\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(reviewDecisionPolicy), false);
 assert.equal(/discord\.js|node:fs|writeFile|\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(reviewDecisionUseCase), false);
 assert.equal(/discord\.js|channels\.create|\.setName\(|\.setParent\(|permissionOverwrites\.(edit|set)|channel\.delete\(/.test(reviewDecisionStore), false);
+assert.equal(/discord\.js|node:fs|writeFile|channels\.create|\.setName\(|\.setParent\(|permissionOverwrites\.(edit|set)|channel\.delete\(/.test(approvedPlanDomain), false);
+assert.equal(/discord\.js|node:fs|writeFile|channels\.create|\.setName\(|\.setParent\(|permissionOverwrites\.(edit|set)|channel\.delete\(/.test(approvedPlanUseCase), false);
+assert.equal(/discord\.js|channels\.create|\.setName\(|\.setParent\(|permissionOverwrites\.(edit|set)|channel\.delete\(/.test(approvedPlanStore), false);
 assert.equal(/discord\.js|interaction\.|\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(application), false);
 assert.equal(/\.delete\(|\.setName\(|\.setParent\(|channels\.create|permissionOverwrites\.edit/.test(infrastructure), false);
 assert.equal(/ARCHIVE|MOVE_TO_ARCHIVE|SOFT_DELETE/.test(domain), false);

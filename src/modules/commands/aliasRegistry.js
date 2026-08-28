@@ -15,7 +15,8 @@ const ROUTE_ONLY_COMMANDS = Object.freeze({
   'game-role-selection': '../../presentation/commands/gameRoleSelectionCommand',
   'server-governance-preview': '../../presentation/commands/serverGovernancePreviewCommand',
   'server-governance-dry-run': '../../presentation/commands/serverGovernanceDryRunCommand',
-  'server-governance-review': '../../presentation/commands/serverGovernanceReviewCommand'
+  'server-governance-review': '../../presentation/commands/serverGovernanceReviewCommand',
+  'server-governance-plan': '../../presentation/commands/serverGovernancePlanCommand'
 });
 
 function loadCommandMap(commandMap) {

@@ -44,7 +44,8 @@ const ROUTES = Object.freeze({
     'game-role-provision': { target: 'game-role-provision' },
     'server-governance-preview': { target: 'server-governance-preview' },
     'server-governance-dry-run': { target: 'server-governance-dry-run' },
-    'server-governance-review': { target: 'server-governance-review' }
+    'server-governance-review': { target: 'server-governance-review' },
+    'server-governance-plan': { target: 'server-governance-plan' }
   },
   dev: {
     'audit-commands': { target: 'dev-audit-commands' },

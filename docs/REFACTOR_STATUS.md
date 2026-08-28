@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1.3 Decision Workflow Ready
+Production Deployment Reconciled / Server Governance v1.4 Approved Plan Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -44,6 +44,11 @@ orchestration and prompt/request semantics.
   records, preview integration, and administrator-only review controls are
   complete locally. Decisions create only future planning intent; governance
   execution and deployment remain disabled.
+- Server Governance v1.4: SERVER_GOVERNANCE_V14_APPROVED_PLAN_READY.
+  Immutable candidate compilation, stable input/plan fingerprints, dependency
+  validation, stale-plan verification, separate candidate history, and
+  read-only plan inspection are complete locally. There is still no public
+  governance execution command and no deployment approval.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -525,7 +530,7 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Server Governance v1.4 approved plan compilation and final execution safety; keep execution disabled and do not deploy.
+Server Governance v1.5 execution transaction safety, rollback orchestration, and final major release candidate; keep execution disabled and do not deploy.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -580,6 +585,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-08-29: Server Governance v1.4 compiles immutable, fingerprinted execution
+candidates and verifies inventory/desired/decision drift without any Discord
+structural mutation. Candidate readiness is not execution or deployment approval.
 2026-08-28: Server Governance v1.3 adds persistent human review decisions,
 fingerprint-based stale protection, and a read-only decision workflow. No
 Discord structural mutation, Vultr action, or governance execution occurred.
