@@ -32,6 +32,11 @@ function createApprovedGovernancePlan({ guildId, compiledAt, compiledBy, invento
   const summary = normalizedOperations.reduce((result, operation) => ({ ...result, [operation.type]: (result[operation.type] || 0) + 1 }), {});
   return Object.freeze({ schemaVersion: APPROVED_PLAN_SCHEMA_VERSION, guildId, compiledAt, compiledBy, inventoryFingerprint: inventory, desiredStateFingerprint: desired, decisionSetFingerprint: decisions, planFingerprint, summary: Object.freeze(summary), operations: Object.freeze(normalizedOperations), blockedReasons: Object.freeze([...new Set(blockedReasons)].sort()), status });
 }
+function isApprovedPlanFingerprintValid(plan) {
+  if (!plan) return false;
+  const operations = (plan.operations || []).map(({ operationId, type, resourceId, canonicalTargetKey, currentSnapshot, expectedSnapshot, reason, humanDecisionEvidence, dependencies, permission, replacementEvidence }) => ({ operationId, type, resourceId, canonicalTargetKey, currentSnapshot, expectedSnapshot, reason, humanDecisionEvidence, dependencies, permission, replacementEvidence }));
+  return plan.planFingerprint === fingerprint({ inventory: plan.inventoryFingerprint, desired: plan.desiredStateFingerprint, decisions: plan.decisionSetFingerprint, operations });
+}
 function verifyApprovedGovernancePlan({ plan, freshInventory, currentDesiredState, currentDecisions } = {}) {
   const blockers = [];
   if (!plan) blockers.push('PLAN_NOT_FOUND');
@@ -44,4 +49,4 @@ function verifyApprovedGovernancePlan({ plan, freshInventory, currentDesiredStat
   return Object.freeze({ status: blockers.length ? 'BLOCKED' : 'VALID', blockers: Object.freeze(blockers) });
 }
 
-module.exports = { APPROVED_PLAN_SCHEMA_VERSION, ApprovedPlanStatus, ApprovedOperationType, RollbackClass, createApprovedGovernancePlan, createApprovedOperation, decisionSetFingerprint, desiredStateFingerprint, inventoryFingerprint, verifyApprovedGovernancePlan };
+module.exports = { APPROVED_PLAN_SCHEMA_VERSION, ApprovedPlanStatus, ApprovedOperationType, RollbackClass, createApprovedGovernancePlan, createApprovedOperation, decisionSetFingerprint, desiredStateFingerprint, inventoryFingerprint, isApprovedPlanFingerprintValid, verifyApprovedGovernancePlan };

@@ -1,5 +1,5 @@
 const { isProtectedResource } = require('../../domain/community/channelGovernance');
-const { ApprovedOperationType, ApprovedPlanStatus, verifyApprovedGovernancePlan } = require('../../domain/community/serverGovernanceApprovedPlan');
+const { ApprovedOperationType, ApprovedPlanStatus, isApprovedPlanFingerprintValid, verifyApprovedGovernancePlan } = require('../../domain/community/serverGovernanceApprovedPlan');
 const { GovernanceExecutionFailure, GovernanceOperationState, GovernanceTransactionState, createExecutionReceipt, orderOperations, requiredConfirmation } = require('../../domain/community/governanceExecutionTransaction');
 const { assertGovernanceExecutionTransactionStore } = require('./ports/GovernanceExecutionTransactionStore');
 const { assertGovernancePlanExecutionGateway } = require('./ports/GovernancePlanExecutionGateway');
@@ -45,6 +45,7 @@ function createExecuteApprovedGovernancePlanUseCase({ transactionStore, mutation
     const abort = (code) => createExecutionReceipt({ transactionId: null, guildId, planFingerprint: plan?.planFingerprint || null, actorId, startedAt, finishedAt: now(), status: GovernanceTransactionState.ABORTED, finalVerification: failure(code) });
     if (!executionEnabled) return abort(GovernanceExecutionFailure.FEATURE_DISABLED);
     if (!plan || plan.status !== ApprovedPlanStatus.READY_FOR_EXECUTION_REVIEW) return abort(GovernanceExecutionFailure.PLAN_STALE);
+    if (!isApprovedPlanFingerprintValid(plan)) return abort(GovernanceExecutionFailure.PLAN_INTEGRITY_FAILED);
     if (planRecord.storageStatus !== 'ACTIVE') return abort(GovernanceExecutionFailure.PLAN_SUPERSEDED);
     if (confirmation !== requiredConfirmation(plan.planFingerprint)) return abort(GovernanceExecutionFailure.CONFIRMATION_MISMATCH);
     if (transactionStore.findSucceededPlan({ guildId, planFingerprint: plan.planFingerprint })) return abort(GovernanceExecutionFailure.PLAN_ALREADY_EXECUTED);
