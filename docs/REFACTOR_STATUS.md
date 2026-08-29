@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1.4 Approved Plan Ready
+Production Deployment Reconciled / Server Governance v1.5 Major RC Ready
 
 ## Overall Progress
 Estimated local refactor progress: 97%. This readiness preparation adds no
@@ -49,6 +49,11 @@ orchestration and prompt/request semantics.
   validation, stale-plan verification, separate candidate history, and
   read-only plan inspection are complete locally. There is still no public
   governance execution command and no deployment approval.
+- Server Governance v1.5: SERVER_GOVERNANCE_V15_MAJOR_RC_READY. Immutable-plan
+  transaction safety, confirmation binding, fresh-state verification, locks,
+  rollback orchestration, interruption recovery, receipts, and fake-only
+  full-plan simulation are complete locally. No public execution command is
+  registered; execution remains disabled by default and no deployment is approved.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -530,7 +535,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Server Governance v1.5 execution transaction safety, rollback orchestration, and final major release candidate; keep execution disabled and do not deploy.
+MAJOR RELEASE REVIEW: inspect the final GitHub diff, full regression results,
+read-only live preview, exact approved candidate, human decisions, deployment
+gates, and rollback plan before any separately approved rollout.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -585,6 +592,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-08-29: Server Governance v1.5 adds local-only immutable-plan transaction
+safety and rollback orchestration with fake execution tests. Public execution,
+production Discord mutation, Vultr action, and deployment remain disabled.
 2026-08-29: Server Governance v1.4 compiles immutable, fingerprinted execution
 candidates and verifies inventory/desired/decision drift without any Discord
 structural mutation. Candidate readiness is not execution or deployment approval.

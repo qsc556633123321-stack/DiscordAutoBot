@@ -1,0 +1,6 @@
+const assert = require('node:assert/strict');
+const { createServerGovernanceExecutionSafetyFeature } = require('../../src/composition/serverGovernanceExecutionSafetyFeature');
+function transactionStore() { return { acquireLock: () => true, releaseLock: () => {}, findSucceededPlan: () => null, findActiveTransaction: () => null, createTransaction: () => {}, updateTransaction: () => {}, recordAudit: () => {}, recoverInterrupted: () => 0 }; }
+function gateway() { return { readInventory: async () => [], readResourceState: async () => null, createCategory: async () => ({}), createChannel: async () => ({}), moveResource: async () => ({}), renameResource: async () => ({}), updatePermissions: async () => ({}), deleteChannel: async () => ({}), deleteCategory: async () => ({}) }; }
+const feature = createServerGovernanceExecutionSafetyFeature({ transactionStore: transactionStore(), mutationGateway: gateway(), planStore: { loadLatestPlan: () => null }, decisionStore: { listDecisions: () => [] }, configuration: { executionEnabled: false } });
+void feature.serverGovernanceExecutionSafety.execute({ guildId: 'guild', actorId: 'admin', confirmation: 'x' }).then((receipt) => { assert.equal(receipt.status, 'ABORTED'); assert.equal(receipt.finalVerification.code, 'FEATURE_DISABLED'); console.log('Server governance execution safety composition tests passed.'); });

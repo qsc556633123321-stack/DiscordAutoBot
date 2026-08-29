@@ -1,0 +1,18 @@
+const assert = require('node:assert/strict');
+const { createJsonGovernanceExecutionTransactionStore } = require('../../../src/infrastructure/storage/jsonGovernanceExecutionTransactionStore');
+let root = {};
+const store = createJsonGovernanceExecutionTransactionStore({ filePath: 'memory.json', store: { readJson: () => structuredClone(root), updateJson: (_path, updater) => { root = updater(structuredClone(root)); return root; } } });
+assert.equal(store.acquireLock({ guildId: 'one', planFingerprint: 'plan-a' }), true);
+assert.equal(store.acquireLock({ guildId: 'one', planFingerprint: 'plan-b' }), false);
+store.createTransaction({ transaction: { transactionId: 'tx-a', guildId: 'one', planFingerprint: 'plan-a', status: 'EXECUTING' } });
+assert.equal(store.findActiveTransaction({ guildId: 'one' }).transactionId, 'tx-a');
+assert.equal(store.recoverInterrupted({ guildId: 'one' }), 1);
+assert.equal(store.listTransactions({ guildId: 'one' })[0].status, 'INTERRUPTED_REQUIRES_REVIEW');
+store.releaseLock({ guildId: 'one' });
+store.createTransaction({ transaction: { transactionId: 'tx-b', guildId: 'one', planFingerprint: 'plan-b', status: 'SUCCEEDED' } });
+assert.equal(store.findSucceededPlan({ guildId: 'one', planFingerprint: 'plan-b' }).transactionId, 'tx-b');
+assert.equal(store.findSucceededPlan({ guildId: 'two', planFingerprint: 'plan-b' }), null);
+store.recordAudit({ guildId: 'one', event: 'TEST', timestamp: 'now' });
+assert.equal(store.listAudit({ guildId: 'one' }).length, 2);
+assert.equal(store.listAudit({ guildId: 'one' }).some((event) => event.event === 'INTERRUPTED_REQUIRES_REVIEW'), true);
+console.log('JSON governance execution transaction store tests passed.');

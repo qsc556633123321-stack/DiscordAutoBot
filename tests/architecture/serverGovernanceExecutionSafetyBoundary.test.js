@@ -1,0 +1,14 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..', '..');
+const domain = fs.readFileSync(path.join(root, 'src/domain/community/governanceExecutionTransaction.js'), 'utf8');
+const application = fs.readFileSync(path.join(root, 'src/application/community/executeApprovedGovernancePlanUseCase.js'), 'utf8');
+const store = fs.readFileSync(path.join(root, 'src/infrastructure/storage/jsonGovernanceExecutionTransactionStore.js'), 'utf8');
+const adapter = fs.readFileSync(path.join(root, 'src/infrastructure/discord/discordGovernancePlanExecutionAdapter.js'), 'utf8');
+assert.equal(/discord\.js|node:fs|process\.env|channels\.create|permissionOverwrites/.test(domain), false);
+assert.equal(/discord\.js|node:fs|process\.env|channels\.create|permissionOverwrites|\.setName\(|\.setParent\(/.test(application), false);
+assert.equal(/discord\.js|channels\.create|permissionOverwrites/.test(store), false);
+assert.equal(/discord\.js/.test(adapter), false);
+assert.equal(fs.existsSync(path.join(root, 'src/presentation/commands/serverGovernanceExecuteCommand.js')), false);
+console.log('Server governance execution safety architecture boundary tests passed.');

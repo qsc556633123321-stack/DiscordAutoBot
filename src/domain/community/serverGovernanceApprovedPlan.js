@@ -23,7 +23,9 @@ function createApprovedOperation({ operationId, type, resourceId = null, canonic
   return Object.freeze({ operationId, type, resourceId, canonicalTargetKey, currentSnapshot: currentSnapshot ? Object.freeze({ ...currentSnapshot }) : null, expectedSnapshot: expectedSnapshot ? Object.freeze({ ...expectedSnapshot }) : null, reason, humanDecisionEvidence, dependencies: Object.freeze([...new Set(dependencies)].sort()), destructive: [ApprovedOperationType.DELETE_CHANNEL, ApprovedOperationType.DELETE_CATEGORY].includes(type), reversible: rollback === RollbackClass.REVERSIBLE, rollbackClass: rollback, rollbackMetadata: Object.freeze({ previousName: currentSnapshot?.name || null, previousParentId: currentSnapshot?.parentId || null, previousPermissions: currentSnapshot?.permissionSummary || [], resourceId, resourceType: currentSnapshot?.type || expectedSnapshot?.type || null }), permission, replacementEvidence });
 }
 function createApprovedGovernancePlan({ guildId, compiledAt, compiledBy, inventoryFingerprint: inventory, desiredStateFingerprint: desired, decisionSetFingerprint: decisions, operations = [], blockedReasons = [] } = {}) {
-  const normalizedOperations = [...operations].sort((left, right) => left.operationId.localeCompare(right.operationId));
+  // The compiler already supplies a deterministic safety order; preserve it so
+  // irreversible deletes cannot move ahead of reversible work by identifier.
+  const normalizedOperations = [...operations];
   const logical = normalizedOperations.map(({ operationId, type, resourceId, canonicalTargetKey, currentSnapshot, expectedSnapshot, reason, humanDecisionEvidence, dependencies, permission, replacementEvidence }) => ({ operationId, type, resourceId, canonicalTargetKey, currentSnapshot, expectedSnapshot, reason, humanDecisionEvidence, dependencies, permission, replacementEvidence }));
   const planFingerprint = fingerprint({ inventory, desired, decisions, operations: logical });
   const status = blockedReasons.length ? ApprovedPlanStatus.BLOCKED : normalizedOperations.length ? ApprovedPlanStatus.READY_FOR_EXECUTION_REVIEW : ApprovedPlanStatus.NO_CHANGES;

@@ -7,7 +7,7 @@ const { assertGovernanceApprovedPlanStore } = require('./ports/GovernanceApprove
 
 const order = Object.freeze({ CREATE_CATEGORY: 10, CREATE_CHANNEL: 20, MOVE_RESOURCE: 30, RENAME_RESOURCE: 40, UPDATE_PERMISSIONS: 50, DELETE_CHANNEL: 60, DELETE_CATEGORY: 70 });
 function desiredMap(desiredState) { return new Map((desiredState.resources || []).map((resource) => [resource.key, resource])); }
-function snapshot(resource) { return resource ? { id: resource.id, type: resource.type, name: resource.name, parentId: resource.parentId || null, permissionSummary: resource.permissionSummary || [], canonicalKey: resource.canonicalKey || null, owner: resource.owner || 'UNKNOWN', lifecycle: resource.lifecycle || 'unknown' } : null; }
+function snapshot(resource) { return resource ? { id: resource.id, type: resource.type, name: resource.name, parentId: resource.parentId || null, parentCanonicalKey: resource.parentCanonicalKey || resource.parentKey || null, permissionSummary: resource.permissionSummary || [], canonicalKey: resource.canonicalKey || resource.key || null, owner: resource.owner || 'UNKNOWN', lifecycle: resource.lifecycle || 'unknown' } : null; }
 function operationId(type, value) { return `${type}:${value}`; }
 function operationTypeForCreate(target) { return target.type === 'category' ? ApprovedOperationType.CREATE_CATEGORY : ApprovedOperationType.CREATE_CHANNEL; }
 function validateDependencies(operations) {
