@@ -1,6 +1,9 @@
 # Server Governance Production Review
 
-Status: `SERVER_GOVERNANCE_V12_REVIEW_READY_NOT_DEPLOYED`.
+Status: **Historical v1.2 review snapshot**. It records the original 79
+undecided review actions and must not be used as current release evidence.
+See [MAJOR_RELEASE_FINAL_REVIEW.md](MAJOR_RELEASE_FINAL_REVIEW.md) for the
+reviewed immutable-plan candidate, current manifests, and deployment gates.
 
 This is a local, production-shaped, read-only review fixture based on the
 observed preview totals. It is not a live Discord scan and does not authorize

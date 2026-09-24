@@ -1,14 +1,14 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Server Governance v1.5 Major RC Ready
+Production Deployment Reconciled / Major Release Ready for Deployment Review
 
 ## Overall Progress
-Estimated local refactor progress: 97%. This readiness preparation adds no
-production migration. Community Concierge exact-ID mapping, prefix dispatch,
-role workflow, role/non-role payload construction, channel setup, AI transport,
-and filesystem ownership remain migrated; Runtime retains intentional thin
-orchestration and prompt/request semantics.
+Estimated local refactor progress: 97%. The major-release candidate now has a
+reviewed immutable fixture plan, explicit deletion and permission manifests,
+transaction failure coverage, a re-preview reconciliation gate, and a
+read-only operator checklist. This does not itself deploy or enable governance
+execution.
 
 ## Product Feature Progress
 - Server Governance v1: PHASE_1_MODEL_READY. The pure model, read-only inventory
@@ -54,6 +54,11 @@ orchestration and prompt/request semantics.
   rollback orchestration, interruption recovery, receipts, and fake-only
   full-plan simulation are complete locally. No public execution command is
   registered; execution remains disabled by default and no deployment is approved.
+- Major Release: `MAJOR_RELEASE_READY_FOR_DEPLOYMENT_REVIEW`. The 132-resource
+  production-shaped fixture is fully reviewed and compiles to 24 immutable
+  operations; final expected-state re-preview has zero remaining governed
+  actions. Live read-only validation and explicit human rollout approval remain
+  mandatory before deployment or any execution enablement.
 - Game Role Feature: ROLES_PROVISIONED_SELECTION_UI_READY_NOT_DEPLOYED.
   Production manually created 10 specific roles with no rollback. The new
   /community games selector is gated by the parent game role and changes only
@@ -535,9 +540,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-MAJOR RELEASE REVIEW: inspect the final GitHub diff, full regression results,
-read-only live preview, exact approved candidate, human decisions, deployment
-gates, and rollback plan before any separately approved rollout.
+Production Preview Deployment: perform a separately approved, read-only live
+governance preview and reconcile its fresh immutable plan against the release
+manifests before any rollout or execution enablement.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -592,6 +597,12 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-09-24: Major release evidence is complete locally: the reviewed
+production-shaped fixture compiles to a 24-operation immutable candidate and
+reconciles to zero remaining governed actions. Delete/permission manifests,
+transaction failure coverage, a read-only operator checklist, and aggregate
+release gates are present. This is `MAJOR_RELEASE_READY_FOR_DEPLOYMENT_REVIEW`;
+no Vultr, PM2, Discord API, or governance execution action occurred.
 2026-08-29: Server Governance v1.5 adds local-only immutable-plan transaction
 safety and rollback orchestration with fake execution tests. Public execution,
 production Discord mutation, Vultr action, and deployment remain disabled.
