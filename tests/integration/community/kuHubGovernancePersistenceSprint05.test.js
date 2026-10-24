@@ -1,0 +1,11 @@
+const assert = require('node:assert/strict');
+const { createJsonGovernanceRepositories } = require('../../../src/infrastructure/storage/jsonGovernanceRepository');
+const { createGovernanceHistoryUseCase } = require('../../../src/application/community/getGovernanceHistoryUseCase');
+const { createSupabaseGovernanceReadRepositories } = require('../../../src/infrastructure/storage/supabaseGovernanceReadRepositories');
+const plan = { guildId: 'guild-a', planFingerprint: 'same-input-fingerprint', status: 'READY_FOR_EXECUTION_REVIEW', compiledAt: '2026-10-25T00:00:00.000Z' };
+const planStore = { listPlans: ({ guildId }) => guildId === 'guild-a' ? [{ plan, storageStatus: 'ACTIVE', createdBy: 'admin-a', createdAt: plan.compiledAt }] : [], loadLatestPlan: ({ guildId }) => guildId === 'guild-a' ? { plan } : null, listAudit: ({ guildId }) => guildId === 'guild-a' ? [{ guildId, event: 'PLAN_COMPILED', planFingerprint: plan.planFingerprint }] : [] };
+const decisionStore = { listDecisions: ({ guildId }) => guildId === 'guild-a' ? [{ guildId, resourceId: 'r1', decision: 'DELETE', reasonAtDecision: 'duplicate' }] : [], listAudit: ({ guildId }) => guildId === 'guild-a' ? [{ guildId, event: 'DECISION_RECORDED' }] : [] };
+const transactionStore = { listAudit: ({ guildId }) => guildId === 'guild-a' ? [{ guildId, event: 'EXECUTION_BLOCKED' }] : [] };
+const repositories = createJsonGovernanceRepositories({ planStore, decisionStore, transactionStore }); const history = createGovernanceHistoryUseCase(repositories);
+assert.equal(history.getHistory({ guildId: 'guild-a' }).plans[0].planFingerprint, 'same-input-fingerprint'); assert.equal(history.getHistory({ guildId: 'guild-b' }).plans.length, 0); assert.equal(history.getHistory({ guildId: 'guild-a' }).decisions[0].reasonAtDecision, 'duplicate');
+void (async () => { assert.equal((await createSupabaseGovernanceReadRepositories().planRepository.listPlans({ guildId: 'guild-a' })).error.code, 'DATABASE_NOT_READY'); console.log('KU HUB Governance Persistence Sprint 05 tests passed.'); })();

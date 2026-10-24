@@ -242,6 +242,11 @@ app.get('/api/guilds/:guildId/community-preview', requireSession, safeJson(async
   res.json({ ok: true, ...preview.data });
 }, { snapshot: null, channelBindings: [], diff: { actions: [] }, reconciliation: { issues: [] } }));
 
+app.get('/api/guilds/:guildId/governance-history', requireSession, safeJson(async (req, res) => {
+  if (!await requireManageableGuild(req, res, req.params.guildId)) return;
+  res.json({ ok: true, ...(require('./governance-history').getGovernanceHistory(req.params.guildId)) });
+}, { plans: [], decisions: [], audit: [] }));
+
 app.get('/api/bot/status', safeJson(async (req, res) => {
   res.json({ ok: true, ...(await getBotStatus()) });
 }, { ready: false, tag: null, guilds: 0, uptime: 0 }));

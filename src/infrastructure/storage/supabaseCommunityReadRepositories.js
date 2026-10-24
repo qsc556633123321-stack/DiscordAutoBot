@@ -1,4 +1,5 @@
 const { ok, fail } = require('../../core/result');
+const { createSupabaseGovernanceReadRepositories } = require('./supabaseGovernanceReadRepositories');
 
 function queryFailure(error) { return fail(error?.code === '42P01' ? 'DATABASE_NOT_READY' : 'DATABASE_QUERY_FAILED', 'Community database query failed', { code: error?.code || null, message: error?.message || 'Unknown database error' }); }
 function mapChannel(row) { return Object.freeze({ discordGuildId: row.discord_guild_id, discordChannelId: row.discord_channel_id, canonicalKey: row.canonical_key, canonicalGameId: row.canonical_game_id || null, permissionFingerprint: row.permission_fingerprint || null, source: 'database' }); }
@@ -29,4 +30,4 @@ function createSupabaseCommunityCompatibilityReader({ repositories = createSupab
   } });
 }
 
-module.exports = { createSupabaseCommunityCompatibilityReader, createSupabaseCommunityReadRepositories };
+module.exports = { createSupabaseCommunityCompatibilityReader, createSupabaseCommunityReadRepositories, createSupabaseGovernanceReadRepositories };

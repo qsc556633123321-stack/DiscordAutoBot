@@ -27,12 +27,21 @@
 - The Dashboard now displays snapshot metadata, reconciliation issues, risk
   ordering, resource filtering, and observed-versus-recorded permission drift.
 
+## Sprint 05 complete: governance persistence integration
+
+- Reused Governance v1.3 decision, v1.4 immutable-plan, and v1.5 transaction
+  JSON stores through unified read-side repository contracts.
+- Added a manage-guild-authorized, read-only governance-history API and
+  Dashboard summary. It exposes plan fingerprints, decisions, and audit
+  history without enabling execution.
+- Supabase governance repositories are query-only preparation; JSON remains
+  the primary source and an unapplied schema reports `DATABASE_NOT_READY`.
+
 ## Next implementation order
 
-1. Implement the `guilds`, `games`, `guild_games`, and binding tables behind ports; retain JSON compatibility readers.
-2. Add plan/audit persistence with immutable fingerprinting and approval records.
-3. Migrate one read-only Dashboard view to the same repository.
-4. Only after reconciliation coverage, migrate controlled writes behind feature flags and an explicit rollback plan.
+1. Review JSON-versus-Supabase migration readiness in an administrator workflow.
+2. Add a staged, non-production migration rehearsal with backup verification.
+3. Only after reconciliation coverage and explicit approval, migrate controlled writes behind feature flags and an explicit rollback plan.
 
 ## Acceptance cases
 
