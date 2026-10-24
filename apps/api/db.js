@@ -158,13 +158,14 @@ async function listChannelBindings(guildId) {
   if (!supabase) return memory.channelBindings.get(guildId) || [];
   const { data, error } = await supabase
     .from('channel_bindings')
-    .select('discord_channel_id, canonical_key, canonical_game_id')
+    .select('discord_channel_id, canonical_key, canonical_game_id, permission_fingerprint')
     .eq('discord_guild_id', guildId);
   if (error) throw error;
   return (data || []).map((row) => ({
     discordChannelId: row.discord_channel_id,
     canonicalKey: row.canonical_key,
-    canonicalGameId: row.canonical_game_id
+    canonicalGameId: row.canonical_game_id,
+    permissionFingerprint: row.permission_fingerprint || null
   }));
 }
 

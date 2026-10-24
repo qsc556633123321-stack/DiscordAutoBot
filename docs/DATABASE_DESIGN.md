@@ -22,6 +22,13 @@ guilds 1---* audit_logs
 - A cleanup plan is idempotent by `(discord_guild_id, plan_fingerprint)`.
 - Audit metadata must exclude tokens, refresh tokens, service keys, raw authorization headers, and credentials.
 
+## Sprint 03 compatibility note
+
+`channel_bindings.permission_fingerprint` records a last-reviewed overwrite
+fingerprint. Preview compares it with the live serialized overwrite set and
+reports `PERMISSION_DRIFT`; it never applies a permission change. The migration
+remains a draft and has not run against Supabase.
+
 ## Migration risks
 
 1. Existing JSON has irregular schemas and may contain name-only records; import must resolve or quarantine ambiguous rows.

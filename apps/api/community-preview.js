@@ -1,9 +1,9 @@
 const { ensureBot } = require('./discord');
 const db = require('./db');
-const { createCommunityLayoutPreviewFeature } = require('../../src/composition/communityLayoutPreviewFeature');
+const { createCommunityReconciliationPreviewFeature } = require('../../src/composition/communityReconciliationPreviewFeature');
 
-function createCommunityPreviewFeature({ resolveGuild, bindingRepository = db } = {}) {
-  return createCommunityLayoutPreviewFeature({ resolveGuild, bindingRepository });
+function createCommunityPreviewFeature({ resolveGuild, bindingRepository = db, snapshotRepository, now } = {}) {
+  return createCommunityReconciliationPreviewFeature({ resolveGuild, bindingRepository, snapshotRepository, now });
 }
 
 async function previewCommunityLayout(guildId) {

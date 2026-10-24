@@ -237,8 +237,10 @@ app.get('/api/guilds/:guildId/roles', requireSession, safeJson(async (req, res) 
 
 app.get('/api/guilds/:guildId/community-preview', requireSession, safeJson(async (req, res) => {
   if (!await requireManageableGuild(req, res, req.params.guildId)) return;
-  res.json({ ok: true, ...(await previewCommunityLayout(req.params.guildId)) });
-}, { snapshot: null, channelBindings: [], diff: { actions: [] } }));
+  const preview = await previewCommunityLayout(req.params.guildId);
+  if (!preview.ok) return res.status(500).json(preview);
+  res.json({ ok: true, ...preview.data });
+}, { snapshot: null, channelBindings: [], diff: { actions: [] }, reconciliation: { issues: [] } }));
 
 app.get('/api/bot/status', safeJson(async (req, res) => {
   res.json({ ok: true, ...(await getBotStatus()) });

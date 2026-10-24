@@ -23,3 +23,12 @@ Discord snapshot -> Normalize -> Compare desired rule version -> Cleanup plan
 ```
 
 All persistent future community records are guild-scoped. Discord IDs remain text end-to-end; display names are descriptive attributes, never unique identity keys.
+
+## Sprint 03 snapshot flow
+
+`Discord Guild read` -> `DiscordGuildSnapshotAdapter` -> `CommunitySnapshot`
+-> JSON snapshot repository -> reconciliation preview -> Dashboard API. The
+preview compares that live snapshot, `channel_bindings`, and the existing desired
+governance schema. It cannot modify Discord resources, permission overwrites, or
+bindings. Snapshot JSON is an atomic local compatibility store, not a second
+authoritative relational database.

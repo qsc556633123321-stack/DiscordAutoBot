@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-KU HUB Data Architecture Sprint 02 / Major Release Ready for Deployment Review
+KU HUB Data Architecture Sprint 03 / Major Release Ready for Deployment Review
 
 ## Overall Progress
 Estimated local refactor progress: 97%. The major-release candidate now has a
@@ -65,6 +65,9 @@ execution.
   the caller's specific game roles. Category permission wiring remains out of scope.
 
 ## Latest Completed
+- KU HUB Data Architecture Sprint 03: deterministic local Snapshot persistence
+  and read-only reconciliation compare live Discord state, stored bindings, and
+  the desired governance schema without modifying Discord or Supabase.
 - KU HUB Data Architecture Sprint 02: read-only Guild snapshots, a pure layout
   diff engine, a Supabase repository seam, OAuth-authorized preview API, and a
   Dashboard preview page are implemented and tested. No migration was applied
@@ -549,9 +552,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-KU HUB Snapshot Repository Preparation: add one read-only, guild-scoped
-snapshot/repository boundary that can feed both Bot and Dashboard without
-changing current JSON/Supabase runtime ownership.
+KU HUB Cleanup Plan Persistence Preparation: compile one immutable, read-only
+plan from a reconciled Snapshot and existing Governance review manifest without
+adding an execution path.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -572,6 +575,11 @@ changing current JSON/Supabase runtime ownership.
 - Dashboard build PASS
 
 ## Blockers
+KU HUB relational migration remains unapplied. Snapshot persistence is local
+atomic JSON only; it has no multi-process coordination and no Supabase snapshot,
+plan, action, or audit repository. An administrator approval-to-execution
+workflow is still required before any cleanup execution can be considered.
+
 Guide, Roadmap, and Welcome are CLOSED. `readOnboardingData` and `saveOnboarding`
 are removed. Runtime no longer owns onboarding filesystem paths or direct
 JsonReader construction; Infrastructure owns the defaults, while the existing
@@ -606,6 +614,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-10-24: KU HUB Data Architecture Sprint 03 added deterministic Snapshot
+persistence and read-only reconciliation. No production Discord, database,
+deployment, or cleanup execution occurred.
 2026-10-24: KU HUB Data Architecture Sprint 02 implemented read-only snapshot,
 diff, repository, API, and Dashboard preview boundaries. SQL remains unapplied;
 no production data, Discord state, or deployment was changed.

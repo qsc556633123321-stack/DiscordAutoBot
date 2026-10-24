@@ -43,6 +43,7 @@ create table if not exists public.channel_bindings (
   lifecycle text not null default 'persistent',
   rule_version text not null,
   source_snapshot_hash text,
+  permission_fingerprint text,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (discord_guild_id, canonical_key)

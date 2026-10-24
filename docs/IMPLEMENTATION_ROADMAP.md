@@ -17,13 +17,22 @@
 - The Supabase migration remains unapplied; production JSON and Discord state
   remain authoritative until an explicitly approved migration slice.
 
+## Sprint 03 complete: snapshot persistence and reconciliation
+
+- Added deterministic Community Snapshot fingerprints and atomic local JSON
+  persistence with explicit Result failures and fingerprint de-duplication.
+- Added read-only reconciliation of live resources, persisted bindings, and the
+  desired schema. Uncertain identities remain review items; nothing is merged
+  or deleted automatically.
+- The Dashboard now displays snapshot metadata, reconciliation issues, risk
+  ordering, resource filtering, and observed-versus-recorded permission drift.
+
 ## Next implementation order
 
-1. Add a read-only guild snapshot repository and normalized snapshot value object.
-2. Implement the `guilds`, `games`, `guild_games`, and binding tables behind ports; retain JSON compatibility readers.
-3. Add plan/audit persistence with immutable fingerprinting and approval records.
-4. Migrate one read-only Dashboard view to the same repository.
-5. Only after reconciliation coverage, migrate controlled writes behind feature flags and an explicit rollback plan.
+1. Implement the `guilds`, `games`, `guild_games`, and binding tables behind ports; retain JSON compatibility readers.
+2. Add plan/audit persistence with immutable fingerprinting and approval records.
+3. Migrate one read-only Dashboard view to the same repository.
+4. Only after reconciliation coverage, migrate controlled writes behind feature flags and an explicit rollback plan.
 
 ## Acceptance cases
 
