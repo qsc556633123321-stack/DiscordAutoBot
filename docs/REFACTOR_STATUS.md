@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-Production Deployment Reconciled / Major Release Ready for Deployment Review
+KU HUB Data Architecture Sprint 01 / Major Release Ready for Deployment Review
 
 ## Overall Progress
 Estimated local refactor progress: 97%. The major-release candidate now has a
@@ -65,6 +65,11 @@ execution.
   the caller's specific game roles. Category permission wiring remains out of scope.
 
 ## Latest Completed
+- KU HUB Data Architecture Sprint 01: Bot/Dashboard/Supabase data flows are
+  inventoried; a non-executed relational-schema draft, IPO workflow, cleanup
+  SOP, implementation roadmap, and architecture-only integrity tests are in
+  place. No Discord resource, production JSON, Supabase schema, or deployment
+  was changed.
 - Game Role Selection UI is ready for separately approved deployment. Its
   registry-derived multi-select preserves parent/member/non-game roles, blocks
   missing canonical roles before mutation, and acknowledges before lookup or
@@ -540,9 +545,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-Production Preview Deployment: perform a separately approved, read-only live
-governance preview and reconcile its fresh immutable plan against the release
-manifests before any rollout or execution enablement.
+KU HUB Snapshot Repository Preparation: add one read-only, guild-scoped
+snapshot/repository boundary that can feed both Bot and Dashboard without
+changing current JSON/Supabase runtime ownership.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -597,6 +602,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-10-24: KU HUB Data Architecture Sprint 01 added a reviewed, unexecuted
+relational-schema proposal and test-only data-integrity coverage. Database
+adoption, SQL execution, Discord mutation, and deployment remain out of scope.
 2026-09-24: Major release evidence is complete locally: the reviewed
 production-shaped fixture compiles to a 24-operation immutable candidate and
 reconciles to zero remaining governed actions. Delete/permission manifests,
