@@ -18,7 +18,8 @@ production source.
 
 ## Remaining blockers
 
-The Supabase draft migration is unapplied. A backup, non-production rehearsal,
-conflict resolution, and explicit administrative migration approval are needed
-before any source switch. Governance execution remains disabled and no
-Dashboard Execute control is present.
+The Supabase draft migration is unapplied and has no Governance review-decision
+table yet; its decision repository intentionally returns `DATABASE_NOT_READY`.
+A schema extension, backup, non-production rehearsal, conflict resolution, and
+explicit administrative migration approval are needed before any source switch.
+Governance execution remains disabled and no Dashboard Execute control is present.
