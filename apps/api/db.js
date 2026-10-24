@@ -15,7 +15,8 @@ const supabase = hasSupabase ? createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_
 const memory = {
   sessions: new Map(),
   panelDrafts: new Map(),
-  aiSuggestions: new Map()
+  aiSuggestions: new Map(),
+  channelBindings: new Map()
 };
 
 function assertSupabasePackage() {
@@ -152,11 +153,27 @@ async function listAiSuggestions(guildId) {
   return data || [];
 }
 
+async function listChannelBindings(guildId) {
+  assertSupabasePackage();
+  if (!supabase) return memory.channelBindings.get(guildId) || [];
+  const { data, error } = await supabase
+    .from('channel_bindings')
+    .select('discord_channel_id, canonical_key, canonical_game_id')
+    .eq('discord_guild_id', guildId);
+  if (error) throw error;
+  return (data || []).map((row) => ({
+    discordChannelId: row.discord_channel_id,
+    canonicalKey: row.canonical_key,
+    canonicalGameId: row.canonical_game_id
+  }));
+}
+
 module.exports = {
   createSession,
   deleteSession,
   getPanelDraft,
   getSession,
+  listChannelBindings,
   listAiSuggestions,
   upsertPanelDraft
 };

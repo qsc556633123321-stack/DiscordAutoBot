@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-KU HUB Data Architecture Sprint 01 / Major Release Ready for Deployment Review
+KU HUB Data Architecture Sprint 02 / Major Release Ready for Deployment Review
 
 ## Overall Progress
 Estimated local refactor progress: 97%. The major-release candidate now has a
@@ -65,6 +65,10 @@ execution.
   the caller's specific game roles. Category permission wiring remains out of scope.
 
 ## Latest Completed
+- KU HUB Data Architecture Sprint 02: read-only Guild snapshots, a pure layout
+  diff engine, a Supabase repository seam, OAuth-authorized preview API, and a
+  Dashboard preview page are implemented and tested. No migration was applied
+  and no Discord mutation surface was added.
 - KU HUB Data Architecture Sprint 01: Bot/Dashboard/Supabase data flows are
   inventoried; a non-executed relational-schema draft, IPO workflow, cleanup
   SOP, implementation roadmap, and architecture-only integrity tests are in
@@ -602,6 +606,9 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-10-24: KU HUB Data Architecture Sprint 02 implemented read-only snapshot,
+diff, repository, API, and Dashboard preview boundaries. SQL remains unapplied;
+no production data, Discord state, or deployment was changed.
 2026-10-24: KU HUB Data Architecture Sprint 01 added a reviewed, unexecuted
 relational-schema proposal and test-only data-integrity coverage. Database
 adoption, SQL execution, Discord mutation, and deployment remain out of scope.

@@ -2,6 +2,9 @@
 -- DRAFT ONLY: reviewed schema proposal. Do not apply automatically.
 -- Discord snowflakes are stored as text to preserve exact identity.
 
+begin;
+create extension if not exists pgcrypto;
+
 create table if not exists public.guilds (
   discord_guild_id text primary key,
   name text not null,
@@ -131,3 +134,5 @@ create index if not exists reviews_suggestion_idx on public.suggestion_reviews (
 create index if not exists cleanup_plans_guild_status_idx on public.cleanup_plans (discord_guild_id, status, created_at desc);
 create index if not exists cleanup_actions_plan_status_idx on public.cleanup_actions (cleanup_plan_id, status, sequence);
 create index if not exists audit_logs_guild_created_idx on public.audit_logs (discord_guild_id, created_at desc);
+
+commit;

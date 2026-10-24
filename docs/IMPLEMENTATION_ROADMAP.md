@@ -6,6 +6,17 @@
 - Draft relational schema, ERD, workflow/SOP, and test-only architecture checks.
 - No SQL execution, Discord mutation, deployment, or JSON migration.
 
+## Sprint 02 complete: read-only implementation
+
+- Added an idempotent, transaction-wrapped Supabase migration draft and a
+  channel-binding repository seam for the read-only preview path.
+- Added a Discord read-only snapshot adapter, pure layout diff engine, and
+  application preview use case.
+- Added a Dashboard preview API protected by OAuth-derived manageable-guild
+  authorization and a read-only Dashboard page. No execute control exists.
+- The Supabase migration remains unapplied; production JSON and Discord state
+  remain authoritative until an explicitly approved migration slice.
+
 ## Next implementation order
 
 1. Add a read-only guild snapshot repository and normalized snapshot value object.

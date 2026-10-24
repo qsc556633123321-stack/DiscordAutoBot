@@ -6,6 +6,7 @@ const next = require('next');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
+const { previewCommunityLayout } = require('./community-preview');
 const {
   ensureBot,
   getBotStatus,
@@ -85,6 +86,15 @@ function safeJson(handler, fallback) {
 
 function getDashboardGuildId(req) {
   return req.query.guildId || req.params.guildId || null;
+}
+
+async function requireManageableGuild(req, res, guildId) {
+  const guilds = await getManageableGuilds(req.session.accessToken);
+  if (!guilds.some((guild) => guild.id === guildId)) {
+    res.status(403).json({ ok: false, error: 'guild_management_required' });
+    return false;
+  }
+  return true;
 }
 
 app.get('/health', asyncRoute(async (req, res) => {
@@ -224,6 +234,11 @@ app.get('/api/guilds/:guildId/channels', requireSession, safeJson(async (req, re
 app.get('/api/guilds/:guildId/roles', requireSession, safeJson(async (req, res) => {
   res.json({ ok: true, roles: await getGuildRoles(req.params.guildId) });
 }, { roles: [] }));
+
+app.get('/api/guilds/:guildId/community-preview', requireSession, safeJson(async (req, res) => {
+  if (!await requireManageableGuild(req, res, req.params.guildId)) return;
+  res.json({ ok: true, ...(await previewCommunityLayout(req.params.guildId)) });
+}, { snapshot: null, channelBindings: [], diff: { actions: [] } }));
 
 app.get('/api/bot/status', safeJson(async (req, res) => {
   res.json({ ok: true, ...(await getBotStatus()) });

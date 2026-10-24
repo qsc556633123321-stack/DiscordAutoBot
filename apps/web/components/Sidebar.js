@@ -21,6 +21,7 @@ const nav = [
   ['總覽', '/dashboard', LayoutDashboard],
   ['伺服器', '/dashboard/servers', Server],
   ['頻道', '/dashboard/channels', ListTree],
+  ['結構預覽', '/dashboard/community-preview', ListTree],
   ['面板', '/dashboard/panels', PanelTop],
   ['身分組', '/dashboard/roles', Shield],
   ['AI 整理', '/dashboard/organize', BrainCircuit],

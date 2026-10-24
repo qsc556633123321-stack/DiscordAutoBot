@@ -1,0 +1,11 @@
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const server = fs.readFileSync(path.join(__dirname, '../../apps/api/server.js'), 'utf8');
+const snapshot = fs.readFileSync(path.join(__dirname, '../../src/infrastructure/discord/discordGuildSnapshotAdapter.js'), 'utf8');
+assert.match(server, /requireManageableGuild\(req, res, req\.params\.guildId\)/);
+assert.match(server, /previewCommunityLayout/);
+assert.doesNotMatch(snapshot, /\.create\(|\.setName\(|\.setParent\(|\.delete\(/);
+const previewRoute = server.match(/app\.get\('\/api\/guilds\/:guildId\/community-preview'[\s\S]*?\n\}, \{ snapshot:/)?.[0] || '';
+assert.doesNotMatch(previewRoute, /publishPanel|sendAnnouncement|\.create\(|\.setName\(|\.setParent\(|\.delete\(/);
+console.log('KU HUB dashboard preview boundary tests passed.');
