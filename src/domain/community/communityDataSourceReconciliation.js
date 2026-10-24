@@ -1,0 +1,11 @@
+const DataSourceReconciliationStatus = Object.freeze({ MATCHED: 'MATCHED', JSON_ONLY: 'JSON_ONLY', DATABASE_ONLY: 'DATABASE_ONLY', CONFLICT: 'CONFLICT', INVALID_REFERENCE: 'INVALID_REFERENCE', AMBIGUOUS: 'AMBIGUOUS' });
+function bindingKey(binding, type) { return `${type}:${binding.canonicalKey || binding.canonicalRoleKey || ''}`; }
+function reconcileList(jsonItems = [], databaseItems = [], type) {
+  const jsonByKey = new Map(); const databaseByKey = new Map();
+  for (const item of jsonItems) { const key = bindingKey(item, type); jsonByKey.set(key, [...(jsonByKey.get(key) || []), item]); }
+  for (const item of databaseItems) { const key = bindingKey(item, type); databaseByKey.set(key, [...(databaseByKey.get(key) || []), item]); }
+  const keys = [...new Set([...jsonByKey.keys(), ...databaseByKey.keys()])].sort();
+  return keys.map((key) => { const left = jsonByKey.get(key) || []; const right = databaseByKey.get(key) || []; if (left.length > 1 || right.length > 1) return Object.freeze({ status: DataSourceReconciliationStatus.AMBIGUOUS, risk: 'high', type, key, reason: 'duplicate_binding_key' }); if (!left.length) return Object.freeze({ status: DataSourceReconciliationStatus.DATABASE_ONLY, risk: 'medium', type, key }); if (!right.length) return Object.freeze({ status: DataSourceReconciliationStatus.JSON_ONLY, risk: 'medium', type, key }); const jsonId = left[0].discordChannelId || left[0].discordRoleId; const databaseId = right[0].discordChannelId || right[0].discordRoleId; if (!jsonId || !databaseId) return Object.freeze({ status: DataSourceReconciliationStatus.INVALID_REFERENCE, risk: 'high', type, key }); return Object.freeze({ status: jsonId === databaseId ? DataSourceReconciliationStatus.MATCHED : DataSourceReconciliationStatus.CONFLICT, risk: jsonId === databaseId ? 'low' : 'high', type, key, jsonId, databaseId }); });
+}
+function reconcileCommunityDataSources({ json = {}, database = {} } = {}) { return Object.freeze({ issues: Object.freeze([...reconcileList(json.channelBindings, database.channelBindings, 'channel'), ...reconcileList(json.roleBindings, database.roleBindings, 'role')].sort((a, b) => `${a.risk}:${a.type}:${a.key}`.localeCompare(`${b.risk}:${b.type}:${b.key}`))) }); }
+module.exports = { DataSourceReconciliationStatus, reconcileCommunityDataSources };

@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-KU HUB Data Architecture Sprint 03 / Major Release Ready for Deployment Review
+KU HUB Data Architecture Sprint 04 / Major Release Ready for Deployment Review
 
 ## Overall Progress
 Estimated local refactor progress: 97%. The major-release candidate now has a
@@ -65,6 +65,11 @@ execution.
   the caller's specific game roles. Category permission wiring remains out of scope.
 
 ## Latest Completed
+- KU HUB Data Architecture Sprint 04: read-only repository contracts, JSON
+  compatibility reader, Supabase query adapters, JSON-versus-database
+  reconciliation, migration dry-run reporting, and Dashboard readiness display
+  are implemented locally. JSON remains the primary source; no Supabase
+  migration, Discord change, or deployment occurred.
 - KU HUB Data Architecture Sprint 03: deterministic local Snapshot persistence
   and read-only reconciliation compare live Discord state, stored bindings, and
   the desired governance schema without modifying Discord or Supabase.
@@ -614,6 +619,12 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-10-25: KU HUB Data Architecture Sprint 04 added read-only community
+repository contracts, JSON compatibility reading, Supabase query adapters, and
+a JSON-versus-database migration readiness preview. JSON remains primary;
+Supabase migration is unapplied and reports `DATABASE_NOT_READY` until a
+separately approved database setup occurs. No production Discord, database, or
+deployment mutation occurred.
 2026-10-24: KU HUB Data Architecture Sprint 03 added deterministic Snapshot
 persistence and read-only reconciliation. No production Discord, database,
 deployment, or cleanup execution occurred.
