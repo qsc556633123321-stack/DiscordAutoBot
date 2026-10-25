@@ -1,7 +1,7 @@
 # DiscordAutoBot Refactor Status
 
 ## Current Phase
-KU HUB Data Architecture Sprint 05 / Major Release Ready for Deployment Review
+KU HUB Production Release Readiness / Sprint 06 paused
 
 ## Overall Progress
 Estimated local refactor progress: 97%. The major-release candidate now has a
@@ -9,6 +9,11 @@ reviewed immutable fixture plan, explicit deletion and permission manifests,
 transaction failure coverage, a re-preview reconciliation gate, and a
 read-only operator checklist. This does not itself deploy or enable governance
 execution.
+
+Deployment readiness is **NO-GO** for a Dashboard/API production release until
+an approved deployment design prevents a second Discord Gateway client from
+using the production Bot token. The current Vultr Bot-only deployment remains
+the pre-KU-HUB runtime baseline for Dashboard/API purposes.
 
 ## Product Feature Progress
 - Server Governance v1: PHASE_1_MODEL_READY. The pure model, read-only inventory
@@ -65,6 +70,12 @@ execution.
   the caller's specific game roles. Category permission wiring remains out of scope.
 
 ## Latest Completed
+- KU HUB Production Release Readiness: repository-only review, isolated
+  read-only rollout runbook, protected Dashboard write routes, and a production
+  session-secret guard are complete. No Vultr connection, deployment, PM2
+  action, Supabase migration, or Discord mutation occurred. The next work is
+  not a feature slice; it is an administrator-approved isolated deployment
+  design that prevents a second production Bot connection.
 - KU HUB Data Architecture Sprint 05: Governance v1.3–v1.5 JSON decision,
   immutable-plan, transaction, and audit stores are exposed through read-side
   repository contracts and an OAuth-authorized Dashboard history endpoint.
@@ -548,10 +559,11 @@ execution.
 - Refactored production deployment: Complete; dashboard/API remains intentionally undeployed
 
 ## Deployment Readiness
-DEPLOYED. The refactored Discord Bot passed independent staging validation,
-PM2 cutover, Discord ready, and real TempVoice smoke. Keep the legacy release
-and verified backup through a stability window; dashboard/API remains outside
-the deployed scope.
+Bot-only deployment remains historical at the recorded SHA. The KU HUB
+Dashboard/API is **NOT READY FOR VULTR DEPLOYMENT**: its current API creates a
+Discord Gateway client and could become a second Bot when given the production
+token. First resolve that deployment boundary, then use the read-only rollout
+runbook with a fresh manual backup and live-state verification.
 
 Target for first refactored Vultr deployment:
 - Guide publication runtime integration complete
@@ -561,9 +573,9 @@ Target for first refactored Vultr deployment:
 - Rollback path prepared
 
 ## Next Recommended Slice
-KU HUB Cleanup Plan Persistence Preparation: compile one immutable, read-only
-plan from a reconciled Snapshot and existing Governance review manifest without
-adding an execution path.
+KU HUB Dashboard Gateway Isolation Preparation: design a read-only Dashboard
+data path that does not create a second Discord Gateway client with the
+production Bot token.
 
 ## Required Checks After Every Slice
 - Filesystem ownership preparation, Guide/Roadmap/Welcome closure, onboarding reader, and tracking-adapter migration suites PASS
@@ -584,6 +596,11 @@ adding an execution path.
 - Dashboard build PASS
 
 ## Blockers
+KU HUB Dashboard/API production release is blocked by the second-Gateway-client
+risk and requires fresh administrator-only Vultr confirmation of process,
+backup, OAuth, HTTPS, session, and data-source state. Supabase remains
+unapplied and must display `DATABASE_NOT_READY`.
+
 KU HUB relational migration remains unapplied. Snapshot persistence is local
 atomic JSON only; it has no multi-process coordination and no Supabase snapshot,
 plan, action, or audit repository. An administrator approval-to-execution
@@ -623,6 +640,11 @@ Guide/Roadmap persistence and all JsonReader construction use their approved
 Infrastructure defaults. Filesystem ownership is MIGRATED.
 
 ## Last Updated
+2026-10-25: KU HUB Production Release Readiness completed from repository
+evidence only. Dashboard write routes are default-denied, production requires
+a non-development session secret, and the first read-only Dashboard rollout is
+NO-GO until the second Discord Gateway-client risk is removed. No Vultr,
+Discord, Supabase, or PM2 action occurred.
 2026-10-25: KU HUB Data Architecture Sprint 05 integrated existing Governance
 JSON persistence with read-only repository contracts and Dashboard history. No
 Discord mutation, Supabase migration, execution enablement, deployment, or

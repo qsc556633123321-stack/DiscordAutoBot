@@ -5,6 +5,7 @@ const express = require('express');
 const next = require('next');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
+const { dashboardWritesEnabled, getCookieSigningSecret } = require('./dashboardSecurityConfig');
 const db = require('./db');
 const { previewCommunityLayout } = require('./community-preview');
 const {
@@ -28,7 +29,7 @@ const SERVE_WEB = process.env.DASHBOARD_SERVE_WEB === 'true';
 
 app.use(cors({ origin: WEB_URL, credentials: true }));
 app.use(express.json({ limit: '1mb' }));
-app.use(cookieParser(process.env.SESSION_SECRET || 'dev_secret'));
+app.use(cookieParser(getCookieSigningSecret()));
 
 function getSessionId(req) {
   return req.signedCookies[SESSION_COOKIE] || req.cookies[SESSION_COOKIE] || null;
@@ -95,6 +96,20 @@ async function requireManageableGuild(req, res, guildId) {
     return false;
   }
   return true;
+}
+
+async function requireDashboardWriteAccess(req, res, nextMiddleware) {
+  if (!dashboardWritesEnabled()) {
+    res.status(403).json({ ok: false, error: 'dashboard_read_only' });
+    return;
+  }
+
+  try {
+    if (!await requireManageableGuild(req, res, req.params.guildId)) return;
+    nextMiddleware();
+  } catch (error) {
+    nextMiddleware(error);
+  }
 }
 
 app.get('/health', asyncRoute(async (req, res) => {
@@ -255,12 +270,12 @@ app.get('/api/guilds/:guildId/panels/:channelId', requireSession, safeJson(async
   res.json({ ok: true, draft: await db.getPanelDraft(req.params.guildId, req.params.channelId) });
 }, { draft: null }));
 
-app.put('/api/guilds/:guildId/panels/:channelId', requireSession, safeJson(async (req, res) => {
+app.put('/api/guilds/:guildId/panels/:channelId', requireSession, requireDashboardWriteAccess, safeJson(async (req, res) => {
   const draft = await db.upsertPanelDraft(req.params.guildId, req.params.channelId, req.body);
   res.json({ ok: true, draft });
 }, { draft: null }));
 
-app.post('/api/guilds/:guildId/panels/:channelId/publish', requireSession, safeJson(async (req, res) => {
+app.post('/api/guilds/:guildId/panels/:channelId/publish', requireSession, requireDashboardWriteAccess, safeJson(async (req, res) => {
   const existing = await db.getPanelDraft(req.params.guildId, req.params.channelId);
   const message = await publishPanel(req.params.guildId, req.params.channelId, {
     ...existing,
@@ -274,7 +289,7 @@ app.post('/api/guilds/:guildId/panels/:channelId/publish', requireSession, safeJ
   res.json({ ok: true, messageId: message.id, draft });
 }, { messageId: null, draft: null }));
 
-app.post('/api/guilds/:guildId/announcements', requireSession, safeJson(async (req, res) => {
+app.post('/api/guilds/:guildId/announcements', requireSession, requireDashboardWriteAccess, safeJson(async (req, res) => {
   const message = await sendAnnouncement(req.params.guildId, req.body.channelId, {
     title: req.body.title || '公告',
     message: req.body.message || ''
